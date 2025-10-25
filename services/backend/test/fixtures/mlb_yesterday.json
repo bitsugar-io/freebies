@@ -1,0 +1,83 @@
+[
+  {
+    "gameId": "2024-10-24-LAD-SD",
+    "league": "MLB",
+    "dateISO": "2024-10-24",
+    "homeTeamId": "LAD",
+    "awayTeamId": "SD",
+    "homeScore": 5,
+    "awayScore": 3,
+    "homeTeamStats": {
+      "teamId": "LAD",
+      "teamRuns": 5,
+      "teamHits": 9,
+      "teamErrors": 0,
+      "teamStrikeouts": 10,
+      "win": true,
+      "players": [
+        {
+          "name": "Shohei Ohtani",
+          "hr": 2,
+          "rbi": 3,
+          "hits": 3
+        },
+        {
+          "name": "Mookie Betts",
+          "hr": 0,
+          "rbi": 1,
+          "hits": 2
+        }
+      ]
+    },
+    "awayTeamStats": {
+      "teamId": "SD",
+      "teamRuns": 3,
+      "teamHits": 6,
+      "teamErrors": 1,
+      "teamStrikeouts": 8,
+      "win": false,
+      "players": [
+        {
+          "name": "Fernando Tatis Jr",
+          "hr": 1,
+          "rbi": 2,
+          "hits": 2
+        }
+      ]
+    }
+  },
+  {
+    "gameId": "2024-10-24-NYY-BOS",
+    "league": "MLB",
+    "dateISO": "2024-10-24",
+    "homeTeamId": "NYY",
+    "awayTeamId": "BOS",
+    "homeScore": 7,
+    "awayScore": 4,
+    "homeTeamStats": {
+      "teamId": "NYY",
+      "teamRuns": 7,
+      "teamHits": 11,
+      "teamErrors": 0,
+      "teamStrikeouts": 12,
+      "win": true,
+      "players": [
+        {
+          "name": "Aaron Judge",
+          "hr": 1,
+          "rbi": 2,
+          "hits": 2
+        }
+      ]
+    },
+    "awayTeamStats": {
+      "teamId": "BOS",
+      "teamRuns": 4,
+      "teamHits": 7,
+      "teamErrors": 2,
+      "teamStrikeouts": 9,
+      "win": false,
+      "players": []
+    }
+  }
+]

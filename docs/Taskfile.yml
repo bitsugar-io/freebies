@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  install:
+    desc: Install doc tooling dependencies
+    cmds:
+      - npm install
+
+  fmt:
+    desc: Format all markdown files to 100 char width
+    cmds:
+      - npx prettier --write --prose-wrap always --print-width 100 "../**/*.md"
+
+  fmt:check:
+    desc: Check markdown formatting
+    cmds:
+      - npx prettier --check --prose-wrap always --print-width 100 "../**/*.md"

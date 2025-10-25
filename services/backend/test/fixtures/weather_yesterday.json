@@ -1,0 +1,26 @@
+[
+  {
+    "regionCode": "us-ca-la",
+    "dateISO": "2024-10-24",
+    "precipitationMm": 8.5,
+    "temperatureF": 55,
+    "condition": "rain",
+    "humidityPct": 85
+  },
+  {
+    "regionCode": "us-ca-sf",
+    "dateISO": "2024-10-24",
+    "precipitationMm": 2.1,
+    "temperatureF": 62,
+    "condition": "drizzle",
+    "humidityPct": 75
+  },
+  {
+    "regionCode": "us-ca-sd",
+    "dateISO": "2024-10-24",
+    "precipitationMm": 0.0,
+    "temperatureF": 78,
+    "condition": "sunny",
+    "humidityPct": 60
+  }
+]

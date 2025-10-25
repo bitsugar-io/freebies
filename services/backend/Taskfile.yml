@@ -1,0 +1,66 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  serve:
+    desc: Start the API server (localhost:8080)
+    cmds:
+      - go run . serve
+
+  dev:
+    desc: Auto-rebuild on changes (requires watchexec)
+    cmds:
+      - watchexec -r -e go -- go run . serve
+
+  clean:
+    desc: Wipe database (migrations run on next serve)
+    cmds:
+      - rm -f freebie.db freebie.db-journal freebie.db-wal freebie.db-shm
+
+  deals:
+    desc: Create test deals (24h, 6h, 2h expiry)
+    cmds:
+      - go run . deals create --hours 24
+      - go run . deals create --hours 6
+      - go run . deals create --hours 2
+      - go run . deals list
+
+  deals:list:
+    desc: List active deals
+    cmds:
+      - go run . deals list
+
+  users:
+    desc: List all users
+    cmds:
+      - go run . users list
+
+  notify:
+    desc: Send test notification to all users
+    cmds:
+      - go run . notify test
+
+  notify:send:
+    desc: Send notification to specific user (USER=id)
+    cmds:
+      - go run . notify send {{.USER}}
+
+  generate:
+    desc: Regenerate code (sqlc, etc)
+    dir: db
+    cmds:
+      - go tool sqlc generate
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test ./...
+
+  build:
+    desc: Build production binary
+    cmds:
+      - go build -o freebie .

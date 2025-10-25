@@ -1,0 +1,11 @@
+*
+
+!go.mod
+!go.sum
+
+!*.go
+!cmd/
+!cmd/**/*.go
+!internal/
+!internal/**/*.go
+!internal/**/*.sql

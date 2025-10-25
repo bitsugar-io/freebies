@@ -1,0 +1,65 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - npm install
+
+  serve:
+    desc: Start Expo development server
+    cmds:
+      - npx expo start
+
+  ios:
+    desc: Start on iOS simulator
+    cmds:
+      - npx expo start --ios
+
+  android:
+    desc: Start on Android emulator
+    cmds:
+      - npx expo start --android
+
+  web:
+    desc: Start web version
+    cmds:
+      - npx expo start --web
+
+  typecheck:
+    desc: Run TypeScript type checking
+    cmds:
+      - npx tsc --noEmit
+
+  lint:
+    desc: Run ESLint
+    cmds:
+      - npx eslint . --ext .ts,.tsx
+
+  clean:
+    desc: Clean build artifacts and caches
+    cmds:
+      - rm -rf node_modules/.cache
+      - rm -rf .expo
+
+  reset:
+    desc: Full reset (clean + reinstall)
+    cmds:
+      - rm -rf node_modules
+      - rm -rf .expo
+      - npm install
+
+  build:ios:
+    desc: Build iOS development client (EAS)
+    cmds:
+      - npx eas build --platform ios --profile development
+
+  build:android:
+    desc: Build Android development client (EAS)
+    cmds:
+      - npx eas build --platform android --profile development

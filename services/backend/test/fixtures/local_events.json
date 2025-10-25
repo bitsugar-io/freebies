@@ -1,0 +1,20 @@
+[
+  {
+    "eventId": "local-event-001",
+    "eventName": "Downtown Street Fair",
+    "regionCode": "us-ca-la",
+    "storeId": "store-downtown-001",
+    "dateISO": "2024-10-24",
+    "category": "community",
+    "participantCount": 1500
+  },
+  {
+    "eventId": "local-event-002",
+    "eventName": "New Store Grand Opening",
+    "regionCode": "us-ca-sf",
+    "storeId": "store-beach-002",
+    "dateISO": "2024-10-24",
+    "category": "store_opening",
+    "participantCount": 300
+  }
+]
