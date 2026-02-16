@@ -1,83 +1,61 @@
 # Freebie
 
-Sports rewards notification platform. Monitors live games and sends push notifications when free food/merch deals are triggered (e.g., Dodgers pitchers get 7+ strikeouts → free Jumbo Jack).
+Sports rewards notification platform. Monitors live games and sends push notifications when free
+food/merch deals are triggered (e.g., Dodgers pitchers get 7+ strikeouts = free Jumbo Jack).
 
-## Tech Stack
+<!-- prettier-ignore -->
+@docs/development.md — prerequisites, setup, tasks, code style, testing
+@docs/contributing.md — PR workflow and contribution guidelines
 
-- **Backend**: Go 1.25, SQLite (Turso in prod), deployed on Fly.io
-- **Mobile**: React Native / Expo (TypeScript)
-- **Notifications**: Expo Push Notifications
-- **Task runner**: [Task](https://taskfile.dev) (Taskfile.yml)
-- **DB migrations**: goose (embedded, auto-run on `task serve`)
-- **Code generation**: sqlc (SQL → Go)
+## Quick Reference
 
-## Directory Layout
-
-```
-services/backend/   Go API server + worker
-apps/mobile/        React Native / Expo app
-docs/               Documentation site
-```
-
-## Local Development
-
-### Backend
 ```bash
-cd services/backend && task serve    # starts API on localhost:8080
-task dev                              # auto-rebuild on changes (requires watchexec)
+task setup              # first-time setup
+task backend:serve      # start API server (auto-migrates DB)
+task backend:test       # run Go tests
+task mobile:serve       # start Expo dev server
+task docs:fmt           # format markdown files
+task clean              # wipe database
 ```
 
-### Mobile
-```bash
-cd apps/mobile && npx expo start
+## Directory Structure
+
+```
+apps/mobile/                    React Native (Expo) app
+services/backend/               Go API server + worker
+  internal/
+    db/                         sqlc queries, generated code, migrations
+    server/                     HTTP handlers and routes
+    sources/                    Live game data sources (Source interface)
+    worker/                     Background job runner
+docs/                           Project documentation
 ```
 
-## Key Commands (from services/backend/)
+## Code Standards (Mandatory)
 
-| Command            | Description                          |
-|--------------------|--------------------------------------|
-| `task serve`       | Start API server                     |
-| `task dev`         | Auto-rebuild on file changes         |
-| `task clean`       | Wipe local DB (re-migrates on serve) |
-| `task generate`    | Regenerate sqlc code                 |
-| `task test`        | Run Go tests                         |
-| `task build`       | Build production binary              |
-| `task deals`       | Create test deals (24h, 6h, 2h)     |
-| `task deals:list`  | List active deals                    |
-| `task notify`      | Send test notification to all users  |
+### Branching
 
-## Code Generation (sqlc)
+See @docs/development.md#branching for full conventions.
 
-1. Edit `services/backend/internal/db/queries.sql`
-2. Run `task generate` (from `services/backend/`)
-3. Generated Go code appears in `services/backend/internal/db/`
+When committing changes via `/commit`, create a feature branch first if currently on `main`. Branch
+names use the pattern `type/short-description` (e.g., `feat/add-nba-source`,
+`fix/notification-retry`, `docs/update-readme`).
 
-## Database Migrations
+### Commit Messages
 
-Migrations live in `services/backend/internal/db/migrations/` and use goose format:
+See @docs/development.md#commit-messages for full conventions.
 
-```sql
--- +goose Up
-<SQL statements>
+Follow [Conventional Commits](https://www.conventionalcommits.org/) with the 50/72 rule. Format:
+`type(scope): description`.
 
--- +goose Down
-<SQL statements>
-```
+When committing via Claude Code, end with:
 
-Migrations are embedded in the Go binary and run automatically on server start.
+- `🤖 Generated with [Claude Code](https://claude.ai/code)`
+- `Co-Authored-By: Claude <noreply@anthropic.com>`
 
-## Adding New Events
+### Go Patterns
 
-Insert a new row into `events` via a migration file (see `003_mlb_data.sql` for reference).
-
-## Adding New Leagues/Sources
-
-Implement the `Source` interface in `services/backend/internal/sources/` and register it in the worker.
-
-## Environment Variables
-
-| Variable                | Default          | Description             |
-|-------------------------|------------------|-------------------------|
-| `FREEBIE_DATABASE_PATH` | `freebie.db`     | SQLite database path    |
-| `FREEBIE_SERVER_HOST`   | `0.0.0.0`       | Server listen address   |
-| `FREEBIE_SERVER_PORT`   | `8080`           | Server listen port      |
+- `Source` interface in `internal/sources/` for new game data providers
+- sqlc for all database queries — edit `queries.sql`, run `task generate`
+- goose migrations in `internal/db/migrations/` — auto-run on server start
+- Environment config via `FREEBIE_*` variables (see docs/development.md)

@@ -2,18 +2,18 @@
 
 ## Prerequisites
 
-- Node.js 20+
-- [EAS CLI](https://docs.expo.dev/eas/) - Expo build service
+- [Bun](https://bun.sh) — JavaScript package manager
+- [EAS CLI](https://docs.expo.dev/eas/) — Expo build service
 
 ### Install Dependencies
 
 ```bash
 # EAS CLI (global)
-npm install -g eas-cli
+bun install -g eas-cli
 
 # Project dependencies
 cd apps/mobile
-npm install
+bun install
 ```
 
 ## Quick Start
@@ -108,7 +108,7 @@ eas build --platform ios --profile development
 ### Clear cache
 
 ```bash
-npx expo start --clear
+bunx expo start --clear
 ```
 
 ### Push notifications not working

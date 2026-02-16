@@ -2,10 +2,17 @@
 
 ## Prerequisites
 
-- [Task](https://taskfile.dev/) - Task runner
-- [mise](https://mise.jdx.dev/) - Version manager (optional but recommended)
-- Node.js 20+
-- Go 1.23+
+Install tools using [mise](https://mise.jdx.dev/):
+
+```bash
+mise install
+```
+
+- **[Go](https://go.dev)** — Backend server and worker.
+- **[Node.js](https://nodejs.org)** — Required as a runtime for React Native / Expo.
+- **[Bun](https://bun.sh)** — JavaScript package manager used for mobile app and docs tooling.
+- **[Task](https://taskfile.dev/)** — Task runner used for building, testing, formatting, and other
+  development workflows.
 
 ## Quick Start
 
@@ -125,6 +132,61 @@ task docs:fmt
 ```bash
 task backend:lint
 task backend:fmt
+```
+
+## Branching
+
+All work happens on feature branches created from `main`.
+
+### Branch Naming
+
+Use the pattern `type/short-description`:
+
+| Prefix      | Use for                              |
+| ----------- | ------------------------------------ |
+| `feat/`     | New features                         |
+| `fix/`      | Bug fixes                            |
+| `docs/`     | Documentation changes                |
+| `refactor/` | Code restructuring (no new behavior) |
+| `chore/`    | Tooling, deps, CI changes            |
+
+Examples: `feat/add-nba-source`, `fix/notification-retry`, `docs/update-readme`
+
+### Auto-branching
+
+When using Claude Code's `/commit` command while on `main`, a branch is automatically created using
+the convention above. You don't need to create branches manually.
+
+## Commit Messages
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/) with the 50/72 rule:
+
+- **Subject line**: max 50 characters, imperative mood, capitalized, no period
+- **Body**: wrap at 72 characters, separated from subject by a blank line
+- **Format**: `type(scope): description`
+- **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
+- **Scopes**: `backend`, `mobile`, `docs`, `db`
+- Summarize the "what" and "why", not the "how"
+
+Try to write meaningful commit messages and avoid having too many commits on a PR. Most PRs should
+likely have a single commit (although for bigger PRs it may be reasonable to split it in a few). Git
+squash and rebase is your friend!
+
+### Examples
+
+```
+feat(backend): Add NBA game source
+
+Implements the Source interface for NBA live game data
+using the balldontlie API.
+```
+
+```
+fix(mobile): Prevent duplicate push registrations
+```
+
+```
+docs: Add branching and commit conventions
 ```
 
 ## Deployment

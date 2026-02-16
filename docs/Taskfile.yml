@@ -9,14 +9,14 @@ tasks:
   install:
     desc: Install doc tooling dependencies
     cmds:
-      - npm install
+      - bun install
 
   fmt:
     desc: Format all markdown files to 100 char width
     cmds:
-      - npx prettier --write --prose-wrap always --print-width 100 "../**/*.md"
+      - bunx prettier --write --prose-wrap always --print-width 100 "../**/*.md"
 
   fmt:check:
     desc: Check markdown formatting
     cmds:
-      - npx prettier --check --prose-wrap always --print-width 100 "../**/*.md"
+      - bunx prettier --check --prose-wrap always --print-width 100 "../**/*.md"

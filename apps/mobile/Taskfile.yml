@@ -9,37 +9,37 @@ tasks:
   install:
     desc: Install dependencies
     cmds:
-      - npm install
+      - bun install
 
   serve:
     desc: Start Expo development server
     cmds:
-      - npx expo start
+      - bunx expo start
 
   ios:
     desc: Start on iOS simulator
     cmds:
-      - npx expo start --ios
+      - bunx expo start --ios
 
   android:
     desc: Start on Android emulator
     cmds:
-      - npx expo start --android
+      - bunx expo start --android
 
   web:
     desc: Start web version
     cmds:
-      - npx expo start --web
+      - bunx expo start --web
 
   typecheck:
     desc: Run TypeScript type checking
     cmds:
-      - npx tsc --noEmit
+      - bunx tsc --noEmit
 
   lint:
     desc: Run ESLint
     cmds:
-      - npx eslint . --ext .ts,.tsx
+      - bunx eslint . --ext .ts,.tsx
 
   clean:
     desc: Clean build artifacts and caches
@@ -52,14 +52,14 @@ tasks:
     cmds:
       - rm -rf node_modules
       - rm -rf .expo
-      - npm install
+      - bun install
 
   build:ios:
     desc: Build iOS development client (EAS)
     cmds:
-      - npx eas build --platform ios --profile development
+      - bunx eas build --platform ios --profile development
 
   build:android:
     desc: Build Android development client (EAS)
     cmds:
-      - npx eas build --platform android --profile development
+      - bunx eas build --platform android --profile development
