@@ -2,9 +2,13 @@ package notify
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
+	"sync"
+	"sync/atomic"
 )
 
 const expoPushURL = "https://exp.host/--/api/v2/push/send"
@@ -114,4 +118,95 @@ func IsValidExpoToken(token string) bool {
 	// Expo push tokens start with "ExponentPushToken[" or "ExpoPushToken["
 	return len(token) > 20 &&
 		(token[:18] == "ExponentPushToken[" || token[:14] == "ExpoPushToken[")
+}
+
+const (
+	// MaxBatchSize is the maximum number of notifications per Expo API request
+	MaxBatchSize = 100
+	// DefaultWorkers is the default number of concurrent workers for sending
+	DefaultWorkers = 10
+)
+
+// BatchResult contains the results of a batch send operation
+type BatchResult struct {
+	Sent   int64
+	Failed int64
+	Errors []error
+}
+
+// SendBatchConcurrent sends notifications in batches using multiple workers
+func (n *ExpoNotifier) SendBatchConcurrent(ctx context.Context, logger *slog.Logger, messages []ExpoPushMessage, workers int) *BatchResult {
+	if workers <= 0 {
+		workers = DefaultWorkers
+	}
+
+	result := &BatchResult{}
+	if len(messages) == 0 {
+		return result
+	}
+
+	// Split messages into batches
+	var batches [][]ExpoPushMessage
+	for i := 0; i < len(messages); i += MaxBatchSize {
+		end := i + MaxBatchSize
+		if end > len(messages) {
+			end = len(messages)
+		}
+		batches = append(batches, messages[i:end])
+	}
+
+	logger.Info("sending notifications",
+		"total", len(messages),
+		"batches", len(batches),
+		"workers", workers,
+	)
+
+	// Create work channel
+	batchChan := make(chan []ExpoPushMessage, len(batches))
+	for _, batch := range batches {
+		batchChan <- batch
+	}
+	close(batchChan)
+
+	// Collect errors
+	var errorsMu sync.Mutex
+	var errors []error
+
+	// Start workers
+	var wg sync.WaitGroup
+	for i := 0; i < workers; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for batch := range batchChan {
+				select {
+				case <-ctx.Done():
+					return
+				default:
+				}
+
+				tickets, err := n.SendBatch(batch)
+				if err != nil {
+					atomic.AddInt64(&result.Failed, int64(len(batch)))
+					errorsMu.Lock()
+					errors = append(errors, err)
+					errorsMu.Unlock()
+					continue
+				}
+
+				// Count successes and failures
+				for _, ticket := range tickets {
+					if ticket.Status == "ok" {
+						atomic.AddInt64(&result.Sent, 1)
+					} else {
+						atomic.AddInt64(&result.Failed, 1)
+					}
+				}
+			}
+		}()
+	}
+
+	wg.Wait()
+	result.Errors = errors
+	return result
 }

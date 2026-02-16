@@ -178,37 +178,49 @@ func notifySubscribers(ctx context.Context, logger *slog.Logger, queries *db.Que
 		return 0
 	}
 
-	sent := 0
+	// Build messages for all subscribers with valid push tokens
+	icon := ""
+	if result.Event.Icon.Valid {
+		icon = result.Event.Icon.String + " "
+	}
+	title := fmt.Sprintf("%sDeal Unlocked!", icon)
+	body := fmt.Sprintf("%s: %s", result.Event.PartnerName, result.Event.OfferName)
+	data := map[string]interface{}{
+		"triggered_event_id": result.TriggeredEventID,
+		"event_id":           result.EventID,
+	}
+
+	var messages []notify.ExpoPushMessage
 	for _, sub := range subscribers {
 		if !sub.PushToken.Valid || sub.PushToken.String == "" {
 			continue
 		}
-
-		icon := ""
-		if result.Event.Icon.Valid {
-			icon = result.Event.Icon.String + " "
-		}
-
-		title := fmt.Sprintf("%sDeal Unlocked!", icon)
-		body := fmt.Sprintf("%s: %s", result.Event.PartnerName, result.Event.OfferName)
-		data := map[string]interface{}{
-			"triggered_event_id": result.TriggeredEventID,
-			"event_id":           result.EventID,
-		}
-
-		_, err := notifier.Send(sub.PushToken.String, title, body, data)
-		if err != nil {
-			logger.Error("failed to send notification", "user_id", sub.UserID, "error", err)
-			continue
-		}
-		sent++
+		messages = append(messages, notify.ExpoPushMessage{
+			To:       sub.PushToken.String,
+			Title:    title,
+			Body:     body,
+			Data:     data,
+			Sound:    "default",
+			Priority: "high",
+		})
 	}
 
-	if sent > 0 {
-		logger.Info("notified subscribers", "event_id", result.EventID, "count", sent)
+	if len(messages) == 0 {
+		return 0
 	}
 
-	return sent
+	// Send in batches concurrently
+	batchResult := notifier.SendBatchConcurrent(ctx, logger, messages, notify.DefaultWorkers)
+
+	if batchResult.Sent > 0 {
+		logger.Info("notified subscribers",
+			"event_id", result.EventID,
+			"sent", batchResult.Sent,
+			"failed", batchResult.Failed,
+		)
+	}
+
+	return int(batchResult.Sent)
 }
 
 func runSendReminders(cmd *cobra.Command, args []string) error {
@@ -232,7 +244,7 @@ func runSendReminders(cmd *cobra.Command, args []string) error {
 	logger.Info("checking for expiring deals", "count", len(expiringDeals))
 
 	notifier := notify.NewExpoNotifier()
-	sent := 0
+	var totalSent, totalFailed int64
 
 	for _, deal := range expiringDeals {
 		// Get users who should receive reminders for this deal
@@ -242,32 +254,43 @@ func runSendReminders(cmd *cobra.Command, args []string) error {
 			continue
 		}
 
+		// Calculate time remaining
+		timeRemaining := time.Until(deal.ExpiresAt.Time)
+		hours := int(timeRemaining.Hours())
+
+		title := fmt.Sprintf("⏰ Deal expires in %d hours!", hours)
+		body := fmt.Sprintf("Don't forget: %s - %s", deal.OfferName, deal.PartnerName)
+		data := map[string]interface{}{
+			"triggered_event_id": deal.ID,
+			"event_id":           deal.EventID,
+		}
+
+		// Build messages for all users with valid push tokens
+		var messages []notify.ExpoPushMessage
 		for _, user := range users {
 			if !user.PushToken.Valid || user.PushToken.String == "" {
 				continue
 			}
-
-			// Calculate time remaining
-			timeRemaining := time.Until(deal.ExpiresAt.Time)
-			hours := int(timeRemaining.Hours())
-
-			title := fmt.Sprintf("⏰ Deal expires in %d hours!", hours)
-			body := fmt.Sprintf("Don't forget: %s - %s", deal.OfferName, deal.PartnerName)
-			data := map[string]interface{}{
-				"triggered_event_id": deal.ID,
-				"event_id":           deal.EventID,
-			}
-
-			_, err := notifier.Send(user.PushToken.String, title, body, data)
-			if err != nil {
-				logger.Error("failed to send reminder", "user_id", user.ID, "error", err)
-				continue
-			}
-
-			sent++
+			messages = append(messages, notify.ExpoPushMessage{
+				To:       user.PushToken.String,
+				Title:    title,
+				Body:     body,
+				Data:     data,
+				Sound:    "default",
+				Priority: "high",
+			})
 		}
+
+		if len(messages) == 0 {
+			continue
+		}
+
+		// Send in batches concurrently
+		batchResult := notifier.SendBatchConcurrent(ctx, logger, messages, notify.DefaultWorkers)
+		totalSent += batchResult.Sent
+		totalFailed += batchResult.Failed
 	}
 
-	logger.Info("send-reminders complete", "sent", sent, "expiring_deals", len(expiringDeals))
+	logger.Info("send-reminders complete", "sent", totalSent, "failed", totalFailed, "expiring_deals", len(expiringDeals))
 	return nil
 }

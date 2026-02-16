@@ -6,6 +6,7 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from 'react-native';
 import { Event, ActiveDeal } from '../api/client';
 import { useTheme } from '../hooks/useTheme';
@@ -131,6 +132,18 @@ export function DealModal({
                 📍 Available in {event.regionName}
               </Text>
             </View>
+          )}
+
+          {/* View Offer Details */}
+          {event.offerUrl && (
+            <TouchableOpacity
+              style={[styles.offerLinkBox, { backgroundColor: colors.infoBackground }]}
+              onPress={() => Linking.openURL(event.offerUrl!)}
+            >
+              <Text style={[styles.offerLinkText, { color: colors.info }]}>
+                View Offer Details →
+              </Text>
+            </TouchableOpacity>
           )}
 
           {/* Dismiss Buttons - only show if there's an active deal */}
@@ -304,6 +317,16 @@ const styles = StyleSheet.create({
   },
   regionText: {
     fontSize: 14,
+  },
+  offerLinkBox: {
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  offerLinkText: {
+    fontSize: 15,
+    fontWeight: '600',
   },
   subscribeButton: {
     padding: 16,
