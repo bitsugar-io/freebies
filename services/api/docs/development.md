@@ -100,8 +100,5 @@ task api:test
 
 ## Deployment
 
-Deployed to [Fly.io](https://fly.io). See `fly.toml` for configuration.
-
-```bash
-fly deploy
-```
+Deployed to DigitalOcean Kubernetes (DOKS). See
+[deployment guide](deployment.md) for full instructions.

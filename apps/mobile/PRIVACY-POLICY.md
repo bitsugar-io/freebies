@@ -58,7 +58,7 @@ your information.
 The app uses the following third-party services:
 
 - **Expo Push Notifications**: For delivering push notifications
-- **Fly.io**: For hosting our backend servers
+- **DigitalOcean**: For hosting our backend servers
 
 ## Children's Privacy
 

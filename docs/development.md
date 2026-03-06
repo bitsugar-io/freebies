@@ -191,12 +191,9 @@ docs: Add branching and commit conventions
 
 ## Deployment
 
-### Backend (Fly.io)
+### Backend (DOKS)
 
-```bash
-cd services/api
-fly deploy
-```
+See [deployment guide](../services/api/docs/deployment.md) for Kubernetes deployment instructions.
 
 ### Mobile (EAS)
 

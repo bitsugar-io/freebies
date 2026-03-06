@@ -42,7 +42,7 @@ Then press `i` for iOS simulator, `w` for web, or scan QR with Expo Go.
 
 ### Architecture
 
-- [Backend Architecture](services/api/docs/architecture.md) - Fly.io, SQLite, Go decisions
+- [Backend Architecture](services/api/docs/architecture.md) - DOKS, Turso, Go decisions
 - [Mobile Architecture](apps/mobile/docs/architecture.md) - Expo, EAS, state management
 
 ## Apps
