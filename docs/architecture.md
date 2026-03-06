@@ -53,7 +53,6 @@ subscribed users.
          └──────────────────────────┘
 ```
 
-**Provisioned by**: Terraform (`terraform/`) — DOKS cluster + DOCR registry
 **Deployed by**: Helm charts (`charts/`) + GitHub Actions (`.github/workflows/deploy.yaml`)
 
 ## Database: Turso (hosted SQLite)
@@ -226,23 +225,6 @@ Internet → Cloudflare Edge → cloudflared pod → ClusterIP Service → API p
 - TLS terminated at Cloudflare edge
 - Tunnel configured in Cloudflare dashboard to route domain → `localhost:8080`
 - Cost: $0
-
-## Terraform
-
-Infrastructure is provisioned with Terraform (`terraform/`):
-
-| File | Resource |
-|------|----------|
-| `doks.tf` | DOKS Kubernetes cluster (1 node) |
-| `docr.tf` | Container Registry (starter tier, free) |
-| `variables.tf` | Region, node size, K8s version |
-| `outputs.tf` | Cluster endpoint, kubeconfig, registry URL |
-
-```bash
-cd terraform
-export TF_VAR_do_token=$DIGITALOCEAN_TOKEN
-terraform init && terraform apply
-```
 
 ## CI/CD
 
