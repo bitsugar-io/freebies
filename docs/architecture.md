@@ -248,7 +248,7 @@ terraform init && terraform apply
 
 GitHub Actions (`.github/workflows/deploy.yaml`) runs on push to `main`:
 
-1. Build Docker image from `services/backend/Dockerfile`
+1. Build Docker image from `services/api/Dockerfile`
 2. Push to DOCR with SHA-based tag
 3. `helm upgrade` all three charts with the new image tag
 

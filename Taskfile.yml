@@ -1,9 +1,9 @@
 version: '3'
 
 includes:
-  backend:
-    taskfile: ./services/backend/Taskfile.yml
-    dir: ./services/backend
+  api:
+    taskfile: ./services/api/Taskfile.yml
+    dir: ./services/api
   mobile:
     taskfile: ./apps/mobile/Taskfile.yml
     dir: ./apps/mobile
@@ -25,5 +25,5 @@ tasks:
   clean:
     desc: Wipe backend database (migrations run on next serve)
     cmds:
-      - task: backend:clean
+      - task: api:clean
 

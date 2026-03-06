@@ -30,7 +30,7 @@ Requires [Task](https://taskfile.dev/) runner.
 ```bash
 task setup          # First-time setup
 
-task backend:serve  # Terminal 1: Start backend
+task api:serve  # Terminal 1: Start backend
 task mobile:serve   # Terminal 2: Start mobile app
 ```
 
@@ -42,7 +42,7 @@ Then press `i` for iOS simulator, `w` for web, or scan QR with Expo Go.
 
 ### Architecture
 
-- [Backend Architecture](services/backend/docs/architecture.md) - Fly.io, SQLite, Go decisions
+- [Backend Architecture](services/api/docs/architecture.md) - Fly.io, SQLite, Go decisions
 - [Mobile Architecture](apps/mobile/docs/architecture.md) - Expo, EAS, state management
 
 ## Apps
@@ -63,7 +63,7 @@ React Native app built with Expo. Features:
 - [App Store Checklist](apps/mobile/APP-STORE.md)
 - [Privacy Policy](apps/mobile/PRIVACY-POLICY.md)
 
-### Backend Service (`services/backend/`)
+### Backend Service (`services/api/`)
 
 Go-based API server that:
 
@@ -74,15 +74,15 @@ Go-based API server that:
 
 #### Documentation
 
-- [Architecture](services/backend/docs/architecture.md)
-- [Deployment Guide](services/backend/docs/deployment.md)
-- [CLI Reference](services/backend/docs/cli.md)
-- [Development Guide](services/backend/docs/development.md)
-- [API Reference](services/backend/docs/api.md)
+- [Architecture](services/api/docs/architecture.md)
+- [Deployment Guide](services/api/docs/deployment.md)
+- [CLI Reference](services/api/docs/cli.md)
+- [Development Guide](services/api/docs/development.md)
+- [API Reference](services/api/docs/api.md)
 
 ## Data
 
-All offer data is managed through SQL migrations in `services/backend/internal/db/migrations/`:
+All offer data is managed through SQL migrations in `services/api/internal/db/migrations/`:
 
 - `001_schema.sql` - Database schema
 - `002_initial_leagues.sql` - MLB, NBA, NFL, NHL leagues

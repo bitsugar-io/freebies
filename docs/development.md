@@ -21,7 +21,7 @@ mise install
 task setup
 
 # Start backend (Terminal 1)
-task backend:serve
+task api:serve
 
 # Start mobile app (Terminal 2)
 task mobile:serve
@@ -36,7 +36,7 @@ freebies/
 ├── apps/
 │   └── mobile/          # React Native (Expo) app
 ├── services/
-│   └── backend/         # Go API server
+│   └── api/             # Go API server
 ├── docs/                # Project-wide documentation
 └── Taskfile.yml         # Root task definitions
 ```
@@ -49,9 +49,9 @@ Run `task --list` to see all available tasks.
 | -------------------- | --------------------------------------- |
 | `task setup`         | First-time setup (install dependencies) |
 | `task clean`         | Wipe database                           |
-| `task backend:serve` | Start backend server                    |
-| `task backend:build` | Build backend binary                    |
-| `task backend:test`  | Run backend tests                       |
+| `task api:serve` | Start backend server                    |
+| `task api:build` | Build backend binary                    |
+| `task api:test`  | Run backend tests                       |
 | `task mobile:serve`  | Start Expo dev server                   |
 | `task docs:fmt`      | Format markdown files                   |
 
@@ -59,17 +59,17 @@ Run `task --list` to see all available tasks.
 
 ### Backend Development
 
-See [Backend Development Guide](../services/backend/docs/development.md) for detailed backend docs.
+See [Backend Development Guide](../services/api/docs/development.md) for detailed backend docs.
 
 ```bash
 # Start server (auto-migrates database)
-task backend:serve
+task api:serve
 
 # Create test deals
-task backend:deals
+task api:deals
 
 # List users
-./services/backend/bin/freebie users list
+./services/api/bin/freebie users list
 ```
 
 ### Mobile Development
@@ -89,12 +89,12 @@ SQLite database with automatic migrations on startup.
 ```bash
 # Wipe and recreate database
 task clean
-task backend:serve
+task api:serve
 ```
 
 ### Adding New Offers
 
-1. Create migration in `services/backend/internal/db/migrations/`
+1. Create migration in `services/api/internal/db/migrations/`
 2. Restart server (migrations run automatically)
 
 Example migration (`007_new_offer.sql`):
@@ -130,8 +130,8 @@ task docs:fmt
 ### Go
 
 ```bash
-task backend:lint
-task backend:fmt
+task api:lint
+task api:fmt
 ```
 
 ## Branching
@@ -194,7 +194,7 @@ docs: Add branching and commit conventions
 ### Backend (Fly.io)
 
 ```bash
-cd services/backend
+cd services/api
 fly deploy
 ```
 

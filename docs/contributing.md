@@ -13,7 +13,7 @@ Thanks for your interest in contributing! This guide covers the process for subm
 
 ### Code Style
 
-- **Go**: run `task backend:lint` and `task backend:fmt` before committing.
+- **Go**: run `task api:lint` and `task api:fmt` before committing.
 - **Markdown**: run `task docs:fmt` to format to 100-character width.
 - **TypeScript**: follow existing patterns in `apps/mobile/`.
 
@@ -24,7 +24,7 @@ Thanks for your interest in contributing! This guide covers the process for subm
 
 ### Testing
 
-- Run `task backend:test` and verify your changes don't break existing tests.
+- Run `task api:test` and verify your changes don't break existing tests.
 - Add tests for new functionality when possible.
 
 ## Submitting a PR
@@ -45,17 +45,17 @@ Thanks for your interest in contributing! This guide covers the process for subm
 
 ### New Game Sources
 
-Implement the `Source` interface in `services/backend/internal/sources/` and register it in the
+Implement the `Source` interface in `services/api/internal/sources/` and register it in the
 worker. See existing sources for reference.
 
 ### New Offers/Events
 
-Create a goose migration in `services/backend/internal/db/migrations/`. See `003_mlb_data.sql` for
+Create a goose migration in `services/api/internal/db/migrations/`. See `003_mlb_data.sql` for
 the expected format.
 
 ### Database Changes
 
 1. Add a new migration file (next sequence number).
-2. Update `services/backend/internal/db/queries.sql` if new queries are needed.
+2. Update `services/api/internal/db/queries.sql` if new queries are needed.
 3. Run `task generate` to regenerate sqlc code.
 4. Migrations run automatically on server start — no manual steps needed.

@@ -1,4 +1,4 @@
-services/backend/freebie.db
+services/api/freebie.db
 node_modules/
 
 # Expo / React Native

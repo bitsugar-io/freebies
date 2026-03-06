@@ -11,8 +11,8 @@ food/merch deals are triggered (e.g., Dodgers pitchers get 7+ strikeouts = free 
 
 ```bash
 task setup              # first-time setup
-task backend:serve      # start API server (auto-migrates DB)
-task backend:test       # run Go tests
+task api:serve      # start API server (auto-migrates DB)
+task api:test       # run Go tests
 task mobile:serve       # start Expo dev server
 task docs:fmt           # format markdown files
 task clean              # wipe database
@@ -22,7 +22,7 @@ task clean              # wipe database
 
 ```
 apps/mobile/                    React Native (Expo) app
-services/backend/               Go API server + worker
+services/api/               Go API server + worker
   internal/
     db/                         sqlc queries, generated code, migrations
     server/                     HTTP handlers and routes

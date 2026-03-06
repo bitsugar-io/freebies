@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "services/backend/**"
+      - "services/api/**"
       - "charts/**"
       - ".github/workflows/deploy.yaml"
 
@@ -30,7 +30,7 @@ jobs:
       - name: Build and push image
         run: |
           IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${GITHUB_SHA::7}"
-          docker build -t "$IMAGE_TAG" -t "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest" services/backend/
+          docker build -t "$IMAGE_TAG" -t "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest" services/api/
           docker push "$IMAGE_TAG"
           docker push "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest"
 
