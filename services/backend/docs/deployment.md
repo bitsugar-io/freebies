@@ -10,31 +10,42 @@ diagram.
 
 ## Prerequisites
 
-1. Install tools: `doctl`, `kubectl`, `helm`, `terraform`
+1. Install tools: `doctl`, `kubectl`, `helm`
 2. DigitalOcean account with API token
 3. Turso account at [turso.tech](https://turso.tech)
 4. Cloudflare account with a tunnel configured
+5. Environment variables set in `.envrc` (see below)
+
+### Required Environment Variables
+
+These are set in `.envrc` and used by Helm deploy commands:
+
+```bash
+export FREEBIE_DATABASE_PATH="libsql://freebie-xxx.turso.io?authToken=xxx"
+export FREEBIE_WORKER_SECRET="your-secret-here"
+export CF_TUNNEL_TOKEN="your-tunnel-token"
+```
 
 ## Initial Setup
 
-### 1. Provision Infrastructure
+### 1. Configure kubectl
 
 ```bash
-cd terraform
-export TF_VAR_do_token=$DIGITALOCEAN_TOKEN
-terraform init && terraform apply
+doctl kubernetes cluster kubeconfig save <cluster-name>
 ```
 
-This creates the DOKS cluster and DOCR container registry.
-
-### 2. Configure kubectl
+### 2. Create Container Registry
 
 ```bash
-# Get kubeconfig from Terraform output
-terraform output -raw kubeconfig > ~/.kube/config-freebie
+# Create registry (starter tier is free)
+doctl registry create freebie --subscription-tier starter
 
-# Or use doctl
-doctl kubernetes cluster kubeconfig save freebie
+# Login to registry
+doctl registry login
+
+# Integrate registry with K8s cluster
+doctl kubernetes cluster list                          # get cluster name
+doctl kubernetes cluster registry add <cluster-name>   # allow cluster to pull images
 ```
 
 ### 3. Create Turso Database
@@ -55,54 +66,108 @@ turso db tokens create freebie
 ### 4. Create Cloudflare Tunnel
 
 1. Go to [Cloudflare Zero Trust dashboard](https://one.dash.cloudflare.com/)
-2. Create a tunnel
-3. Configure a public hostname routing to `http://localhost:8080`
-4. Copy the tunnel token
+2. Create a tunnel named `freebie-api`
+3. Add a public hostname route:
+   - Subdomain: `freebie-api` (or whatever you want)
+   - Domain: your domain (e.g. `bitsugar.io`)
+   - Type: `HTTP`
+   - URL: `freebie-api.freebie.svc.cluster.local:8080`
+4. Copy the tunnel token for `.envrc`
 
-### 5. Deploy
+## Build and Push Docker Image
+
+Build for linux/amd64 (required — DOKS nodes are AMD64, not ARM):
 
 ```bash
-# Build and push image
-docker build -t registry.digitalocean.com/freebie/freebie-api:latest services/backend/
+docker build --platform linux/amd64 \
+  -t registry.digitalocean.com/freebie/freebie-api:latest \
+  services/backend/
+
 docker push registry.digitalocean.com/freebie/freebie-api:latest
-
-# Deploy API
-helm upgrade --install freebie-api charts/api/ \
-  --namespace freebie --create-namespace \
-  --set databasePath="libsql://freebie-xxx.turso.io?authToken=xxx" \
-  --set workerSecret="your-secret-here" \
-  --set image.tag=latest
-
-# Deploy CronJobs
-helm upgrade --install freebie-cronjobs charts/cronjobs/ \
-  --namespace freebie \
-  --set workerSecret="your-secret-here"
-
-# Deploy Cloudflare Tunnel
-helm upgrade --install freebie-cloudflare charts/cloudflare/ \
-  --namespace freebie \
-  --set tunnel.token="your-tunnel-token"
 ```
 
-## Ongoing Deployments
+## Deploy
 
-CI/CD via GitHub Actions (`.github/workflows/deploy.yaml`) handles deployments automatically on
-push to `main`. See the [architecture doc](../../../docs/architecture.md#cicd) for details.
+### Deploy API
 
-## Environment Variables
+```bash
+helm upgrade --install freebie-api charts/api/ \
+  --namespace freebie --create-namespace \
+  --set databasePath="$FREEBIE_DATABASE_PATH" \
+  --set workerSecret="$FREEBIE_WORKER_SECRET"
+```
 
-| Variable                | Description          | Example                                       |
-| ----------------------- | -------------------- | --------------------------------------------- |
-| `FREEBIE_DATABASE_PATH` | Turso connection URL | `libsql://freebie-xxx.turso.io?authToken=xxx` |
-| `FREEBIE_WORKER_SECRET` | Internal API token   | (any strong random string)                    |
-| `FREEBIE_SERVER_HOST`   | Server bind address  | `0.0.0.0`                                     |
-| `FREEBIE_SERVER_PORT`   | Server port          | `8080`                                        |
+### Deploy Cloudflare Tunnel
 
-## Troubleshooting
+```bash
+helm upgrade --install freebie-cloudflare charts/cloudflare/ \
+  --namespace freebie \
+  --set tunnelToken="$CF_TUNNEL_TOKEN"
+```
+
+### Deploy CronJobs (Worker)
+
+```bash
+helm upgrade --install freebie-cronjobs charts/cronjobs/ \
+  --namespace freebie \
+  --set workerSecret="$FREEBIE_WORKER_SECRET"
+```
+
+### Deploy Everything
+
+```bash
+# Build and push
+docker build --platform linux/amd64 \
+  -t registry.digitalocean.com/freebie/freebie-api:latest \
+  services/backend/
+docker push registry.digitalocean.com/freebie/freebie-api:latest
+
+# Deploy all charts
+helm upgrade --install freebie-api charts/api/ \
+  --namespace freebie --create-namespace \
+  --set databasePath="$FREEBIE_DATABASE_PATH" \
+  --set workerSecret="$FREEBIE_WORKER_SECRET"
+
+helm upgrade --install freebie-cloudflare charts/cloudflare/ \
+  --namespace freebie \
+  --set tunnelToken="$CF_TUNNEL_TOKEN"
+
+helm upgrade --install freebie-cronjobs charts/cronjobs/ \
+  --namespace freebie \
+  --set workerSecret="$FREEBIE_WORKER_SECRET"
+```
+
+## Upgrade
+
+After code changes, rebuild and redeploy:
+
+```bash
+# Rebuild image
+docker build --platform linux/amd64 \
+  -t registry.digitalocean.com/freebie/freebie-api:latest \
+  services/backend/
+docker push registry.digitalocean.com/freebie/freebie-api:latest
+
+# Restart API pod to pull new image
+kubectl rollout restart deployment/freebie-api -n freebie
+
+# Or force Helm to update (e.g. if values changed)
+helm upgrade freebie-api charts/api/ \
+  --namespace freebie \
+  --set databasePath="$FREEBIE_DATABASE_PATH" \
+  --set workerSecret="$FREEBIE_WORKER_SECRET"
+```
+
+CronJob pods always pull the latest image on each run, so they pick up changes automatically.
+
+## Verify
 
 ```bash
 # Check pod status
 kubectl get pods -n freebie
+
+# Watch pods
+kubectl get pods -n freebie -w
 
 # View API logs
 kubectl logs -n freebie -l app.kubernetes.io/name=freebie-api
@@ -110,12 +175,68 @@ kubectl logs -n freebie -l app.kubernetes.io/name=freebie-api
 # View CronJob history
 kubectl get jobs -n freebie
 
-# Port-forward to test locally
+# Test API locally via port-forward
 kubectl port-forward -n freebie svc/freebie-api 8080:8080
+curl http://localhost:8080/healthz
 
-# Exec into pod
-kubectl exec -it -n freebie deploy/freebie-api -- sh
+# Test API via Cloudflare Tunnel
+curl https://freebie-api.bitsugar.io/healthz
 ```
+
+## Troubleshooting
+
+```bash
+# Describe pod (shows events, errors, image pull issues)
+kubectl describe pod -n freebie <pod-name>
+
+# Check image pull errors
+kubectl get events -n freebie --sort-by=.lastTimestamp
+
+# View API logs (follow)
+kubectl logs -n freebie -l app.kubernetes.io/name=freebie-api -f
+
+# Exec into pod (note: distroless has no shell, use debug container)
+kubectl debug -n freebie <pod-name> --image=busybox -it
+
+# Restart a deployment
+kubectl rollout restart deployment/freebie-api -n freebie
+
+# Check Helm releases
+helm list -n freebie
+
+# Uninstall a chart
+helm uninstall freebie-api -n freebie
+```
+
+### Common Issues
+
+**ErrImagePull / `no match for platform in manifest`**
+You built on ARM (Mac) but the cluster is AMD64. Rebuild with `--platform linux/amd64`.
+
+**ErrImagePull / `repository not found`**
+The registry isn't linked to the cluster. Run:
+```bash
+doctl kubernetes cluster registry add <cluster-name>
+```
+
+**Pod stuck in CrashLoopBackOff**
+Check logs: `kubectl logs -n freebie <pod-name>`
+Usually a bad database URL or missing env var.
+
+## CI/CD
+
+GitHub Actions (`.github/workflows/deploy.yaml`) handles deployments automatically on push to
+`main`. See the [architecture doc](../../../docs/architecture.md#cicd) for details.
+
+Required GitHub Secrets:
+
+| Secret | Purpose |
+|--------|---------|
+| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token for doctl + DOCR login |
+| `KUBECONFIG_DATA` | Base64-encoded kubeconfig |
+| `TURSO_DATABASE_URL` | Turso connection URL with auth token |
+| `CF_TUNNEL_TOKEN` | Cloudflare Tunnel token |
+| `WORKER_SECRET` | Bearer token for internal worker API |
 
 ## Cost
 
