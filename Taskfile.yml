@@ -4,6 +4,9 @@ includes:
   api:
     taskfile: ./services/api/Taskfile.yml
     dir: ./services/api
+  scheduler:
+    taskfile: ./services/scheduler/Taskfile.yml
+    dir: ./services/scheduler
   mobile:
     taskfile: ./apps/mobile/Taskfile.yml
     dir: ./apps/mobile

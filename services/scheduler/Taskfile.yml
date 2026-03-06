@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  build:
+    desc: Build scheduler binary
+    cmds:
+      - go build -o scheduler .
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test ./...
+
+  generate:
+    desc: Regenerate OpenAPI client
+    cmds:
+      - go generate ./internal/client/gen/
