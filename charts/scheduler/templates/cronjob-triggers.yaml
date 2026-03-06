@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "freebie-cronjobs.fullname" . }}-check-triggers
+  name: {{ include "freebie-scheduler.fullname" . }}-check-triggers
   labels:
-    {{- include "freebie-cronjobs.labels" . | nindent 4 }}
+    {{- include "freebie-scheduler.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.checkTriggers.schedule | quote }}
   concurrencyPolicy: Forbid
@@ -15,7 +15,7 @@ spec:
       template:
         metadata:
           labels:
-            {{- include "freebie-cronjobs.labels" . | nindent 12 }}
+            {{- include "freebie-scheduler.labels" . | nindent 12 }}
             app.kubernetes.io/component: check-triggers
         spec:
           restartPolicy: OnFailure
@@ -24,15 +24,13 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               command:
-                - ./freebie
-                - worker
-                - remote
+                - ./scheduler
                 - check-triggers
-                - --api-url
-                - "http://{{ .Values.api.serviceName }}:{{ .Values.api.port }}"
               env:
-                - name: FREEBIE_WORKER_SECRET
+                - name: SCHEDULER_API_URL
+                  value: "http://{{ .Values.api.serviceName }}:{{ .Values.api.port }}"
+                - name: SCHEDULER_WORKER_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "freebie-cronjobs.fullname" . }}
+                      name: {{ include "freebie-scheduler.fullname" . }}
                       key: worker-secret

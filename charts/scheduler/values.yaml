@@ -1,10 +1,9 @@
 image:
-  repository: registry.digitalocean.com/freebie/freebie-api
+  repository: registry.digitalocean.com/freebie/freebie-scheduler
   tag: latest
   pullPolicy: IfNotPresent
 
 api:
-  # Must match the API chart's release name and port
   serviceName: freebie-api
   port: 8080
 

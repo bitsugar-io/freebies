@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "services/api/**"
+      - "services/scheduler/**"
       - "charts/**"
       - ".github/workflows/deploy.yaml"
 
@@ -27,12 +28,19 @@ jobs:
       - name: Log in to DOCR
         run: doctl registry login --expiry-seconds 600
 
-      - name: Build and push image
+      - name: Build and push API image
         run: |
           IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${GITHUB_SHA::7}"
           docker build -t "$IMAGE_TAG" -t "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest" services/api/
           docker push "$IMAGE_TAG"
           docker push "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest"
+
+      - name: Build and push scheduler image
+        run: |
+          IMAGE_TAG="${{ env.REGISTRY }}/freebie-scheduler:sha-${GITHUB_SHA::7}"
+          docker build -t "$IMAGE_TAG" -t "${{ env.REGISTRY }}/freebie-scheduler:latest" services/scheduler/
+          docker push "$IMAGE_TAG"
+          docker push "${{ env.REGISTRY }}/freebie-scheduler:latest"
 
       - name: Set up kubeconfig
         run: |
@@ -51,9 +59,9 @@ jobs:
             --set workerSecret=${{ secrets.WORKER_SECRET }} \
             --wait --timeout 5m
 
-      - name: Deploy CronJobs
+      - name: Deploy Scheduler
         run: |
-          helm upgrade --install freebie-cronjobs charts/cronjobs/ \
+          helm upgrade --install freebie-scheduler charts/scheduler/ \
             --namespace freebie \
             --set image.tag=sha-${GITHUB_SHA::7} \
             --set workerSecret=${{ secrets.WORKER_SECRET }} \
