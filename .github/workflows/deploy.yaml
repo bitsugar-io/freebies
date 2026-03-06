@@ -47,6 +47,7 @@ jobs:
           helm upgrade --install freebie-api charts/api/ \
             --namespace freebie --create-namespace \
             --set image.tag=sha-${GITHUB_SHA::7} \
+            --set databasePath=${{ secrets.TURSO_DATABASE_URL }} \
             --set workerSecret=${{ secrets.WORKER_SECRET }} \
             --wait --timeout 5m
 

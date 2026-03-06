@@ -29,6 +29,6 @@ EXPOSE 8080
 # Run as nonroot user (uid 65532)
 USER nonroot:nonroot
 
-# Fly.io processes override CMD via fly.toml [processes]
+# Default command — can be overridden by Helm/K8s
 ENTRYPOINT ["./freebie"]
 CMD ["serve", "--host", "0.0.0.0"]

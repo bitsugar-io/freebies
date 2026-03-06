@@ -2,29 +2,22 @@
 
 ## Overview
 
-The Freebie backend is a Go HTTP API server with SQLite for persistence, deployed on Fly.io.
+The Freebie backend is a Go HTTP API server with [Turso](https://turso.tech) (hosted SQLite) for
+persistence, deployed on DigitalOcean Kubernetes (DOKS).
+
+See the [top-level architecture doc](../../../docs/architecture.md) for the full infrastructure
+diagram including Kubernetes, Cloudflare Tunnel, and CI/CD.
 
 ## Technology Choices
 
-### Fly.io (vs AWS Lambda/SQS)
+### DigitalOcean Kubernetes (DOKS)
 
-**Why Fly.io:**
+**Why DOKS:**
 
-- **Persistent disk storage** - SQLite lives on disk, no external database needed. Lambda is
-  stateless and would require RDS/DynamoDB ($20-50+/month minimum).
-- **No cold starts** - Always-on VM means consistent response times. Lambda cold starts add
-  100-500ms latency.
-- **Simpler architecture** - Single binary serves HTTP, runs migrations, sends notifications. Lambda
-  would need API Gateway + Lambda + SQS + separate notification workers.
-- **Predictable pricing** - $5/month for smallest VM with 1GB persistent disk. Lambda pricing is
-  usage-based and harder to predict with SQS/API Gateway costs.
-- **Easy deployment** - `fly deploy` from CLI. No CloudFormation/Terraform/SAM templates.
-
-**Trade-offs accepted:**
-
-- Single region (LAX) for now - acceptable for MVP targeting LA-area users
-- Would need [LiteFS](https://fly.io/docs/litefs/) for multi-region SQLite replication if we expand
-- Less "infinite scale" than Lambda - but a single Fly VM handles thousands of concurrent users
+- **Managed Kubernetes** — DO handles control plane, upgrades, and node provisioning
+- **Cheap for small projects** — single node at ~$12/mo runs everything
+- **Helm charts** — declarative, version-controlled deployments
+- **CronJobs** — native K8s primitive for scheduled worker tasks
 
 ### SQLite + Turso
 
@@ -34,10 +27,9 @@ The Freebie backend is a Go HTTP API server with SQLite for persistence, deploye
 
 **Production:** [Turso](https://turso.tech) (hosted SQLite)
 
-- SQLite-compatible, same queries work
-- Allows Fly.io to scale to zero (database is external)
+- SQLite-compatible, same queries work locally and in production
+- No PVC or persistent storage needed in the cluster
 - Free tier: 9GB storage, 500M reads/month
-- No volume mounting needed for scheduled jobs
 
 ```bash
 # Dev
@@ -51,36 +43,32 @@ FREEBIE_DATABASE_PATH="libsql://xxx.turso.io?authToken=xxx" ./bin/freebie serve
 
 **Why Go:**
 
-- **Single binary deployment** - No runtime dependencies, simple Dockerfile
-- **Low memory footprint** - Runs well on smallest Fly VM (256MB)
-- **Strong typing** - Catches errors at compile time
-- **sqlc** - Type-safe SQL queries generated from schema
+- **Single binary deployment** — no runtime dependencies, distroless container image
+- **Low memory footprint** — runs well on small K8s nodes
+- **Strong typing** — catches errors at compile time
+- **sqlc** — type-safe SQL queries generated from schema
 
 ## Components
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                        Fly.io                           │
-│  ┌─────────────────────┐   ┌─────────────────────────┐  │
-│  │    App Machine      │   │   Scheduled Machine     │  │
-│  │  ┌───────────────┐  │   │  ┌───────────────────┐  │  │
-│  │  │  HTTP API     │  │   │  │  worker run       │  │  │
-│  │  │  (serve)      │  │   │  │  (hourly)         │  │  │
-│  │  └───────┬───────┘  │   │  └─────────┬─────────┘  │  │
-│  │          │          │   │            │            │  │
-│  │  auto-start/stop    │   │  6am: check-triggers    │  │
-│  │  on HTTP traffic    │   │  6pm: send-reminders    │  │
-│  └──────────┼──────────┘   └────────────┼────────────┘  │
-└─────────────┼──────────────────────────┼────────────────┘
-              │                          │
-              └────────────┬─────────────┘
-                           │
-           ┌───────────────┼───────────────┐
-           ▼               ▼               ▼
-   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-   │    Turso     │ │  MLB Stats   │ │  Expo Push   │
-   │   (SQLite)   │ │     API      │ │ Notification │
-   └──────────────┘ └──────────────┘ └──────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                     DOKS Cluster                             │
+│  ┌─────────────────────┐   ┌──────────────────────────────┐  │
+│  │   API Deployment    │   │   CronJobs (ephemeral pods)  │  │
+│  │  ┌───────────────┐  │   │  ┌────────────────────────┐  │  │
+│  │  │  HTTP API     │  │   │  │  worker remote         │  │  │
+│  │  │  (serve)      │◄─┼───┼──│  check-triggers        │  │  │
+│  │  └───────┬───────┘  │   │  │  send-reminders        │  │  │
+│  │          │          │   │  └────────────────────────┘  │  │
+│  └──────────┼──────────┘   └──────────────────────────────┘  │
+└─────────────┼────────────────────────────────────────────────┘
+              │
+  ┌───────────┼───────────────────────────┐
+  ▼           ▼               ▼           │
+┌────────────┐ ┌────────────┐ ┌──────────┐│
+│   Turso    │ │ MLB Stats  │ │ Expo Push││
+│  (SQLite)  │ │    API     │ │  Notif.  ││
+└────────────┘ └────────────┘ └──────────┘│
 ```
 
 ## Trigger System
@@ -153,49 +141,21 @@ Orchestrates checking all events:
 
 - RESTful JSON API at `/api/v1/`
 - Bearer token authentication (stored in `users.token`)
-- Stateless requests - all state in SQLite
+- Stateless requests — all state in Turso
 
 ## Background Jobs
 
-Background jobs run on a separate Fly.io scheduled machine (not in the HTTP server process). This
-allows the app machine to scale to zero when idle.
+Background jobs run as Kubernetes CronJobs. Each CronJob pod calls the API's internal worker
+endpoints via HTTP — it does not access the database directly.
 
-### Scheduled Machine
-
-A Fly.io machine runs `worker run` hourly. The command checks Pacific Time and runs the appropriate
-job:
-
-- **6am PT**: `check-triggers` - Check yesterday's game results, create triggered events, notify
+- **6am PT** (`check-triggers`): Check yesterday's game results, create triggered events, notify
   subscribers
-- **6pm PT**: `send-reminders` - Send reminder notifications for deals expiring soon
+- **6pm PT** (`send-reminders`): Send reminder notifications for deals expiring soon
 
-```bash
-# Create the scheduled machine (first time only)
-# See deployment.md for the full command with correct syntax
-fly machine run registry.fly.io/freebie-api:<image-tag> worker run \
-  --schedule hourly -a freebie-api --region sjc
-```
-
-### Worker Commands
-
-```bash
-# Run scheduled jobs (checks PT hour, runs appropriate job)
-./freebie worker run
-
-# Manually check triggers for yesterday
-./freebie worker check-triggers
-
-# Check triggers for a specific date
-./freebie worker check-triggers --date 2024-04-15
-
-# Manually send reminders
-./freebie worker send-reminders
-```
-
-See [Deployment Guide](deployment.md) for full setup instructions.
+See the [top-level architecture doc](../../../docs/architecture.md#worker-flow) for the full
+worker flow.
 
 ## Future Considerations
 
-- **Multi-region**: Turso supports edge replicas for lower latency
 - **More leagues**: Add `sources/nba/`, `sources/nfl/` implementations
-- **Caching**: Add Redis on Fly if needed, but Turso is fast enough for now
+- **Multi-region**: Turso supports edge replicas for lower latency

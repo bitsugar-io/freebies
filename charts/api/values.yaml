@@ -6,12 +6,9 @@ image:
 port: 8080
 replicas: 1
 
+# Turso connection URL (libsql://xxx.turso.io?authToken=xxx)
+databasePath: ""
 workerSecret: ""
-
-storage:
-  size: 1Gi
-  storageClass: do-block-storage
-  mountPath: /data
 
 resources:
   requests:

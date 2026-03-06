@@ -6,8 +6,6 @@ metadata:
     {{- include "freebie-api.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       {{- include "freebie-api.selectorLabels" . | nindent 6 }}
@@ -27,15 +25,15 @@ spec:
               protocol: TCP
           env:
             - name: FREEBIE_DATABASE_PATH
-              value: "{{ .Values.storage.mountPath }}/freebie.db"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "freebie-api.fullname" . }}
+                  key: database-path
             - name: FREEBIE_WORKER_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "freebie-api.fullname" . }}
                   key: worker-secret
-          volumeMounts:
-            - name: data
-              mountPath: {{ .Values.storage.mountPath }}
           livenessProbe:
             httpGet:
               path: /healthz
@@ -50,7 +48,3 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ include "freebie-api.fullname" . }}-data
