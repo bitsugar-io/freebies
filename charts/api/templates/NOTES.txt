@@ -1,0 +1,12 @@
+Freebie API has been deployed!
+
+Namespace: {{ .Release.Namespace }}
+
+To check the API pod:
+  kubectl get pods -n {{ .Release.Namespace }} -l app.kubernetes.io/name=freebie-api
+
+To view logs:
+  kubectl logs -n {{ .Release.Namespace }} {{ include "freebie-api.fullname" . }}-0 -c api
+
+Internal service URL (for CronJobs and other in-cluster consumers):
+  http://{{ include "freebie-api.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.port }}

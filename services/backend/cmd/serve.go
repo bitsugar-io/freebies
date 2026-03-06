@@ -11,6 +11,11 @@ import (
 
 	"github.com/retr0h/freebie/internal/api"
 	"github.com/retr0h/freebie/internal/db"
+	"github.com/retr0h/freebie/internal/notify"
+	"github.com/retr0h/freebie/internal/triggers"
+	"github.com/retr0h/freebie/internal/worker"
+
+	_ "github.com/retr0h/freebie/internal/sources/mlb"
 )
 
 var serveCmd = &cobra.Command{
@@ -51,11 +56,17 @@ func runServe(cmd *cobra.Command, args []string) error {
 	}
 	logger.Info("database ready", "path", cfg.Database.Path)
 
+	// Create worker service for internal endpoints
+	queries := db.New(database)
+	checker := triggers.NewChecker(queries)
+	notifier := notify.NewExpoNotifier()
+	workerService := worker.NewService(queries, checker, notifier, logger)
+
 	// Context with signal handling for graceful shutdown
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
 	// Start server
-	server := api.NewServer(&cfg, database, logger)
+	server := api.NewServer(&cfg, database, logger, workerService)
 	return server.Start(ctx)
 }

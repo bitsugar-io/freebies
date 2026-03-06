@@ -1,0 +1,8 @@
+tunnelToken: ""
+
+replicas: 1
+
+image:
+  repository: cloudflare/cloudflared
+  tag: latest
+  pullPolicy: IfNotPresent

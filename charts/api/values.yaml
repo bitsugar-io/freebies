@@ -1,0 +1,22 @@
+image:
+  repository: registry.digitalocean.com/freebie/freebie-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+port: 8080
+replicas: 1
+
+workerSecret: ""
+
+storage:
+  size: 1Gi
+  storageClass: do-block-storage
+  mountPath: /data
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi

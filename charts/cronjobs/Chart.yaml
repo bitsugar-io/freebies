@@ -1,0 +1,6 @@
+apiVersion: v2
+name: freebie-cronjobs
+description: Scheduled jobs for trigger checking and reminder notifications
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

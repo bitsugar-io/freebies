@@ -1,0 +1,66 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/backend/**"
+      - "charts/**"
+      - ".github/workflows/deploy.yaml"
+
+env:
+  REGISTRY: registry.digitalocean.com/freebie
+  IMAGE: freebie-api
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DOCR
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Build and push image
+        run: |
+          IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${GITHUB_SHA::7}"
+          docker build -t "$IMAGE_TAG" -t "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest" services/backend/
+          docker push "$IMAGE_TAG"
+          docker push "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest"
+
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > $HOME/.kube/config
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Deploy API
+        run: |
+          helm upgrade --install freebie-api charts/api/ \
+            --namespace freebie --create-namespace \
+            --set image.tag=sha-${GITHUB_SHA::7} \
+            --set workerSecret=${{ secrets.WORKER_SECRET }} \
+            --wait --timeout 5m
+
+      - name: Deploy CronJobs
+        run: |
+          helm upgrade --install freebie-cronjobs charts/cronjobs/ \
+            --namespace freebie \
+            --set image.tag=sha-${GITHUB_SHA::7} \
+            --set workerSecret=${{ secrets.WORKER_SECRET }} \
+            --wait --timeout 2m
+
+      - name: Deploy Cloudflare Tunnel
+        run: |
+          helm upgrade --install freebie-cloudflare charts/cloudflare/ \
+            --namespace freebie \
+            --set tunnelToken=${{ secrets.CF_TUNNEL_TOKEN }} \
+            --wait --timeout 2m

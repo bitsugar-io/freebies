@@ -14,23 +14,27 @@ import (
 
 	"github.com/retr0h/freebie/internal/api/handlers"
 	authmw "github.com/retr0h/freebie/internal/api/middleware"
+	workergen "github.com/retr0h/freebie/internal/api/worker/gen"
 	"github.com/retr0h/freebie/internal/config"
 	"github.com/retr0h/freebie/internal/db"
+	"github.com/retr0h/freebie/internal/worker"
 )
 
 type Server struct {
-	cfg     *config.Config
-	db      *sql.DB
-	router  *chi.Mux
-	logger  *slog.Logger
+	cfg           *config.Config
+	db            *sql.DB
+	router        *chi.Mux
+	logger        *slog.Logger
+	workerService *worker.Service
 }
 
-func NewServer(cfg *config.Config, db *sql.DB, logger *slog.Logger) *Server {
+func NewServer(cfg *config.Config, db *sql.DB, logger *slog.Logger, workerService *worker.Service) *Server {
 	s := &Server{
-		cfg:    cfg,
-		db:     db,
-		router: chi.NewRouter(),
-		logger: logger,
+		cfg:           cfg,
+		db:            db,
+		router:        chi.NewRouter(),
+		logger:        logger,
+		workerService: workerService,
 	}
 	s.setupRoutes()
 	return s
@@ -94,6 +98,18 @@ func (s *Server) setupRoutes() {
 			r.Delete("/users/{userId}/dismissals/{triggeredEventId}", h.DeleteDismissal)
 		})
 	})
+
+	// Internal worker endpoints (called by K8s CronJobs via generated client)
+	if s.workerService != nil {
+		wh := handlers.NewWorkerHandler(s.workerService)
+		strictHandler := workergen.NewStrictHandler(wh, nil)
+
+		// Auth middleware applied to the generated routes
+		internalRouter := chi.NewRouter()
+		internalRouter.Use(authmw.InternalAuth(s.cfg.Worker.Secret))
+		workergen.HandlerFromMux(strictHandler, internalRouter)
+		s.router.Mount("/", internalRouter)
+	}
 }
 
 func (s *Server) Start(ctx context.Context) error {

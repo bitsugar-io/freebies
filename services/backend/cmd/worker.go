@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"log/slog"
 	"time"
@@ -12,6 +11,7 @@ import (
 	"github.com/retr0h/freebie/internal/db"
 	"github.com/retr0h/freebie/internal/notify"
 	"github.com/retr0h/freebie/internal/triggers"
+	"github.com/retr0h/freebie/internal/worker"
 
 	// Import sources to register them
 	_ "github.com/retr0h/freebie/internal/sources/mlb"
@@ -57,6 +57,21 @@ func init() {
 	checkTriggersCmd.Flags().StringVar(&checkDate, "date", "", "Check triggers for a specific date (YYYY-MM-DD), defaults to yesterday")
 }
 
+func newWorkerService() (*worker.Service, func(), error) {
+	database, err := db.Open(cfg.Database.Path)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to open database: %w", err)
+	}
+
+	queries := db.New(database)
+	checker := triggers.NewChecker(queries)
+	notifier := notify.NewExpoNotifier()
+	svc := worker.NewService(queries, checker, notifier, slog.Default())
+
+	cleanup := func() { database.Close() }
+	return svc, cleanup, nil
+}
+
 func runScheduledJobs(cmd *cobra.Command, args []string) error {
 	loc, _ := time.LoadLocation("America/Los_Angeles")
 	now := time.Now().In(loc)
@@ -82,215 +97,31 @@ func runScheduledJobs(cmd *cobra.Command, args []string) error {
 }
 
 func runCheckTriggers(cmd *cobra.Command, args []string) error {
-	ctx := context.Background()
-	logger := slog.Default()
-
-	database, err := db.Open(cfg.Database.Path)
+	svc, cleanup, err := newWorkerService()
 	if err != nil {
-		return fmt.Errorf("failed to open database: %w", err)
+		return err
 	}
-	defer database.Close()
+	defer cleanup()
 
-	queries := db.New(database)
-	checker := triggers.NewChecker(queries)
-	notifier := notify.NewExpoNotifier()
-
-	// Determine which date to check
-	var results []triggers.CheckResult
+	var date time.Time
 	if checkDate != "" {
-		date, err := time.Parse("2006-01-02", checkDate)
+		date, err = time.Parse("2006-01-02", checkDate)
 		if err != nil {
 			return fmt.Errorf("invalid date format (use YYYY-MM-DD): %w", err)
 		}
-		logger.Info("checking triggers for date", "date", checkDate)
-		results, err = checker.CheckAllForDate(ctx, date)
-		if err != nil {
-			return fmt.Errorf("checking triggers: %w", err)
-		}
-	} else {
-		logger.Info("checking triggers for yesterday")
-		results, err = checker.CheckAll(ctx)
-		if err != nil {
-			return fmt.Errorf("checking triggers: %w", err)
-		}
 	}
 
-	triggered := 0
-	notified := 0
-	for _, result := range results {
-		if result.Error != nil {
-			logger.Warn("check failed",
-				"event_id", result.EventID,
-				"team", result.TeamID,
-				"error", result.Error,
-			)
-			continue
-		}
-
-		if result.Stats == nil {
-			logger.Info("no game found",
-				"event_id", result.EventID,
-				"team", result.TeamID,
-				"rule", fmt.Sprintf("%s %s %d", result.Rule.Metric, result.Rule.Operator, result.Rule.Value),
-			)
-			continue
-		}
-
-		metricValue := result.Stats.Metrics[result.Rule.Metric]
-		if result.Triggered {
-			triggered++
-			logger.Info("TRIGGERED",
-				"event_id", result.EventID,
-				"team", result.TeamID,
-				"opponent", result.Stats.Opponent,
-				"metric", result.Rule.Metric,
-				"value", metricValue,
-				"required", fmt.Sprintf("%s %d", result.Rule.Operator, result.Rule.Value),
-				"game", result.Stats.GameID,
-			)
-
-			// Send notifications if this is a new triggered event
-			if result.TriggeredEventID != "" {
-				sent := notifySubscribers(ctx, logger, queries, notifier, result)
-				notified += sent
-			}
-		} else {
-			logger.Info("not triggered",
-				"event_id", result.EventID,
-				"team", result.TeamID,
-				"opponent", result.Stats.Opponent,
-				"metric", result.Rule.Metric,
-				"value", metricValue,
-				"required", fmt.Sprintf("%s %d", result.Rule.Operator, result.Rule.Value),
-			)
-		}
-	}
-
-	logger.Info("check-triggers complete", "triggered", triggered, "notified", notified, "total_events", len(results))
-	return nil
-}
-
-func notifySubscribers(ctx context.Context, logger *slog.Logger, queries *db.Queries, notifier *notify.ExpoNotifier, result triggers.CheckResult) int {
-	// Get all subscribers for this event
-	subscribers, err := queries.ListEventSubscribers(ctx, result.EventID)
-	if err != nil {
-		logger.Error("failed to list subscribers", "event_id", result.EventID, "error", err)
-		return 0
-	}
-
-	// Build messages for all subscribers with valid push tokens
-	icon := ""
-	if result.Event.Icon.Valid {
-		icon = result.Event.Icon.String + " "
-	}
-	title := fmt.Sprintf("%sDeal Unlocked!", icon)
-	body := fmt.Sprintf("%s: %s", result.Event.PartnerName, result.Event.OfferName)
-	data := map[string]interface{}{
-		"triggered_event_id": result.TriggeredEventID,
-		"event_id":           result.EventID,
-	}
-
-	var messages []notify.ExpoPushMessage
-	for _, sub := range subscribers {
-		if !sub.PushToken.Valid || sub.PushToken.String == "" {
-			continue
-		}
-		messages = append(messages, notify.ExpoPushMessage{
-			To:       sub.PushToken.String,
-			Title:    title,
-			Body:     body,
-			Data:     data,
-			Sound:    "default",
-			Priority: "high",
-		})
-	}
-
-	if len(messages) == 0 {
-		return 0
-	}
-
-	// Send in batches concurrently
-	batchResult := notifier.SendBatchConcurrent(ctx, logger, messages, notify.DefaultWorkers)
-
-	if batchResult.Sent > 0 {
-		logger.Info("notified subscribers",
-			"event_id", result.EventID,
-			"sent", batchResult.Sent,
-			"failed", batchResult.Failed,
-		)
-	}
-
-	return int(batchResult.Sent)
+	_, err = svc.CheckTriggers(context.Background(), date)
+	return err
 }
 
 func runSendReminders(cmd *cobra.Command, args []string) error {
-	ctx := context.Background()
-	logger := slog.Default()
-
-	database, err := db.Open(cfg.Database.Path)
+	svc, cleanup, err := newWorkerService()
 	if err != nil {
-		return fmt.Errorf("failed to open database: %w", err)
+		return err
 	}
-	defer database.Close()
+	defer cleanup()
 
-	queries := db.New(database)
-
-	// Find deals expiring in the next 6 hours
-	expiringDeals, err := queries.ListExpiringTriggeredEvents(ctx, sql.NullString{String: "6", Valid: true})
-	if err != nil {
-		return fmt.Errorf("failed to list expiring deals: %w", err)
-	}
-
-	logger.Info("checking for expiring deals", "count", len(expiringDeals))
-
-	notifier := notify.NewExpoNotifier()
-	var totalSent, totalFailed int64
-
-	for _, deal := range expiringDeals {
-		// Get users who should receive reminders for this deal
-		users, err := queries.ListUsersForReminder(ctx, deal.ID)
-		if err != nil {
-			logger.Error("failed to list users for reminder", "deal_id", deal.ID, "error", err)
-			continue
-		}
-
-		// Calculate time remaining
-		timeRemaining := time.Until(deal.ExpiresAt.Time)
-		hours := int(timeRemaining.Hours())
-
-		title := fmt.Sprintf("⏰ Deal expires in %d hours!", hours)
-		body := fmt.Sprintf("Don't forget: %s - %s", deal.OfferName, deal.PartnerName)
-		data := map[string]interface{}{
-			"triggered_event_id": deal.ID,
-			"event_id":           deal.EventID,
-		}
-
-		// Build messages for all users with valid push tokens
-		var messages []notify.ExpoPushMessage
-		for _, user := range users {
-			if !user.PushToken.Valid || user.PushToken.String == "" {
-				continue
-			}
-			messages = append(messages, notify.ExpoPushMessage{
-				To:       user.PushToken.String,
-				Title:    title,
-				Body:     body,
-				Data:     data,
-				Sound:    "default",
-				Priority: "high",
-			})
-		}
-
-		if len(messages) == 0 {
-			continue
-		}
-
-		// Send in batches concurrently
-		batchResult := notifier.SendBatchConcurrent(ctx, logger, messages, notify.DefaultWorkers)
-		totalSent += batchResult.Sent
-		totalFailed += batchResult.Failed
-	}
-
-	logger.Info("send-reminders complete", "sent", totalSent, "failed", totalFailed, "expiring_deals", len(expiringDeals))
-	return nil
+	_, err = svc.SendReminders(context.Background())
+	return err
 }
