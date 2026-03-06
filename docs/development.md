@@ -36,7 +36,8 @@ freebies/
 ├── apps/
 │   └── mobile/          # React Native (Expo) app
 ├── services/
-│   └── api/             # Go API server
+│   ├── api/             # Go API server
+│   └── scheduler/       # Lightweight scheduler (CronJob container)
 ├── docs/                # Project-wide documentation
 └── Taskfile.yml         # Root task definitions
 ```
@@ -52,6 +53,8 @@ Run `task --list` to see all available tasks.
 | `task api:serve` | Start backend server                    |
 | `task api:build` | Build backend binary                    |
 | `task api:test`  | Run backend tests                       |
+| `task scheduler:build` | Build scheduler binary                |
+| `task scheduler:test` | Run scheduler tests                    |
 | `task mobile:serve`  | Start Expo dev server                   |
 | `task docs:fmt`      | Format markdown files                   |
 
@@ -165,7 +168,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/) with the 50/
 - **Body**: wrap at 72 characters, separated from subject by a blank line
 - **Format**: `type(scope): description`
 - **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
-- **Scopes**: `backend`, `mobile`, `docs`, `db`
+- **Scopes**: `api`, `scheduler`, `mobile`, `docs`, `db`
 - Summarize the "what" and "why", not the "how"
 
 Try to write meaningful commit messages and avoid having too many commits on a PR. Most PRs should
@@ -175,7 +178,7 @@ squash and rebase is your friend!
 ### Examples
 
 ```
-feat(backend): Add NBA game source
+feat(api): Add NBA game source
 
 Implements the Source interface for NBA live game data
 using the balldontlie API.

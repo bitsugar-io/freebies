@@ -11,8 +11,9 @@ food/merch deals are triggered (e.g., Dodgers pitchers get 7+ strikeouts = free 
 
 ```bash
 task setup              # first-time setup
-task api:serve      # start API server (auto-migrates DB)
-task api:test       # run Go tests
+task api:serve          # start API server (auto-migrates DB)
+task api:test           # run Go tests
+task scheduler:build    # build scheduler binary
 task mobile:serve       # start Expo dev server
 task docs:fmt           # format markdown files
 task clean              # wipe database
@@ -22,12 +23,12 @@ task clean              # wipe database
 
 ```
 apps/mobile/                    React Native (Expo) app
-services/api/               Go API server + worker
+services/api/                   Go API server
   internal/
     db/                         sqlc queries, generated code, migrations
     server/                     HTTP handlers and routes
     sources/                    Live game data sources (Source interface)
-    worker/                     Background job runner
+services/scheduler/             Lightweight scheduler (CronJob container)
 docs/                           Project documentation
 ```
 

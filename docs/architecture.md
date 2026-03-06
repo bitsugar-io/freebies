@@ -81,9 +81,9 @@ The connection logic in `internal/db/conn.go` detects the scheme:
 - Free tier: 9GB storage, 500M reads/month
 - Migrations still run on API startup via goose (same as local)
 
-**Note:** The CronJob pods still call the API via HTTP (`worker remote` commands) rather than
-connecting to Turso directly. This keeps all business logic (trigger evaluation, notification
-sending) in the API process and avoids duplicating dependencies in the CronJob container.
+**Note:** The scheduler CronJob pods call the API via HTTP rather than connecting to Turso directly.
+This keeps all business logic (trigger evaluation, notification sending) in the API process and
+avoids duplicating dependencies in the scheduler container.
 
 ## Cloudflare Tunnel
 
@@ -140,8 +140,8 @@ variable. The `cloudflared` container runs with `tunnel --no-autoupdate run`.
 
 ### Check Triggers (6am PT daily)
 
-1. K8s CronJob starts a pod running `freebie worker remote check-triggers`
-2. The CLI uses a generated HTTP client to `POST /internal/worker/check-triggers`
+1. K8s CronJob starts a pod running `./scheduler check-triggers`
+2. The scheduler uses a generated HTTP client to `POST /internal/worker/check-triggers`
 3. The API authenticates via bearer token (`FREEBIE_WORKER_SECRET`)
 4. The worker service queries Turso for active events
 5. For each event, it fetches game data from the source API (e.g., MLB)
@@ -151,8 +151,8 @@ variable. The `cloudflared` container runs with `tunnel --no-autoupdate run`.
 
 ### Send Reminders (6pm PT daily)
 
-1. K8s CronJob starts a pod running `freebie worker remote send-reminders`
-2. The CLI calls `POST /internal/worker/send-reminders`
+1. K8s CronJob starts a pod running `./scheduler send-reminders`
+2. The scheduler calls `POST /internal/worker/send-reminders`
 3. The API queries Turso for deals expiring within 6 hours
 4. For each expiring deal, it sends reminder notifications to eligible users
 5. Returns a JSON summary
@@ -204,14 +204,14 @@ Each component is deployed as an independent Helm chart:
 | Chart | Purpose |
 |-------|---------|
 | `charts/api/` | API Deployment + ClusterIP Service + Secret |
-| `charts/cronjobs/` | check-triggers and send-reminders CronJobs |
+| `charts/scheduler/` | Scheduler CronJobs (check-triggers, send-reminders) |
 | `charts/cloudflare/` | Cloudflare Tunnel Deployment |
 
 Charts are installed separately so they can be upgraded independently:
 
 ```bash
 helm upgrade --install freebie-api charts/api/ --namespace freebie
-helm upgrade --install freebie-cronjobs charts/cronjobs/ --namespace freebie
+helm upgrade --install freebie-scheduler charts/scheduler/ --namespace freebie
 helm upgrade --install freebie-cloudflare charts/cloudflare/ --namespace freebie
 ```
 
@@ -230,19 +230,22 @@ Internet → Cloudflare Edge → cloudflared pod → ClusterIP Service → API p
 
 GitHub Actions (`.github/workflows/deploy.yaml`) runs on push to `main`:
 
-1. Build Docker image from `services/api/Dockerfile`
-2. Push to DOCR with SHA-based tag
-3. `helm upgrade` all three charts with the new image tag
+1. Build two Docker images:
+   - `freebie-api` from `services/api/Dockerfile`
+   - `freebie-scheduler` from `services/scheduler/Dockerfile`
+2. Push both to DOCR with SHA-based tags
+3. `helm upgrade` all three charts with the new image tags
 
 Required GitHub Secrets:
 
 | Secret | Purpose |
 |--------|---------|
 | `DIGITALOCEAN_ACCESS_TOKEN` | DO API token for doctl + DOCR login |
-| `KUBECONFIG_DATA` | Base64-encoded kubeconfig from Terraform |
+| `KUBECONFIG_DATA` | Base64-encoded kubeconfig |
 | `TURSO_DATABASE_URL` | Turso connection URL (`libsql://...?authToken=...`) |
 | `CF_TUNNEL_TOKEN` | Cloudflare Tunnel token |
 | `WORKER_SECRET` | Bearer token for internal worker API |
+| `SCHEDULER_API_URL` | API URL for the scheduler to call |
 
 ## Cost
 

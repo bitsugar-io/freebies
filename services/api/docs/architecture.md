@@ -54,9 +54,9 @@ FREEBIE_DATABASE_PATH="libsql://xxx.turso.io?authToken=xxx" ./bin/freebie serve
 ┌──────────────────────────────────────────────────────────────┐
 │                     DOKS Cluster                             │
 │  ┌─────────────────────┐   ┌──────────────────────────────┐  │
-│  │   API Deployment    │   │   CronJobs (ephemeral pods)  │  │
+│  │   API Deployment    │   │   Scheduler (ephemeral pods) │  │
 │  │  ┌───────────────┐  │   │  ┌────────────────────────┐  │  │
-│  │  │  HTTP API     │  │   │  │  worker remote         │  │  │
+│  │  │  HTTP API     │  │   │  │  ./scheduler            │  │  │
 │  │  │  (serve)      │◄─┼───┼──│  check-triggers        │  │  │
 │  │  └───────┬───────┘  │   │  │  send-reminders        │  │  │
 │  │          │          │   │  └────────────────────────┘  │  │
@@ -145,8 +145,8 @@ Orchestrates checking all events:
 
 ## Background Jobs
 
-Background jobs run as Kubernetes CronJobs. Each CronJob pod calls the API's internal worker
-endpoints via HTTP — it does not access the database directly.
+Background jobs run as Kubernetes CronJobs using the `services/scheduler/` container. Each CronJob
+pod calls the API's internal worker endpoints via HTTP — it does not access the database directly.
 
 - **6am PT** (`check-triggers`): Check yesterday's game results, create triggered events, notify
   subscribers

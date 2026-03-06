@@ -24,6 +24,8 @@ These are set in `.envrc` and used by Helm deploy commands:
 export FREEBIE_DATABASE_PATH="libsql://freebie-xxx.turso.io?authToken=xxx"
 export FREEBIE_WORKER_SECRET="your-secret-here"
 export CF_TUNNEL_TOKEN="your-tunnel-token"
+export SCHEDULER_API_URL="http://freebie-api.freebie.svc.cluster.local:8080"
+export SCHEDULER_WORKER_SECRET="$FREEBIE_WORKER_SECRET"
 ```
 
 ## Initial Setup
@@ -74,16 +76,24 @@ turso db tokens create freebie
    - URL: `freebie-api.freebie.svc.cluster.local:8080`
 4. Copy the tunnel token for `.envrc`
 
-## Build and Push Docker Image
+## Build and Push Docker Images
 
 Build for linux/amd64 (required — DOKS nodes are AMD64, not ARM):
 
 ```bash
+# API image
 docker build --platform linux/amd64 \
   -t registry.digitalocean.com/freebie/freebie-api:latest \
   services/api/
 
 docker push registry.digitalocean.com/freebie/freebie-api:latest
+
+# Scheduler image
+docker build --platform linux/amd64 \
+  -t registry.digitalocean.com/freebie/freebie-scheduler:latest \
+  services/scheduler/
+
+docker push registry.digitalocean.com/freebie/freebie-scheduler:latest
 ```
 
 ## Deploy
@@ -105,10 +115,10 @@ helm upgrade --install freebie-cloudflare charts/cloudflare/ \
   --set tunnelToken="$CF_TUNNEL_TOKEN"
 ```
 
-### Deploy CronJobs (Worker)
+### Deploy Scheduler (CronJobs)
 
 ```bash
-helm upgrade --install freebie-cronjobs charts/cronjobs/ \
+helm upgrade --install freebie-scheduler charts/scheduler/ \
   --namespace freebie \
   --set workerSecret="$FREEBIE_WORKER_SECRET"
 ```
@@ -116,11 +126,16 @@ helm upgrade --install freebie-cronjobs charts/cronjobs/ \
 ### Deploy Everything
 
 ```bash
-# Build and push
+# Build and push both images
 docker build --platform linux/amd64 \
   -t registry.digitalocean.com/freebie/freebie-api:latest \
   services/api/
 docker push registry.digitalocean.com/freebie/freebie-api:latest
+
+docker build --platform linux/amd64 \
+  -t registry.digitalocean.com/freebie/freebie-scheduler:latest \
+  services/scheduler/
+docker push registry.digitalocean.com/freebie/freebie-scheduler:latest
 
 # Deploy all charts
 helm upgrade --install freebie-api charts/api/ \
@@ -132,7 +147,7 @@ helm upgrade --install freebie-cloudflare charts/cloudflare/ \
   --namespace freebie \
   --set tunnelToken="$CF_TUNNEL_TOKEN"
 
-helm upgrade --install freebie-cronjobs charts/cronjobs/ \
+helm upgrade --install freebie-scheduler charts/scheduler/ \
   --namespace freebie \
   --set workerSecret="$FREEBIE_WORKER_SECRET"
 ```
@@ -142,11 +157,16 @@ helm upgrade --install freebie-cronjobs charts/cronjobs/ \
 After code changes, rebuild and redeploy:
 
 ```bash
-# Rebuild image
+# Rebuild images
 docker build --platform linux/amd64 \
   -t registry.digitalocean.com/freebie/freebie-api:latest \
   services/api/
 docker push registry.digitalocean.com/freebie/freebie-api:latest
+
+docker build --platform linux/amd64 \
+  -t registry.digitalocean.com/freebie/freebie-scheduler:latest \
+  services/scheduler/
+docker push registry.digitalocean.com/freebie/freebie-scheduler:latest
 
 # Restart API pod to pull new image
 kubectl rollout restart deployment/freebie-api -n freebie
