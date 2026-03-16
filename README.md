@@ -1,15 +1,15 @@
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=for-the-badge)](LICENSE)
-[![Go](https://img.shields.io/badge/go-1.23+-00ADD8.svg?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
+[![Go](https://img.shields.io/badge/go-1.25+-00ADD8.svg?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
 [![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev)
 [![Expo](https://img.shields.io/badge/expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev)
 [![App Store](https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white)](https://apps.apple.com)
-[![SQLite](https://img.shields.io/badge/sqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
+[![Turso](https://img.shields.io/badge/turso-4FF8D2?style=for-the-badge&logo=turso&logoColor=black)](https://turso.tech)
 [![MLB](https://img.shields.io/badge/MLB-002D72?style=for-the-badge&logo=mlb&logoColor=white)](https://mlb.com)
 [![NBA](https://img.shields.io/badge/NBA-17408B?style=for-the-badge&logo=nba&logoColor=white)](https://nba.com)
 [![NFL](https://img.shields.io/badge/NFL-013369?style=for-the-badge&logo=nfl&logoColor=white)](https://nfl.com)
 [![NHL](https://img.shields.io/badge/NHL-000000?style=for-the-badge&logo=nhl&logoColor=white)](https://nhl.com)
 
-# Freebie
+# Freebies
 
 Get notified about free offers when your favorite sports teams win or hit milestones.
 
@@ -80,6 +80,11 @@ Go-based API server that:
 - [Development Guide](services/api/docs/development.md)
 - [API Reference](services/api/docs/api.md)
 
+### Scheduler (`services/scheduler/`)
+
+Lightweight Go CLI that runs as a Kubernetes CronJob. Polls live game data and calls API internal
+endpoints to trigger notifications when deal conditions are met.
+
 ## Data
 
 All offer data is managed through SQL migrations in `services/api/internal/db/migrations/`:
@@ -96,7 +101,7 @@ To add new offers, create a new migration file (e.g., `007_add_new_team.sql`).
 ## Prerequisites
 
 - Node.js 20+ (for mobile app)
-- Go 1.23+ (for backend)
+- Go 1.25+ (for backend)
 - [Task](https://taskfile.dev/) (task runner)
 - [EAS CLI](https://docs.expo.dev/eas/) (for mobile builds)
 - [mise](https://mise.jdx.dev/) (optional, for version management)
