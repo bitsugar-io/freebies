@@ -78,23 +78,19 @@ turso db tokens create freebie
 
 ## Build and Push Docker Images
 
-Build for linux/amd64 (required — DOKS nodes are AMD64, not ARM):
+Build for linux/amd64 (required — DOKS nodes are AMD64, not ARM). A single image contains both
+the API and scheduler binaries:
 
 ```bash
-# API image
 docker build --platform linux/amd64 \
-  -t registry.digitalocean.com/freebie/freebie-api:latest \
-  services/api/
+  -t registry.digitalocean.com/freebie/freebie-api:latest .
 
 docker push registry.digitalocean.com/freebie/freebie-api:latest
-
-# Scheduler image
-docker build --platform linux/amd64 \
-  -t registry.digitalocean.com/freebie/freebie-scheduler:latest \
-  services/scheduler/
-
-docker push registry.digitalocean.com/freebie/freebie-scheduler:latest
 ```
+
+Note: The Dockerfile is at the repo root and builds both `services/api/` and `services/scheduler/`
+into one image. The scheduler Helm chart uses the same image but runs `./scheduler` instead of
+`./freebie serve`.
 
 ## Deploy
 
@@ -126,16 +122,10 @@ helm upgrade --install freebie-scheduler charts/scheduler/ \
 ### Deploy Everything
 
 ```bash
-# Build and push both images
+# Build and push image (contains both API and scheduler binaries)
 docker build --platform linux/amd64 \
-  -t registry.digitalocean.com/freebie/freebie-api:latest \
-  services/api/
+  -t registry.digitalocean.com/freebie/freebie-api:latest .
 docker push registry.digitalocean.com/freebie/freebie-api:latest
-
-docker build --platform linux/amd64 \
-  -t registry.digitalocean.com/freebie/freebie-scheduler:latest \
-  services/scheduler/
-docker push registry.digitalocean.com/freebie/freebie-scheduler:latest
 
 # Deploy all charts
 helm upgrade --install freebie-api charts/api/ \
@@ -157,16 +147,10 @@ helm upgrade --install freebie-scheduler charts/scheduler/ \
 After code changes, rebuild and redeploy:
 
 ```bash
-# Rebuild images
+# Rebuild and push image
 docker build --platform linux/amd64 \
-  -t registry.digitalocean.com/freebie/freebie-api:latest \
-  services/api/
+  -t registry.digitalocean.com/freebie/freebie-api:latest .
 docker push registry.digitalocean.com/freebie/freebie-api:latest
-
-docker build --platform linux/amd64 \
-  -t registry.digitalocean.com/freebie/freebie-scheduler:latest \
-  services/scheduler/
-docker push registry.digitalocean.com/freebie/freebie-scheduler:latest
 
 # Restart API pod to pull new image
 kubectl rollout restart deployment/freebie-api -n freebie
