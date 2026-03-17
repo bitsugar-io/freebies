@@ -39,6 +39,12 @@ type Event struct {
 	UpdatedAt        time.Time      `json:"updated_at"`
 }
 
+type FeatureFlag struct {
+	Key       string    `json:"key"`
+	Enabled   int64     `json:"enabled"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type League struct {
 	ID           string    `json:"id"`
 	Name         string    `json:"name"`
@@ -53,6 +59,18 @@ type Notification struct {
 	TriggeredEventID string    `json:"triggered_event_id"`
 	SentAt           time.Time `json:"sent_at"`
 	Status           string    `json:"status"`
+}
+
+type ScreenBlock struct {
+	ID        string    `json:"id"`
+	Screen    string    `json:"screen"`
+	Type      string    `json:"type"`
+	Key       string    `json:"key"`
+	Position  int64     `json:"position"`
+	Enabled   int64     `json:"enabled"`
+	Config    string    `json:"config"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type Subscription struct {
