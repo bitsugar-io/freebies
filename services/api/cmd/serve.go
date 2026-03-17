@@ -16,6 +16,7 @@ import (
 	"github.com/retr0h/freebie/services/api/internal/worker"
 
 	_ "github.com/retr0h/freebie/services/api/internal/sources/mlb"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/test"
 )
 
 var serveCmd = &cobra.Command{
