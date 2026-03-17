@@ -39,6 +39,8 @@ func init() {
 
 	notifySendCmd.Flags().String("title", "🎉 Test Notification", "Notification title")
 	notifySendCmd.Flags().String("body", "This is a test notification from Freebie!", "Notification body")
+	notifySendCmd.Flags().String("event-id", "", "Event ID for deep linking (opens deal on tap)")
+	notifySendCmd.Flags().String("triggered-event-id", "", "Triggered event ID for deep linking")
 }
 
 func runNotifyTest(cmd *cobra.Command, args []string) error {
@@ -102,6 +104,8 @@ func runNotifySend(cmd *cobra.Command, args []string) error {
 	userID := args[0]
 	title, _ := cmd.Flags().GetString("title")
 	body, _ := cmd.Flags().GetString("body")
+	eventID, _ := cmd.Flags().GetString("event-id")
+	triggeredEventID, _ := cmd.Flags().GetString("triggered-event-id")
 
 	logger.Info("config", "database", cfg.Database.Path, "user", userID)
 
@@ -128,10 +132,18 @@ func runNotifySend(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("invalid expo token: %s", token[:20]+"...")
 	}
 
-	notifier := notify.NewExpoNotifier()
-	ticket, err := notifier.Send(token, title, body, map[string]interface{}{
+	data := map[string]interface{}{
 		"type": "test",
-	})
+	}
+	if eventID != "" {
+		data["eventId"] = eventID
+	}
+	if triggeredEventID != "" {
+		data["triggeredEventId"] = triggeredEventID
+	}
+
+	notifier := notify.NewExpoNotifier()
+	ticket, err := notifier.Send(token, title, body, data)
 	if err != nil {
 		return fmt.Errorf("sending notification: %w", err)
 	}

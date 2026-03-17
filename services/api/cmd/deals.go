@@ -180,7 +180,8 @@ func runDealsList(cmd *cobra.Command, args []string) error {
 		} else {
 			fmt.Printf("  Subscribers: none\n")
 		}
-		fmt.Printf("  ID: %s\n", deal.ID)
+		fmt.Printf("  Event ID: %s\n", deal.EventID)
+		fmt.Printf("  Triggered Event ID: %s\n", deal.ID)
 	}
 	fmt.Println()
 

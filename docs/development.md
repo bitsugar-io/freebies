@@ -46,17 +46,17 @@ freebies/
 
 Run `task --list` to see all available tasks.
 
-| Task                 | Description                             |
-| -------------------- | --------------------------------------- |
-| `task setup`         | First-time setup (install dependencies) |
-| `task clean`         | Wipe database                           |
-| `task api:serve` | Start backend server                    |
-| `task api:build` | Build backend binary                    |
-| `task api:test`  | Run backend tests                       |
-| `task scheduler:build` | Build scheduler binary                |
-| `task scheduler:test` | Run scheduler tests                    |
-| `task mobile:serve`  | Start Expo dev server                   |
-| `task docs:fmt`      | Format markdown files                   |
+| Task                   | Description                             |
+| ---------------------- | --------------------------------------- |
+| `task setup`           | First-time setup (install dependencies) |
+| `task clean`           | Wipe database                           |
+| `task api:serve`       | Start backend server                    |
+| `task api:build`       | Build backend binary                    |
+| `task api:test`        | Run backend tests                       |
+| `task scheduler:build` | Build scheduler binary                  |
+| `task scheduler:test`  | Run scheduler tests                     |
+| `task mobile:serve`    | Start Expo dev server                   |
+| `task docs:fmt`        | Format markdown files                   |
 
 ## Development Workflow
 

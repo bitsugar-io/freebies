@@ -4,10 +4,10 @@
 
 All commands work with both local SQLite and production Turso.
 
-| Environment | Command prefix |
-| ----------- | -------------- |
-| Local | `sqlite3 freebie.db` |
-| Turso | `turso db shell freebie` |
+| Environment | Command prefix           |
+| ----------- | ------------------------ |
+| Local       | `sqlite3 freebie.db`     |
+| Turso       | `turso db shell freebie` |
 
 **Examples use `$DB` as shorthand.** Replace with the command for your environment.
 
@@ -48,16 +48,16 @@ $DB "UPDATE feature_flags SET enabled = 1 WHERE key = 'FLAG_NAME'"
 
 ### Flag Reference
 
-| Flag | Default | Controls |
-| ---- | ------- | -------- |
-| `enable_mlb` | on | MLB teams, events, and league filter tab |
-| `enable_nba` | on | NBA teams, events, and league filter tab |
-| `enable_nfl` | on | NFL teams, events, and league filter tab |
-| `enable_nhl` | off | NHL teams, events, and league filter tab |
-| `show_affiliate_links` | off | Sponsored gear cards (e.g., Fanatics) in deal details |
-| `enable_push_notifications` | on | Push notification registration and delivery |
-| `enable_subscriptions` | on | Follow/subscribe buttons on events |
-| `maintenance_mode` | off | Blocks entire app with "We'll be right back" screen |
+| Flag                        | Default | Controls                                              |
+| --------------------------- | ------- | ----------------------------------------------------- |
+| `enable_mlb`                | on      | MLB teams, events, and league filter tab              |
+| `enable_nba`                | on      | NBA teams, events, and league filter tab              |
+| `enable_nfl`                | on      | NFL teams, events, and league filter tab              |
+| `enable_nhl`                | off     | NHL teams, events, and league filter tab              |
+| `show_affiliate_links`      | off     | Sponsored gear cards (e.g., Fanatics) in deal details |
+| `enable_push_notifications` | on      | Push notification registration and delivery           |
+| `enable_subscriptions`      | on      | Follow/subscribe buttons on events                    |
+| `maintenance_mode`          | off     | Blocks entire app with "We'll be right back" screen   |
 
 ### Add a New Flag
 
@@ -81,8 +81,8 @@ if (config.features.my_new_flag === false) return null;
 
 ## Screen Blocks
 
-Screen blocks control what components appear on each screen and in what order. The app fetches
-block definitions from `GET /api/v1/config` on launch/foreground.
+Screen blocks control what components appear on each screen and in what order. The app fetches block
+definitions from `GET /api/v1/config` on launch/foreground.
 
 ### View All Blocks
 
@@ -92,25 +92,25 @@ $DB "SELECT screen, position, type, key, enabled FROM screen_blocks ORDER BY scr
 
 ### Screens
 
-| Screen ID | Where | Description |
-| --------- | ----- | ----------- |
-| `deals` | Deals tab | Active triggered deals |
-| `discover` | Discover tab | League filter, team list, promo cards |
-| `profile` | Profile tab | Stats, subscriptions, settings |
-| `deal_detail` | Deal modal | Extra content below deal info (promo cards, etc.) |
+| Screen ID     | Where        | Description                                       |
+| ------------- | ------------ | ------------------------------------------------- |
+| `deals`       | Deals tab    | Active triggered deals                            |
+| `discover`    | Discover tab | League filter, team list, promo cards             |
+| `profile`     | Profile tab  | Stats, subscriptions, settings                    |
+| `deal_detail` | Deal modal   | Extra content below deal info (promo cards, etc.) |
 
 ### Block Types
 
-| Type | Description | Config options |
-| ---- | ----------- | -------------- |
-| `banner` | Dismissible banner at top of screen | `text`, `backgroundColor`, `textColor`, `dismissible` |
-| `active_deals` | List of active triggered deals | `layout`, `emptyTitle`, `emptySubtitle` |
-| `league_filter` | Horizontal league filter pills | (none) |
-| `event_list` | Team-grouped event cards | `groupBy` |
-| `promo_card` | Tappable CTA card with link | `title`, `subtitle`, `url`, `backgroundColor`, `textColor` |
-| `user_stats` | Deals claimed / active / subscribed | (none) |
-| `subscription_list` | User's subscribed events with remove | (none) |
-| `settings` | Theme, notifications, account info | `showThemeToggle` |
+| Type                | Description                          | Config options                                             |
+| ------------------- | ------------------------------------ | ---------------------------------------------------------- |
+| `banner`            | Dismissible banner at top of screen  | `text`, `backgroundColor`, `textColor`, `dismissible`      |
+| `active_deals`      | List of active triggered deals       | `layout`, `emptyTitle`, `emptySubtitle`                    |
+| `league_filter`     | Horizontal league filter pills       | (none)                                                     |
+| `event_list`        | Team-grouped event cards             | `groupBy`                                                  |
+| `promo_card`        | Tappable CTA card with link          | `title`, `subtitle`, `url`, `backgroundColor`, `textColor` |
+| `user_stats`        | Deals claimed / active / subscribed  | (none)                                                     |
+| `subscription_list` | User's subscribed events with remove | (none)                                                     |
+| `settings`          | Theme, notifications, account info   | `showThemeToggle`                                          |
 
 ### Add a Block
 

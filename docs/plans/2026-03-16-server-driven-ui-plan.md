@@ -21,35 +21,35 @@ registry. Unknown block types are silently skipped.
 
 ### Backend (services/api/)
 
-| File | Action | Responsibility |
-| ---- | ------ | -------------- |
-| `internal/db/migrations/009_server_driven_ui.sql` | Create | Schema + seed data for `feature_flags` and `screen_blocks` tables |
-| `db/queries.sql` | Modify | Add `ListFeatureFlags`, `ListAllEnabledScreenBlocks` queries |
-| `internal/db/*.go` | Regenerate | sqlc codegen (run `task generate`) |
-| `internal/api/handlers/config.go` | Create | `GetConfig` handler |
-| `internal/api/handlers/types.go` | Modify | Add config response types |
-| `internal/api/server.go` | Modify | Register `GET /api/v1/config` route |
-| `internal/api/handlers/config_test.go` | Create | Handler tests |
+| File                                              | Action     | Responsibility                                                    |
+| ------------------------------------------------- | ---------- | ----------------------------------------------------------------- |
+| `internal/db/migrations/009_server_driven_ui.sql` | Create     | Schema + seed data for `feature_flags` and `screen_blocks` tables |
+| `db/queries.sql`                                  | Modify     | Add `ListFeatureFlags`, `ListAllEnabledScreenBlocks` queries      |
+| `internal/db/*.go`                                | Regenerate | sqlc codegen (run `task generate`)                                |
+| `internal/api/handlers/config.go`                 | Create     | `GetConfig` handler                                               |
+| `internal/api/handlers/types.go`                  | Modify     | Add config response types                                         |
+| `internal/api/server.go`                          | Modify     | Register `GET /api/v1/config` route                               |
+| `internal/api/handlers/config_test.go`            | Create     | Handler tests                                                     |
 
 ### Mobile (apps/mobile/)
 
-| File | Action | Responsibility |
-| ---- | ------ | -------------- |
-| `src/api/client.ts` | Modify | Add `AppConfig`, `ScreenBlock` types and `getConfig()` method |
-| `src/context/AppConfigContext.tsx` | Create | Config provider, fetch on mount + foreground, fallback to `DEFAULT_CONFIG` |
-| `src/components/blocks/BlockRenderer.tsx` | Create | Maps block type → component, renders block list for a screen |
-| `src/components/blocks/BannerBlock.tsx` | Create | Dismissible banner with text/color from config |
-| `src/components/blocks/ActiveDealsBlock.tsx` | Create | Wraps existing active deals list |
-| `src/components/blocks/LeagueFilterBlock.tsx` | Create | Wraps existing league filter bar |
-| `src/components/blocks/EventListBlock.tsx` | Create | Wraps existing grouped event list |
-| `src/components/blocks/PromoCardBlock.tsx` | Create | CTA card with title, subtitle, link, colors |
-| `src/components/blocks/UserStatsBlock.tsx` | Create | Wraps existing user stats display |
-| `src/components/blocks/SubscriptionListBlock.tsx` | Create | Wraps existing subscription list |
-| `src/components/blocks/SettingsBlock.tsx` | Create | Wraps existing settings section |
-| `src/screens/DealsScreen.tsx` | Modify | Replace hardcoded layout with `BlockRenderer` |
-| `src/screens/DiscoverScreen.tsx` | Modify | Replace hardcoded layout with `BlockRenderer` |
-| `src/screens/ProfileScreen.tsx` | Modify | Replace hardcoded layout with `BlockRenderer` |
-| `App.tsx` | Modify | Wrap app in `AppConfigProvider` |
+| File                                              | Action | Responsibility                                                             |
+| ------------------------------------------------- | ------ | -------------------------------------------------------------------------- |
+| `src/api/client.ts`                               | Modify | Add `AppConfig`, `ScreenBlock` types and `getConfig()` method              |
+| `src/context/AppConfigContext.tsx`                | Create | Config provider, fetch on mount + foreground, fallback to `DEFAULT_CONFIG` |
+| `src/components/blocks/BlockRenderer.tsx`         | Create | Maps block type → component, renders block list for a screen               |
+| `src/components/blocks/BannerBlock.tsx`           | Create | Dismissible banner with text/color from config                             |
+| `src/components/blocks/ActiveDealsBlock.tsx`      | Create | Wraps existing active deals list                                           |
+| `src/components/blocks/LeagueFilterBlock.tsx`     | Create | Wraps existing league filter bar                                           |
+| `src/components/blocks/EventListBlock.tsx`        | Create | Wraps existing grouped event list                                          |
+| `src/components/blocks/PromoCardBlock.tsx`        | Create | CTA card with title, subtitle, link, colors                                |
+| `src/components/blocks/UserStatsBlock.tsx`        | Create | Wraps existing user stats display                                          |
+| `src/components/blocks/SubscriptionListBlock.tsx` | Create | Wraps existing subscription list                                           |
+| `src/components/blocks/SettingsBlock.tsx`         | Create | Wraps existing settings section                                            |
+| `src/screens/DealsScreen.tsx`                     | Modify | Replace hardcoded layout with `BlockRenderer`                              |
+| `src/screens/DiscoverScreen.tsx`                  | Modify | Replace hardcoded layout with `BlockRenderer`                              |
+| `src/screens/ProfileScreen.tsx`                   | Modify | Replace hardcoded layout with `BlockRenderer`                              |
+| `App.tsx`                                         | Modify | Wrap app in `AppConfigProvider`                                            |
 
 ---
 
@@ -58,6 +58,7 @@ registry. Unknown block types are silently skipped.
 ### Task 1: Create migration
 
 **Files:**
+
 - Create: `services/api/internal/db/migrations/009_server_driven_ui.sql`
 
 - [ ] **Step 1: Create the migration file**
@@ -129,6 +130,7 @@ git commit -m "feat(db): Add feature_flags and screen_blocks tables"
 ### Task 2: Add sqlc queries and regenerate
 
 **Files:**
+
 - Modify: `services/api/db/queries.sql`
 - Regenerate: `services/api/internal/db/` (sqlc output)
 
@@ -173,6 +175,7 @@ git commit -m "feat(db): Add config queries for feature flags and screen blocks"
 ### Task 3: Add config response types
 
 **Files:**
+
 - Modify: `services/api/internal/api/handlers/types.go`
 
 - [ ] **Step 1: Add config types to types.go**
@@ -210,6 +213,7 @@ git commit -m "feat(api): Add config response types"
 ### Task 4: Create GetConfig handler
 
 **Files:**
+
 - Create: `services/api/internal/api/handlers/config.go`
 
 - [ ] **Step 1: Write the handler**
@@ -271,8 +275,8 @@ func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 
 Run: `cd services/api && go build ./...`
 
-Expected: Clean build. Note — the `Enabled` and `Config` field names come from sqlc codegen. If
-the generated field names differ (e.g., `Enabled` is `int64` not `int`), adjust the comparison
+Expected: Clean build. Note — the `Enabled` and `Config` field names come from sqlc codegen. If the
+generated field names differ (e.g., `Enabled` is `int64` not `int`), adjust the comparison
 accordingly. Check `services/api/internal/db/models.go` for exact types.
 
 - [ ] **Step 3: Commit**
@@ -285,6 +289,7 @@ git commit -m "feat(api): Add GetConfig handler"
 ### Task 5: Register the route
 
 **Files:**
+
 - Modify: `services/api/internal/api/server.go`
 
 - [ ] **Step 1: Add config route**
@@ -312,13 +317,14 @@ git commit -m "feat(api): Register GET /api/v1/config route"
 ### Task 6: Write handler test
 
 **Files:**
+
 - Create: `services/api/internal/api/handlers/config_test.go`
 
 - [ ] **Step 1: Write the test**
 
-There are no existing handler tests in this project. This test uses a real in-memory SQLite
-database with goose migrations (same as production). The `db.Open` function uses `go-sqlite3` for
-local paths and the `db.Migrate` function runs all embedded goose migrations.
+There are no existing handler tests in this project. This test uses a real in-memory SQLite database
+with goose migrations (same as production). The `db.Open` function uses `go-sqlite3` for local paths
+and the `db.Migrate` function runs all embedded goose migrations.
 
 ```go
 package handlers_test
@@ -439,8 +445,8 @@ Run: `task clean && task api:serve`
 
 Run: `curl -s http://localhost:8080/api/v1/config | jq .`
 
-Expected: JSON response with `features` object (6 flags) and `screens` object (3 screens with
-blocks matching seed data). Verify `Cache-Control: public, max-age=60` header is present.
+Expected: JSON response with `features` object (6 flags) and `screens` object (3 screens with blocks
+matching seed data). Verify `Cache-Control: public, max-age=60` header is present.
 
 ---
 
@@ -449,6 +455,7 @@ blocks matching seed data). Verify `Cache-Control: public, max-age=60` header is
 ### Task 8: Add config types and API method
 
 **Files:**
+
 - Modify: `apps/mobile/src/api/client.ts`
 
 - [ ] **Step 1: Add types**
@@ -489,6 +496,7 @@ git commit -m "feat(mobile): Add config types and getConfig API method"
 ### Task 9: Create AppConfigContext
 
 **Files:**
+
 - Create: `apps/mobile/src/context/AppConfigContext.tsx`
 
 - [ ] **Step 1: Write the context provider**
@@ -591,15 +599,13 @@ In `App.tsx`, import `AppConfigProvider` and wrap it around the existing provide
 **outside** `AppDataProvider` since config doesn't depend on user data:
 
 ```typescript
-import { AppConfigProvider } from './src/context/AppConfigContext';
+import { AppConfigProvider } from "./src/context/AppConfigContext";
 ```
 
 Then in the JSX, wrap:
 
 ```tsx
-<AppConfigProvider>
-  {/* existing AppDataProvider, NavigationContainer, etc. */}
-</AppConfigProvider>
+<AppConfigProvider>{/* existing AppDataProvider, NavigationContainer, etc. */}</AppConfigProvider>
 ```
 
 - [ ] **Step 3: Verify app still runs**
@@ -623,6 +629,7 @@ git commit -m "feat(mobile): Add AppConfigContext with foreground refresh"
 ### Task 10: Create BlockRenderer
 
 **Files:**
+
 - Create: `apps/mobile/src/components/blocks/BlockRenderer.tsx`
 
 - [ ] **Step 1: Write the renderer**
@@ -694,6 +701,7 @@ git commit -m "feat(mobile): Add BlockRenderer component"
 ### Task 11: Create block components
 
 **Files:**
+
 - Create: `apps/mobile/src/components/blocks/BannerBlock.tsx`
 - Create: `apps/mobile/src/components/blocks/ActiveDealsBlock.tsx`
 - Create: `apps/mobile/src/components/blocks/LeagueFilterBlock.tsx`
@@ -768,8 +776,8 @@ const styles = StyleSheet.create({
 
 - [ ] **Step 3: Create ActiveDealsBlock**
 
-Extracted from `DealsScreen.tsx` — the FlatList of ActiveDealCard items with empty state. The
-modal handling and deal press logic stay in DealsScreen (the block just renders the list).
+Extracted from `DealsScreen.tsx` — the FlatList of ActiveDealCard items with empty state. The modal
+handling and deal press logic stay in DealsScreen (the block just renders the list).
 
 ```typescript
 // src/components/blocks/ActiveDealsBlock.tsx
@@ -905,8 +913,8 @@ const styles = StyleSheet.create({
 });
 ```
 
-Note: `LeagueFilterBlock` needs `selectedLeague` and `onSelectLeague` as props — these come from
-the parent `DiscoverScreen` which owns the filter state. This means `BlockRenderer` needs to pass
+Note: `LeagueFilterBlock` needs `selectedLeague` and `onSelectLeague` as props — these come from the
+parent `DiscoverScreen` which owns the filter state. This means `BlockRenderer` needs to pass
 screen-specific props to certain block types, or the filter state moves into a shared context. For
 v1, the simplest approach is to keep the filter state in `DiscoverScreen` and pass it through the
 block renderer. See Task 12 for how this is wired.
@@ -1438,14 +1446,15 @@ git commit -m "feat(mobile): Add block components for server-driven UI"
 ### Task 12: Replace screen layouts with BlockRenderer
 
 **Files:**
+
 - Modify: `apps/mobile/src/screens/DealsScreen.tsx`
 - Modify: `apps/mobile/src/screens/DiscoverScreen.tsx`
 - Modify: `apps/mobile/src/screens/ProfileScreen.tsx`
 
 - [ ] **Step 1: Update DealsScreen**
 
-Replace the hardcoded content with `BlockRenderer`. Keep any screen-level logic that isn't part of
-a block (e.g., modal handlers, notification deep-link setup). The screen becomes a thin wrapper:
+Replace the hardcoded content with `BlockRenderer`. Keep any screen-level logic that isn't part of a
+block (e.g., modal handlers, notification deep-link setup). The screen becomes a thin wrapper:
 
 ```typescript
 // The screen keeps its modal, refresh handler, etc.
@@ -1528,6 +1537,7 @@ git commit -m "feat(mobile): Wire screens to BlockRenderer for server-driven UI"
 ### Task 13: Apply feature flags to event filtering
 
 **Files:**
+
 - Modify: `apps/mobile/src/components/blocks/EventListBlock.tsx` (or wherever events are filtered)
 
 - [ ] **Step 1: Filter events by league flags**
@@ -1539,10 +1549,10 @@ rendering. Map league names to flag keys:
 const { config } = useAppConfig();
 
 const leagueFlags: Record<string, string> = {
-  MLB: 'enable_mlb',
-  NBA: 'enable_nba',
-  NFL: 'enable_nfl',
-  NHL: 'enable_nhl',
+  MLB: "enable_mlb",
+  NBA: "enable_nba",
+  NFL: "enable_nfl",
+  NHL: "enable_nhl",
 };
 
 const filteredEvents = events.filter((event) => {
