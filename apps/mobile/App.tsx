@@ -11,6 +11,7 @@ import { ProfileScreen } from './src/screens/ProfileScreen';
 import { UserProvider, useUser } from './src/hooks/useUser';
 import { ThemeProvider, useTheme } from './src/hooks/useTheme';
 import { AppDataProvider, useAppData } from './src/context/AppDataContext';
+import { AppConfigProvider, useAppConfig } from './src/context/AppConfigContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,9 +32,25 @@ function MainApp() {
   const { theme } = useTheme();
   const { colors, isDark } = theme;
   const { userLoading, userError, eventsLoading, eventsError, undismissedDeals } = useAppData();
+  const { config } = useAppConfig();
 
   const isLoading = userLoading || eventsLoading;
   const error = userError || eventsError;
+
+  // Maintenance mode — block the entire app
+  if (config.features.maintenance_mode === true) {
+    return (
+      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+        <Text style={{ fontSize: 48, marginBottom: 16 }}>🔧</Text>
+        <Text style={[styles.errorText, { color: colors.text }]}>
+          We'll be right back
+        </Text>
+        <Text style={[styles.errorHint, { color: colors.textMuted }]}>
+          Freebies is temporarily down for maintenance.{'\n'}Check back shortly!
+        </Text>
+      </View>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -122,13 +139,15 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <UserProvider>
-          <AppDataProvider>
-            <NavigationContainer>
-              <MainApp />
-            </NavigationContainer>
-          </AppDataProvider>
-        </UserProvider>
+        <AppConfigProvider>
+          <UserProvider>
+            <AppDataProvider>
+              <NavigationContainer>
+                <MainApp />
+              </NavigationContainer>
+            </AppDataProvider>
+          </UserProvider>
+        </AppConfigProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

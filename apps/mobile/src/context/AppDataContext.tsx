@@ -6,6 +6,7 @@ import { useActiveDeals } from '../hooks/useActiveDeals';
 import { useUser } from '../hooks/useUser';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { Event, ActiveDeal, League, api } from '../api/client';
+import { useAppConfig } from './AppConfigContext';
 
 interface AppDataContextType {
   // User
@@ -57,6 +58,7 @@ const AppDataContext = createContext<AppDataContextType | null>(null);
 export function AppDataProvider({ children }: { children: ReactNode }) {
   const { user, isLoading: userLoading, error: userError } = useUser();
   const { events, isLoading: eventsLoading, error: eventsError, refetch: refetchEvents } = useEvents();
+  const { config } = useAppConfig();
 
   // Leagues state
   const [leagues, setLeagues] = useState<League[]>([]);
@@ -125,11 +127,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     await Promise.all([refetchEvents(), refetchDeals()]);
   }, [refetchEvents, refetchDeals]);
 
-  // Wrap toggle subscription to refetch deals after
+  // Wrap toggle subscription to refetch deals after (gated by feature flag)
   const toggleSubscription = useCallback(async (eventId: string) => {
+    if (config.features.enable_subscriptions === false) return;
     await _toggleSubscription(eventId);
     refetchDeals();
-  }, [_toggleSubscription, refetchDeals]);
+  }, [_toggleSubscription, refetchDeals, config.features.enable_subscriptions]);
 
   // Refresh data when app comes to foreground
   const appState = useRef(AppState.currentState);
@@ -154,11 +157,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     refreshAll();
   }, [refreshAll]);
 
-  // Register for push notifications
+  // Register for push notifications (only if enabled)
+  const pushEnabled = config.features.enable_push_notifications !== false;
   const { expoPushToken } = usePushNotifications(
-    user?.id ?? null,
-    handleNotificationTap,
-    handleNotificationReceived
+    pushEnabled ? (user?.id ?? null) : null,
+    pushEnabled ? handleNotificationTap : undefined,
+    pushEnabled ? handleNotificationReceived : undefined
   );
 
   const value: AppDataContextType = {

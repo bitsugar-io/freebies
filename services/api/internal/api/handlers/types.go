@@ -112,3 +112,16 @@ type DismissalResponse struct {
 	Type             string `json:"type"`
 	DismissedAt      string `json:"dismissedAt"`
 }
+
+// ConfigResponse is the top-level config response
+type ConfigResponse struct {
+	Features map[string]bool          `json:"features"`
+	Screens  map[string][]ScreenBlock `json:"screens"`
+}
+
+// ScreenBlock represents a UI block in a screen layout
+type ScreenBlock struct {
+	Type   string                 `json:"type"`
+	Key    string                 `json:"key"`
+	Config map[string]interface{} `json:"config"`
+}

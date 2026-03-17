@@ -169,3 +169,11 @@ WHERE te.id = ?
 SELECT * FROM triggered_events
 WHERE event_id = ? AND game_id = ?
 LIMIT 1;
+
+-- name: ListFeatureFlags :many
+SELECT * FROM feature_flags ORDER BY key;
+
+-- name: ListAllEnabledScreenBlocks :many
+SELECT * FROM screen_blocks
+WHERE enabled = 1
+ORDER BY screen, position ASC;

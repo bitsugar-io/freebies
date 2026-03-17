@@ -2,7 +2,8 @@
 import * as SecureStore from 'expo-secure-store';
 
 // Configure this based on environment
-const API_BASE_URL = 'https://freebie-api.bitsugar.io/api/v1';
+// const API_BASE_URL = 'https://freebie-api.bitsugar.io/api/v1';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
 
 const AUTH_TOKEN_KEY = 'freebie_auth_token';
 
@@ -64,6 +65,17 @@ export interface Dismissal {
   triggeredEventId: string;
   type: 'got_it' | 'stop_reminding';
   dismissedAt: string;
+}
+
+export interface ScreenBlock {
+  type: string;
+  key: string;
+  config: Record<string, any>;
+}
+
+export interface AppConfig {
+  features: Record<string, boolean>;
+  screens: Record<string, ScreenBlock[]>;
 }
 
 export interface ApiError {
@@ -238,6 +250,11 @@ class ApiClient {
   // User Stats
   async getUserStats(userId: string): Promise<UserStats> {
     return this.request<UserStats>(`/users/${userId}/stats`, {}, true);
+  }
+
+  // App Config
+  async getConfig(): Promise<AppConfig> {
+    return this.request<AppConfig>('/config');
   }
 }
 

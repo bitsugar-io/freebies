@@ -798,6 +798,45 @@ func (q *Queries) ListActiveTriggeredEventsForUser(ctx context.Context, arg List
 	return items, nil
 }
 
+const listAllEnabledScreenBlocks = `-- name: ListAllEnabledScreenBlocks :many
+SELECT id, screen, type, "key", position, enabled, config, created_at, updated_at FROM screen_blocks
+WHERE enabled = 1
+ORDER BY screen, position ASC
+`
+
+func (q *Queries) ListAllEnabledScreenBlocks(ctx context.Context) ([]ScreenBlock, error) {
+	rows, err := q.db.QueryContext(ctx, listAllEnabledScreenBlocks)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ScreenBlock{}
+	for rows.Next() {
+		var i ScreenBlock
+		if err := rows.Scan(
+			&i.ID,
+			&i.Screen,
+			&i.Type,
+			&i.Key,
+			&i.Position,
+			&i.Enabled,
+			&i.Config,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listAllUsers = `-- name: ListAllUsers :many
 SELECT id, device_id, push_token, platform, created_at, updated_at, token FROM users
 `
@@ -1009,6 +1048,33 @@ func (q *Queries) ListExpiringTriggeredEvents(ctx context.Context, dollar_1 sql.
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listFeatureFlags = `-- name: ListFeatureFlags :many
+SELECT "key", enabled, updated_at FROM feature_flags ORDER BY key
+`
+
+func (q *Queries) ListFeatureFlags(ctx context.Context) ([]FeatureFlag, error) {
+	rows, err := q.db.QueryContext(ctx, listFeatureFlags)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []FeatureFlag{}
+	for rows.Next() {
+		var i FeatureFlag
+		if err := rows.Scan(&i.Key, &i.Enabled, &i.UpdatedAt); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Event } from '../api/client';
 import { useTheme } from '../hooks/useTheme';
+import { useAppConfig } from '../context/AppConfigContext';
 
 interface SponsoredCardProps {
   event: Event;
@@ -16,9 +17,10 @@ interface SponsoredCardProps {
 export function SponsoredCard({ event }: SponsoredCardProps) {
   const { theme } = useTheme();
   const { colors } = theme;
+  const { config } = useAppConfig();
 
-  // Only render if event has affiliate data
-  if (!event.affiliateUrl) {
+  // Only render if affiliate links are enabled and event has affiliate data
+  if (config.features.show_affiliate_links === false || !event.affiliateUrl) {
     return null;
   }
 

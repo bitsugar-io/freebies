@@ -10,8 +10,10 @@ import {
 } from 'react-native';
 import { Event, ActiveDeal } from '../api/client';
 import { useTheme } from '../hooks/useTheme';
+import { useAppConfig } from '../context/AppConfigContext';
 import { formatExpiresAt, isExpiringSoon } from '../hooks/useActiveDeals';
 import { SponsoredCard } from './SponsoredCard';
+import { PromoCardBlock } from './blocks/PromoCardBlock';
 import { SwipeButton } from './SwipeButton';
 
 interface DealModalProps {
@@ -35,12 +37,27 @@ export function DealModal({
 }: DealModalProps) {
   const { theme } = useTheme();
   const { colors } = theme;
+  const { config } = useAppConfig();
 
   if (!event) return null;
 
   const hasExpiration = activeDeal?.expiresAt;
   const expiringSoon = hasExpiration ? isExpiringSoon(activeDeal.expiresAt, 6) : false;
   const expirationText = hasExpiration ? formatExpiresAt(activeDeal.expiresAt) : null;
+
+  // Render config-driven blocks for the deal_detail screen
+  const dealBlocks = config?.screens['deal_detail'] ?? [];
+
+  const renderDealBlocks = () => {
+    return dealBlocks.map((block) => {
+      switch (block.type) {
+        case 'promo_card':
+          return <PromoCardBlock key={block.key} config={block.config} />;
+        default:
+          return null;
+      }
+    });
+  };
 
   return (
     <Modal
@@ -146,6 +163,26 @@ export function DealModal({
             </TouchableOpacity>
           )}
 
+          {/* Subscribe Button - only show when not viewing an active deal */}
+          {!activeDeal && (
+            <TouchableOpacity
+              style={[
+                styles.subscribeButton,
+                { backgroundColor: isSubscribed ? colors.surfaceSecondary : colors.accent },
+              ]}
+              onPress={onToggleSubscription}
+            >
+              <Text
+                style={[
+                  styles.subscribeButtonText,
+                  { color: isSubscribed ? colors.text : '#fff' },
+                ]}
+              >
+                {isSubscribed ? '✓ Subscribed - Tap to Unsubscribe' : 'Subscribe to this Deal'}
+              </Text>
+            </TouchableOpacity>
+          )}
+
           {/* Dismiss Buttons - only show if there's an active deal */}
           {activeDeal && onDismiss && !activeDeal.isDismissed && (
             <View style={styles.dismissActions}>
@@ -183,26 +220,6 @@ export function DealModal({
             </View>
           )}
 
-          {/* Subscribe Button - only show when not viewing an active deal */}
-          {!activeDeal && (
-            <TouchableOpacity
-              style={[
-                styles.subscribeButton,
-                { backgroundColor: isSubscribed ? colors.surfaceSecondary : colors.accent },
-              ]}
-              onPress={onToggleSubscription}
-            >
-              <Text
-                style={[
-                  styles.subscribeButtonText,
-                  { color: isSubscribed ? colors.text : '#fff' },
-                ]}
-              >
-                {isSubscribed ? '✓ Subscribed - Tap to Unsubscribe' : 'Subscribe to this Deal'}
-              </Text>
-            </TouchableOpacity>
-          )}
-
           {/* Status */}
           {!event.isActive && (
             <View style={[styles.inactiveBox, { backgroundColor: colors.warningBackground }]}>
@@ -211,6 +228,9 @@ export function DealModal({
               </Text>
             </View>
           )}
+
+          {/* Config-driven blocks (promo cards, etc.) */}
+          {renderDealBlocks()}
 
           {/* Sponsored Affiliate Link */}
           <View style={styles.sponsoredSection}>
@@ -363,10 +383,6 @@ const styles = StyleSheet.create({
   },
   dismissButtonText: {
     color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  dismissButtonTextSecondary: {
     fontSize: 16,
     fontWeight: '600',
   },

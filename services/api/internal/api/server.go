@@ -70,6 +70,7 @@ func (s *Server) setupRoutes() {
 
 	s.router.Route("/api/v1", func(r chi.Router) {
 		// Public routes (no auth required)
+		r.Get("/config", h.GetConfig)
 		r.Get("/leagues", h.ListLeagues)
 		r.Get("/events", h.ListEvents)
 		r.Get("/events/{id}", h.GetEvent)
