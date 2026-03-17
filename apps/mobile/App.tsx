@@ -81,6 +81,7 @@ function MainApp() {
     <>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Tab.Navigator
+        initialRouteName={undismissedDeals.length > 0 ? 'Deals' : 'Discover'}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color }) => (
             <TabIcon name={route.name} focused={focused} color={color} />
