@@ -48,8 +48,8 @@ func TestGetConfig(t *testing.T) {
 			t.Fatalf("failed to decode response: %v", err)
 		}
 
-		if len(config.Features) != 6 {
-			t.Fatalf("expected 6 feature flags, got %d", len(config.Features))
+		if len(config.Features) != 8 {
+			t.Fatalf("expected 8 feature flags, got %d", len(config.Features))
 		}
 		if config.Features["enable_mlb"] != true {
 			t.Fatal("expected enable_mlb to be true")

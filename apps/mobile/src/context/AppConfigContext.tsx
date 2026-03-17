@@ -9,6 +9,8 @@ const DEFAULT_CONFIG: AppConfig = {
     enable_nfl: true,
     enable_nhl: false,
     show_affiliate_links: true,
+    enable_push_notifications: true,
+    enable_subscriptions: true,
     maintenance_mode: false,
   },
   screens: {
