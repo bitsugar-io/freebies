@@ -210,9 +210,9 @@ Each component is deployed as an independent Helm chart:
 Charts are installed separately so they can be upgraded independently:
 
 ```bash
-helm upgrade --install freebie-api charts/api/ --namespace freebie
-helm upgrade --install freebie-scheduler charts/scheduler/ --namespace freebie
-helm upgrade --install freebie-cloudflare charts/cloudflare/ --namespace freebie
+helm upgrade --install freebie-api charts/api/ --namespace freebies
+helm upgrade --install freebie-scheduler charts/scheduler/ --namespace freebies
+helm upgrade --install freebie-cloudflare charts/cloudflare/ --namespace freebies
 ```
 
 ## Networking
