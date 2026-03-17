@@ -11,6 +11,7 @@ import { ProfileScreen } from './src/screens/ProfileScreen';
 import { UserProvider, useUser } from './src/hooks/useUser';
 import { ThemeProvider, useTheme } from './src/hooks/useTheme';
 import { AppDataProvider, useAppData } from './src/context/AppDataContext';
+import { AppConfigProvider } from './src/context/AppConfigContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -122,13 +123,15 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <UserProvider>
-          <AppDataProvider>
-            <NavigationContainer>
-              <MainApp />
-            </NavigationContainer>
-          </AppDataProvider>
-        </UserProvider>
+        <AppConfigProvider>
+          <UserProvider>
+            <AppDataProvider>
+              <NavigationContainer>
+                <MainApp />
+              </NavigationContainer>
+            </AppDataProvider>
+          </UserProvider>
+        </AppConfigProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

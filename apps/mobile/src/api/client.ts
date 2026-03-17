@@ -66,6 +66,17 @@ export interface Dismissal {
   dismissedAt: string;
 }
 
+export interface ScreenBlock {
+  type: string;
+  key: string;
+  config: Record<string, any>;
+}
+
+export interface AppConfig {
+  features: Record<string, boolean>;
+  screens: Record<string, ScreenBlock[]>;
+}
+
 export interface ApiError {
   error: string;
 }
@@ -238,6 +249,11 @@ class ApiClient {
   // User Stats
   async getUserStats(userId: string): Promise<UserStats> {
     return this.request<UserStats>(`/users/${userId}/stats`, {}, true);
+  }
+
+  // App Config
+  async getConfig(): Promise<AppConfig> {
+    return this.request<AppConfig>('/config');
   }
 }
 
