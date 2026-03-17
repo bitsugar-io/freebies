@@ -21,6 +21,7 @@ const DEFAULT_CONFIG: AppConfig = {
       { type: 'league_filter', key: 'league-filter-bar', config: {} },
       { type: 'event_list', key: 'event-list', config: { groupBy: 'team' } },
     ],
+    deal_detail: [],
     profile: [
       { type: 'user_stats', key: 'user-stats', config: {} },
       { type: 'subscription_list', key: 'subscriptions', config: {} },

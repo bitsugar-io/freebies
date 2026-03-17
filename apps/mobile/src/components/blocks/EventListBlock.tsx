@@ -18,12 +18,9 @@ interface TeamGroup {
   followedCount: number;
 }
 
-interface EventListProps extends BlockProps {
-  selectedLeague?: string;
-  onEventPress?: (event: Event) => void;
-}
-
-export function EventListBlock({ config, selectedLeague = 'all', onEventPress }: EventListProps) {
+export function EventListBlock({ config, screenProps }: BlockProps) {
+  const selectedLeague = screenProps?.selectedLeague ?? 'all';
+  const onEventPress = screenProps?.onEventPress;
   const { theme } = useTheme();
   const { colors } = theme;
   const { events, isSubscribed, toggleSubscription } = useAppData();

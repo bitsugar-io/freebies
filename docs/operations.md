@@ -148,11 +148,12 @@ Blocks render in ascending `position` order within each screen.
 
 ### Screens
 
-| Screen ID | Tab |
-| --------- | --- |
+| Screen ID | Where |
+| --------- | ----- |
 | `deals` | Active Deals tab |
 | `discover` | Discover Events tab |
 | `profile` | Profile & Settings tab |
+| `deal_detail` | Deal Details modal (opens when tapping a deal) |
 
 ## Common Operations
 

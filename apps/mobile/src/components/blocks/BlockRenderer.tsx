@@ -13,6 +13,7 @@ import { SettingsBlock } from './SettingsBlock';
 
 export interface BlockProps {
   config: Record<string, any>;
+  screenProps?: Record<string, any>;
 }
 
 const BLOCK_REGISTRY: Record<string, React.ComponentType<BlockProps>> = {
@@ -30,14 +31,17 @@ interface BlockRendererProps {
   screenId: string;
   refreshing?: boolean;
   onRefresh?: () => void;
+  screenProps?: Record<string, any>;
+  scrollEnabled?: boolean;
 }
 
-export function BlockRenderer({ screenId, refreshing, onRefresh }: BlockRendererProps) {
+export function BlockRenderer({ screenId, refreshing, onRefresh, screenProps, scrollEnabled = true }: BlockRendererProps) {
   const { config } = useAppConfig();
   const blocks = config?.screens[screenId] ?? [];
 
   return (
     <ScrollView
+      scrollEnabled={scrollEnabled}
       refreshControl={
         onRefresh ? (
           <RefreshControl refreshing={refreshing ?? false} onRefresh={onRefresh} />
@@ -47,7 +51,7 @@ export function BlockRenderer({ screenId, refreshing, onRefresh }: BlockRenderer
       {blocks.map((block) => {
         const Component = BLOCK_REGISTRY[block.type];
         if (!Component) return null;
-        return <Component key={block.key} config={block.config} />;
+        return <Component key={block.key} config={block.config} screenProps={screenProps} />;
       })}
     </ScrollView>
   );

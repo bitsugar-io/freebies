@@ -5,16 +5,14 @@ import { useAppData } from '../../context/AppDataContext';
 import { useTheme } from '../../hooks/useTheme';
 import { useAppConfig } from '../../context/AppConfigContext';
 
-interface LeagueFilterProps extends BlockProps {
-  selectedLeague?: string;
-  onSelectLeague?: (id: string) => void;
-}
-
-export function LeagueFilterBlock({ config, selectedLeague = 'all', onSelectLeague }: LeagueFilterProps) {
+export function LeagueFilterBlock({ config, screenProps }: BlockProps) {
   const { theme } = useTheme();
   const { colors } = theme;
   const { leagues } = useAppData();
   const { config: appConfig } = useAppConfig();
+
+  const selectedLeague = screenProps?.selectedLeague ?? 'all';
+  const onSelectLeague = screenProps?.onSelectLeague;
 
   const leagueOptions = useMemo(() => {
     const all = { id: 'all', name: 'All', icon: '🌟', displayOrder: 0 };
