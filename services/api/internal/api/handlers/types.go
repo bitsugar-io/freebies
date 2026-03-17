@@ -50,6 +50,7 @@ var RegionNames = map[string]string{
 	"us-il-chi": "Chicago Area",
 	"us-ma-bos": "Boston Area",
 	"us-ny-nyc": "New York Area",
+	"us-or-pdx": "Portland Area",
 }
 
 // CreateUserRequest is the request body for creating a user
