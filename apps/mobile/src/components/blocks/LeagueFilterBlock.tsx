@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { BlockProps } from './BlockRenderer';
 import { useAppData } from '../../context/AppDataContext';
 import { useTheme } from '../../hooks/useTheme';
+import { useAppConfig } from '../../context/AppConfigContext';
 
 interface LeagueFilterProps extends BlockProps {
   selectedLeague?: string;
@@ -13,11 +14,16 @@ export function LeagueFilterBlock({ config, selectedLeague = 'all', onSelectLeag
   const { theme } = useTheme();
   const { colors } = theme;
   const { leagues } = useAppData();
+  const { config: appConfig } = useAppConfig();
 
   const leagueOptions = useMemo(() => {
     const all = { id: 'all', name: 'All', icon: '🌟', displayOrder: 0 };
-    return [all, ...leagues];
-  }, [leagues]);
+    const enabledLeagues = leagues.filter(league => {
+      const flagKey = `enable_${league.name.toLowerCase()}`;
+      return appConfig.features[flagKey] !== false;
+    });
+    return [all, ...enabledLeagues];
+  }, [leagues, appConfig.features]);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>

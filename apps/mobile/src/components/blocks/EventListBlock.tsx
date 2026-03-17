@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native
 import { BlockProps } from './BlockRenderer';
 import { useAppData } from '../../context/AppDataContext';
 import { useTheme } from '../../hooks/useTheme';
+import { useAppConfig } from '../../context/AppConfigContext';
 import { Event } from '../../api/client';
 
 const DEFAULT_TEAM_COLOR = '#666666';
@@ -26,11 +27,20 @@ export function EventListBlock({ config, selectedLeague = 'all', onEventPress }:
   const { theme } = useTheme();
   const { colors } = theme;
   const { events, isSubscribed, toggleSubscription } = useAppData();
+  const { config: appConfig } = useAppConfig();
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null);
 
   const teamGroups = useMemo(() => {
+    const leagueFlags: Record<string, string> = {
+      MLB: 'enable_mlb', NBA: 'enable_nba', NFL: 'enable_nfl', NHL: 'enable_nhl',
+    };
+    const enabledEvents = events.filter(event => {
+      const flagKey = leagueFlags[event.league];
+      return !flagKey || appConfig.features[flagKey] !== false;
+    });
+
     const groups: Record<string, TeamGroup> = {};
-    events.forEach(event => {
+    enabledEvents.forEach(event => {
       if (!groups[event.teamId]) {
         groups[event.teamId] = {
           teamId: event.teamId, teamName: event.teamName,
@@ -45,7 +55,7 @@ export function EventListBlock({ config, selectedLeague = 'all', onEventPress }:
       g.isFollowing = g.events.length > 0 && g.events.every(e => isSubscribed(e.id));
     });
     return Object.values(groups);
-  }, [events, isSubscribed]);
+  }, [events, isSubscribed, appConfig.features]);
 
   const filteredTeams = useMemo(() => {
     if (selectedLeague === 'all') return teamGroups;
