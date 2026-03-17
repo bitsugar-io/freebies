@@ -144,8 +144,8 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 		title := fmt.Sprintf("⏰ Deal expires in %d hours!", hours)
 		body := fmt.Sprintf("Don't forget: %s - %s", deal.OfferName, deal.PartnerName)
 		data := map[string]interface{}{
-			"triggered_event_id": deal.ID,
-			"event_id":           deal.EventID,
+			"triggeredEventId": deal.ID,
+			"eventId":          deal.EventID,
 		}
 
 		var messages []notify.ExpoPushMessage
@@ -195,8 +195,8 @@ func (s *Service) notifySubscribers(ctx context.Context, result triggers.CheckRe
 	title := fmt.Sprintf("%sDeal Unlocked!", icon)
 	body := fmt.Sprintf("%s: %s", result.Event.PartnerName, result.Event.OfferName)
 	data := map[string]interface{}{
-		"triggered_event_id": result.TriggeredEventID,
-		"event_id":           result.EventID,
+		"triggeredEventId": result.TriggeredEventID,
+		"eventId":          result.EventID,
 	}
 
 	var messages []notify.ExpoPushMessage

@@ -1,5 +1,6 @@
 *
 
+!services/api/
 !services/api/go.mod
 !services/api/go.sum
 !services/api/*.go
@@ -9,6 +10,7 @@
 !services/api/internal/**/*.go
 !services/api/internal/**/*.sql
 
+!services/scheduler/
 !services/scheduler/go.mod
 !services/scheduler/go.sum
 !services/scheduler/*.go

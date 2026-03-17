@@ -1,7 +1,7 @@
 image:
   repository: registry.digitalocean.com/freebie/freebie-api
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 port: 8080
 replicas: 1
