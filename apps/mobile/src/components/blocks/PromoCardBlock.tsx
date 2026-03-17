@@ -20,7 +20,7 @@ export function PromoCardBlock({ config }: BlockProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, marginHorizontal: 16, marginTop: 16, borderRadius: 12 },
+  container: { padding: 20, marginHorizontal: 16, marginTop: 8, marginBottom: 8, borderRadius: 12 },
   title: { fontSize: 17, fontWeight: '700' },
   subtitle: { fontSize: 14, marginTop: 4 },
 });

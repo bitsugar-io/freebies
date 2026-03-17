@@ -32,7 +32,7 @@ export function BannerBlock({ config }: BlockProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', alignItems: 'center', padding: 16,
-    marginHorizontal: 16, marginTop: 16, borderRadius: 12,
+    marginHorizontal: 16, marginTop: 8, marginBottom: 8, borderRadius: 12,
   },
   text: { flex: 1, fontSize: 15, fontWeight: '600' },
   dismiss: { paddingLeft: 12 },
