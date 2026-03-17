@@ -25,7 +25,7 @@ INSERT INTO feature_flags (key, enabled) VALUES
     ('enable_nba', 1),
     ('enable_nfl', 1),
     ('enable_nhl', 0),
-    ('show_affiliate_links', 0),
+    ('show_affiliate_links', 1),
     ('maintenance_mode', 0);
 
 -- Seed screen blocks (matches current hardcoded layout)
