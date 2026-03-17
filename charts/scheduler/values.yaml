@@ -13,4 +13,4 @@ checkTriggers:
   schedule: "0 14 * * *"   # 6am PT (UTC-8)
 
 sendReminders:
-  schedule: "0 2 * * *"    # 6pm PT (UTC-8)
+  schedule: "0 17,20,1 * * *"  # 9am, 12pm, 5pm PT (UTC-8)

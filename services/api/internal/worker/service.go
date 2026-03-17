@@ -2,7 +2,6 @@ package worker
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"log/slog"
 	"time"
@@ -120,29 +119,30 @@ func (s *Service) CheckTriggers(ctx context.Context, date time.Time) (*CheckTrig
 	return res, nil
 }
 
-// SendReminders sends reminder notifications for deals expiring soon.
+// SendReminders sends reminder notifications for all active deals.
 func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, error) {
-	expiringDeals, err := s.queries.ListExpiringTriggeredEvents(ctx, sql.NullString{String: "6", Valid: true})
+	activeDeals, err := s.queries.ListActiveTriggeredEvents(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("listing expiring deals: %w", err)
+		return nil, fmt.Errorf("listing active deals: %w", err)
 	}
 
-	s.logger.Info("checking for expiring deals", "count", len(expiringDeals))
+	s.logger.Info("checking for active deals", "count", len(activeDeals))
 
 	var totalSent, totalFailed int64
 
-	for _, deal := range expiringDeals {
+	for _, deal := range activeDeals {
 		users, err := s.queries.ListUsersForReminder(ctx, deal.ID)
 		if err != nil {
 			s.logger.Error("failed to list users for reminder", "deal_id", deal.ID, "error", err)
 			continue
 		}
 
-		timeRemaining := time.Until(deal.ExpiresAt.Time)
-		hours := int(timeRemaining.Hours())
-
-		title := fmt.Sprintf("⏰ Deal expires in %d hours!", hours)
-		body := fmt.Sprintf("Don't forget: %s - %s", deal.OfferName, deal.PartnerName)
+		icon := ""
+		if deal.Icon.Valid {
+			icon = deal.Icon.String + " "
+		}
+		title := fmt.Sprintf("%sDon't forget your deal!", icon)
+		body := fmt.Sprintf("%s: %s", deal.PartnerName, deal.OfferName)
 		data := map[string]interface{}{
 			"triggeredEventId": deal.ID,
 			"eventId":          deal.EventID,
@@ -175,9 +175,9 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 	res := &SendRemindersResult{
 		Sent:          totalSent,
 		Failed:        totalFailed,
-		ExpiringDeals: len(expiringDeals),
+		ExpiringDeals: len(activeDeals),
 	}
-	s.logger.Info("send-reminders complete", "sent", totalSent, "failed", totalFailed, "expiring_deals", len(expiringDeals))
+	s.logger.Info("send-reminders complete", "sent", totalSent, "failed", totalFailed, "active_deals", len(activeDeals))
 	return res, nil
 }
 
