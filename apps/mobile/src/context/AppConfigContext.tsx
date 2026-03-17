@@ -8,7 +8,7 @@ const DEFAULT_CONFIG: AppConfig = {
     enable_nba: true,
     enable_nfl: true,
     enable_nhl: false,
-    show_affiliate_links: true,
+    show_affiliate_links: false,
     enable_push_notifications: true,
     enable_subscriptions: true,
     maintenance_mode: false,
