@@ -41,9 +41,11 @@ creates a `triggered_event`, auto-subscribes users, and sends push notifications
 so tapping the notification opens the deal in the app.
 
 ```bash
-# 1. Find the event you want to trigger
+# 1. Find the event ID — use deals list (shows Event ID for existing deals)
 ./bin/freebie deals list
-# or look up events in the database
+
+# Or query the API for all events
+curl -s https://freebie-api.bitsugar.io/api/v1/events | python3 -m json.tool
 
 # 2. Trigger it — subscribers get a push notification
 ./bin/freebie deals trigger <event-id>
@@ -66,6 +68,7 @@ independently from the deal trigger flow.
 ./bin/freebie notify send <user-id> --title "🍔 Deal Unlocked!" --body "Free Jumbo Jack"
 
 # Send with deep link data (tapping opens the deal in the app)
+# Get event-id and triggered-event-id from: ./bin/freebie deals list
 ./bin/freebie notify send <user-id> \
   --title "🍔 Deal Unlocked!" \
   --body "Jack in the Box: Free Jumbo Jack" \
