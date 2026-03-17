@@ -152,8 +152,8 @@ pod calls the API's internal worker endpoints via HTTP — it does not access th
   subscribers
 - **6pm PT** (`send-reminders`): Send reminder notifications for deals expiring soon
 
-See the [top-level architecture doc](../../../docs/architecture.md#worker-flow) for the full
-worker flow.
+See the [top-level architecture doc](../../../docs/architecture.md#worker-flow) for the full worker
+flow.
 
 ## Future Considerations
 

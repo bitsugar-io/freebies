@@ -1,10 +1,15 @@
 # Service Separation Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan
+> task-by-task.
 
-**Goal:** Split `services/backend` into `services/api` and `services/scheduler` with independent Go modules, Docker images, and Helm charts.
+**Goal:** Split `services/backend` into `services/api` and `services/scheduler` with independent Go
+modules, Docker images, and Helm charts.
 
-**Architecture:** The API service keeps all business logic, database access, and HTTP handlers. The scheduler is a lightweight Go binary with only the generated HTTP client — it calls the API's internal endpoints on a schedule. Both services follow identical Go conventions (Cobra, Viper, slog, cmd/internal layout).
+**Architecture:** The API service keeps all business logic, database access, and HTTP handlers. The
+scheduler is a lightweight Go binary with only the generated HTTP client — it calls the API's
+internal endpoints on a schedule. Both services follow identical Go conventions (Cobra, Viper, slog,
+cmd/internal layout).
 
 **Tech Stack:** Go 1.25, Cobra, Viper, slog, oapi-codegen, Chi, Docker (distroless), Helm
 
@@ -13,6 +18,7 @@
 ### Task 1: Rename services/backend → services/api
 
 **Files:**
+
 - Rename: `services/backend/` → `services/api/`
 - Modify: `services/api/go.mod` (update module path)
 - Modify: `Taskfile.yml` (update include path)
@@ -32,10 +38,13 @@ git mv services/backend services/api
 **Step 2: Update Go module path**
 
 In `services/api/go.mod`, change:
+
 ```
 module github.com/retr0h/freebie
 ```
+
 to:
+
 ```
 module github.com/retr0h/freebie/services/api
 ```
@@ -43,6 +52,7 @@ module github.com/retr0h/freebie/services/api
 **Step 3: Update all internal import paths**
 
 Find and replace across all `.go` files in `services/api/`:
+
 ```
 "github.com/retr0h/freebie/internal/ → "github.com/retr0h/freebie/services/api/internal/
 ```
@@ -50,33 +60,39 @@ Find and replace across all `.go` files in `services/api/`:
 **Step 4: Update Taskfile.yml**
 
 Root `Taskfile.yml` — change:
+
 ```yaml
-  backend:
-    taskfile: ./services/backend/Taskfile.yml
-    dir: ./services/backend
+backend:
+  taskfile: ./services/backend/Taskfile.yml
+  dir: ./services/backend
 ```
+
 to:
+
 ```yaml
-  api:
-    taskfile: ./services/api/Taskfile.yml
-    dir: ./services/api
+api:
+  taskfile: ./services/api/Taskfile.yml
+  dir: ./services/api
 ```
 
 Also update `clean` task:
+
 ```yaml
-  clean:
-    desc: Wipe backend database (migrations run on next serve)
-    cmds:
-      - task: api:clean
+clean:
+  desc: Wipe backend database (migrations run on next serve)
+  cmds:
+    - task: api:clean
 ```
 
 **Step 5: Update CLAUDE.md**
 
-Replace all `services/backend` references with `services/api`. Replace all `task backend:*` with `task api:*`.
+Replace all `services/backend` references with `services/api`. Replace all `task backend:*` with
+`task api:*`.
 
 **Step 6: Update docs/development.md**
 
-Replace all `services/backend` references with `services/api`. Replace all `task backend:*` with `task api:*`. Replace all `backend` task names.
+Replace all `services/backend` references with `services/api`. Replace all `task backend:*` with
+`task api:*`. Replace all `backend` task names.
 
 **Step 7: Update docs/architecture.md**
 
@@ -89,11 +105,13 @@ Replace `services/backend` references with `services/api`.
 **Step 9: Update .github/workflows/deploy.yaml**
 
 Change build context:
+
 ```yaml
 docker build -t "$IMAGE_TAG" -t "${{ env.REGISTRY }}/${{ env.IMAGE }}:latest" services/api/
 ```
 
 Change trigger paths:
+
 ```yaml
 paths:
   - "services/api/**"
@@ -128,11 +146,12 @@ CI/CD, and documentation references."
 
 ### Task 2: Remove local worker commands from API
 
-The API no longer needs `worker`, `worker run`, `worker check-triggers`, `worker send-reminders`,
-or `worker remote` CLI commands. The worker service logic stays (used by HTTP handlers). The
+The API no longer needs `worker`, `worker run`, `worker check-triggers`, `worker send-reminders`, or
+`worker remote` CLI commands. The worker service logic stays (used by HTTP handlers). The
 `internal/scheduler/` package is also removed — K8s CronJobs handle scheduling now.
 
 **Files:**
+
 - Delete: `services/api/cmd/worker.go`
 - Delete: `services/api/cmd/worker_remote.go`
 - Delete: `services/api/internal/scheduler/scheduler.go`
@@ -193,6 +212,7 @@ API for internal HTTP endpoints."
 ### Task 3: Create services/scheduler
 
 **Files:**
+
 - Create: `services/scheduler/main.go`
 - Create: `services/scheduler/cmd/root.go`
 - Create: `services/scheduler/cmd/check_triggers.go`
@@ -224,7 +244,8 @@ func main() {
 
 **Step 3: Create cmd/root.go**
 
-Mirror the API's root.go structure — Cobra root command, Viper config with `SCHEDULER_` prefix, slog logger setup.
+Mirror the API's root.go structure — Cobra root command, Viper config with `SCHEDULER_` prefix, slog
+logger setup.
 
 ```go
 package cmd
@@ -318,7 +339,8 @@ type Worker struct {
 
 **Step 5: Copy generated client code**
 
-Copy from the old backend's `internal/client/gen/` directory. The OpenAPI spec and generated client code are identical.
+Copy from the old backend's `internal/client/gen/` directory. The OpenAPI spec and generated client
+code are identical.
 
 ```bash
 mkdir -p services/scheduler/internal/client/gen
@@ -326,6 +348,7 @@ cp services/api/internal/api/worker/gen/api.yaml services/scheduler/internal/cli
 ```
 
 Create `services/scheduler/internal/client/gen/cfg.yaml`:
+
 ```yaml
 package: gen
 output: client.gen.go
@@ -334,6 +357,7 @@ generate:
 ```
 
 Create `services/scheduler/internal/client/gen/generate.go`:
+
 ```go
 package gen
 
@@ -341,6 +365,7 @@ package gen
 ```
 
 Generate the client:
+
 ```bash
 cd services/scheduler
 go get github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
@@ -512,7 +537,7 @@ func runSendReminders(cmd *cobra.Command, args []string) error {
 **Step 8: Create Taskfile.yml**
 
 ```yaml
-version: '3'
+version: "3"
 
 tasks:
   default:
@@ -539,10 +564,11 @@ tasks:
 **Step 9: Add to root Taskfile.yml**
 
 Add scheduler include:
+
 ```yaml
-  scheduler:
-    taskfile: ./services/scheduler/Taskfile.yml
-    dir: ./services/scheduler
+scheduler:
+  taskfile: ./services/scheduler/Taskfile.yml
+  dir: ./services/scheduler
 ```
 
 **Step 10: Install dependencies and verify build**
@@ -575,6 +601,7 @@ Uses generated OpenAPI client with bearer token auth."
 ### Task 4: Create scheduler Dockerfile
 
 **Files:**
+
 - Create: `services/scheduler/Dockerfile`
 - Create: `services/scheduler/.dockerignore`
 
@@ -646,6 +673,7 @@ Pure Go build (no CGO), distroless runtime, nonroot user."
 ### Task 5: Rename charts/cronjobs → charts/scheduler
 
 **Files:**
+
 - Rename: `charts/cronjobs/` → `charts/scheduler/`
 - Modify: `charts/scheduler/Chart.yaml` (rename chart)
 - Modify: `charts/scheduler/values.yaml` (update image to scheduler)
@@ -667,7 +695,8 @@ Change `name: freebie-cronjobs` to `name: freebie-scheduler`.
 
 **Step 3: Update values.yaml**
 
-Change image repository to `freebie-scheduler`. Change `pullPolicy` default. Update env var name from `FREEBIE_WORKER_SECRET` to `SCHEDULER_WORKER_SECRET`.
+Change image repository to `freebie-scheduler`. Change `pullPolicy` default. Update env var name
+from `FREEBIE_WORKER_SECRET` to `SCHEDULER_WORKER_SECRET`.
 
 ```yaml
 image:
@@ -682,19 +711,20 @@ api:
 workerSecret: ""
 
 checkTriggers:
-  schedule: "0 14 * * *"   # 6am PT (UTC-8)
+  schedule: "0 14 * * *" # 6am PT (UTC-8)
 
 sendReminders:
-  schedule: "0 2 * * *"    # 6pm PT (UTC-8)
+  schedule: "0 2 * * *" # 6pm PT (UTC-8)
 ```
 
-**Step 4: Update _helpers.tpl**
+**Step 4: Update \_helpers.tpl**
 
 Replace all `freebie-cronjobs` with `freebie-scheduler`.
 
 **Step 5: Update cronjob-triggers.yaml**
 
 Change command from:
+
 ```yaml
 command:
   - ./freebie
@@ -704,7 +734,9 @@ command:
   - --api-url
   - "http://{{ .Values.api.serviceName }}:{{ .Values.api.port }}"
 ```
+
 to:
+
 ```yaml
 command:
   - ./scheduler
@@ -715,7 +747,7 @@ env:
   - name: SCHEDULER_WORKER_SECRET
     valueFrom:
       secretKeyRef:
-        name: {{ include "freebie-scheduler.fullname" . }}
+        name: { { include "freebie-scheduler.fullname" . } }
         key: worker-secret
 ```
 
@@ -731,7 +763,9 @@ Update naming from `freebie-cronjobs` helpers to `freebie-scheduler`.
 
 **Step 8: Update .github/workflows/deploy.yaml**
 
-Add second image build for scheduler. Update chart name from `freebie-cronjobs` to `freebie-scheduler`. Pass `SCHEDULER_WORKER_SECRET` instead of `FREEBIE_WORKER_SECRET` for the scheduler chart.
+Add second image build for scheduler. Update chart name from `freebie-cronjobs` to
+`freebie-scheduler`. Pass `SCHEDULER_WORKER_SECRET` instead of `FREEBIE_WORKER_SECRET` for the
+scheduler chart.
 
 **Step 9: Commit**
 
@@ -749,6 +783,7 @@ both images."
 ### Task 6: Update all documentation
 
 **Files:**
+
 - Modify: `CLAUDE.md`
 - Modify: `docs/development.md`
 - Modify: `docs/architecture.md`

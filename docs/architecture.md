@@ -87,7 +87,8 @@ avoids duplicating dependencies in the scheduler container.
 
 ## Cloudflare Tunnel
 
-External traffic reaches the API through a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/),
+External traffic reaches the API through a
+[Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/),
 eliminating the need for a Kubernetes LoadBalancer or Ingress controller.
 
 ### How it works
@@ -107,11 +108,11 @@ User request → your-domain.com
 
 ### Why not a LoadBalancer or Ingress?
 
-| Approach | Cost | Complexity |
-|----------|------|------------|
-| DO Load Balancer | ~$12/mo | Need cert-manager for TLS |
-| Nginx Ingress | $0 (NodePort) | Ingress controller + cert-manager |
-| Cloudflare Tunnel | $0 | Single deployment, TLS handled by CF |
+| Approach          | Cost          | Complexity                           |
+| ----------------- | ------------- | ------------------------------------ |
+| DO Load Balancer  | ~$12/mo       | Need cert-manager for TLS            |
+| Nginx Ingress     | $0 (NodePort) | Ingress controller + cert-manager    |
+| Cloudflare Tunnel | $0            | Single deployment, TLS handled by CF |
 
 ### Setup
 
@@ -123,7 +124,7 @@ User request → your-domain.com
 ```yaml
 # charts/cloudflare/values.yaml
 tunnel:
-  token: ""  # Set via --set or GitHub Secrets
+  token: "" # Set via --set or GitHub Secrets
 ```
 
 The tunnel token is stored as a Kubernetes Secret and injected as the `TUNNEL_TOKEN` environment
@@ -167,15 +168,13 @@ User-facing endpoints for the mobile app. Protected by per-user bearer tokens.
 
 ### Internal Worker API (`/internal/worker/`)
 
-Protected by a shared bearer token (`FREEBIE_WORKER_SECRET`). Called by CronJobs within the
-cluster.
+Protected by a shared bearer token (`FREEBIE_WORKER_SECRET`). Called by CronJobs within the cluster.
 
 - `POST /internal/worker/check-triggers` — check game results
 - `POST /internal/worker/send-reminders` — send expiring deal reminders
 
-The internal API is defined by an **OpenAPI 3.0 spec**
-(`internal/api/worker/gen/api.yaml`). Server handlers and HTTP client code are
-**generated** from this spec using `oapi-codegen`:
+The internal API is defined by an **OpenAPI 3.0 spec** (`internal/api/worker/gen/api.yaml`). Server
+handlers and HTTP client code are **generated** from this spec using `oapi-codegen`:
 
 ```
 internal/api/worker/gen/
@@ -201,11 +200,11 @@ go generate ./internal/api/worker/gen/ ./internal/client/gen/
 
 Each component is deployed as an independent Helm chart:
 
-| Chart | Purpose |
-|-------|---------|
-| `charts/api/` | API Deployment + ClusterIP Service + Secret |
-| `charts/scheduler/` | Scheduler CronJobs (check-triggers, send-reminders) |
-| `charts/cloudflare/` | Cloudflare Tunnel Deployment |
+| Chart                | Purpose                                             |
+| -------------------- | --------------------------------------------------- |
+| `charts/api/`        | API Deployment + ClusterIP Service + Secret         |
+| `charts/scheduler/`  | Scheduler CronJobs (check-triggers, send-reminders) |
+| `charts/cloudflare/` | Cloudflare Tunnel Deployment                        |
 
 Charts are installed separately so they can be upgraded independently:
 
@@ -238,21 +237,21 @@ GitHub Actions (`.github/workflows/deploy.yaml`) runs on push to `main`:
 
 Required GitHub Secrets:
 
-| Secret | Purpose |
-|--------|---------|
-| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token for doctl + DOCR login |
-| `KUBECONFIG_DATA` | Base64-encoded kubeconfig |
-| `TURSO_DATABASE_URL` | Turso connection URL (`libsql://...?authToken=...`) |
-| `CF_TUNNEL_TOKEN` | Cloudflare Tunnel token |
-| `WORKER_SECRET` | Bearer token for internal worker API |
-| `SCHEDULER_API_URL` | API URL for the scheduler to call |
+| Secret                      | Purpose                                             |
+| --------------------------- | --------------------------------------------------- |
+| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token for doctl + DOCR login                 |
+| `KUBECONFIG_DATA`           | Base64-encoded kubeconfig                           |
+| `TURSO_DATABASE_URL`        | Turso connection URL (`libsql://...?authToken=...`) |
+| `CF_TUNNEL_TOKEN`           | Cloudflare Tunnel token                             |
+| `WORKER_SECRET`             | Bearer token for internal worker API                |
+| `SCHEDULER_API_URL`         | API URL for the scheduler to call                   |
 
 ## Cost
 
-| Component | Cost |
-|-----------|------|
-| DOKS cluster (1 node, s-1vcpu-2gb) | ~$12/mo |
-| DOCR (starter tier) | Free |
-| Turso (free tier) | Free |
-| Cloudflare Tunnel | Free |
-| **Total** | **~$12/mo** |
+| Component                          | Cost        |
+| ---------------------------------- | ----------- |
+| DOKS cluster (1 node, s-1vcpu-2gb) | ~$12/mo     |
+| DOCR (starter tier)                | Free        |
+| Turso (free tier)                  | Free        |
+| Cloudflare Tunnel                  | Free        |
+| **Total**                          | **~$12/mo** |

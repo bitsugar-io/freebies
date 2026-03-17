@@ -100,5 +100,5 @@ task api:test
 
 ## Deployment
 
-Deployed to DigitalOcean Kubernetes (DOKS). See
-[deployment guide](deployment.md) for full instructions.
+Deployed to DigitalOcean Kubernetes (DOKS). See [deployment guide](deployment.md) for full
+instructions.

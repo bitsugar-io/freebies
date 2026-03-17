@@ -45,13 +45,13 @@ Thanks for your interest in contributing! This guide covers the process for subm
 
 ### New Game Sources
 
-Implement the `Source` interface in `services/api/internal/sources/` and register it in the
-worker. See existing sources for reference.
+Implement the `Source` interface in `services/api/internal/sources/` and register it in the worker.
+See existing sources for reference.
 
 ### New Offers/Events
 
-Create a goose migration in `services/api/internal/db/migrations/`. See `003_mlb_data.sql` for
-the expected format.
+Create a goose migration in `services/api/internal/db/migrations/`. See `003_mlb_data.sql` for the
+expected format.
 
 ### Database Changes
 

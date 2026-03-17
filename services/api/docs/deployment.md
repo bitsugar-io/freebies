@@ -1,7 +1,8 @@
 # Deployment
 
-The backend is deployed to [DigitalOcean Kubernetes](https://www.digitalocean.com/products/kubernetes)
-(DOKS) with [Turso](https://turso.tech) for the database and
+The backend is deployed to
+[DigitalOcean Kubernetes](https://www.digitalocean.com/products/kubernetes) (DOKS) with
+[Turso](https://turso.tech) for the database and
 [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 for external access.
 
@@ -78,8 +79,8 @@ turso db tokens create freebie
 
 ## Build and Push Docker Images
 
-Build for linux/amd64 (required — DOKS nodes are AMD64, not ARM). A single image contains both
-the API and scheduler binaries:
+Build for linux/amd64 (required — DOKS nodes are AMD64, not ARM). A single image contains both the
+API and scheduler binaries:
 
 ```bash
 docker build --platform linux/amd64 \
@@ -214,18 +215,17 @@ helm uninstall freebie-api -n freebies
 
 ### Common Issues
 
-**ErrImagePull / `no match for platform in manifest`**
-You built on ARM (Mac) but the cluster is AMD64. Rebuild with `--platform linux/amd64`.
+**ErrImagePull / `no match for platform in manifest`** You built on ARM (Mac) but the cluster is
+AMD64. Rebuild with `--platform linux/amd64`.
 
-**ErrImagePull / `repository not found`**
-The registry isn't linked to the cluster. Run:
+**ErrImagePull / `repository not found`** The registry isn't linked to the cluster. Run:
+
 ```bash
 doctl kubernetes cluster registry add <cluster-name>
 ```
 
-**Pod stuck in CrashLoopBackOff**
-Check logs: `kubectl logs -n freebies <pod-name>`
-Usually a bad database URL or missing env var.
+**Pod stuck in CrashLoopBackOff** Check logs: `kubectl logs -n freebies <pod-name>` Usually a bad
+database URL or missing env var.
 
 ## CI/CD
 
@@ -234,20 +234,20 @@ GitHub Actions (`.github/workflows/deploy.yaml`) handles deployments automatical
 
 Required GitHub Secrets:
 
-| Secret | Purpose |
-|--------|---------|
-| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token for doctl + DOCR login |
-| `KUBECONFIG_DATA` | Base64-encoded kubeconfig |
-| `TURSO_DATABASE_URL` | Turso connection URL with auth token |
-| `CF_TUNNEL_TOKEN` | Cloudflare Tunnel token |
-| `WORKER_SECRET` | Bearer token for internal worker API |
+| Secret                      | Purpose                              |
+| --------------------------- | ------------------------------------ |
+| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token for doctl + DOCR login  |
+| `KUBECONFIG_DATA`           | Base64-encoded kubeconfig            |
+| `TURSO_DATABASE_URL`        | Turso connection URL with auth token |
+| `CF_TUNNEL_TOKEN`           | Cloudflare Tunnel token              |
+| `WORKER_SECRET`             | Bearer token for internal worker API |
 
 ## Cost
 
-| Component | Cost |
-|-----------|------|
-| DOKS cluster (1 node, s-1vcpu-2gb) | ~$12/mo |
-| DOCR (starter tier) | Free |
-| Turso (free tier) | Free |
-| Cloudflare Tunnel | Free |
-| **Total** | **~$12/mo** |
+| Component                          | Cost        |
+| ---------------------------------- | ----------- |
+| DOKS cluster (1 node, s-1vcpu-2gb) | ~$12/mo     |
+| DOCR (starter tier)                | Free        |
+| Turso (free tier)                  | Free        |
+| Cloudflare Tunnel                  | Free        |
+| **Total**                          | **~$12/mo** |

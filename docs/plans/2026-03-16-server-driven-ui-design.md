@@ -116,11 +116,11 @@ feature flags in a single request.
 
 **Key properties per block:**
 
-| Field    | Type   | Description                                                      |
-| -------- | ------ | ---------------------------------------------------------------- |
-| `type`   | string | Block renderer to use. App skips unknown types.                  |
-| `key`    | string | Unique identifier. Used for React keys and analytics.            |
-| `config` | object | Arbitrary JSON passed to the renderer. Schema varies by type.    |
+| Field    | Type   | Description                                                   |
+| -------- | ------ | ------------------------------------------------------------- |
+| `type`   | string | Block renderer to use. App skips unknown types.               |
+| `key`    | string | Unique identifier. Used for React keys and analytics.         |
+| `config` | object | Arbitrary JSON passed to the renderer. Schema varies by type. |
 
 The `enabled` flag exists in the database but is filtered server-side — the API only returns enabled
 blocks. Omitted fields in config (e.g., `imageUrl`) should be treated as absent by the renderer.
@@ -233,7 +233,8 @@ const BLOCK_REGISTRY: Record<string, React.ComponentType<BlockProps>> = {
 ```
 
 Each block component receives `{ config, screenData }` as props. `config` is the JSON blob from the
-backend. `screenData` is the shared context (user, events, subscriptions, etc.) from `AppDataContext`.
+backend. `screenData` is the shared context (user, events, subscriptions, etc.) from
+`AppDataContext`.
 
 The screen renderer is simple:
 
@@ -259,16 +260,16 @@ function ScreenRenderer({ screenId }: { screenId: string }) {
 These cover all current UI functionality. Each maps to an existing screen section, refactored into a
 standalone block component:
 
-| Type                | Screen    | What it renders                                  |
-| ------------------- | --------- | ------------------------------------------------ |
-| `banner`            | any       | Dismissible banner with text/color               |
-| `active_deals`      | deals     | List of active triggered deals                   |
-| `league_filter`     | discover  | Horizontal league filter bar                     |
-| `event_list`        | discover  | Grouped event cards (filterable by league)        |
-| `promo_card`        | any       | CTA card with title, subtitle, link, colors      |
-| `user_stats`        | profile   | Deals claimed / subscriptions count              |
-| `subscription_list` | profile   | List of subscribed events                        |
-| `settings`          | profile   | Theme toggle, test notification (dev), etc.      |
+| Type                | Screen   | What it renders                             |
+| ------------------- | -------- | ------------------------------------------- |
+| `banner`            | any      | Dismissible banner with text/color          |
+| `active_deals`      | deals    | List of active triggered deals              |
+| `league_filter`     | discover | Horizontal league filter bar                |
+| `event_list`        | discover | Grouped event cards (filterable by league)  |
+| `promo_card`        | any      | CTA card with title, subtitle, link, colors |
+| `user_stats`        | profile  | Deals claimed / subscriptions count         |
+| `subscription_list` | profile  | List of subscribed events                   |
+| `settings`          | profile  | Theme toggle, test notification (dev), etc. |
 
 ### Data Flow
 
