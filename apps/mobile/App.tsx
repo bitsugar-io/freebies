@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -31,11 +31,8 @@ function TabIcon({ name, focused, color }: { name: string; focused: boolean; col
 function MainApp() {
   const { theme } = useTheme();
   const { colors, isDark } = theme;
-  const { userLoading, userError, eventsLoading, eventsError, undismissedDeals } = useAppData();
+  const { undismissedDeals } = useAppData();
   const { config } = useAppConfig();
-
-  const isLoading = userLoading || eventsLoading;
-  const error = userError || eventsError;
 
   // Maintenance mode — block the entire app
   if (config.features.maintenance_mode === true) {
@@ -47,31 +44,6 @@ function MainApp() {
         </Text>
         <Text style={[styles.errorHint, { color: colors.textMuted }]}>
           Freebies is temporarily down for maintenance.{'\n'}Check back shortly!
-        </Text>
-      </View>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.accent} />
-        <Text style={[styles.loadingText, { color: colors.textMuted }]}>
-          Loading...
-        </Text>
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
-        <Text style={[styles.errorText, { color: colors.warning }]}>
-          {error}
-        </Text>
-        <Text style={[styles.errorHint, { color: colors.textMuted }]}>
-          Make sure the API server is running:{'\n'}
-          task api:serve
         </Text>
       </View>
     );
@@ -160,10 +132,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
   },
   errorText: {
     fontSize: 16,
