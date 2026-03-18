@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Freebie backend is a Go HTTP API server with [Turso](https://turso.tech) (hosted SQLite) for
+The Freebies backend is a Go HTTP API server with [Turso](https://turso.tech) (hosted SQLite) for
 persistence, deployed on DigitalOcean Kubernetes (DOKS).
 
 See the [top-level architecture doc](../../../docs/architecture.md) for the full infrastructure

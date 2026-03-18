@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Freebie mobile app is a React Native app built with Expo, targeting iOS (Android later). Builds
+The Freebies mobile app is a React Native app built with Expo, targeting iOS (Android later). Builds
 are handled by EAS (Expo Application Services).
 
 ## Technology Choices

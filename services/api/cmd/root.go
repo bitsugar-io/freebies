@@ -24,8 +24,8 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use:   "freebie",
-	Short: "Freebie - Sports rewards notification service",
-	Long: `Freebie monitors sports events and sends notifications
+	Short: "Freebies - Sports rewards notification service",
+	Long: `Freebies monitors sports events and sends notifications
 when your favorite teams trigger special offers.`,
 }
 

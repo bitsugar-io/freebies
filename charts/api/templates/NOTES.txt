@@ -1,4 +1,4 @@
-Freebie API has been deployed!
+Freebies API has been deployed!
 
 Namespace: {{ .Release.Namespace }}
 

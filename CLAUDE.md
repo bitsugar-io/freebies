@@ -1,4 +1,4 @@
-# Freebie
+# Freebies
 
 Sports rewards notification platform. Monitors live games and sends push notifications when free
 food/merch deals are triggered (e.g., Dodgers pitchers get 7+ strikeouts = free Jumbo Jack).
