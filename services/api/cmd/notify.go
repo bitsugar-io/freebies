@@ -35,10 +35,10 @@ func init() {
 	notifyCmd.AddCommand(notifySendCmd)
 
 	notifyTestCmd.Flags().String("title", "🎉 Test Notification", "Notification title")
-	notifyTestCmd.Flags().String("body", "This is a test notification from Freebie!", "Notification body")
+	notifyTestCmd.Flags().String("body", "This is a test notification from Freebies!", "Notification body")
 
 	notifySendCmd.Flags().String("title", "🎉 Test Notification", "Notification title")
-	notifySendCmd.Flags().String("body", "This is a test notification from Freebie!", "Notification body")
+	notifySendCmd.Flags().String("body", "This is a test notification from Freebies!", "Notification body")
 	notifySendCmd.Flags().String("event-id", "", "Event ID for deep linking (opens deal on tap)")
 	notifySendCmd.Flags().String("triggered-event-id", "", "Triggered event ID for deep linking")
 }

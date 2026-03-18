@@ -1,10 +1,10 @@
-# Privacy Policy for Freebie
+# Privacy Policy for Freebies
 
 **Last Updated: December 2024**
 
 ## Overview
 
-Freebie ("we", "our", or "the app") is a mobile application that helps users discover and track
+Freebies ("we", "our", or "the app") is a mobile application that helps users discover and track
 promotional offers from sports teams. This privacy policy explains how we collect, use, and protect
 your information.
 

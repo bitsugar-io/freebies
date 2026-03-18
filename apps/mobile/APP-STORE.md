@@ -5,7 +5,7 @@
 ### App Name
 
 ```
-Freebie - Sports Deals Alert
+Freebies - Sports Deals Alert
 ```
 
 ### Subtitle (30 characters max)
@@ -25,7 +25,7 @@ sports,deals,free food,promotions,MLB,NBA,NFL,NHL,baseball,basketball,football,h
 ```
 Never miss out on free food and promotional deals from your favorite sports teams!
 
-Freebie alerts you when your team triggers promotional offers - like free tacos when they score a certain number of runs, or free pizza when they win by a specific margin.
+Freebies alerts you when your team triggers promotional offers - like free tacos when they score a certain number of runs, or free pizza when they win by a specific margin.
 
 HOW IT WORKS:
 1. Browse available deals from MLB, NBA, NFL, and NHL teams
@@ -40,7 +40,7 @@ FEATURES:
 • One-tap access to claim your freebies
 • Support for all major sports leagues
 
-Stop missing out on free tacos, pizza, wings, and more. Download Freebie today and start saving!
+Stop missing out on free tacos, pizza, wings, and more. Download Freebies today and start saving!
 ```
 
 ### Promotional Text (170 characters max, can be updated without app review)
@@ -52,7 +52,7 @@ New deals added weekly! Get notified instantly when your favorite teams trigger 
 ### What's New (Version 1.0.0)
 
 ```
-Initial release of Freebie!
+Initial release of Freebies!
 
 • Browse promotional deals from MLB, NBA, NFL, and NHL teams
 • Subscribe to track your favorite offers

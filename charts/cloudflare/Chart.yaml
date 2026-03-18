@@ -1,6 +1,6 @@
 apiVersion: v2
 name: freebie-cloudflare
-description: Cloudflare Tunnel for external access to the Freebie API
+description: Cloudflare Tunnel for external access to the Freebies API
 type: application
 version: 0.1.0
 appVersion: "1.0.0"

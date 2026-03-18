@@ -1,4 +1,4 @@
-// API client for Freebie backend
+// API client for Freebies backend
 import * as SecureStore from 'expo-secure-store';
 
 // Configure this based on environment
