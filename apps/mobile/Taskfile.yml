@@ -14,7 +14,7 @@ tasks:
   serve:
     desc: Start Expo development server
     cmds:
-      - bunx expo start
+      - bunx expo start --go
 
   ios:
     desc: Start on iOS simulator
