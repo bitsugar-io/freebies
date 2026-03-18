@@ -108,7 +108,7 @@ func runDealsCreate(cmd *cobra.Command, args []string) error {
 	}
 
 	// Create the triggered event with expiration
-	expiresAt := time.Now().Add(time.Duration(hours) * time.Hour)
+	expiresAt := time.Now().UTC().Add(time.Duration(hours) * time.Hour)
 
 	triggered, err := queries.CreateTriggeredEvent(ctx, db.CreateTriggeredEventParams{
 		ID:        uuid.New().String(),
@@ -210,7 +210,7 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 	}
 
 	// Create the triggered event
-	expiresAt := time.Now().Add(time.Duration(hours) * time.Hour)
+	expiresAt := time.Now().UTC().Add(time.Duration(hours) * time.Hour)
 
 	triggered, err := queries.CreateTriggeredEvent(ctx, db.CreateTriggeredEventParams{
 		ID:        uuid.New().String(),

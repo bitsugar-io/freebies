@@ -172,19 +172,19 @@ func (c *Checker) calculateExpiration(window string) time.Time {
 
 	switch window {
 	case "next_day":
-		// Expires at end of next day (11:59:59 PM PT)
+		// Expires at end of next day (11:59:59 PM PT), stored as UTC
 		nextDay := now.AddDate(0, 0, 1)
-		return time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 23, 59, 59, 0, c.loc)
+		return time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 23, 59, 59, 0, c.loc).UTC()
 	case "same_day":
-		// Expires at end of today
-		return time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 0, c.loc)
+		// Expires at end of today (11:59:59 PM PT), stored as UTC
+		return time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 0, c.loc).UTC()
 	case "week":
 		// Expires in 7 days
-		return now.AddDate(0, 0, 7)
+		return now.AddDate(0, 0, 7).UTC()
 	default:
 		// Default to next day
 		nextDay := now.AddDate(0, 0, 1)
-		return time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 23, 59, 59, 0, c.loc)
+		return time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 23, 59, 59, 0, c.loc).UTC()
 	}
 }
 

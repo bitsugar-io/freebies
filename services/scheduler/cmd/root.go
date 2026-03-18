@@ -64,6 +64,7 @@ func initConfig() {
 
 	// Defaults
 	viper.SetDefault("api.url", "http://freebie-api:8080")
+	viper.SetDefault("worker.secret", "")
 
 	// Config file is optional
 	_ = viper.ReadInConfig()
