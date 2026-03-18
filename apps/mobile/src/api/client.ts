@@ -2,8 +2,8 @@
 import * as SecureStore from 'expo-secure-store';
 
 // Configure this based on environment
-// const API_BASE_URL = 'https://freebie-api.bitsugar.io/api/v1';
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = 'https://freebie-api.bitsugar.io/api/v1';
+// const API_BASE_URL = 'http://localhost:8080/api/v1';
 
 const AUTH_TOKEN_KEY = 'freebie_auth_token';
 
