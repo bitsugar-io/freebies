@@ -19,7 +19,6 @@
       "buildNumber": "1",
       "deploymentTarget": "15.1",
       "infoPlist": {
-        "NSUserTrackingUsageDescription": "This allows us to personalize your experience and show relevant deals.",
         "UIBackgroundModes": [
           "remote-notification"
         ],
