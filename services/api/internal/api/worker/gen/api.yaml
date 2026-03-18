@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Freebie Internal Worker API
+  title: Freebies Internal Worker API
   description: Internal endpoints for scheduled worker jobs (called by K8s CronJobs)
   version: 1.0.0
 

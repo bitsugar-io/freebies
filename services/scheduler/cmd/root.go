@@ -24,8 +24,8 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use:   "scheduler",
-	Short: "Freebie scheduled task runner",
-	Long: `Scheduler calls the Freebie API's internal worker
+	Short: "Freebies scheduled task runner",
+	Long: `Scheduler calls the Freebies API's internal worker
 endpoints on a schedule to check triggers and send reminders.`,
 
 }

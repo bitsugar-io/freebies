@@ -2,7 +2,7 @@
 
 ## Overview
 
-Freebie runs on a DigitalOcean Kubernetes (DOKS) cluster. The system monitors live sports games,
+Freebies runs on a DigitalOcean Kubernetes (DOKS) cluster. The system monitors live sports games,
 detects when trigger conditions are met (e.g., 7+ strikeouts), and sends push notifications to
 subscribed users.
 

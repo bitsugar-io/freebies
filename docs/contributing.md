@@ -1,4 +1,4 @@
-# Contributing to Freebie
+# Contributing to Freebies
 
 Thanks for your interest in contributing! This guide covers the process for submitting changes.
 
