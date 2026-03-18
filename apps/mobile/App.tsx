@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -31,8 +31,17 @@ function TabIcon({ name, focused, color }: { name: string; focused: boolean; col
 function MainApp() {
   const { theme } = useTheme();
   const { colors, isDark } = theme;
-  const { undismissedDeals } = useAppData();
+  const { undismissedDeals, dealsLoading, userLoading } = useAppData();
   const { config } = useAppConfig();
+
+  // Wait for data before choosing initial tab
+  if (userLoading || dealsLoading) {
+    return (
+      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.accent} />
+      </View>
+    );
+  }
 
   // Maintenance mode — block the entire app
   if (config.features.maintenance_mode === true) {

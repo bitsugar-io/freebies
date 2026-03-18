@@ -111,7 +111,7 @@ WHERE n.status = 'pending';
 SELECT te.*, e.*
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
-WHERE te.expires_at > CURRENT_TIMESTAMP
+WHERE datetime(te.expires_at) > datetime('now')
 ORDER BY te.expires_at ASC;
 
 -- name: ListActiveTriggeredEventsForUser :many
@@ -122,7 +122,7 @@ FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 JOIN subscriptions s ON s.event_id = e.id AND s.user_id = ?
 LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = ?
-WHERE te.expires_at > CURRENT_TIMESTAMP
+WHERE datetime(te.expires_at) > datetime('now')
 ORDER BY te.expires_at ASC;
 
 -- name: GetTriggeredEvent :one
@@ -149,8 +149,8 @@ SELECT COUNT(*) as count FROM dismissals WHERE user_id = ? AND type = 'got_it';
 SELECT te.*, e.*
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
-WHERE te.expires_at > CURRENT_TIMESTAMP
-  AND te.expires_at <= datetime(CURRENT_TIMESTAMP, '+' || ? || ' hours')
+WHERE datetime(te.expires_at) > datetime('now')
+  AND datetime(te.expires_at) <= datetime('now', '+' || ? || ' hours')
 ORDER BY te.expires_at ASC;
 
 -- name: ListUsersForReminder :many
