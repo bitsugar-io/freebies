@@ -2,6 +2,8 @@ import React from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { ScreenBlock } from '../../api/client';
 import { useAppConfig } from '../../context/AppConfigContext';
+import { useAppData } from '../../context/AppDataContext';
+import { ErrorCard } from '../ErrorCard';
 import { BannerBlock } from './BannerBlock';
 import { ActiveDealsBlock } from './ActiveDealsBlock';
 import { LeagueFilterBlock } from './LeagueFilterBlock';
@@ -37,7 +39,9 @@ interface BlockRendererProps {
 
 export function BlockRenderer({ screenId, refreshing, onRefresh, screenProps, scrollEnabled = true }: BlockRendererProps) {
   const { config } = useAppConfig();
+  const { userError, eventsError } = useAppData();
   const blocks = config?.screens[screenId] ?? [];
+  const error = userError || eventsError;
 
   return (
     <ScrollView
@@ -48,6 +52,7 @@ export function BlockRenderer({ screenId, refreshing, onRefresh, screenProps, sc
         ) : undefined
       }
     >
+      {error && <ErrorCard message={error} onRetry={onRefresh} />}
       {blocks.map((block) => {
         const Component = BLOCK_REGISTRY[block.type];
         if (!Component) return null;

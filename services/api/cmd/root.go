@@ -65,6 +65,7 @@ func initConfig() {
 
 	// Defaults (server.host/port are set via serve.go flags)
 	viper.SetDefault("database.path", "freebie.db")
+	viper.SetDefault("worker.secret", "")
 
 	// Config file is optional
 	_ = viper.ReadInConfig()

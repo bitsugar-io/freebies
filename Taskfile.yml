@@ -30,3 +30,20 @@ tasks:
     cmds:
       - task: api:clean
 
+  docker:build:
+    desc: Build Docker image for linux/amd64
+    cmds:
+      - docker build --platform linux/amd64 -t registry.digitalocean.com/freebie/freebie-api:latest .
+
+  docker:push:
+    desc: Push Docker image to DigitalOcean registry
+    cmds:
+      - docker push registry.digitalocean.com/freebie/freebie-api:latest
+
+  deploy:
+    desc: Build, push, and restart API deployment
+    cmds:
+      - task: docker:build
+      - task: docker:push
+      - kubectl rollout restart deployment freebie-api -n freebies
+

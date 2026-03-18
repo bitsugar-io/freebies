@@ -27,6 +27,7 @@ var rootCmd = &cobra.Command{
 	Short: "Freebie scheduled task runner",
 	Long: `Scheduler calls the Freebie API's internal worker
 endpoints on a schedule to check triggers and send reminders.`,
+
 }
 
 // Execute runs the root command
@@ -63,6 +64,7 @@ func initConfig() {
 
 	// Defaults
 	viper.SetDefault("api.url", "http://freebie-api:8080")
+	viper.SetDefault("worker.secret", "")
 
 	// Config file is optional
 	_ = viper.ReadInConfig()
