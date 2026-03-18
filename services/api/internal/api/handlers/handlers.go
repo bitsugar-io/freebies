@@ -111,9 +111,9 @@ func eventToResponse(e db.Event) EventResponse {
 	}
 }
 
-// ListEvents returns all events
+// ListEvents returns all active events
 func (h *Handler) ListEvents(w http.ResponseWriter, r *http.Request) {
-	events, err := h.queries.ListEvents(r.Context())
+	events, err := h.queries.ListActiveEvents(r.Context())
 	if err != nil {
 		h.logger.Error("failed to list events", "error", err)
 		respondError(w, http.StatusInternalServerError, "failed to list events")

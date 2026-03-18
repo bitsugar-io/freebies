@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "io.bitsugar.freebie",
+      "bundleIdentifier": "io.bitsugar.freebies",
       "buildNumber": "1",
       "deploymentTarget": "15.1",
       "infoPlist": {
@@ -31,7 +31,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "io.bitsugar.freebie",
+      "package": "io.bitsugar.freebies",
       "edgeToEdgeEnabled": true,
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
