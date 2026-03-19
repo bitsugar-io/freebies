@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/retr0h/freebie/services/api/internal/httputil"
 )
 
 const baseURL = "https://statsapi.mlb.com/api/v1"
@@ -29,12 +31,11 @@ func (c *Client) GetSchedule(ctx context.Context, teamID int, date time.Time) (*
 	dateStr := date.Format("2006-01-02")
 	url := fmt.Sprintf("%s/schedule?sportId=1&teamId=%d&date=%s", baseURL, teamID, dateStr)
 
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("creating request: %w", err)
+	newReq := func() (*http.Request, error) {
+		return http.NewRequestWithContext(ctx, "GET", url, nil)
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := httputil.Do(ctx, c.httpClient, newReq, nil)
 	if err != nil {
 		return nil, fmt.Errorf("fetching schedule: %w", err)
 	}
@@ -48,7 +49,6 @@ func (c *Client) GetSchedule(ctx context.Context, teamID int, date time.Time) (*
 	if err := json.NewDecoder(resp.Body).Decode(&schedule); err != nil {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
-
 	return &schedule, nil
 }
 
@@ -56,12 +56,11 @@ func (c *Client) GetSchedule(ctx context.Context, teamID int, date time.Time) (*
 func (c *Client) GetBoxScore(ctx context.Context, gamePk int) (*BoxScoreResponse, error) {
 	url := fmt.Sprintf("%s/game/%d/boxscore", baseURL, gamePk)
 
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("creating request: %w", err)
+	newReq := func() (*http.Request, error) {
+		return http.NewRequestWithContext(ctx, "GET", url, nil)
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := httputil.Do(ctx, c.httpClient, newReq, nil)
 	if err != nil {
 		return nil, fmt.Errorf("fetching boxscore: %w", err)
 	}
@@ -75,6 +74,5 @@ func (c *Client) GetBoxScore(ctx context.Context, gamePk int) (*BoxScoreResponse
 	if err := json.NewDecoder(resp.Body).Decode(&boxscore); err != nil {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
-
 	return &boxscore, nil
 }
