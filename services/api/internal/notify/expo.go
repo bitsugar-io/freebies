@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"sync"
 	"sync/atomic"
+
+	"github.com/retr0h/freebie/services/api/internal/httputil"
 )
 
 const expoPushURL = "https://exp.host/--/api/v2/push/send"
@@ -42,17 +44,21 @@ type ExpoPushTicket struct {
 // ExpoNotifier sends push notifications via Expo's push service
 type ExpoNotifier struct {
 	client *http.Client
+	url    string
 }
 
 // NewExpoNotifier creates a new Expo push notifier
 func NewExpoNotifier() *ExpoNotifier {
-	return &ExpoNotifier{
-		client: &http.Client{},
-	}
+	return &ExpoNotifier{client: &http.Client{}, url: expoPushURL}
+}
+
+// NewExpoNotifierWithURL creates a new Expo push notifier with a custom URL
+func NewExpoNotifierWithURL(url string) *ExpoNotifier {
+	return &ExpoNotifier{client: &http.Client{}, url: url}
 }
 
 // Send sends a push notification to the specified Expo push token
-func (n *ExpoNotifier) Send(token, title, body string, data map[string]interface{}) (*ExpoPushTicket, error) {
+func (n *ExpoNotifier) Send(ctx context.Context, token, title, body string, data map[string]interface{}) (*ExpoPushTicket, error) {
 	msg := ExpoPushMessage{
 		To:       token,
 		Title:    title,
@@ -62,11 +68,11 @@ func (n *ExpoNotifier) Send(token, title, body string, data map[string]interface
 		Priority: "high",
 	}
 
-	return n.sendMessage(msg)
+	return n.sendMessage(ctx, msg)
 }
 
 // SendBatch sends multiple push notifications at once
-func (n *ExpoNotifier) SendBatch(messages []ExpoPushMessage) ([]ExpoPushTicket, error) {
+func (n *ExpoNotifier) SendBatch(ctx context.Context, messages []ExpoPushMessage) ([]ExpoPushTicket, error) {
 	if len(messages) == 0 {
 		return nil, nil
 	}
@@ -76,15 +82,17 @@ func (n *ExpoNotifier) SendBatch(messages []ExpoPushMessage) ([]ExpoPushTicket, 
 		return nil, fmt.Errorf("marshaling messages: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", expoPushURL, bytes.NewReader(payload))
-	if err != nil {
-		return nil, fmt.Errorf("creating request: %w", err)
+	newReq := func() (*http.Request, error) {
+		req, err := http.NewRequestWithContext(ctx, "POST", n.url, bytes.NewReader(payload))
+		if err != nil {
+			return nil, err
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Accept", "application/json")
+		return req, nil
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-
-	resp, err := n.client.Do(req)
+	resp, err := httputil.Do(ctx, n.client, newReq, nil)
 	if err != nil {
 		return nil, fmt.Errorf("sending request: %w", err)
 	}
@@ -102,8 +110,8 @@ func (n *ExpoNotifier) SendBatch(messages []ExpoPushMessage) ([]ExpoPushTicket, 
 	return pushResp.Data, nil
 }
 
-func (n *ExpoNotifier) sendMessage(msg ExpoPushMessage) (*ExpoPushTicket, error) {
-	tickets, err := n.SendBatch([]ExpoPushMessage{msg})
+func (n *ExpoNotifier) sendMessage(ctx context.Context, msg ExpoPushMessage) (*ExpoPushTicket, error) {
+	tickets, err := n.SendBatch(ctx, []ExpoPushMessage{msg})
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +193,7 @@ func (n *ExpoNotifier) SendBatchConcurrent(ctx context.Context, logger *slog.Log
 				default:
 				}
 
-				tickets, err := n.SendBatch(batch)
+				tickets, err := n.SendBatch(ctx, batch)
 				if err != nil {
 					atomic.AddInt64(&result.Failed, int64(len(batch)))
 					errorsMu.Lock()
@@ -208,5 +216,19 @@ func (n *ExpoNotifier) SendBatchConcurrent(ctx context.Context, logger *slog.Log
 
 	wg.Wait()
 	result.Errors = errors
+	return result
+}
+
+// DeduplicateMessages removes duplicate messages based on the To field,
+// keeping only the first occurrence for each recipient.
+func DeduplicateMessages(messages []ExpoPushMessage) []ExpoPushMessage {
+	seen := make(map[string]bool, len(messages))
+	result := make([]ExpoPushMessage, 0, len(messages))
+	for _, msg := range messages {
+		if !seen[msg.To] {
+			seen[msg.To] = true
+			result = append(result, msg)
+		}
+	}
 	return result
 }

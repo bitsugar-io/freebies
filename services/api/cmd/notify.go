@@ -80,7 +80,7 @@ func runNotifyTest(cmd *cobra.Command, args []string) error {
 			continue
 		}
 
-		ticket, err := notifier.Send(token, title, body, map[string]interface{}{
+		ticket, err := notifier.Send(cmd.Context(), token, title, body, map[string]interface{}{
 			"type": "test",
 		})
 		if err != nil {
@@ -143,7 +143,7 @@ func runNotifySend(cmd *cobra.Command, args []string) error {
 	}
 
 	notifier := notify.NewExpoNotifier()
-	ticket, err := notifier.Send(token, title, body, data)
+	ticket, err := notifier.Send(cmd.Context(), token, title, body, data)
 	if err != nil {
 		return fmt.Errorf("sending notification: %w", err)
 	}

@@ -262,7 +262,7 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 			continue
 		}
 
-		ticket, err := notifier.Send(token, title, body, map[string]interface{}{
+		ticket, err := notifier.Send(cmd.Context(), token, title, body, map[string]interface{}{
 			"type":             "freebie",
 			"eventId":          event.ID,
 			"triggeredEventId": triggered.ID,
