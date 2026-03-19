@@ -104,14 +104,11 @@ export function EventListBlock({ config, screenProps }: BlockProps) {
                     {event.partnerName} • {event.triggerCondition}
                   </Text>
                 </View>
-                <TouchableOpacity
-                  style={[styles.subscribeButton, { backgroundColor: isSubscribed(event.id) ? colors.success : colors.surfaceSecondary }]}
-                  onPress={() => toggleSubscription(event.id)}
-                >
-                  <Text style={[styles.subscribeButtonText, { color: isSubscribed(event.id) ? '#fff' : colors.textMuted }]}>
-                    {isSubscribed(event.id) ? '✓' : '+'}
-                  </Text>
-                </TouchableOpacity>
+                {isSubscribed(event.id) && (
+                  <View style={[styles.subscribedBadge, { backgroundColor: colors.textMuted }]}>
+                    <Text style={styles.subscribedBadgeText}>✓</Text>
+                  </View>
+                )}
               </TouchableOpacity>
             ))}
           </View>
@@ -160,8 +157,8 @@ const styles = StyleSheet.create({
   eventInfo: { flex: 1 },
   eventName: { fontSize: 15, fontWeight: '500' },
   eventPartner: { fontSize: 12, marginTop: 2 },
-  subscribeButton: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
-  subscribeButtonText: { fontSize: 16, fontWeight: '600' },
+  subscribedBadge: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  subscribedBadgeText: { color: '#fff', fontSize: 14, fontWeight: '600' },
   expandHint: { paddingVertical: 10, alignItems: 'center' },
   expandHintText: { fontSize: 12 },
   emptyContainer: { padding: 32, alignItems: 'center', marginTop: 40 },
