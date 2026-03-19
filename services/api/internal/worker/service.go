@@ -167,6 +167,8 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 			continue
 		}
 
+		messages = notify.DeduplicateMessages(messages)
+
 		batchResult := s.notifier.SendBatchConcurrent(ctx, s.logger, messages, notify.DefaultWorkers)
 		totalSent += batchResult.Sent
 		totalFailed += batchResult.Failed
@@ -217,6 +219,8 @@ func (s *Service) notifySubscribers(ctx context.Context, result triggers.CheckRe
 	if len(messages) == 0 {
 		return 0
 	}
+
+	messages = notify.DeduplicateMessages(messages)
 
 	batchResult := s.notifier.SendBatchConcurrent(ctx, s.logger, messages, notify.DefaultWorkers)
 

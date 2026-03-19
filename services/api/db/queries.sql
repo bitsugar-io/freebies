@@ -26,6 +26,10 @@ SELECT * FROM users WHERE token = ? LIMIT 1;
 -- name: UpdateUserPushToken :exec
 UPDATE users SET push_token = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?;
 
+-- name: ClearPushToken :exec
+UPDATE users SET push_token = NULL, updated_at = CURRENT_TIMESTAMP
+WHERE push_token = ? AND id != ?;
+
 -- name: ListUsersWithPushTokens :many
 SELECT * FROM users WHERE push_token IS NOT NULL AND push_token != '';
 
