@@ -22,15 +22,18 @@ interface UserContextValue {
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 async function getStableDeviceId(): Promise<string> {
-  if (Platform.OS === 'ios') {
-    const id = await Application.getIosIdForVendorAsync();
-    if (id) return `ios_${id}`;
+  try {
+    if (Platform.OS === 'ios') {
+      const id = await Application.getIosIdForVendorAsync();
+      if (id) return `ios_${id}`;
+    }
+    if (Platform.OS === 'android') {
+      const id = Application.androidId;
+      if (id) return `android_${id}`;
+    }
+  } catch {
+    // Platform ID unavailable (e.g., simulator)
   }
-  if (Platform.OS === 'android') {
-    const id = Application.androidId;
-    if (id) return `android_${id}`;
-  }
-  // Fallback for web or if platform IDs unavailable
   return 'device_' + Math.random().toString(36).substring(2, 15);
 }
 
