@@ -23,9 +23,16 @@ var usersListCmd = &cobra.Command{
 	RunE:  runUsersList,
 }
 
+var usersCleanupCmd = &cobra.Command{
+	Use:   "cleanup",
+	Short: "Remove orphaned users with no push token",
+	RunE:  runUsersCleanup,
+}
+
 func init() {
 	rootCmd.AddCommand(usersCmd)
 	usersCmd.AddCommand(usersListCmd)
+	usersCmd.AddCommand(usersCleanupCmd)
 }
 
 func runUsersList(cmd *cobra.Command, args []string) error {
@@ -97,5 +104,44 @@ func runUsersList(cmd *cobra.Command, args []string) error {
 	_ = subCounts // TODO: show subscription counts
 
 	fmt.Printf("\nTotal: %d users\n", count)
+	return nil
+}
+
+func runUsersCleanup(cmd *cobra.Command, args []string) error {
+	database, err := db.Open(cfg.Database.Path)
+	if err != nil {
+		return err
+	}
+	defer database.Close()
+
+	ctx := context.Background()
+
+	// Count orphaned users first
+	var count int
+	err = database.QueryRowContext(ctx, "SELECT COUNT(*) FROM users WHERE push_token IS NULL").Scan(&count)
+	if err != nil {
+		return fmt.Errorf("counting orphaned users: %w", err)
+	}
+
+	if count == 0 {
+		fmt.Println("No orphaned users found.")
+		return nil
+	}
+
+	fmt.Printf("Found %d orphaned users (no push token). Cleaning up...\n", count)
+
+	// Delete related data, then users
+	for _, query := range []string{
+		"DELETE FROM notifications WHERE user_id IN (SELECT id FROM users WHERE push_token IS NULL)",
+		"DELETE FROM dismissals WHERE user_id IN (SELECT id FROM users WHERE push_token IS NULL)",
+		"DELETE FROM subscriptions WHERE user_id IN (SELECT id FROM users WHERE push_token IS NULL)",
+		"DELETE FROM users WHERE push_token IS NULL",
+	} {
+		if _, err := database.ExecContext(ctx, query); err != nil {
+			return fmt.Errorf("cleanup failed: %w", err)
+		}
+	}
+
+	fmt.Printf("Removed %d orphaned users and their associated data.\n", count)
 	return nil
 }
