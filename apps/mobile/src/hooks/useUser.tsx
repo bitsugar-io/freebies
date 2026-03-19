@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Application from 'expo-application';
 import { api, User } from '../api/client';
 
 const USER_KEY = 'freebie_user';
@@ -20,8 +21,16 @@ interface UserContextValue {
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
-function generateDeviceId(): string {
-  // Generate a random device ID for anonymous users
+async function getStableDeviceId(): Promise<string> {
+  if (Platform.OS === 'ios') {
+    const id = await Application.getIosIdForVendorAsync();
+    if (id) return `ios_${id}`;
+  }
+  if (Platform.OS === 'android') {
+    const id = Application.androidId;
+    if (id) return `android_${id}`;
+  }
+  // Fallback for web or if platform IDs unavailable
   return 'device_' + Math.random().toString(36).substring(2, 15);
 }
 
@@ -61,7 +70,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       }
 
       // Create new anonymous user (stores token automatically)
-      const deviceId = generateDeviceId();
+      const deviceId = await getStableDeviceId();
       const platform = getPlatform();
       const newUser = await api.createUser(deviceId, platform);
 
