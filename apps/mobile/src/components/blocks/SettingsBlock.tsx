@@ -1,14 +1,32 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, AppState } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { BlockProps } from './BlockRenderer';
 import { useAppData } from '../../context/AppDataContext';
 import { useTheme, ThemeMode } from '../../hooks/useTheme';
 import { sendRandomTestNotification } from '../../hooks/usePushNotifications';
 
+type PermissionStatus = 'granted' | 'denied' | 'undetermined' | 'loading';
+
 export function SettingsBlock({ config }: BlockProps) {
   const { theme, setThemeMode } = useTheme();
   const { colors, mode } = theme;
   const { user, expoPushToken } = useAppData();
+  const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>('loading');
+
+  const checkPermission = useCallback(() => {
+    Notifications.getPermissionsAsync().then(({ status }) => {
+      setPermissionStatus(status);
+    });
+  }, []);
+
+  useEffect(() => {
+    checkPermission();
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') checkPermission();
+    });
+    return () => sub.remove();
+  }, [checkPermission]);
 
   const showThemeToggle = config.showThemeToggle !== false;
 
@@ -40,15 +58,34 @@ export function SettingsBlock({ config }: BlockProps) {
 
       <View style={[styles.section, { backgroundColor: colors.surface }]}>
         <Text style={[styles.sectionTitle, { color: colors.text }]}>Notifications</Text>
-        <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.row}
+          disabled={permissionStatus === 'granted' || permissionStatus === 'loading'}
+          onPress={() => {
+            if (permissionStatus === 'denied') {
+              Linking.openSettings();
+            } else if (permissionStatus === 'undetermined') {
+              Notifications.requestPermissionsAsync().then(({ status }) => {
+                setPermissionStatus(status);
+              });
+            }
+          }}
+        >
           <View style={styles.rowText}>
             <Text style={[styles.rowTitle, { color: colors.text }]}>Push Notifications</Text>
-            <Text style={[styles.rowSubtitle, { color: colors.textMuted }]}>{expoPushToken ? 'Enabled' : 'Not available'}</Text>
+            <Text style={[styles.rowSubtitle, { color: colors.textMuted }]}>
+              {permissionStatus === 'loading' ? 'Checking...' :
+               permissionStatus === 'granted' ? 'Enabled' :
+               permissionStatus === 'denied' ? 'Disabled in Settings — tap to open' :
+               'Tap to enable'}
+            </Text>
           </View>
-          <View style={[styles.statusBadge, { backgroundColor: expoPushToken ? colors.successBackground : colors.warningBackground }]}>
-            <Text style={[styles.statusText, { color: expoPushToken ? colors.success : colors.warning }]}>{expoPushToken ? 'ON' : 'OFF'}</Text>
+          <View style={[styles.statusBadge, { backgroundColor: permissionStatus === 'granted' ? colors.successBackground : colors.warningBackground }]}>
+            <Text style={[styles.statusText, { color: permissionStatus === 'granted' ? colors.success : colors.warning }]}>
+              {permissionStatus === 'granted' ? 'ON' : 'OFF'}
+            </Text>
           </View>
-        </View>
+        </TouchableOpacity>
         {__DEV__ && (
           <TouchableOpacity style={[styles.button, { backgroundColor: colors.surfaceSecondary }]} onPress={() => sendRandomTestNotification()}>
             <Text style={[styles.buttonText, { color: colors.text }]}>🔔 Send Test Notification</Text>
@@ -64,7 +101,7 @@ export function SettingsBlock({ config }: BlockProps) {
             <Text style={[styles.rowSubtitle, { color: colors.textMuted }]} numberOfLines={1}>{user?.id || 'Not logged in'}</Text>
           </View>
         </View>
-        {expoPushToken && (
+        {__DEV__ && expoPushToken && (
           <View style={styles.row}>
             <View style={styles.rowText}>
               <Text style={[styles.rowTitle, { color: colors.text }]}>Push Token</Text>
