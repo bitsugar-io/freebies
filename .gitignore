@@ -1,6 +1,7 @@
+freebie.db
+node_modules/
 services/api/freebie
 services/api/freebie.db
-node_modules/
 
 # Expo / React Native
 .expo/
