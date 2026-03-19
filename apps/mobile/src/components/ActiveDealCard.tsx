@@ -171,9 +171,10 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
+    height: 56,
+    borderRadius: 28,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   swipeButtonContainer: {
     flex: 1,
