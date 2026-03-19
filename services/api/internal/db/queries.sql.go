@@ -11,6 +11,21 @@ import (
 	"time"
 )
 
+const clearPushToken = `-- name: ClearPushToken :exec
+UPDATE users SET push_token = NULL, updated_at = CURRENT_TIMESTAMP
+WHERE push_token = ? AND id != ?
+`
+
+type ClearPushTokenParams struct {
+	PushToken sql.NullString `json:"push_token"`
+	ID        string         `json:"id"`
+}
+
+func (q *Queries) ClearPushToken(ctx context.Context, arg ClearPushTokenParams) error {
+	_, err := q.db.ExecContext(ctx, clearPushToken, arg.PushToken, arg.ID)
+	return err
+}
+
 const countUserClaimedDeals = `-- name: CountUserClaimedDeals :one
 SELECT COUNT(*) as count FROM dismissals WHERE user_id = ? AND type = 'got_it'
 `

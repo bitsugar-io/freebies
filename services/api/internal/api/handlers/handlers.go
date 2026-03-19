@@ -203,6 +203,16 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Clear this push token from any other users
+	if req.PushToken != "" {
+		if err := h.queries.ClearPushToken(r.Context(), db.ClearPushTokenParams{
+			PushToken: sql.NullString{String: req.PushToken, Valid: true},
+			ID:        user.ID,
+		}); err != nil {
+			h.logger.Error("failed to clear stale push tokens", "error", err)
+		}
+	}
+
 	respondJSON(w, http.StatusCreated, userToResponse(user, true))
 }
 
@@ -232,6 +242,17 @@ func (h *Handler) UpdatePushToken(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		respondError(w, http.StatusBadRequest, "invalid request body")
 		return
+	}
+
+	// Clear this push token from any other users
+	if req.PushToken != "" {
+		if err := h.queries.ClearPushToken(r.Context(), db.ClearPushTokenParams{
+			PushToken: sql.NullString{String: req.PushToken, Valid: true},
+			ID:        id,
+		}); err != nil {
+			h.logger.Error("failed to clear stale push tokens", "error", err)
+			// Continue — the unique index will catch races
+		}
 	}
 
 	err := h.queries.UpdateUserPushToken(r.Context(), db.UpdateUserPushTokenParams{
