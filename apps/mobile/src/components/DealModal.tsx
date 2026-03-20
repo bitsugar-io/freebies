@@ -374,9 +374,10 @@ const styles = StyleSheet.create({
   },
   dismissButton: {
     flex: 1,
-    paddingVertical: 14,
-    borderRadius: 12,
+    height: 56,
+    borderRadius: 28,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   swipeButtonContainer: {
     flex: 1,

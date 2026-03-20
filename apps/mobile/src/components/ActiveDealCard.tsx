@@ -8,15 +8,12 @@ import {
 import { ActiveDeal } from '../api/client';
 import { useTheme } from '../hooks/useTheme';
 import { formatExpiresAt, isExpiringSoon } from '../hooks/useActiveDeals';
-import { SwipeButton } from './SwipeButton';
-
 interface ActiveDealCardProps {
   deal: ActiveDeal;
   onPress: () => void;
-  onDismiss: (type: 'got_it' | 'stop_reminding') => void;
 }
 
-export function ActiveDealCard({ deal, onPress, onDismiss }: ActiveDealCardProps) {
+export function ActiveDealCard({ deal, onPress }: ActiveDealCardProps) {
   const { theme } = useTheme();
   const { colors } = theme;
 
@@ -85,23 +82,13 @@ export function ActiveDealCard({ deal, onPress, onDismiss }: ActiveDealCardProps
         </Text>
       </View>
 
-      {/* Action Buttons */}
-      <View style={styles.actions}>
-        <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.accent }]}
-          onPress={() => onDismiss('got_it')}
-        >
-          <Text style={styles.actionButtonText}>Got It!</Text>
-        </TouchableOpacity>
-        <View style={styles.swipeButtonContainer}>
-          <SwipeButton
-            label="Skip"
-            onSwipeComplete={() => onDismiss('stop_reminding')}
-            backgroundColor={colors.surfaceSecondary}
-            textColor={colors.textMuted}
-          />
-        </View>
-      </View>
+      {/* Redeem Button */}
+      <TouchableOpacity
+        style={[styles.redeemButton, { backgroundColor: colors.accent }]}
+        onPress={onPress}
+      >
+        <Text style={styles.redeemButtonText}>Redeem</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
@@ -165,27 +152,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  actionButton: {
-    flex: 1,
+  redeemButton: {
     height: 56,
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  swipeButtonContainer: {
-    flex: 1,
-  },
-  actionButtonText: {
+  redeemButtonText: {
     color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  actionButtonTextSecondary: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
   },
 });
