@@ -10,7 +10,7 @@ api:
 workerSecret: ""
 
 checkTriggers:
-  schedule: "0 14 * * *"   # 6am PT (UTC-8)
+  schedule: "0 14 * * *"   # 7am PT (UTC-7 DST)
 
 sendReminders:
-  schedule: "0 17,20,1 * * *"  # 9am, 12pm, 5pm PT (UTC-8)
+  schedule: "0 18,22,0 * * *"  # 11am, 3pm, 5pm PT (UTC-7 DST)
