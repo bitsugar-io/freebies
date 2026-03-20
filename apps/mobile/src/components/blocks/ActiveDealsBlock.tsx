@@ -8,7 +8,7 @@ import { ActiveDealCard } from '../ActiveDealCard';
 export function ActiveDealsBlock({ config }: BlockProps) {
   const { theme } = useTheme();
   const { colors } = theme;
-  const { undismissedDeals, dismissDeal } = useAppData();
+  const { undismissedDeals, openDealModal } = useAppData();
 
   const emptyTitle = (config.emptyTitle as string) ?? 'No Active Deals';
   const emptySubtitle = (config.emptySubtitle as string) ??
@@ -21,8 +21,7 @@ export function ActiveDealsBlock({ config }: BlockProps) {
       renderItem={({ item }) => (
         <ActiveDealCard
           deal={item}
-          onPress={() => {}}
-          onDismiss={(type) => dismissDeal(item.id, type)}
+          onPress={() => openDealModal(item.eventId)}
         />
       )}
       keyExtractor={(item) => item.id}

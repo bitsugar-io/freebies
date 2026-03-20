@@ -28,7 +28,7 @@ async function getStableDeviceId(): Promise<string> {
       if (id) return `ios_${id}`;
     }
     if (Platform.OS === 'android') {
-      const id = Application.androidId;
+      const id = await Application.getAndroidId();
       if (id) return `android_${id}`;
     }
   } catch {
