@@ -108,7 +108,8 @@ func (s *Source) GetGameByDate(ctx context.Context, teamID string, date time.Tim
 			"rbi":      teamStats.TeamStats.Batting.RBI,
 
 			// Win/loss as a metric (1 or 0)
-			"win": boolToInt(won),
+			"win":      boolToInt(won),
+			"home_win": boolToInt(won && isHome),
 		},
 	}
 
