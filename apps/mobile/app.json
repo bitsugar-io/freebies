@@ -2,7 +2,7 @@
   "expo": {
     "name": "Freebies",
     "slug": "freebie",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.bitsugar.freebies",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "deploymentTarget": "15.1",
       "infoPlist": {
         "UIBackgroundModes": [
