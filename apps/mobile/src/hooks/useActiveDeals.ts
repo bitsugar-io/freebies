@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api, ActiveDeal } from '../api/client';
 import { useUser } from './useUser';
 import { setActiveDealsForNotifications } from './usePushNotifications';
@@ -9,6 +9,8 @@ export function useActiveDeals() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const initialLoadDone = useRef(false);
+
   const fetchActiveDeals = useCallback(async () => {
     if (!user?.id) {
       setActiveDeals([]);
@@ -17,7 +19,9 @@ export function useActiveDeals() {
     }
 
     try {
-      setIsLoading(true);
+      if (!initialLoadDone.current) {
+        setIsLoading(true);
+      }
       const deals = await api.listActiveDeals(user.id);
       setActiveDeals(deals);
       // Update the notification system with current deals
@@ -28,6 +32,7 @@ export function useActiveDeals() {
       setError(err instanceof Error ? err.message : 'Failed to load active deals');
     } finally {
       setIsLoading(false);
+      initialLoadDone.current = true;
     }
   }, [user?.id]);
 

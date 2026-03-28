@@ -174,6 +174,22 @@ SELECT * FROM triggered_events
 WHERE event_id = ? AND game_id = ?
 LIMIT 1;
 
+-- name: BackfillTeamSubscriptions :exec
+INSERT OR IGNORE INTO subscriptions (id, user_id, event_id)
+SELECT
+    lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-' || hex(randomblob(2)) || '-' || hex(randomblob(2)) || '-' || hex(randomblob(6))) as id,
+    s.user_id,
+    e.id as event_id
+FROM events e
+JOIN (
+    SELECT DISTINCT sub.user_id, ev.team_id
+    FROM subscriptions sub
+    JOIN events ev ON sub.event_id = ev.id
+) s ON s.team_id = e.team_id
+LEFT JOIN subscriptions existing ON existing.user_id = s.user_id AND existing.event_id = e.id
+WHERE e.is_active = 1
+  AND existing.id IS NULL;
+
 -- name: ListFeatureFlags :many
 SELECT * FROM feature_flags ORDER BY key;
 
