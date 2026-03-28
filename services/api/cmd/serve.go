@@ -57,8 +57,15 @@ func runServe(cmd *cobra.Command, args []string) error {
 	}
 	logger.Info("database ready", "path", cfg.Database.Path)
 
-	// Create worker service for internal endpoints
+	// Backfill team subscriptions (auto-subscribe existing followers to new deals)
 	queries := db.New(database)
+	if err := queries.BackfillTeamSubscriptions(context.Background()); err != nil {
+		logger.Error("failed to backfill team subscriptions", "error", err)
+	} else {
+		logger.Info("team subscriptions backfill complete")
+	}
+
+	// Create worker service for internal endpoints
 	checker := triggers.NewChecker(queries)
 	notifier := notify.NewExpoNotifier()
 	workerService := worker.NewService(queries, checker, notifier, logger)

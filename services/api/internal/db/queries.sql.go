@@ -11,6 +11,28 @@ import (
 	"time"
 )
 
+const backfillTeamSubscriptions = `-- name: BackfillTeamSubscriptions :exec
+INSERT OR IGNORE INTO subscriptions (id, user_id, event_id)
+SELECT
+    lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-' || hex(randomblob(2)) || '-' || hex(randomblob(2)) || '-' || hex(randomblob(6))) as id,
+    s.user_id,
+    e.id as event_id
+FROM events e
+JOIN (
+    SELECT DISTINCT sub.user_id, ev.team_id
+    FROM subscriptions sub
+    JOIN events ev ON sub.event_id = ev.id
+) s ON s.team_id = e.team_id
+LEFT JOIN subscriptions existing ON existing.user_id = s.user_id AND existing.event_id = e.id
+WHERE e.is_active = 1
+  AND existing.id IS NULL
+`
+
+func (q *Queries) BackfillTeamSubscriptions(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, backfillTeamSubscriptions)
+	return err
+}
+
 const clearPushToken = `-- name: ClearPushToken :exec
 UPDATE users SET push_token = NULL, updated_at = CURRENT_TIMESTAMP
 WHERE push_token = ? AND id != ?
@@ -634,7 +656,7 @@ const listActiveTriggeredEvents = `-- name: ListActiveTriggeredEvents :many
 SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
-WHERE te.expires_at > CURRENT_TIMESTAMP
+WHERE datetime(te.expires_at) > datetime('now')
 ORDER BY te.expires_at ASC
 `
 
@@ -723,7 +745,7 @@ FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 JOIN subscriptions s ON s.event_id = e.id AND s.user_id = ?
 LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = ?
-WHERE te.expires_at > CURRENT_TIMESTAMP
+WHERE datetime(te.expires_at) > datetime('now')
 ORDER BY te.expires_at ASC
 `
 
@@ -994,8 +1016,8 @@ const listExpiringTriggeredEvents = `-- name: ListExpiringTriggeredEvents :many
 SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
-WHERE te.expires_at > CURRENT_TIMESTAMP
-  AND te.expires_at <= datetime(CURRENT_TIMESTAMP, '+' || ? || ' hours')
+WHERE datetime(te.expires_at) > datetime('now')
+  AND datetime(te.expires_at) <= datetime('now', '+' || ? || ' hours')
 ORDER BY te.expires_at ASC
 `
 
