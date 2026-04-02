@@ -89,10 +89,11 @@ type TeamBoxScore struct {
 			Walks      int `json:"baseOnBalls"`
 		} `json:"pitching"`
 		Batting struct {
-			Runs     int `json:"runs"`
-			Hits     int `json:"hits"`
-			HomeRuns int `json:"homeRuns"`
-			RBI      int `json:"rbi"`
+			Runs        int `json:"runs"`
+			Hits        int `json:"hits"`
+			HomeRuns    int `json:"homeRuns"`
+			RBI         int `json:"rbi"`
+			StolenBases int `json:"stolenBases"`
 		} `json:"batting"`
 	} `json:"teamStats"`
 }

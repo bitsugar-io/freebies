@@ -102,10 +102,15 @@ func (s *Source) GetGameByDate(ctx context.Context, teamID string, date time.Tim
 			"pitching_homers":  teamStats.TeamStats.Pitching.HomeRuns, // HRs allowed
 
 			// Batting stats (what the team's batters did)
-			"runs":     teamStats.TeamStats.Batting.Runs,
-			"hits":     teamStats.TeamStats.Batting.Hits,
-			"home_runs": teamStats.TeamStats.Batting.HomeRuns,
-			"rbi":      teamStats.TeamStats.Batting.RBI,
+			"runs":         teamStats.TeamStats.Batting.Runs,
+			"hits":         teamStats.TeamStats.Batting.Hits,
+			"home_runs":    teamStats.TeamStats.Batting.HomeRuns,
+			"rbi":          teamStats.TeamStats.Batting.RBI,
+			"stolen_bases": teamStats.TeamStats.Batting.StolenBases,
+
+			// Home-game conditional metrics (0 for away games)
+			"home_runs_scored":  conditionalInt(isHome, teamStats.TeamStats.Batting.Runs),
+			"home_stolen_bases": conditionalInt(isHome, teamStats.TeamStats.Batting.StolenBases),
 
 			// Win/loss as a metric (1 or 0)
 			"win":      boolToInt(won),
@@ -114,6 +119,13 @@ func (s *Source) GetGameByDate(ctx context.Context, teamID string, date time.Tim
 	}
 
 	return stats, nil
+}
+
+func conditionalInt(condition bool, value int) int {
+	if condition {
+		return value
+	}
+	return 0
 }
 
 func boolToInt(b bool) int {
