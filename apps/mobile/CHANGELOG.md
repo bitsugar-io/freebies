@@ -11,6 +11,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 - Fix tab jump bug where following a team on Discover would flash the loading spinner and land on
   the Deals tab
 - Auto-subscribe existing team followers when new deals are added via migration
+- Fix tab bar overlap on home indicator devices (bottom padding)
 
 ### Added
 
