@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { BlockProps } from './BlockRenderer';
 import { useAppData } from '../../context/AppDataContext';
 import { useTheme, ThemeMode } from '../../hooks/useTheme';
@@ -115,7 +116,7 @@ export function SettingsBlock({ config }: BlockProps) {
         <Text style={[styles.sectionTitle, { color: colors.text }]}>About</Text>
         <View style={styles.row}>
           <Text style={[styles.rowTitle, { color: colors.text }]}>Version</Text>
-          <Text style={[styles.rowValue, { color: colors.textMuted }]}>1.0.0</Text>
+          <Text style={[styles.rowValue, { color: colors.textMuted }]}>{Constants.expoConfig?.version ?? '?.?.?'}</Text>
         </View>
       </View>
 
