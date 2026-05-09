@@ -95,5 +95,8 @@ type TeamBoxScore struct {
 			RBI         int `json:"rbi"`
 			StolenBases int `json:"stolenBases"`
 		} `json:"batting"`
+		Fielding struct {
+			DoublePlays int `json:"doublePlays"`
+		} `json:"fielding"`
 	} `json:"teamStats"`
 }

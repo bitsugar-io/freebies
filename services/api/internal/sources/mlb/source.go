@@ -108,9 +108,13 @@ func (s *Source) GetGameByDate(ctx context.Context, teamID string, date time.Tim
 			"rbi":          teamStats.TeamStats.Batting.RBI,
 			"stolen_bases": teamStats.TeamStats.Batting.StolenBases,
 
+			// Fielding stats (defensive plays the team turned)
+			"double_plays": teamStats.TeamStats.Fielding.DoublePlays,
+
 			// Home-game conditional metrics (0 for away games)
 			"home_runs_scored":  conditionalInt(isHome, teamStats.TeamStats.Batting.Runs),
 			"home_stolen_bases": conditionalInt(isHome, teamStats.TeamStats.Batting.StolenBases),
+			"home_double_plays": conditionalInt(isHome, teamStats.TeamStats.Fielding.DoublePlays),
 
 			// Win/loss as a metric (1 or 0)
 			"win":      boolToInt(won),
