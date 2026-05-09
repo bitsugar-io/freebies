@@ -3,6 +3,8 @@ package mlb
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/retr0h/freebie/services/api/internal/sources"
@@ -108,13 +110,15 @@ func (s *Source) GetGameByDate(ctx context.Context, teamID string, date time.Tim
 			"rbi":          teamStats.TeamStats.Batting.RBI,
 			"stolen_bases": teamStats.TeamStats.Batting.StolenBases,
 
-			// Fielding stats (defensive plays the team turned)
-			"double_plays": teamStats.TeamStats.Fielding.DoublePlays,
+			// Fielding stats (defensive plays the team turned).
+			// Parsed out of teamStats.Info["FIELDING"]["DP"] — the structured
+			// fielding block does not expose doublePlays per game.
+			"double_plays": doublePlaysTurned(teamStats),
 
 			// Home-game conditional metrics (0 for away games)
 			"home_runs_scored":  conditionalInt(isHome, teamStats.TeamStats.Batting.Runs),
 			"home_stolen_bases": conditionalInt(isHome, teamStats.TeamStats.Batting.StolenBases),
-			"home_double_plays": conditionalInt(isHome, teamStats.TeamStats.Fielding.DoublePlays),
+			"home_double_plays": conditionalInt(isHome, doublePlaysTurned(teamStats)),
 
 			// Win/loss as a metric (1 or 0)
 			"win":      boolToInt(won),
@@ -137,6 +141,47 @@ func boolToInt(b bool) int {
 		return 1
 	}
 	return 0
+}
+
+// doublePlaysTurned extracts the count of double plays the team turned in a
+// game. The MLB Stats API encodes this in the boxscore's free-text Info block
+// (section "FIELDING", label "DP"). The value is one of:
+//
+//	"(Smith-Jones-Brown)."                       -> 1 DP (no leading number)
+//	"2 (Smith-Jones; Smith-Brown-Jones)."        -> 2 DPs
+//	""                                           -> 0 DPs (no DP entry)
+//
+// We read the leading integer; if absent and the entry exists, count is 1.
+func doublePlaysTurned(team TeamBoxScore) int {
+	for _, section := range team.Info {
+		if section.Title != "FIELDING" {
+			continue
+		}
+		for _, item := range section.FieldList {
+			if item.Label != "DP" {
+				continue
+			}
+			return parseDPCount(item.Value)
+		}
+	}
+	return 0
+}
+
+func parseDPCount(value string) int {
+	value = strings.TrimSpace(value)
+	if value == "" {
+		return 0
+	}
+	end := 0
+	for end < len(value) && value[end] >= '0' && value[end] <= '9' {
+		end++
+	}
+	if end > 0 {
+		if n, err := strconv.Atoi(value[:end]); err == nil {
+			return n
+		}
+	}
+	return 1
 }
 
 // Register the MLB source on package init
