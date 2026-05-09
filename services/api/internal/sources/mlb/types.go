@@ -95,8 +95,20 @@ type TeamBoxScore struct {
 			RBI         int `json:"rbi"`
 			StolenBases int `json:"stolenBases"`
 		} `json:"batting"`
-		Fielding struct {
-			DoublePlays int `json:"doublePlays"`
-		} `json:"fielding"`
 	} `json:"teamStats"`
+	// Info holds free-text annotations like "DP" / "E" entries grouped by section
+	// title (e.g. "FIELDING", "BATTING"). The MLB Stats API does not expose
+	// per-game team double plays in the structured fielding block, so we parse
+	// the count out of Info[FIELDING].DP.
+	Info []BoxScoreInfoSection `json:"info"`
+}
+
+type BoxScoreInfoSection struct {
+	Title     string             `json:"title"`
+	FieldList []BoxScoreInfoItem `json:"fieldList"`
+}
+
+type BoxScoreInfoItem struct {
+	Label string `json:"label"`
+	Value string `json:"value"`
 }
