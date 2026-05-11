@@ -41,76 +41,78 @@ func NewServer(cfg *config.Config, db *sql.DB, logger *slog.Logger, workerServic
 }
 
 func (s *Server) setupRoutes() {
-	// Middleware
+	// Baseline middleware applied to every route, including /healthz.
 	s.router.Use(middleware.RequestID)
 	s.router.Use(middleware.RealIP)
-	s.router.Use(middleware.Logger)
 	s.router.Use(middleware.Recoverer)
 	s.router.Use(middleware.Timeout(30 * time.Second))
 
-	// CORS for mobile/web app
-	s.router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"*"}, // Allow all for dev, restrict in prod
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-Device-ID"},
-		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
-		MaxAge:           300,
-	}))
-
-	// Health checks
+	// /healthz lives outside the logged Group below: kubelet probes hit it
+	// ~every 5s and would otherwise drown real traffic in the pod log buffer.
 	s.router.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok"))
+		_, _ = w.Write([]byte("ok"))
 	})
 
-	// API routes
-	h := handlers.New(s.db, s.logger)
-	queries := db.New(s.db)
+	// Everything user-facing gets request logging + CORS.
+	s.router.Group(func(r chi.Router) {
+		r.Use(middleware.Logger)
+		r.Use(cors.Handler(cors.Options{
+			AllowedOrigins:   []string{"*"}, // Allow all for dev, restrict in prod
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-Device-ID"},
+			ExposedHeaders:   []string{"Link"},
+			AllowCredentials: false,
+			MaxAge:           300,
+		}))
 
-	s.router.Route("/api/v1", func(r chi.Router) {
-		// Public routes (no auth required)
-		r.Get("/config", h.GetConfig)
-		r.Get("/leagues", h.ListLeagues)
-		r.Get("/events", h.ListEvents)
-		r.Get("/events/{id}", h.GetEvent)
-		r.Post("/users", h.CreateUser) // Returns token on creation
+		h := handlers.New(s.db, s.logger)
+		queries := db.New(s.db)
 
-		// Protected routes (require auth + user must match)
-		r.Group(func(r chi.Router) {
-			r.Use(authmw.Auth(queries))
-			r.Use(authmw.RequireUserMatch)
+		r.Route("/api/v1", func(r chi.Router) {
+			// Public routes (no auth required)
+			r.Get("/config", h.GetConfig)
+			r.Get("/leagues", h.ListLeagues)
+			r.Get("/events", h.ListEvents)
+			r.Get("/events/{id}", h.GetEvent)
+			r.Post("/users", h.CreateUser) // Returns token on creation
 
-			// User profile
-			r.Get("/users/{id}", h.GetUser)
-			r.Get("/users/{id}/stats", h.GetUserStats)
-			r.Put("/users/{id}/push-token", h.UpdatePushToken)
+			// Protected routes (require auth + user must match)
+			r.Group(func(r chi.Router) {
+				r.Use(authmw.Auth(queries))
+				r.Use(authmw.RequireUserMatch)
 
-			// Subscriptions
-			r.Get("/users/{userId}/subscriptions", h.ListSubscriptions)
-			r.Post("/users/{userId}/subscriptions", h.CreateSubscription)
-			r.Delete("/users/{userId}/subscriptions/{eventId}", h.DeleteSubscription)
+				// User profile
+				r.Get("/users/{id}", h.GetUser)
+				r.Get("/users/{id}/stats", h.GetUserStats)
+				r.Put("/users/{id}/push-token", h.UpdatePushToken)
 
-			// Active Deals
-			r.Get("/users/{userId}/active-deals", h.ListActiveDeals)
+				// Subscriptions
+				r.Get("/users/{userId}/subscriptions", h.ListSubscriptions)
+				r.Post("/users/{userId}/subscriptions", h.CreateSubscription)
+				r.Delete("/users/{userId}/subscriptions/{eventId}", h.DeleteSubscription)
 
-			// Dismissals
-			r.Post("/users/{userId}/dismissals", h.CreateDismissal)
-			r.Delete("/users/{userId}/dismissals/{triggeredEventId}", h.DeleteDismissal)
+				// Active Deals
+				r.Get("/users/{userId}/active-deals", h.ListActiveDeals)
+
+				// Dismissals
+				r.Post("/users/{userId}/dismissals", h.CreateDismissal)
+				r.Delete("/users/{userId}/dismissals/{triggeredEventId}", h.DeleteDismissal)
+			})
 		})
+
+		// Internal worker endpoints (called by K8s CronJobs via generated client).
+		// Mounted inside the logged Group so cron activity shows up in logs.
+		if s.workerService != nil {
+			wh := handlers.NewWorkerHandler(s.workerService)
+			strictHandler := workergen.NewStrictHandler(wh, nil)
+
+			internalRouter := chi.NewRouter()
+			internalRouter.Use(authmw.InternalAuth(s.cfg.Worker.Secret))
+			workergen.HandlerFromMux(strictHandler, internalRouter)
+			r.Mount("/", internalRouter)
+		}
 	})
-
-	// Internal worker endpoints (called by K8s CronJobs via generated client)
-	if s.workerService != nil {
-		wh := handlers.NewWorkerHandler(s.workerService)
-		strictHandler := workergen.NewStrictHandler(wh, nil)
-
-		// Auth middleware applied to the generated routes
-		internalRouter := chi.NewRouter()
-		internalRouter.Use(authmw.InternalAuth(s.cfg.Worker.Secret))
-		workergen.HandlerFromMux(strictHandler, internalRouter)
-		s.router.Mount("/", internalRouter)
-	}
 }
 
 func (s *Server) Start(ctx context.Context) error {
