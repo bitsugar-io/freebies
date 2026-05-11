@@ -1,114 +1,40 @@
 package mlb
 
-// Team ID mappings (MLB API team IDs)
-var TeamIDs = map[string]int{
-	"LAD": 119, // Los Angeles Dodgers
-	"SD":  135, // San Diego Padres
-	"SF":  137, // San Francisco Giants
-	"ARI": 109, // Arizona Diamondbacks
-	"COL": 115, // Colorado Rockies
-	"LAA": 108, // Los Angeles Angels
-	"OAK": 133, // Oakland Athletics
-	"SEA": 136, // Seattle Mariners
-	"TEX": 140, // Texas Rangers
-	"HOU": 117, // Houston Astros
-	"NYY": 147, // New York Yankees
-	"NYM": 121, // New York Mets
-	"BOS": 111, // Boston Red Sox
-	"CHC": 112, // Chicago Cubs
-	"CHW": 145, // Chicago White Sox
-	"ATL": 144, // Atlanta Braves
-	"MIA": 146, // Miami Marlins
-	"PHI": 143, // Philadelphia Phillies
-	"WSH": 120, // Washington Nationals
-	"BAL": 110, // Baltimore Orioles
-	"TB":  139, // Tampa Bay Rays
-	"TOR": 141, // Toronto Blue Jays
-	"CLE": 114, // Cleveland Guardians
-	"DET": 116, // Detroit Tigers
-	"KC":  118, // Kansas City Royals
-	"MIN": 142, // Minnesota Twins
-	"CIN": 113, // Cincinnati Reds
-	"MIL": 158, // Milwaukee Brewers
-	"PIT": 134, // Pittsburgh Pirates
-	"STL": 138, // St. Louis Cardinals
-}
+import "github.com/retr0h/mlb-sdk/pkg/mlb"
 
-// ScheduleResponse represents the MLB schedule API response
-type ScheduleResponse struct {
-	Dates []struct {
-		Games []Game `json:"games"`
-	} `json:"dates"`
-}
-
-// Game represents a game from the schedule
-type Game struct {
-	GamePk   int    `json:"gamePk"`
-	GameDate string `json:"gameDate"`
-	Status   struct {
-		AbstractGameState string `json:"abstractGameState"` // "Final", "Live", "Preview"
-	} `json:"status"`
-	Teams struct {
-		Away struct {
-			Team struct {
-				ID   int    `json:"id"`
-				Name string `json:"name"`
-			} `json:"team"`
-			Score int `json:"score"`
-		} `json:"away"`
-		Home struct {
-			Team struct {
-				ID   int    `json:"id"`
-				Name string `json:"name"`
-			} `json:"team"`
-			Score int `json:"score"`
-		} `json:"home"`
-	} `json:"teams"`
-}
-
-// BoxScoreResponse represents the boxscore API response
-type BoxScoreResponse struct {
-	Teams struct {
-		Away TeamBoxScore `json:"away"`
-		Home TeamBoxScore `json:"home"`
-	} `json:"teams"`
-}
-
-// TeamBoxScore represents a team's boxscore
-type TeamBoxScore struct {
-	Team struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-	} `json:"team"`
-	TeamStats struct {
-		Pitching struct {
-			StrikeOuts int `json:"strikeOuts"`
-			Hits       int `json:"hits"`
-			Runs       int `json:"runs"`
-			HomeRuns   int `json:"homeRuns"`
-			Walks      int `json:"baseOnBalls"`
-		} `json:"pitching"`
-		Batting struct {
-			Runs        int `json:"runs"`
-			Hits        int `json:"hits"`
-			HomeRuns    int `json:"homeRuns"`
-			RBI         int `json:"rbi"`
-			StolenBases int `json:"stolenBases"`
-		} `json:"batting"`
-	} `json:"teamStats"`
-	// Info holds free-text annotations like "DP" / "E" entries grouped by section
-	// title (e.g. "FIELDING", "BATTING"). The MLB Stats API does not expose
-	// per-game team double plays in the structured fielding block, so we parse
-	// the count out of Info[FIELDING].DP.
-	Info []BoxScoreInfoSection `json:"info"`
-}
-
-type BoxScoreInfoSection struct {
-	Title     string             `json:"title"`
-	FieldList []BoxScoreInfoItem `json:"fieldList"`
-}
-
-type BoxScoreInfoItem struct {
-	Label string `json:"label"`
-	Value string `json:"value"`
+// TeamIDs maps Freebies' wire-format team codes (the same strings carried in
+// the database and on Source method calls) to the MLB Stats API's numeric
+// team IDs as typed by mlb-sdk. Source code-callers pass strings; we resolve
+// once here.
+var TeamIDs = map[string]mlb.TeamID{
+	"LAD": mlb.LAD,
+	"SD":  mlb.SD,
+	"SF":  mlb.SF,
+	"ARI": mlb.ARI,
+	"COL": mlb.COL,
+	"LAA": mlb.LAA,
+	"OAK": mlb.OAK,
+	"SEA": mlb.SEA,
+	"TEX": mlb.TEX,
+	"HOU": mlb.HOU,
+	"NYY": mlb.NYY,
+	"NYM": mlb.NYM,
+	"BOS": mlb.BOS,
+	"CHC": mlb.CHC,
+	"CHW": mlb.CHW,
+	"ATL": mlb.ATL,
+	"MIA": mlb.MIA,
+	"PHI": mlb.PHI,
+	"WSH": mlb.WSH,
+	"BAL": mlb.BAL,
+	"TB":  mlb.TB,
+	"TOR": mlb.TOR,
+	"CLE": mlb.CLE,
+	"DET": mlb.DET,
+	"KC":  mlb.KC,
+	"MIN": mlb.MIN,
+	"CIN": mlb.CIN,
+	"MIL": mlb.MIL,
+	"PIT": mlb.PIT,
+	"STL": mlb.STL,
 }
