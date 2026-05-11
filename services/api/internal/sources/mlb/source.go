@@ -3,135 +3,139 @@ package mlb
 import (
 	"context"
 	"fmt"
-	"strconv"
-	"strings"
 	"time"
+
+	mlbsdk "github.com/retr0h/mlb-sdk/pkg/mlb"
 
 	"github.com/retr0h/freebie/services/api/internal/sources"
 )
 
-// Source implements the sources.Source interface for MLB
+// Source implements sources.Source for MLB using the public mlb-sdk client.
+// All API parsing (schedule, boxscore, the FIELDING/DP free-text quirk)
+// lives in mlb-sdk; this file does only the freebies-specific mapping
+// from box-score fields into the flat metrics map.
 type Source struct {
-	client *Client
+	client *mlbsdk.Client
 }
 
-// NewSource creates a new MLB source
+// NewSource creates a new MLB source backed by mlb-sdk pointed at the
+// public MLB Stats API. Tests use NewSourceWithClient to inject a client
+// pointed at a fake server.
 func NewSource() *Source {
-	return &Source{
-		client: NewClient(),
-	}
+	return &Source{client: mlbsdk.New()}
 }
 
-// League returns "mlb"
-func (s *Source) League() string {
-	return "mlb"
+// NewSourceWithClient wraps an already-configured mlb-sdk client. Used by
+// tests to point at an httptest fake.
+func NewSourceWithClient(c *mlbsdk.Client) *Source {
+	return &Source{client: c}
 }
 
-// GetYesterdaysGame fetches stats from yesterday's game
-func (s *Source) GetYesterdaysGame(ctx context.Context, teamID string) (*sources.GameStats, error) {
-	// Use PT timezone since most deals are LA-based
+// League returns "mlb".
+func (s *Source) League() string { return "mlb" }
+
+// GetYesterdaysGame fetches stats from yesterday's game (PT, since deals are
+// LA-anchored). Delegates to GetGameByDate.
+func (s *Source) GetYesterdaysGame(
+	ctx context.Context,
+	teamID string,
+) (*sources.GameStats, error) {
 	loc, _ := time.LoadLocation("America/Los_Angeles")
 	yesterday := time.Now().In(loc).AddDate(0, 0, -1)
 	return s.GetGameByDate(ctx, teamID, yesterday)
 }
 
-// GetGameByDate fetches stats for a specific date
-func (s *Source) GetGameByDate(ctx context.Context, teamID string, date time.Time) (*sources.GameStats, error) {
-	// Look up MLB API team ID
+// GetGameByDate fetches a team's game for a specific date and returns the
+// flat metrics map the trigger layer expects. Returns (nil, nil) when no
+// completed game exists on that date.
+func (s *Source) GetGameByDate(
+	ctx context.Context,
+	teamID string,
+	date time.Time,
+) (*sources.GameStats, error) {
 	mlbTeamID, ok := TeamIDs[teamID]
 	if !ok {
 		return nil, fmt.Errorf("unknown team ID: %s", teamID)
 	}
 
-	// Fetch schedule for that date
-	schedule, err := s.client.GetSchedule(ctx, mlbTeamID, date)
+	games, err := s.client.Schedule(ctx, mlbsdk.ScheduleQuery{
+		Team: mlbTeamID,
+		On:   date,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("fetching schedule: %w", err)
 	}
 
-	// Find a completed game
-	var game *Game
-	for _, d := range schedule.Dates {
-		for _, g := range d.Games {
-			if g.Status.AbstractGameState == "Final" {
-				game = &g
-				break
-			}
+	var game *mlbsdk.Game
+	for i := range games {
+		if games[i].Status == mlbsdk.StatusFinal {
+			game = &games[i]
+			break
 		}
 	}
-
 	if game == nil {
-		// No completed game on this date
 		return nil, nil
 	}
 
-	// Fetch boxscore
-	boxscore, err := s.client.GetBoxScore(ctx, game.GamePk)
+	box, err := s.client.Boxscore(ctx, game.GamePk)
 	if err != nil {
 		return nil, fmt.Errorf("fetching boxscore: %w", err)
 	}
 
-	// Determine if we're home or away
-	isHome := game.Teams.Home.Team.ID == mlbTeamID
-	var teamStats TeamBoxScore
-	var opponentName string
-	var won bool
-
-	if isHome {
-		teamStats = boxscore.Teams.Home
-		opponentName = game.Teams.Away.Team.Name
-		won = game.Teams.Home.Score > game.Teams.Away.Score
-	} else {
-		teamStats = boxscore.Teams.Away
-		opponentName = game.Teams.Home.Team.Name
-		won = game.Teams.Away.Score > game.Teams.Home.Score
+	team := box.Team(mlbTeamID)
+	if team == nil {
+		return nil, fmt.Errorf("team %s not present in boxscore for game %d", teamID, game.GamePk)
 	}
 
-	// Build GameStats with all available metrics
+	isHome := game.Home.ID == mlbTeamID
+	var opponent string
+	var won bool
+	if isHome {
+		opponent = game.Away.Name
+		won = game.Home.Score > game.Away.Score
+	} else {
+		opponent = game.Home.Name
+		won = game.Away.Score > game.Home.Score
+	}
+
+	doublePlays := team.DoublePlaysTurned()
+
 	stats := &sources.GameStats{
 		GameID:   fmt.Sprintf("mlb-%d", game.GamePk),
 		GameDate: date,
 		TeamID:   teamID,
-		Opponent: opponentName,
+		Opponent: opponent,
 		HomeGame: isHome,
 		Won:      won,
 		Metrics: map[string]int{
-			// Pitching stats (what the team's pitchers did)
-			"strikeouts":       teamStats.TeamStats.Pitching.StrikeOuts,
-			"pitching_hits":    teamStats.TeamStats.Pitching.Hits,    // hits allowed
-			"pitching_runs":    teamStats.TeamStats.Pitching.Runs,    // runs allowed
-			"pitching_walks":   teamStats.TeamStats.Pitching.Walks,
-			"pitching_homers":  teamStats.TeamStats.Pitching.HomeRuns, // HRs allowed
+			"strikeouts":      team.Pitching.Strikeouts,
+			"pitching_hits":   team.Pitching.Hits,
+			"pitching_runs":   team.Pitching.Runs,
+			"pitching_walks":  team.Pitching.Walks,
+			"pitching_homers": team.Pitching.HomeRuns,
 
-			// Batting stats (what the team's batters did)
-			"runs":         teamStats.TeamStats.Batting.Runs,
-			"hits":         teamStats.TeamStats.Batting.Hits,
-			"home_runs":    teamStats.TeamStats.Batting.HomeRuns,
-			"rbi":          teamStats.TeamStats.Batting.RBI,
-			"stolen_bases": teamStats.TeamStats.Batting.StolenBases,
+			"runs":         team.Batting.Runs,
+			"hits":         team.Batting.Hits,
+			"home_runs":    team.Batting.HomeRuns,
+			"rbi":          team.Batting.RBI,
+			"stolen_bases": team.Batting.StolenBases,
 
-			// Fielding stats (defensive plays the team turned).
-			// Parsed out of teamStats.Info["FIELDING"]["DP"] — the structured
-			// fielding block does not expose doublePlays per game.
-			"double_plays": doublePlaysTurned(teamStats),
+			"double_plays": doublePlays,
 
-			// Home-game conditional metrics (0 for away games)
-			"home_runs_scored":  conditionalInt(isHome, teamStats.TeamStats.Batting.Runs),
-			"home_stolen_bases": conditionalInt(isHome, teamStats.TeamStats.Batting.StolenBases),
-			"home_double_plays": conditionalInt(isHome, doublePlaysTurned(teamStats)),
+			"home_runs_scored":  conditionalInt(isHome, team.Batting.Runs),
+			"home_stolen_bases": conditionalInt(isHome, team.Batting.StolenBases),
+			"home_double_plays": conditionalInt(isHome, doublePlays),
 
-			// Win/loss as a metric (1 or 0)
 			"win":      boolToInt(won),
 			"home_win": boolToInt(won && isHome),
 		},
 	}
-
 	return stats, nil
 }
 
-func conditionalInt(condition bool, value int) int {
-	if condition {
-		return value
+func conditionalInt(cond bool, v int) int {
+	if cond {
+		return v
 	}
 	return 0
 }
@@ -143,48 +147,4 @@ func boolToInt(b bool) int {
 	return 0
 }
 
-// doublePlaysTurned extracts the count of double plays the team turned in a
-// game. The MLB Stats API encodes this in the boxscore's free-text Info block
-// (section "FIELDING", label "DP"). The value is one of:
-//
-//	"(Smith-Jones-Brown)."                       -> 1 DP (no leading number)
-//	"2 (Smith-Jones; Smith-Brown-Jones)."        -> 2 DPs
-//	""                                           -> 0 DPs (no DP entry)
-//
-// We read the leading integer; if absent and the entry exists, count is 1.
-func doublePlaysTurned(team TeamBoxScore) int {
-	for _, section := range team.Info {
-		if section.Title != "FIELDING" {
-			continue
-		}
-		for _, item := range section.FieldList {
-			if item.Label != "DP" {
-				continue
-			}
-			return parseDPCount(item.Value)
-		}
-	}
-	return 0
-}
-
-func parseDPCount(value string) int {
-	value = strings.TrimSpace(value)
-	if value == "" {
-		return 0
-	}
-	end := 0
-	for end < len(value) && value[end] >= '0' && value[end] <= '9' {
-		end++
-	}
-	if end > 0 {
-		if n, err := strconv.Atoi(value[:end]); err == nil {
-			return n
-		}
-	}
-	return 1
-}
-
-// Register the MLB source on package init
-func init() {
-	sources.Register(NewSource())
-}
+func init() { sources.Register(NewSource()) }
