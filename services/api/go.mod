@@ -13,6 +13,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.32
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/pressly/goose/v3 v3.26.0
+	github.com/retr0h/mlb-sdk v0.0.0-20260511030622-6d097d04b5f9
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
@@ -222,7 +223,6 @@ require (
 	github.com/quasilyte/stdinfo v0.0.0-20220114132959-f7386bf02567 // indirect
 	github.com/raeperd/recvcheck v0.2.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	github.com/retr0h/mlb-sdk v0.0.0-00010101000000-000000000000
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/riza-io/grpc-go v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
@@ -325,5 +325,3 @@ tool (
 	github.com/sqlc-dev/sqlc/cmd/sqlc
 	mvdan.cc/gofumpt
 )
-
-replace github.com/retr0h/mlb-sdk => /Users/john/git/mlb-sdk
