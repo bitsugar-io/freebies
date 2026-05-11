@@ -54,7 +54,7 @@ func runDealsCreate(cmd *cobra.Command, args []string) error {
 	hours, _ := cmd.Flags().GetInt("hours")
 	logger.Info("config", "database", cfg.Database.Path, "hours", hours)
 
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}
@@ -134,7 +134,7 @@ func runDealsCreate(cmd *cobra.Command, args []string) error {
 func runDealsList(cmd *cobra.Command, args []string) error {
 	logger.Info("config", "database", cfg.Database.Path)
 
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}
@@ -194,7 +194,7 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 	shouldNotify, _ := cmd.Flags().GetBool("notify")
 	logger.Info("config", "database", cfg.Database.Path, "eventId", eventID, "hours", hours, "notify", shouldNotify)
 
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}

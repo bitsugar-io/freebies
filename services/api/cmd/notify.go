@@ -49,7 +49,7 @@ func runNotifyTest(cmd *cobra.Command, args []string) error {
 
 	logger.Info("config", "database", cfg.Database.Path)
 
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func runNotifySend(cmd *cobra.Command, args []string) error {
 
 	logger.Info("config", "database", cfg.Database.Path, "user", userID)
 
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}

@@ -38,7 +38,7 @@ func init() {
 func runUsersList(cmd *cobra.Command, args []string) error {
 	logger.Info("config", "database", cfg.Database.Path)
 
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}
@@ -108,7 +108,7 @@ func runUsersList(cmd *cobra.Command, args []string) error {
 }
 
 func runUsersCleanup(cmd *cobra.Command, args []string) error {
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		return err
 	}
