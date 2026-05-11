@@ -42,7 +42,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	)
 
 	// Open database
-	database, err := db.Open(cfg.Database.Path)
+	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
 		logger.Error("failed to open database", "error", err, "path", cfg.Database.Path)
 		return err
