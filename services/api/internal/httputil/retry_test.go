@@ -27,7 +27,7 @@ func TestDo_SuccessOnFirstAttempt(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	assert.Equal(t, int32(1), attempts.Load())
 }
 
@@ -50,7 +50,7 @@ func TestDo_RetriesOn500(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	assert.Equal(t, int32(3), attempts.Load())
 }
 
@@ -73,7 +73,7 @@ func TestDo_RetriesOn429(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	assert.Equal(t, int32(2), attempts.Load())
 }
 
@@ -92,7 +92,7 @@ func TestDo_NoRetryOn4xx(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	assert.Equal(t, int32(1), attempts.Load())
 }
 
@@ -111,7 +111,7 @@ func TestDo_ExhaustsRetries(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusInternalServerError, resp.StatusCode)
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	assert.Equal(t, int32(4), attempts.Load())
 }
 

@@ -42,12 +42,12 @@ func (s *Source) GetGameByDate(_ context.Context, teamID string, date time.Time)
 		HomeGame: true,
 		Won:      true,
 		Metrics: map[string]int{
-			"score":       999,
-			"strikeouts":  99,
-			"runs":        99,
-			"hits":        99,
-			"home_runs":   99,
-			"win":         1,
+			"score":      999,
+			"strikeouts": 99,
+			"runs":       99,
+			"hits":       99,
+			"home_runs":  99,
+			"win":        1,
 		},
 	}, nil
 }

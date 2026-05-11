@@ -19,7 +19,7 @@ func setupTestHandler(t *testing.T) *handlers.Handler {
 	if err != nil {
 		t.Fatalf("failed to open test db: %v", err)
 	}
-	t.Cleanup(func() { database.Close() })
+	t.Cleanup(func() { _ = database.Close() })
 
 	if err := db.Migrate(database); err != nil {
 		t.Fatalf("failed to run migrations: %v", err)

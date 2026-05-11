@@ -22,7 +22,7 @@ func TestSendBatch_RetriesOnServerError(t *testing.T) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"data":[{"id":"ticket-1","status":"ok"}]}`))
+		_, _ = w.Write([]byte(`{"data":[{"id":"ticket-1","status":"ok"}]}`))
 	}))
 	defer srv.Close()
 

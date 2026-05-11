@@ -79,7 +79,7 @@ func Do(
 		}
 
 		// Retryable status with retries remaining: close body and retry.
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		lastErr = nil
 		lastResp = nil
 
