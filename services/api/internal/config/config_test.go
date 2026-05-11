@@ -42,9 +42,6 @@ func TestDatabaseURLRedaction(t *testing.T) {
 			if got := tc.in.String(); got != tc.want {
 				t.Errorf("String() = %q, want %q", got, tc.want)
 			}
-			if got := fmt.Sprintf("%s", tc.in); got != tc.want {
-				t.Errorf("Sprintf(%%s) = %q, want %q", got, tc.want)
-			}
 			if got := fmt.Sprintf("%v", tc.in); got != tc.want {
 				t.Errorf("Sprintf(%%v) = %q, want %q", got, tc.want)
 			}

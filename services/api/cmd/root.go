@@ -43,7 +43,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&jsonOutput, "json", false, "Output logs in JSON format")
 	rootCmd.PersistentFlags().String("db", "", "database file path")
 
-	viper.BindPFlag("database.path", rootCmd.PersistentFlags().Lookup("db"))
+	_ = viper.BindPFlag("database.path", rootCmd.PersistentFlags().Lookup("db"))
 
 	// Add subcommands
 	rootCmd.AddCommand(serveCmd)

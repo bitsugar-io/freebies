@@ -10,13 +10,13 @@ import (
 // GameStats holds all relevant stats from a game
 // Metrics is a flexible map so each league can provide different stats
 type GameStats struct {
-	GameID    string
-	GameDate  time.Time
-	TeamID    string
-	Opponent  string
-	HomeGame  bool
-	Won       bool
-	Metrics   map[string]int // "strikeouts" -> 8, "runs" -> 5, "points" -> 112
+	GameID   string
+	GameDate time.Time
+	TeamID   string
+	Opponent string
+	HomeGame bool
+	Won      bool
+	Metrics  map[string]int // "strikeouts" -> 8, "runs" -> 5, "points" -> 112
 }
 
 // Source fetches game data for a specific league

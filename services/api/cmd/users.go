@@ -42,7 +42,7 @@ func runUsersList(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	queries := db.New(database)
 	ctx := context.Background()
@@ -52,11 +52,11 @@ func runUsersList(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("querying users: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(w, "ID\tDEVICE\tPLATFORM\tAUTH TOKEN\tPUSH TOKEN\tCREATED")
-	fmt.Fprintln(w, "--\t------\t--------\t----------\t----------\t-------")
+	_, _ = fmt.Fprintln(w, "ID\tDEVICE\tPLATFORM\tAUTH TOKEN\tPUSH TOKEN\tCREATED")
+	_, _ = fmt.Fprintln(w, "--\t------\t--------\t----------\t----------\t-------")
 
 	count := 0
 	for rows.Next() {
@@ -86,7 +86,7 @@ func runUsersList(cmd *cobra.Command, args []string) error {
 			}
 		}
 
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n",
+		_, _ = fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n",
 			id,
 			deviceID,
 			platform,
@@ -97,11 +97,10 @@ func runUsersList(cmd *cobra.Command, args []string) error {
 		count++
 	}
 
-	w.Flush()
+	_ = w.Flush()
 
 	// Count subscriptions per user
-	subCounts, err := queries.CountUserSubscriptions(ctx, "")
-	_ = subCounts // TODO: show subscription counts
+	_, _ = queries.CountUserSubscriptions(ctx, "") // TODO: show subscription counts
 
 	fmt.Printf("\nTotal: %d users\n", count)
 	return nil
@@ -112,7 +111,7 @@ func runUsersCleanup(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	ctx := context.Background()
 

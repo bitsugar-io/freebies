@@ -58,7 +58,7 @@ func runDealsCreate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	queries := db.New(database)
 	ctx := context.Background()
@@ -138,7 +138,7 @@ func runDealsList(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	queries := db.New(database)
 	ctx := context.Background()
@@ -198,7 +198,7 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	queries := db.New(database)
 	ctx := context.Background()

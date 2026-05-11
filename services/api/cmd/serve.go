@@ -30,8 +30,8 @@ func init() {
 	serveCmd.Flags().String("host", "0.0.0.0", "Host to bind to")
 	serveCmd.Flags().Int("port", 8080, "Port to listen on")
 
-	viper.BindPFlag("server.host", serveCmd.Flags().Lookup("host"))
-	viper.BindPFlag("server.port", serveCmd.Flags().Lookup("port"))
+	_ = viper.BindPFlag("server.host", serveCmd.Flags().Lookup("host"))
+	_ = viper.BindPFlag("server.port", serveCmd.Flags().Lookup("port"))
 }
 
 func runServe(cmd *cobra.Command, args []string) error {
@@ -47,7 +47,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 		logger.Error("failed to open database", "error", err, "path", cfg.Database.Path)
 		return err
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	// Run migrations
 	logger.Info("running migrations...")

@@ -6,6 +6,8 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/retr0h/freebie/services/api/internal/db"
 	"github.com/retr0h/freebie/services/api/internal/notify"
 	"github.com/retr0h/freebie/services/api/internal/triggers"
@@ -169,7 +171,15 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 
 		messages = notify.DeduplicateMessages(messages)
 
+		userByToken := make(map[string]string, len(users))
+		for _, u := range users {
+			if u.PushToken.Valid {
+				userByToken[u.PushToken.String] = u.ID
+			}
+		}
+
 		batchResult := s.notifier.SendBatchConcurrent(ctx, s.logger, messages, notify.DefaultWorkers)
+		s.recordNotifications(ctx, messages, deal.ID, userByToken, batchResult)
 		totalSent += batchResult.Sent
 		totalFailed += batchResult.Failed
 	}
@@ -222,7 +232,15 @@ func (s *Service) notifySubscribers(ctx context.Context, result triggers.CheckRe
 
 	messages = notify.DeduplicateMessages(messages)
 
+	userByToken := make(map[string]string, len(subscribers))
+	for _, sub := range subscribers {
+		if sub.PushToken.Valid {
+			userByToken[sub.PushToken.String] = sub.UserID
+		}
+	}
+
 	batchResult := s.notifier.SendBatchConcurrent(ctx, s.logger, messages, notify.DefaultWorkers)
+	s.recordNotifications(ctx, messages, result.TriggeredEventID, userByToken, batchResult)
 
 	if batchResult.Sent > 0 {
 		s.logger.Info("notified subscribers",
@@ -233,4 +251,48 @@ func (s *Service) notifySubscribers(ctx context.Context, result triggers.CheckRe
 	}
 
 	return int(batchResult.Sent)
+}
+
+// recordNotifications writes one row to `notifications` per attempted push,
+// with status reflecting whether the send succeeded. Status assignment is
+// positional: the first batchResult.Sent messages are marked "sent" and the
+// remainder "failed". SendBatchConcurrent only surfaces aggregate counts, so
+// per-row attribution may be wrong on a partial-batch failure — the aggregate
+// counts of "sent" vs "failed" rows are accurate, the per-user mapping is
+// approximate. Good enough for telemetry; precise per-ticket attribution
+// would require a notifier API change.
+func (s *Service) recordNotifications(
+	ctx context.Context,
+	messages []notify.ExpoPushMessage,
+	triggeredEventID string,
+	userByToken map[string]string,
+	batchResult *notify.BatchResult,
+) {
+	if triggeredEventID == "" {
+		return
+	}
+	sentRemaining := batchResult.Sent
+	for _, msg := range messages {
+		userID, ok := userByToken[msg.To]
+		if !ok {
+			continue
+		}
+		status := "failed"
+		if sentRemaining > 0 {
+			status = "sent"
+			sentRemaining--
+		}
+		if _, err := s.queries.CreateNotification(ctx, db.CreateNotificationParams{
+			ID:               uuid.New().String(),
+			UserID:           userID,
+			TriggeredEventID: triggeredEventID,
+			Status:           status,
+		}); err != nil {
+			s.logger.Warn("failed to record notification",
+				"user_id", userID,
+				"triggered_event_id", triggeredEventID,
+				"error", err,
+			)
+		}
+	}
 }
