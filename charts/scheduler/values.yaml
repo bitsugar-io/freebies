@@ -10,7 +10,7 @@ api:
 workerSecret: ""
 
 checkTriggers:
-  schedule: "0 14 * * *"   # 7am PT (UTC-7 DST)
+  schedule: "0 14,16 * * *"   # 7am + 9am PT retry (UTC-7 DST); dedupes per game
 
 sendReminders:
   schedule: "0 18,22,0 * * *"  # 11am, 3pm, 5pm PT (UTC-7 DST)
