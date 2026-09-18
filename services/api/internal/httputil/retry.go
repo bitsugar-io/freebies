@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/rand/v2"
 	"net/http"
+	"slices"
 	"time"
 )
 
@@ -11,6 +12,9 @@ import (
 type RetryOptions struct {
 	MaxRetries int           // default 3
 	BaseDelay  time.Duration // default 1s
+	// RetryStatuses lists extra status codes to retry beyond the defaults
+	// (5xx and 429), e.g. 406 from the MLB Stats API edge.
+	RetryStatuses []int
 }
 
 func (o *RetryOptions) maxRetries() int {
@@ -29,7 +33,8 @@ func (o *RetryOptions) baseDelay() time.Duration {
 
 // Do executes an HTTP request with retry and exponential backoff.
 // newReq is called for each attempt to produce a fresh request (avoids consumed-body issues).
-// Retries on network errors, 5xx, and 429. Does not retry other 4xx.
+// Retries on network errors, 5xx, 429, and opts.RetryStatuses. Does not
+// retry other 4xx.
 func Do(
 	ctx context.Context,
 	client *http.Client,
@@ -69,7 +74,7 @@ func Do(
 		}
 
 		// Non-retryable status: return immediately.
-		if !isRetryable(resp.StatusCode) {
+		if !opts.isRetryable(resp.StatusCode) {
 			return resp, nil
 		}
 
@@ -94,8 +99,11 @@ func Do(
 	return nil, lastErr
 }
 
-func isRetryable(status int) bool {
-	return status == http.StatusTooManyRequests || status >= 500
+func (o *RetryOptions) isRetryable(status int) bool {
+	if status == http.StatusTooManyRequests || status >= 500 {
+		return true
+	}
+	return o != nil && slices.Contains(o.RetryStatuses, status)
 }
 
 // backoff sleeps for base * 2^attempt with +/-25% jitter, respecting context cancellation.

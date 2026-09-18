@@ -3,10 +3,12 @@ package mlb
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 
 	mlbsdk "github.com/retr0h/mlb-sdk/pkg/mlb"
 
+	"github.com/retr0h/freebie/services/api/internal/httputil"
 	"github.com/retr0h/freebie/services/api/internal/sources"
 )
 
@@ -21,8 +23,18 @@ type Source struct {
 // NewSource creates a new MLB source backed by mlb-sdk pointed at the
 // public MLB Stats API. Tests use NewSourceWithClient to inject a client
 // pointed at a fake server.
+//
+// Requests retry with backoff because the Stats API edge intermittently
+// rejects requests from our cluster with 406, and trigger checks run only
+// once a day, so a single failed call loses that day's deals.
 func NewSource() *Source {
-	return &Source{client: mlbsdk.New()}
+	httpClient := &http.Client{
+		Timeout: 30 * time.Second,
+		Transport: &httputil.RetryTransport{Options: &httputil.RetryOptions{
+			RetryStatuses: []int{http.StatusNotAcceptable},
+		}},
+	}
+	return &Source{client: mlbsdk.New(mlbsdk.WithHTTPClient(httpClient))}
 }
 
 // NewSourceWithClient wraps an already-configured mlb-sdk client. Used by
