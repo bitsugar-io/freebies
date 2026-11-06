@@ -3,7 +3,7 @@ module github.com/retr0h/freebie/services/scheduler
 go 1.25.7
 
 require (
-	github.com/lmittmann/tint v1.1.3
+	github.com/lmittmann/tint v1.2.1
 	github.com/oapi-codegen/runtime v1.2.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
