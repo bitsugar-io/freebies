@@ -1,0 +1,34 @@
+api:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "services/api/**"
+scheduler:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "services/scheduler/**"
+mobile:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "apps/mobile/**"
+deploy:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "charts/**"
+          - "Dockerfile"
+          - ".dockerignore"
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "**/*.md"
+github:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/go.mod"
+          - "**/go.sum"
+          - "**/package.json"
+          - "**/bun.lock"

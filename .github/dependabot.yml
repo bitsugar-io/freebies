@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
+  - package-ecosystem: gomod
+    directories:
+      - /services/api
+      - /services/scheduler
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
+  - package-ecosystem: bun
+    directories:
+      - /apps/mobile
+      - /docs
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
