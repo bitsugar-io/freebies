@@ -4,6 +4,13 @@ All notable changes to the Freebies iOS app will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Changed
+
+- Upgrade to Expo SDK 58 and React Native 0.88
+- Require iOS 16.4 or later, the minimum for Expo SDK 58
+
 ## [1.1.1] - 2026-04-05
 
 ### Fixed
