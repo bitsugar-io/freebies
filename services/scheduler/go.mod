@@ -1,13 +1,13 @@
 module github.com/retr0h/freebie/services/scheduler
 
-go 1.25.7
+go 1.26.0
 
 require (
 	github.com/lmittmann/tint v1.2.1
 	github.com/oapi-codegen/runtime v1.8.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
-	golang.org/x/term v0.40.0
+	golang.org/x/term v0.47.0
 )
 
 require (
@@ -37,7 +37,7 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/tools v0.42.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
