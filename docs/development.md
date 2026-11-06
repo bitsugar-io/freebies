@@ -13,6 +13,7 @@ mise install
 - **[Bun](https://bun.sh)** — JavaScript package manager used for mobile app and docs tooling.
 - **[Task](https://taskfile.dev/)** — Task runner used for building, testing, formatting, and other
   development workflows.
+- **[EAS CLI](https://docs.expo.dev/eas/)** — Builds and submits the mobile app.
 
 ## Quick Start
 
@@ -100,7 +101,7 @@ task api:serve
 1. Create migration in `services/api/internal/db/migrations/`
 2. Restart server (migrations run automatically)
 
-Example migration (`007_new_offer.sql`):
+Use the next number in the sequence. Example migration (`NNN_new_offer.sql`):
 
 ```sql
 -- +goose Up
