@@ -11,7 +11,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/lmittmann/tint v1.2.1
 	github.com/mattn/go-sqlite3 v1.14.52
-	github.com/oapi-codegen/runtime v1.4.0
+	github.com/oapi-codegen/runtime v1.8.0
 	github.com/pressly/goose/v3 v3.29.0
 	github.com/retr0h/mlb-sdk v0.0.0-20260511030622-6d097d04b5f9
 	github.com/spf13/cobra v1.10.2
