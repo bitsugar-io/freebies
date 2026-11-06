@@ -1,6 +1,6 @@
 module github.com/retr0h/freebie/services/scheduler
 
-go 1.26.0
+go 1.27.1
 
 require (
 	github.com/lmittmann/tint v1.2.1
