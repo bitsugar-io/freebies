@@ -15,13 +15,22 @@ Get notified about free offers when your favorite sports teams win or hit milest
 
 ## Screenshots
 
-<p align="center">
-  <img src="apps/mobile/assets/screenshots/01-home.png" width="160" alt="Home">
-  <img src="apps/mobile/assets/screenshots/02-deal-detail.png" width="160" alt="Deal Detail">
-  <img src="apps/mobile/assets/screenshots/03-my-deals.png" width="160" alt="My Deals">
-  <img src="apps/mobile/assets/screenshots/04-active-deal.png" width="160" alt="Active Deal">
-  <img src="apps/mobile/assets/screenshots/05-notification.png" width="160" alt="Notification">
-</p>
+<table align="center">
+  <tr>
+    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/01-home.png"><img src="apps/mobile/assets/screenshots/01-home.png" width="100%" alt="Discover"></a></td>
+    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/02-deal-detail.png"><img src="apps/mobile/assets/screenshots/02-deal-detail.png" width="100%" alt="Deal details"></a></td>
+    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/03-my-deals.png"><img src="apps/mobile/assets/screenshots/03-my-deals.png" width="100%" alt="My deals"></a></td>
+    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/04-active-deal.png"><img src="apps/mobile/assets/screenshots/04-active-deal.png" width="100%" alt="Active deal"></a></td>
+    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/05-notification.png"><img src="apps/mobile/assets/screenshots/05-notification.png" width="100%" alt="Notification"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Discover</sub></td>
+    <td align="center"><sub>Deal details</sub></td>
+    <td align="center"><sub>My deals</sub></td>
+    <td align="center"><sub>Active deal</sub></td>
+    <td align="center"><sub>Notification</sub></td>
+  </tr>
+</table>
 
 ## Quick Start
 
