@@ -13,7 +13,7 @@ export function BannerBlock({ config }: BlockProps) {
   const text = config.text as string;
   if (!text) return null;
 
-  const backgroundColor = (config.backgroundColor as string) ?? colors.card;
+  const backgroundColor = (config.backgroundColor as string) ?? colors.surface;
   const textColor = (config.textColor as string) ?? colors.text;
   const dismissible = config.dismissible !== false;
 
