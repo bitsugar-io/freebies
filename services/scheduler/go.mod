@@ -4,7 +4,7 @@ go 1.25.7
 
 require (
 	github.com/lmittmann/tint v1.2.1
-	github.com/oapi-codegen/runtime v1.2.0
+	github.com/oapi-codegen/runtime v1.8.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	golang.org/x/term v0.40.0
@@ -18,7 +18,7 @@ require (
 	github.com/go-openapi/jsonpointer v0.22.5 // indirect
 	github.com/go-openapi/swag/jsonname v0.25.5 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
-	github.com/google/uuid v1.5.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/oapi-codegen/oapi-codegen/v2 v2.7.1 // indirect
 	github.com/oasdiff/yaml v0.1.1 // indirect
