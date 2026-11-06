@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Go 1.23+
+- Go 1.27.3+
 - [Task](https://taskfile.dev/)
 - [sqlc](https://sqlc.dev/) (installed via `go tool`)
 
