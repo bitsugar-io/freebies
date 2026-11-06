@@ -34,9 +34,9 @@ Get notified about free offers when your favorite sports teams win or hit milest
 
 ## Components
 
-- **[Mobile app](apps/mobile/)**: React Native app built with Expo.
-- **[API](services/api/)**: Go server for leagues, offers, subscriptions, and push notifications.
-- **[Scheduler](services/scheduler/)**: Go CronJob that polls live games and triggers deals.
+- [Mobile app](apps/mobile/): React Native app built with Expo.
+- [API](services/api/): Go server for leagues, offers, subscriptions, and push notifications.
+- [Scheduler](services/scheduler/): Go CronJob that polls live games and triggers deals.
 
 ## Documentation
 
