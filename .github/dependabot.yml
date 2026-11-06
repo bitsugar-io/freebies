@@ -4,6 +4,9 @@ updates:
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     commit-message:
       prefix: chore
   - package-ecosystem: gomod
@@ -12,13 +15,38 @@ updates:
       - /services/scheduler
     schedule:
       interval: daily
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     commit-message:
       prefix: chore
   - package-ecosystem: bun
-    directories:
-      - /apps/mobile
-      - /docs
+    directory: /apps/mobile
     schedule:
       interval: daily
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    commit-message:
+      prefix: chore
+    # The Expo SDK pins these to versions built and tested together. Upgrade
+    # them with `bunx expo install --fix` as part of an SDK upgrade instead.
+    ignore:
+      - dependency-name: "expo"
+      - dependency-name: "expo-*"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-*"
+      - dependency-name: "@react-native-async-storage/async-storage"
+      - dependency-name: "@types/react"
+      - dependency-name: "typescript"
+  - package-ecosystem: bun
+    directory: /docs
+    schedule:
+      interval: daily
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     commit-message:
       prefix: chore
