@@ -32,10 +32,6 @@ Get notified about free offers when your favorite sports teams win or hit milest
   </tr>
 </table>
 
-## Getting Started
-
-See the [development guide](docs/development.md) for prerequisites, setup, and available tasks.
-
 ## Components
 
 - **[Mobile app](apps/mobile/)**: React Native app built with Expo.
