@@ -64,7 +64,7 @@ export function AppConfigProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
-      if (appState.current.match(/inactive|background/) && nextState === 'active') {
+      if (appState.current?.match(/inactive|background/) && nextState === 'active') {
         refreshConfig();
       }
       appState.current = nextState;

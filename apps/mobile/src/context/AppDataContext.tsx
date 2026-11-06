@@ -138,7 +138,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   const appState = useRef(AppState.currentState);
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      if (appState.current?.match(/inactive|background/) && nextAppState === 'active') {
         refreshAll();
       }
       appState.current = nextAppState;
