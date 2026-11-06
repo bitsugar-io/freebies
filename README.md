@@ -32,88 +32,28 @@ Get notified about free offers when your favorite sports teams win or hit milest
   </tr>
 </table>
 
-## Quick Start
+## Getting Started
 
-Requires [Task](https://taskfile.dev/) runner.
+See the [development guide](docs/development.md) for prerequisites, setup, and available tasks.
 
-```bash
-task setup          # First-time setup
+## Components
 
-task api:serve  # Terminal 1: Start backend
-task mobile:serve   # Terminal 2: Start mobile app
-```
-
-Then press `i` for iOS simulator, `w` for web, or scan QR with Expo Go.
+- **[Mobile app](apps/mobile/)**: React Native app built with Expo.
+- **[API](services/api/)**: Go server for leagues, offers, subscriptions, and push notifications.
+- **[Scheduler](services/scheduler/)**: Go CronJob that polls live games and triggers deals.
 
 ## Documentation
 
-- [Development Guide](docs/development.md) - Local setup and development workflow
-
-### Architecture
-
-- [Backend Architecture](services/api/docs/architecture.md) - DOKS, Turso, Go decisions
-- [Mobile Architecture](apps/mobile/docs/architecture.md) - Expo, EAS, state management
-
-## Apps
-
-### Mobile App (`apps/mobile/`)
-
-React Native app built with Expo. Features:
-
-- Browse freebie offers by league (MLB, NBA, NFL, NHL)
-- Subscribe to deals you're interested in
-- Get notified when deals trigger
-- Track active deals with expiration timers
-
-#### Documentation
-
-- [Architecture](apps/mobile/docs/architecture.md)
-- [Development Guide](apps/mobile/docs/development.md)
-- [App Store Checklist](apps/mobile/APP-STORE.md)
-- [Privacy Policy](apps/mobile/PRIVACY-POLICY.md)
-
-### Backend Service (`services/api/`)
-
-Go-based API server that:
-
-- Serves league/team/offer data
-- Manages user subscriptions
-- Tracks triggered deals and dismissals
-- Sends push notifications
-
-#### Documentation
-
-- [Architecture](services/api/docs/architecture.md)
-- [Deployment Guide](services/api/docs/deployment.md)
-- [CLI Reference](services/api/docs/cli.md)
-- [Development Guide](services/api/docs/development.md)
-- [API Reference](services/api/docs/api.md)
-
-### Scheduler (`services/scheduler/`)
-
-Lightweight Go CLI that runs as a Kubernetes CronJob. Polls live game data and calls API internal
-endpoints to trigger notifications when deal conditions are met.
-
-## Data
-
-All offer data is managed through SQL migrations in `services/api/internal/db/migrations/`:
-
-- `001_schema.sql` - Database schema
-- `002_initial_leagues.sql` - MLB, NBA, NFL, NHL leagues
-- `003_mlb_data.sql` - MLB teams and offers
-- `004_nba_data.sql` - NBA teams and offers
-- `005_nfl_data.sql` - NFL teams and offers
-- `006_nhl_data.sql` - NHL teams and offers
-
-To add new offers, create a new migration file (e.g., `007_add_new_team.sql`).
-
-## Prerequisites
-
-- Node.js 20+ (for mobile app)
-- Go 1.25+ (for backend)
-- [Task](https://taskfile.dev/) (task runner)
-- [EAS CLI](https://docs.expo.dev/eas/) (for mobile builds)
-- [mise](https://mise.jdx.dev/) (optional, for version management)
+- [Development guide](docs/development.md)
+- [Contributing](docs/contributing.md)
+- [Architecture](docs/architecture.md)
+- [Operations](docs/operations.md)
+- Mobile: [architecture](apps/mobile/docs/architecture.md),
+  [development](apps/mobile/docs/development.md), [App Store checklist](apps/mobile/APP-STORE.md),
+  [privacy policy](apps/mobile/PRIVACY-POLICY.md)
+- API: [architecture](services/api/docs/architecture.md),
+  [development](services/api/docs/development.md), [API reference](services/api/docs/api.md),
+  [CLI reference](services/api/docs/cli.md), [deployment](services/api/docs/deployment.md)
 
 ## License
 
