@@ -1,0 +1,520 @@
+{
+ "events": {
+  "event-mlb-ari-jitb": "burger",
+  "event-mlb-col-tacobell": "taco",
+  "event-mlb-laa-deltaco": "taco",
+  "event-mlb-laa-mcdonalds": "fries",
+  "event-mlb-lad-ampm": "hot-dog",
+  "event-mlb-lad-habit": "burger",
+  "event-mlb-lad-jitb": "burger",
+  "event-mlb-lad-mcdonalds": "nuggets",
+  "event-mlb-lad-panda": "plate-lunch",
+  "event-mlb-sd-jitb": "burger",
+  "event-mlb-sd-mcdonalds": "fries",
+  "event-mls-lafc-chickfila": "chicken-sandwich",
+  "event-nba-lac-chickfila": "chicken-sandwich",
+  "event-nfl-lar-carlsjr": "burger",
+  "event-nhl-ana-chickfila": "chicken-sandwich",
+  "event-test-smoke": "pizza"
+ },
+ "sprites": {
+  "burger": {
+   "name": "Burger",
+   "palette": {
+    "K": "#000000",
+    "b": "#E45C10",
+    "g": "#00A800",
+    "h": "#FCA044",
+    "p": "#881400"
+   },
+   "pixels": [
+    "................",
+    "....KKKKKKKK....",
+    "..KKbbhbbbhbKK..",
+    ".KbhhbbbhbbbbbK.",
+    ".KbhbbbbbbbhbbK.",
+    "KbbbbbbbbbbbbbbK",
+    "KKKKKKKKKKKKKKKK",
+    "KggggggggggggggK",
+    "KppppppppppppppK",
+    "KppppppppppppppK",
+    "KKKKKKKKKKKKKKKK",
+    "KbbbbbbbbbbbbbbK",
+    ".KbbbbbbbbbbbbK.",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................"
+   ]
+  },
+  "burrito": {
+   "name": "Burrito",
+   "palette": {
+    "F": "#FCFCFC",
+    "K": "#000000",
+    "f": "#BCBCBC",
+    "l": "#FCFCFC",
+    "w": "#F0D0B0"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "................",
+    "...KKKKKKKKKK...",
+    "..KfFFfKlwwwwwK.",
+    ".KfFfffKwwwwwwwK",
+    "KfffffffKwwwwwwK",
+    "KffffffKwwwwwwwK",
+    "KffffffKwwwwwwK.",
+    ".KffffKwwwwwwK..",
+    "..KKKKKKKKKKK...",
+    "................",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "chicken-sandwich": {
+   "name": "Chicken sandwich",
+   "palette": {
+    "K": "#000000",
+    "b": "#E45C10",
+    "c": "#F8B800",
+    "h": "#FCA044",
+    "p": "#00A800"
+   },
+   "pixels": [
+    "................",
+    "....KKKKKKKK....",
+    "..KKbhhbbbbbKK..",
+    ".KbhbbbbbbbbbbK.",
+    "KbbbbbbbbbbbbbbK",
+    "KKKKKKKKKKKKKKKK",
+    "KppKppKppKppKppK",
+    "KccccccccccccccK",
+    "KccKcccKcccKcccK",
+    "KccccccccccccccK",
+    "KKKKKKKKKKKKKKKK",
+    "KbbbbbbbbbbbbbbK",
+    ".KbbbbbbbbbbbbK.",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................"
+   ]
+  },
+  "drink": {
+   "name": "Drink",
+   "palette": {
+    "K": "#000000",
+    "l": "#BCBCBC",
+    "r": "#F83800",
+    "w": "#FCFCFC"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "..........KK....",
+    ".........KwK....",
+    "........KwK.....",
+    "..KKKKKKKwKKKK..",
+    "..KllllllllllK..",
+    "...KrwrrrrrrK...",
+    "...KrwrrrrrrK...",
+    "...KrrwwwwrrK...",
+    "....KrrrrrrK....",
+    "....KrrrrrrK....",
+    "....KKKKKKKK....",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "fries": {
+   "name": "Fries",
+   "palette": {
+    "K": "#000000",
+    "R": "#A81000",
+    "f": "#F8B800",
+    "h": "#F8D878",
+    "r": "#F83800"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "....KK.KK.KK....",
+    "...KhfKhfKhfK...",
+    "..KhfKhfKhfKhK..",
+    "..KffKffKffKfK..",
+    ".KKKKKKKKKKKKKK.",
+    ".KrrrrrrrrrrrrK.",
+    "..KrrrrrrrrrrK..",
+    "..KrrRRRRRRrrK..",
+    "..KrrrrrrrrrrK..",
+    "...KrrrrrrrrK...",
+    "...KRRRRRRRRK...",
+    "....KKKKKKKK....",
+    "................",
+    "................"
+   ]
+  },
+  "gift": {
+   "name": "Gift",
+   "palette": {
+    "K": "#000000",
+    "X": "#A4E4FC",
+    "Y": "#F87858",
+    "x": "#3CBCFC",
+    "y": "#F83800"
+   },
+   "pixels": [
+    "................",
+    "...KK.....KK....",
+    "..KyYK...KYyK...",
+    "...KyYK.KYyK....",
+    "....KKyKyKK.....",
+    "KKKKKKKyKKKKKKKK",
+    "KXxxxxxKyxxxxxxK",
+    "KxxxxxxKyxxxxxxK",
+    "KKKKKKKKyKKKKKKK",
+    ".KXxxxxKyxxxxxK.",
+    ".KxxxxxKyxxxxxK.",
+    ".KxxxxxKyxxxxxK.",
+    ".KxxxxxKyxxxxxK.",
+    ".KxxxxxKyxxxxxK.",
+    ".KKKKKKKKKKKKKK.",
+    "................"
+   ]
+  },
+  "griddle-sandwich": {
+   "name": "Griddle cake sandwich",
+   "palette": {
+    "K": "#000000",
+    "c": "#F8B800",
+    "d": "#AC7C00",
+    "e": "#FCFCFC",
+    "s": "#881400"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "....KKKKKKKK....",
+    "..KKccdccdccKK..",
+    ".KccdccccccdccK.",
+    "KccccccdcccccccK",
+    "KKKKKKKKKKKKKKKK",
+    "KeeeeeeeeeeeeeeK",
+    "KssssssssssssssK",
+    "KssssssssssssssK",
+    "KKKKKKKKKKKKKKKK",
+    "KccccdcccccdcccK",
+    ".KccccccccccccK.",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................"
+   ]
+  },
+  "hot-dog": {
+   "name": "Hot dog",
+   "palette": {
+    "K": "#000000",
+    "b": "#E45C10",
+    "h": "#FCA044",
+    "m": "#F8B800",
+    "s": "#A81000"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "................",
+    "..KKKKKKKKKKKK..",
+    ".KssmsssmsssmsK.",
+    "KbsmsssmsssmssbK",
+    "KbhbbbbbbbbbbbbK",
+    "KbbbbbbbbbbbbbbK",
+    ".KbbbbbbbbbbbbK.",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "nuggets": {
+   "name": "Nuggets",
+   "palette": {
+    "K": "#000000",
+    "h": "#F8D878",
+    "n": "#FCA044"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "..KKKK..........",
+    ".KhnnnK...KKKK..",
+    ".KnnnnK..KhnnnK.",
+    "..KKKK...KnnnnK.",
+    "....KKKKK.KKKK..",
+    "...KhnnnnK......",
+    "...KnnnnnK......",
+    "....KKKKK.......",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "pizza": {
+   "name": "Pizza slice",
+   "palette": {
+    "K": "#000000",
+    "c": "#E45C10",
+    "h": "#F8D878",
+    "p": "#F83800",
+    "y": "#F8B800"
+   },
+   "pixels": [
+    "................",
+    "KKKKKKKKKKKKKKKK",
+    "KccccccccccccccK",
+    "KccccccccccccccK",
+    ".KyhyyyypyyyyyK.",
+    ".KyppyyyyyyppyK.",
+    "..KyyyyypyyyyK..",
+    "..KyyyyppyyyyK..",
+    "...KyyyyyyyyK...",
+    "...KyypyyyyyK...",
+    "....KyyyyyyK....",
+    ".....KyyyyK.....",
+    "......KyyK......",
+    ".......KK.......",
+    "................",
+    "................"
+   ]
+  },
+  "plate-lunch": {
+   "name": "Plate lunch",
+   "palette": {
+    "K": "#000000",
+    "g": "#BCBCBC",
+    "m": "#881400",
+    "v": "#00A800",
+    "w": "#FCFCFC"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "................",
+    "..KKKK...KKKKK..",
+    ".KwwwwK.KmmmmmK.",
+    ".KwwwwwKmmmvmmK.",
+    "KwwwwwwwwwwwwwwK",
+    "KgwwwwwwwwwwwwgK",
+    ".KggggggggggggK.",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "sport-baseball": {
+   "name": "Baseball badge",
+   "palette": {
+    "K": "#000000",
+    "f": "#FCFCFC",
+    "h": "#FCFCFC",
+    "r": "#F83800"
+   },
+   "pixels": [
+    "................",
+    "....KKKKKKKK....",
+    "...KKffffffKK...",
+    "..KrffffffffrK..",
+    ".KKrrhfffffrrKK.",
+    ".KffhhhffffrffK.",
+    ".KffrhfffffrffK.",
+    ".KffrrffffrrffK.",
+    ".KffrrffffrrffK.",
+    ".KffrffffffrffK.",
+    ".KffrffffffrffK.",
+    ".KKrrffffffrrKK.",
+    "..KrffffffffrK..",
+    "...KKffffffKK...",
+    "....KKKKKKKK....",
+    "................"
+   ]
+  },
+  "sport-basketball": {
+   "name": "Basketball badge",
+   "palette": {
+    "K": "#000000",
+    "f": "#FCA044",
+    "h": "#FCA044",
+    "s": "#000000"
+   },
+   "pixels": [
+    "................",
+    "....KKKKKKKK....",
+    "...KKffsfffKK...",
+    "..KsfffsffffsK..",
+    ".KKfshfsfffsfKK.",
+    ".KffhhhsffssffK.",
+    ".KfffhfsffsfffK.",
+    ".KssssssssssssK.",
+    ".KfffsfsffsfffK.",
+    ".KfffsfsffsfffK.",
+    ".KffssfsffssffK.",
+    ".KKfsffsfffsfKK.",
+    "..KsfffsffffsK..",
+    "...KKffsfffKK...",
+    "....KKKKKKKK....",
+    "................"
+   ]
+  },
+  "sport-football": {
+   "name": "Football badge",
+   "palette": {
+    "K": "#000000",
+    "f": "#A81000",
+    "h": "#FCA044",
+    "w": "#FCFCFC"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "....KKKKKKKK....",
+    "..KKKhfffffKKK..",
+    ".KKhhhhhfffffKK.",
+    ".KfffhwfwfwfffK.",
+    "KKfffwwwwwwfffKK",
+    "KKffffwfwfwfffKK",
+    ".KffffffffffffK.",
+    ".KKffffffffffKK.",
+    "..KKKffffffKKK..",
+    "....KKKKKKKK....",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "sport-hockey": {
+   "name": "Hockey badge",
+   "palette": {
+    "K": "#000000",
+    "b": "#F8B800",
+    "g": "#7C7C7C",
+    "t": "#FCFCFC"
+   },
+   "pixels": [
+    "............KK..",
+    "...........KbK..",
+    "...........KbK..",
+    "..........KbK...",
+    "..........KbK...",
+    ".........KbK....",
+    ".........KbK....",
+    "........KbK.....",
+    "........KtK.....",
+    ".......KtK......",
+    "..KKKKKKtK......",
+    ".KbbbbbbbK......",
+    ".KKKKKKKK.......",
+    "..........KKKK..",
+    ".........KggggK.",
+    "..........KKKK.."
+   ]
+  },
+  "sport-soccer": {
+   "name": "Soccer badge",
+   "palette": {
+    "K": "#000000",
+    "f": "#FCFCFC",
+    "h": "#FCFCFC",
+    "s": "#000000"
+   },
+   "pixels": [
+    "................",
+    "....KKKKKKKK....",
+    "...KKffffffKK...",
+    "..KsffffffffsK..",
+    ".KKsshfffffssKK.",
+    ".KsshhhfffffssK.",
+    ".KfffhfssfffffK.",
+    ".KffffssssffffK.",
+    ".KffffssssffffK.",
+    ".KfffffssfffffK.",
+    ".KssffffffffssK.",
+    ".KKssffffffssKK.",
+    "..KssffffffssK..",
+    "...KKffssffKK...",
+    "....KKKKKKKK....",
+    "................"
+   ]
+  },
+  "street-tacos": {
+   "name": "Street tacos",
+   "palette": {
+    "K": "#000000",
+    "d": "#FCA044",
+    "g": "#00A800",
+    "l": "#BCBCBC",
+    "m": "#881400",
+    "o": "#FCFCFC",
+    "w": "#F0D0B0"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    ".gmgm.gmgm.gmgm.",
+    "KwmmwKwmmwKwmmwK",
+    "KwwwwKwwwwKwwwwK",
+    "KwwwwKwwwwKwwwwK",
+    "KwwwdKwwwdKwwwdK",
+    ".KwdK.KwdK.KwdK.",
+    "KKKKKKKKKKKKKKKK",
+    "KooooooooooooooK",
+    ".KllllllllllllK.",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "taco": {
+   "name": "Taco",
+   "palette": {
+    "K": "#000000",
+    "g": "#00A800",
+    "h": "#F8D878",
+    "s": "#F8B800",
+    "t": "#F83800"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "....g.t..g.t....",
+    "..ggtggggtgggg..",
+    ".KggggggggggggK.",
+    "KhhhsssssssssssK",
+    "KhsssssssssssssK",
+    "KssssssssssssssK",
+    ".KssssssssssssK.",
+    "..KssssssssssK..",
+    "...KKssssssKK...",
+    ".....KKKKKK.....",
+    "................",
+    "................",
+    "................",
+    "................"
+   ]
+  }
+ }
+}

@@ -1,56 +1,86 @@
-[![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=for-the-badge)](LICENSE)
-[![Go](https://img.shields.io/badge/go-1.27.3+-00ADD8.svg?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
-[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev)
-[![Expo](https://img.shields.io/badge/expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev)
-[![App Store](https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white)](https://apps.apple.com)
-[![Turso](https://img.shields.io/badge/turso-4FF8D2?style=for-the-badge&logo=turso&logoColor=black)](https://turso.tech)
-[![MLB](https://img.shields.io/badge/MLB-002D72?style=for-the-badge&logo=mlb&logoColor=white)](https://mlb.com)
-[![NBA](https://img.shields.io/badge/NBA-17408B?style=for-the-badge&logo=nba&logoColor=white)](https://nba.com)
-[![NFL](https://img.shields.io/badge/NFL-013369?style=for-the-badge&logo=nfl&logoColor=white)](https://nfl.com)
-[![NHL](https://img.shields.io/badge/NHL-000000?style=for-the-badge&logo=nhl&logoColor=white)](https://nhl.com)
+<p align="center">
+  <picture>
+    <source srcset="asset/logo-dark.svg" media="(prefers-color-scheme: dark)">
+    <source srcset="asset/logo-light.svg" media="(prefers-color-scheme: light)">
+    <img src="asset/logo-dark.svg" alt="Freebies: LA Sports Deals" width="584">
+  </picture>
+</p>
 
-# Freebies
+<p align="center">When LA wins, you win.</p>
 
-Get notified about free offers when your favorite sports teams win or hit milestones.
+<p align="center">
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-F8B800?style=for-the-badge"></a>
+  <a href="https://go.dev"><img alt="Go" src="https://img.shields.io/badge/Go-1.27-0000BC?style=for-the-badge&amp;logo=go&amp;logoColor=white"></a>
+  <a href="https://expo.dev"><img alt="Expo and React Native" src="https://img.shields.io/badge/Expo-React_Native-F8B800?style=for-the-badge&amp;logo=expo&amp;logoColor=black"></a>
+  <img alt="iOS" src="https://img.shields.io/badge/iOS-App_Store-0000BC?style=for-the-badge&amp;logo=apple&amp;logoColor=white">
+  <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/Conventional_Commits-1.0.0-F8B800?style=for-the-badge"></a>
+  <a href="https://just.systems"><img alt="built with just" src="https://img.shields.io/badge/Built_with-Just-0000BC?style=for-the-badge&amp;logo=just&amp;logoColor=white"></a>
+  <a href="https://github.com/tekk/hovnokod-badge"><img alt="hovnokod" src="https://raw.githubusercontent.com/tekk/hovnokod-badge/main/assets/badges/hovnokod-for-the-badge.svg"></a>
+</p>
 
-## Screenshots
+I built this for myself because LA restaurants give away food when LA teams win, and I kept finding
+out after the deal had expired. The app watches the games for the teams I follow and sends a push
+the moment a deal unlocks, with where to claim it and when it ends.
 
 <table align="center">
   <tr>
-    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/01-home.png"><img src="apps/mobile/assets/screenshots/01-home.png" width="100%" alt="Discover"></a></td>
-    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/02-deal-detail.png"><img src="apps/mobile/assets/screenshots/02-deal-detail.png" width="100%" alt="Deal details"></a></td>
-    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/03-my-deals.png"><img src="apps/mobile/assets/screenshots/03-my-deals.png" width="100%" alt="My deals"></a></td>
-    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/04-active-deal.png"><img src="apps/mobile/assets/screenshots/04-active-deal.png" width="100%" alt="Active deal"></a></td>
-    <td align="center" width="20%"><a href="apps/mobile/assets/screenshots/05-notification.png"><img src="apps/mobile/assets/screenshots/05-notification.png" width="100%" alt="Notification"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/won.png"><img src="asset/screenshots/won.png" width="100%" alt="The won screen after an LA team unlocks a deal"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/select-sport.png"><img src="asset/screenshots/select-sport.png" width="100%" alt="Choosing a sport from an 8-bit menu"></a></td>
   </tr>
   <tr>
-    <td align="center"><sub>Discover</sub></td>
-    <td align="center"><sub>Deal details</sub></td>
-    <td align="center"><sub>My deals</sub></td>
-    <td align="center"><sub>Active deal</sub></td>
-    <td align="center"><sub>Notification</sub></td>
+    <td align="center"><sub>Won</sub></td>
+    <td align="center"><sub>Select sport</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><a href="asset/screenshots/teams.png"><img src="asset/screenshots/teams.png" width="100%" alt="LA teams to follow"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/deal.png"><img src="asset/screenshots/deal.png" width="100%" alt="An unlocked deal with where to claim it and when it ends"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Teams</sub></td>
+    <td align="center"><sub>Deal unlocked</sub></td>
   </tr>
 </table>
 
-## Components
+## Features
 
-- [Mobile app](apps/mobile/): React Native app built with Expo.
-- [API](services/api/): Go server for leagues, offers, subscriptions, and push notifications.
-- [Scheduler](services/scheduler/): Go CronJob that polls live games and triggers deals.
+| Feature              | What it does                                                                                   |
+| -------------------- | ---------------------------------------------------------------------------------------------- |
+| LA teams only        | Follow LA and Orange County teams; every deal is tied to one of them.                          |
+| Game-triggered deals | A Ducks home win, 7+ Dodgers strikeouts or 5+ Angels runs at home unlocks food from a sponsor. |
+| Push alerts          | A notification arrives when a deal unlocks, with where to claim it and when it ends.           |
+| Verified deals       | A deal goes live only after it is checked on the sponsor's or team's own page.                 |
+| Pause alerts         | Mute pushes for a while without unfollowing your teams.                                        |
+| 8-bit look           | Pixel sprites and a retro palette, built for touch, screen readers and reduced motion.         |
+| Server-driven        | New deals, teams, seasons and sprites reach the app from the API, without an app release.      |
 
-## Documentation
+Freebies: LA Sports Deals is not affiliated with, endorsed by or sponsored by any team, league,
+school or restaurant.
 
-- [Development guide](docs/development.md)
-- [Contributing](docs/contributing.md)
-- [Architecture](docs/architecture.md)
-- [Operations](docs/operations.md)
-- Mobile: [architecture](apps/mobile/docs/architecture.md),
-  [development](apps/mobile/docs/development.md), [App Store checklist](apps/mobile/APP-STORE.md),
-  [privacy policy](apps/mobile/PRIVACY-POLICY.md)
-- API: [architecture](services/api/docs/architecture.md),
-  [development](services/api/docs/development.md), [API reference](services/api/docs/api.md),
-  [CLI reference](services/api/docs/cli.md), [deployment](services/api/docs/deployment.md)
+## Quickstart
+
+Run from a checkout. Requires [mise](https://mise.jdx.dev), which installs Go, Node, Bun and
+[just](https://just.systems).
+
+```sh
+mise install
+just setup        # first time: install the app's dependencies
+just api-serve    # API on :8080; migrates the database
+just mobile-serve # Expo dev server, in a second terminal
+```
+
+Press `i` in the Expo terminal to open the iOS simulator.
+
+## Skills
+
+Every workflow lives in a [Claude skill](https://agentskills.io) under `.claude/skills/`; people can
+read them too. [ops](.claude/skills/ops/SKILL.md) sets up, runs and tests the API and the app, adds
+deals, deploys the backend and releases iOS. [design](.claude/skills/design/SKILL.md) builds and
+reviews 8-bit screens and draws and ships pixel sprites.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development, testing and releases.
 
 ## License
 
-The [MIT](LICENSE) License.
+[MIT](LICENSE)

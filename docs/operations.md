@@ -15,7 +15,7 @@ All commands work with both local SQLite and production Turso.
 
 ```bash
 # Local — delete and restart server (migrations re-run automatically)
-rm freebie.db && task api:serve
+just clean && just api-serve
 
 # Turso — destroy and recreate
 turso db destroy freebie
@@ -264,8 +264,8 @@ To use local SQLite instead of Turso:
 
 ```bash
 unset FREEBIE_DATABASE_PATH
-task clean
-task api:serve
+just clean
+just api-serve
 ```
 
 The server creates `freebie.db` in the repo root.

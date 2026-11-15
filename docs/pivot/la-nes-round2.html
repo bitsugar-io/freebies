@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LA Freebies Round 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Overpass:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#eceeea; --panel:#fff; --ink:#1a1d1b; --muted:#59605b; --rule:#d2d7d1; --pick:#F8B800; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#101211; --panel:#1a1d1b; --ink:#e7ebe8; --muted:#a1aaa4; --rule:#2e3631; } }
+:root[data-theme="dark"] { --bg:#101211; --panel:#1a1d1b; --ink:#e7ebe8; --muted:#a1aaa4; --rule:#2e3631; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 "Overpass",system-ui,sans-serif; }
+:focus-visible { outline:3px solid var(--pick); outline-offset:2px; }
+.wrap { max-width:1180px; margin:0 auto; padding:0 16px; }
+p, li { max-width:70ch; }
+.muted { color:var(--muted); }
+header.top { padding:30px 0 6px; }
+header.top h1 { font-family:"Press Start 2P"; font-weight:400; font-size:clamp(1.2rem,3.4vw,1.9rem); line-height:1.4; margin:0 0 12px; }
+section { padding:30px 0; border-top:2px solid var(--rule); }
+section > h2 { font-family:"Press Start 2P"; font-weight:400; font-size:1.05rem; line-height:1.5; margin:0 0 8px; }
+.q { background:var(--panel); border:1px solid var(--rule); border-left:5px solid var(--pick); border-radius:6px; padding:10px 14px; margin:12px 0 18px; }
+.note { font-size:.9rem; color:var(--muted); }
+code { font-size:.85em; background:color-mix(in srgb,var(--rule) 55%,transparent); padding:1px 5px; border-radius:4px; }
+
+/* logos */
+.logos { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+.lg { background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:12px; display:grid; grid-template-columns:104px 1fr; gap:12px; }
+.lg .ic { width:104px; height:104px; border-radius:23px; overflow:hidden; box-shadow:0 8px 18px -10px rgba(0,0,0,.55); }
+.lg svg { width:100%; height:100%; display:block; }
+.lg h3 { margin:0; font-size:.98rem; font-weight:800; line-height:1.25; }
+.lg .tag { display:inline-block; font-size:.72rem; font-weight:800; padding:1px 6px; border-radius:4px; margin:3px 0 4px; }
+.tag.team { background:#4428BC; color:#fff; }
+.tag.city { background:#00A800; color:#fff; }
+.tag.cur { background:#7C7C7C; color:#fff; }
+.lg p { margin:2px 0 6px; font-size:.86rem; }
+.lg .sm { display:flex; gap:8px; align-items:end; }
+.lg .sm div { border-radius:22.5%; overflow:hidden; }
+.lg.rec { border:2px solid var(--pick); }
+.rec-l { font-size:.75rem; font-weight:800; color:var(--muted); }
+
+/* phones */
+.row { display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:22px; margin-top:8px; }
+figure { margin:0; display:flex; flex-direction:column; align-items:center; gap:10px; }
+figcaption { max-width:300px; font-size:.88rem; color:var(--muted); text-align:left; }
+figcaption b { color:var(--ink); display:block; font-size:.98rem; margin-bottom:2px; }
+figcaption .pros { margin:4px 0 0; padding-left:1rem; }
+/* phone */
+.phone { width:272px; height:574px; border-radius:42px; border:10px solid #0c0c0e; background:#0c0c0e; position:relative; box-shadow:0 18px 40px -18px rgba(0,0,0,.5); flex:none; }
+.phone::before { content:""; position:absolute; top:7px; left:50%; transform:translateX(-50%); width:84px; height:24px; border-radius:20px; background:#0c0c0e; z-index:4; }
+.scr { position:absolute; inset:0; border-radius:32px; overflow:hidden; display:flex; flex-direction:column; }
+.sb { display:flex; justify-content:space-between; padding:11px 22px 0; height:38px; font:700 11.5px -apple-system,system-ui,sans-serif; flex:none; }
+.bd { flex:1; overflow:hidden; padding:2px 14px 0; position:relative; }
+.tb { flex:none; display:grid; grid-template-columns:repeat(4,1fr); padding:8px 4px 18px; text-align:center; font-size:9.5px; }
+.tb span { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.tb svg { width:18px; height:18px; }
+
+
+.n .scr { background:#000; color:#FCFCFC; font-family:-apple-system,system-ui,sans-serif; }
+.n .sb { color:#FCFCFC; }
+.p2 { font-family:"Press Start 2P"; font-weight:400; text-transform:uppercase; }
+.hud { background:#0000BC; margin:0 -14px 10px; padding:10px 14px; display:flex; align-items:center; gap:8px; }
+.hud .p2 { color:#F8B800; font-size:11px; }
+.hud .r { margin-left:auto; font-family:"Press Start 2P"; font-size:7.5px; color:#A4E4FC; }
+.box { box-shadow:0 -3px 0 0 #FCFCFC,0 3px 0 0 #FCFCFC,-3px 0 0 0 #FCFCFC,3px 0 0 0 #FCFCFC; background:#004058; margin:3px; padding:8px; }
+.sec { font-family:"Press Start 2P"; font-size:7.5px; color:#BCBCBC; margin:10px 0 6px; }
+.cur::before { content:"▶"; color:#F8B800; margin-right:6px; animation:blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity:0; } }
+@media (prefers-reduced-motion: reduce) { .cur::before { animation:none; } }
+.tile { background:#004058; text-align:center; padding:6px 2px 5px; position:relative; }
+.tile .nm { display:block; font-family:"Press Start 2P"; font-size:6.5px; margin-top:3px; }
+.tile small { display:block; font-family:"Press Start 2P"; font-size:5.5px; color:#A4E4FC; margin-top:2px; }
+.tile.on { background:#0000BC; box-shadow:0 0 0 2px #F8B800; }
+.tile.on::after { content:"✓"; position:absolute; top:1px; right:3px; color:#F8B800; font-size:10px; font-weight:700; }
+.tile.off { background:#1c1c1c; }
+.tile.off .nm, .tile.off small { color:#7C7C7C; }
+.tile .b { display:flex; justify-content:center; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; }
+.pager { display:flex; align-items:center; justify-content:space-between; font-family:"Press Start 2P"; font-size:8px; margin:2px 0 10px; }
+.pager .lt, .pager .rt { color:#F8B800; font-size:12px; }
+.pager .dots { display:flex; gap:4px; }
+.pager .dots i { width:6px; height:6px; background:#7C7C7C; display:block; }
+.pager .dots i.on { background:#F8B800; }
+.lrow { display:flex; align-items:center; gap:8px; padding:6px 4px; border-bottom:2px dotted #004058; font-size:12px; }
+.lrow .nm { font-family:"Press Start 2P"; font-size:7.5px; flex:1; }
+.lrow .st { font-family:"Press Start 2P"; font-size:6.5px; color:#58D854; }
+.lrow.off .nm, .lrow.off .st { color:#7C7C7C; }
+.lrow .ck { width:12px; height:12px; box-shadow:inset 0 0 0 2px #FCFCFC; flex:none; }
+.lrow .ck.on { background:#F8B800; box-shadow:inset 0 0 0 2px #F8B800; }
+.mini { display:flex; flex-wrap:wrap; gap:6px; }
+.mini span { display:inline-flex; align-items:center; gap:4px; background:#1c1c1c; padding:4px 6px; font-family:"Press Start 2P"; font-size:6px; color:#7C7C7C; }
+.slot { background:#000; box-shadow:inset 0 0 0 2px #FCFCFC; padding:8px 4px; text-align:center; }
+.slot.empty { box-shadow:inset 0 0 0 2px #7C7C7C; color:#7C7C7C; font-family:"Press Start 2P"; font-size:12px; }
+.tbx { background:#000; padding:8px 10px; font-size:12px; line-height:1.4; box-shadow:0 -3px 0 0 #FCFCFC,0 3px 0 0 #FCFCFC,-3px 0 0 0 #FCFCFC,3px 0 0 0 #FCFCFC; margin:10px 3px; }
+.tbx b { color:#F8B800; }
+.it { display:flex; align-items:center; gap:8px; padding:6px 2px; border-bottom:2px dotted #004058; font-size:12px; }
+.it b { display:block; font-weight:600; }
+.it small { color:#BCBCBC; font-size:10.5px; }
+.it .t { margin-left:auto; font-family:"Press Start 2P"; font-size:6.5px; color:#58D854; }
+/* nav variants */
+.hudnav { flex:none; background:#000; border-top:3px solid #FCFCFC; display:grid; grid-template-columns:repeat(4,1fr); padding:9px 4px 20px; font-family:"Press Start 2P"; font-size:6.5px; text-align:center; color:#7C7C7C; }
+.hudnav span.on { color:#F8B800; }
+.hudnav span.on::before { content:"▶"; margin-right:2px; animation:blink 1s steps(1) infinite; }
+.stat { flex:none; background:#000; display:flex; justify-content:space-between; padding:6px 12px 0; font-family:"Press Start 2P"; font-size:6.5px; color:#BCBCBC; border-top:3px solid #FCFCFC; }
+.stat b { color:#F8B800; font-weight:400; }
+.startbtn { flex:none; background:#000; padding:10px 0 22px; display:flex; justify-content:center; gap:16px; border-top:3px solid #FCFCFC; }
+.startbtn span { font-family:"Press Start 2P"; font-size:7px; color:#FCFCFC; background:#7C7C7C; padding:6px 12px; border-radius:0; }
+.startbtn span.s { background:#F83800; }
+.pause { position:absolute; inset:38px 0 0 0; background:rgba(0,0,0,.86); display:flex; align-items:center; justify-content:center; }
+.pause .box { width:200px; background:#000; padding:14px 12px; }
+.pause .ttl { font-family:"Press Start 2P"; font-size:10px; color:#F8B800; text-align:center; margin-bottom:12px; }
+.pause .m div { font-family:"Press Start 2P"; font-size:8.5px; padding:9px 4px 9px 18px; position:relative; }
+.pause .m div.cur::before { position:absolute; left:2px; }
+.map { position:relative; height:330px; margin:0 -14px; background:
+  repeating-linear-gradient(0deg, transparent 0 15px, rgba(0,0,0,.18) 15px 16px),
+  repeating-linear-gradient(90deg, transparent 0 15px, rgba(0,0,0,.18) 15px 16px), #007800; overflow:hidden; }
+.map .sea { position:absolute; left:0; top:0; bottom:0; width:58px; background:repeating-linear-gradient(0deg,#0058F8 0 6px,#3CBCFC 6px 8px); }
+.map svg { position:absolute; inset:0; width:100%; height:100%; }
+.node { position:absolute; display:flex; flex-direction:column; align-items:center; gap:3px; transform:translate(-50%,-50%); }
+.node i { width:18px; height:18px; background:#F8B800; box-shadow:0 0 0 2px #000; display:block; }
+.node.off i { background:#7C7C7C; }
+.node.live i { background:#F83800; animation:blink .5s steps(1) infinite; }
+.node span { font-family:"Press Start 2P"; font-size:5.5px; background:#000; padding:2px 3px; white-space:nowrap; }
+.title { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:16px; text-align:center; }
+.title .big { font-family:"Press Start 2P"; font-size:18px; line-height:1.5; color:#F8B800; text-shadow:3px 3px 0 #A81000; }
+.title .push { font-family:"Press Start 2P"; font-size:9px; animation:blink 1s steps(1) infinite; }
+.title .c { font-family:"Press Start 2P"; font-size:6px; color:#7C7C7C; }
+.wipe { position:absolute; inset:38px 0 0 0; pointer-events:none; background:linear-gradient(90deg,#000 50%,transparent 50%); background-size:200% 100%; animation:wipe 3s steps(8) infinite; }
+@keyframes wipe { 0%,60% { background-position:100% 0; } 80% { background-position:50% 0; } 100% { background-position:0 0; } }
+@media (prefers-reduced-motion: reduce) { .wipe { display:none; } }
+.combo { background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:14px 18px; }
+.combo ol { margin:6px 0 0; padding-left:1.2rem; }
+.ctrl { position:fixed; right:16px; bottom:16px; z-index:5; }
+.ctrl button { font:inherit; font-weight:800; font-size:.85rem; border:0; background:#000; color:#F8B800; padding:8px 12px; cursor:pointer; }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <h1>LA Freebies: round 2</h1>
+  <p>Three things to pick from. Each option has a number, so just tell me "logo 4, teams B, nav 2" (or mix and match).</p>
+</header>
+<main class="wrap">
+
+<!-- ================= LOGOS ================= -->
+<section id="logos">
+  <h2>1. Logo: say "LA" and "sports"</h2>
+  <p>All eight are drawn on a 32×32 pixel grid in NES colors, shown at App Store size and home-screen size. Purple-and-gold and blue-and-white are the closest NES colors to the Lakers and Dodgers.</p>
+  <div class="q"><b>Heads-up on team colors:</b> each team owns its color scheme as part of its brand. An app icon pairing "LA" with Lakers purple-and-gold <em>and</em> Dodger blue can read as officially affiliated, and Apple or a team could object. Options tagged <span class="tag team" style="padding:0 5px;border-radius:3px">team colors</span> carry that risk. Options tagged <span class="tag city" style="padding:0 5px;border-radius:3px">LA flag colors</span> use the City of Los Angeles flag (green, gold, red), which belongs to no team. Not legal advice.</div>
+  <div class="logos" id="logos-grid"></div>
+</section>
+
+<!-- ================= TEAMS ================= -->
+<section id="teams">
+  <h2>2. Teams: show all 14, keep it calm</h2>
+  <p>Yes, show every LA team. Off-season teams go grey with their return month. Fourteen tiles at once gets busy, though, so here are four ways to organize them. All four keep what you like: tap a team to follow all its deals, ✓ on followed teams, and a partial "1/2" count.</p>
+  <div class="row">
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">Select teams</span><span class="r">4 PICKED</span></div>
+          <div class="sec">IN SEASON · 9</div>
+          <div class="g4" id="tA-on"></div>
+          <div class="sec">OFF SEASON · 5</div>
+          <div class="g4" id="tA-off"></div>
+        </div>
+        <nav class="hudnav"><span>Tonight</span><span>Deals</span><span class="on">Teams</span><span>You</span></nav>
+      </div></div>
+      <figcaption><b>A · Season board</b>Two groups: what's playing now on top, off-season below in grey. Everything visible, sorted by relevance.<ul class="pros"><li>Simplest; nothing hidden</li><li>Still 14 tiles on one screen</li></ul></figcaption>
+    </figure>
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">Select teams</span><span class="r">4 PICKED</span></div>
+          <div class="pager"><span class="lt">◀</span><span>BASKETBALL</span><span class="rt">▶</span></div>
+          <div class="pager" style="justify-content:center;margin-top:-6px"><span class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span></div>
+          <div class="g3" id="tB"></div>
+          <div class="tbx">Swipe or tap ◀ ▶ to change sport. <b>Sparks</b> are back in May.</div>
+        </div>
+        <nav class="hudnav"><span>Tonight</span><span>Deals</span><span class="on">Teams</span><span>You</span></nav>
+      </div></div>
+      <figcaption><b>B · Sport pages</b>One sport per page, like flipping through a game's team select. Big tiles, 2–3 teams at a time.<ul class="pros"><li>Calmest, most "select screen"</li><li>Your teams are spread across pages</li></ul></figcaption>
+    </figure>
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">Roster</span><span class="r">4 PICKED</span></div>
+          <div id="tC"></div>
+        </div>
+        <nav class="hudnav"><span>Tonight</span><span>Deals</span><span class="on">Teams</span><span>You</span></nav>
+      </div></div>
+      <figcaption><b>C · Roster menu</b>A plain NES text menu: ▶ cursor, a checkbox, team, and status (deal count or return month). The most compact.<ul class="pros"><li>Most NES-authentic, fits all 14</li><li>Less visual than tiles</li></ul></figcaption>
+    </figure>
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">Your lineup</span><span class="r">4 / 6</span></div>
+          <div class="g3" id="tD"></div>
+          <div class="sec">ADD A TEAM</div>
+          <div class="mini" id="tD-more"></div>
+        </div>
+        <nav class="hudnav"><span>Tonight</span><span>Deals</span><span class="on">Teams</span><span>You</span></nav>
+      </div></div>
+      <figcaption><b>D · Lineup</b>Like picking a party: your teams fill big slots on top, and everyone else is a compact strip below.<ul class="pros"><li>Your teams front and center</li><li>Adding a team is a two-step flow</li></ul></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= NAV ================= -->
+<section id="nav">
+  <h2>3. Navigation that feels like an NES</h2>
+  <p>Today the app uses the standard iOS tab bar with pixel icons. That's why it feels clunky: iOS chrome wearing an 8-bit costume. These replace the chrome itself. All four keep a one-tap way to every screen and work with VoiceOver.</p>
+  <div class="row">
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>8:47</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">LA Freebies</span><span class="r">SUN NOV 15</span></div>
+          <div class="sec">UNLOCKED</div>
+          <div class="it"><span data-sprite="griddle-sandwich" data-s="2"></span><div><b>$2 McGriddles</b><small>Ducks won · til 10:30am</small></div><span class="t">GOT IT!</span></div>
+          <div class="sec">ON THE LINE</div>
+          <div class="it"><span data-sprite="burrito" data-s="2"></span><div><b>Free burrito</b><small>Kings vs Sharks · 7:30</small></div></div>
+          <div class="it"><span data-sprite="plate-lunch" data-s="2"></span><div><b>$5.99 plate</b><small>LAFC · 1st-half goal</small></div></div>
+        </div>
+        <div class="stat"><span>DEALS <b>1</b></span><span>WATCHING <b>9</b></span><span>WON <b>12</b></span></div>
+        <nav class="hudnav" style="border-top:0;padding-top:6px"><span class="on">Tonight</span><span>Deals</span><span>Teams</span><span>You</span></nav>
+      </div></div>
+      <figcaption><b>1 · Game HUD bar</b>The tab bar becomes a black game HUD: a live stat line (deals, watching, won) and text tabs with a blinking ▶. No iOS icons or glass.<ul class="pros"><li>Smallest change, same muscle memory</li><li>The stat line makes it feel like a score</li></ul></figcaption>
+    </figure>
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>8:47</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">Deals</span><span class="r">1 NEW</span></div>
+          <div class="it"><span data-sprite="griddle-sandwich" data-s="2"></span><div><b>$2 McGriddles</b><small>Ducks won · til 10:30am</small></div></div>
+          <div class="it"><span data-sprite="burger" data-s="2"></span><div><b>Free Jumbo Jack</b><small>Dodgers · back in March</small></div></div>
+        </div>
+        <div class="startbtn"><span>Select</span><span class="s">Start</span></div>
+        <div class="pause"><div class="box"><div class="ttl">PAUSE</div><div class="m"><div>Tonight</div><div class="cur">Deals</div><div>Teams</div><div>You</div><div style="color:#7C7C7C">Resume</div></div></div></div>
+      </div></div>
+      <figcaption><b>2 · Pause menu</b>No tab bar. A START button opens a full-screen pause menu with ▶ choices; SELECT jumps back to your last screen.<ul class="pros"><li>The most NES; very clean screens</li><li>Every switch costs two taps</li></ul></figcaption>
+    </figure>
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>8:47</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="p2">LA tonight</span><span class="r">3 GAMES</span></div>
+          <div class="map">
+            <div class="sea"></div>
+            <svg viewBox="0 0 272 330" preserveAspectRatio="none" aria-hidden="true"><path d="M150 40 L150 110 L120 170 L200 200 L200 270 L110 290" stroke="#F8D878" stroke-width="6" stroke-dasharray="6 6" fill="none"/></svg>
+            <div class="node live" style="left:150px;top:40px"><i></i><span>KINGS 7:30</span></div>
+            <div class="node" style="left:150px;top:110px"><i></i><span>LAKERS 7:30</span></div>
+            <div class="node off" style="left:120px;top:170px"><i></i><span>DODGERS MAR</span></div>
+            <div class="node" style="left:200px;top:200px"><i></i><span>LAFC 7:00</span></div>
+            <div class="node" style="left:200px;top:270px"><i></i><span>DUCKS SAT</span></div>
+            <div class="node off" style="left:110px;top:290px"><i></i><span>RAMS SUN</span></div>
+          </div>
+        </div>
+        <nav class="hudnav"><span class="on">Map</span><span>Deals</span><span>Teams</span><span>You</span></nav>
+      </div></div>
+      <figcaption><b>3 · LA overworld map</b>Tonight becomes a pixel map of the LA basin. Each venue is a level node: red blinks when live, gold when there's a game, grey in the off-season. Tap a node for its deals.<ul class="pros"><li>The most memorable; very LA</li><li>Most work; the map art must be original</li></ul></figcaption>
+    </figure>
+    <figure>
+      <div class="phone n"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd" style="padding:0">
+          <div class="title">
+            <div data-logo="L2" style="width:96px;height:96px"></div>
+            <div class="big">LA<br>FREEBIES</div>
+            <div class="push">Tap to start</div>
+            <div class="c">WHEN LA WINS, YOU WIN</div>
+          </div>
+        </div>
+        <div class="wipe"></div>
+      </div></div>
+      <figcaption><b>4 · Title screen + screen wipes</b>Add-ons that work with any of the above: a title screen on first launch, and a black stepped wipe when switching screens instead of iOS slides.<ul class="pros"><li>Cheap and very effective</li><li>The title screen shows once only (no friction)</li></ul></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>My recommendation</h2>
+  <div class="combo">
+    <ol>
+      <li><b>Logo 2</b> (palm sunset in LA purple, gold and blue) if you accept the team-color risk; <b>logo 7</b> (palm on the LA flag) if you want zero risk.</li>
+      <li><b>Teams A</b> (season board) as the default, with <b>B</b>'s ◀ ▶ sport pages as a filter once there are more teams with deals.</li>
+      <li><b>Nav 1</b> (game HUD bar) plus <b>4</b> (title screen and wipes). Save the <b>3</b> map for Tonight once we have live game data.</li>
+    </ol>
+  </div>
+</section>
+</main>
+<div class="ctrl"><button type="button" id="theme" aria-label="Toggle page theme">Theme</button></div>
+
+<script>
+(function () {
+  var SPRITES = [{"id":"burger","name":"Burger","width":16,"height":16,"pixels":["................","....KKKKKKKK....","..KKbbhbbbhbKK..",".KbhhbbbhbbbbbK.",".KbhbbbbbbbhbbK.","KbbbbbbbbbbbbbbK","KKKKKKKKKKKKKKKK","KggggggggggggggK","KppppppppppppppK","KppppppppppppppK","KKKKKKKKKKKKKKKK","KbbbbbbbbbbbbbbK",".KbbbbbbbbbbbbK.","..KKKKKKKKKKKK..","................","................"],"palette":{"K":"#000000","b":"#E45C10","g":"#00A800","h":"#FCA044","p":"#881400"}},{"id":"burrito","name":"Burrito","width":16,"height":16,"pixels":["................","................","................","................","...KKKKKKKKKK...","..KfFFfKlwwwwwK.",".KfFfffKwwwwwwwK","KfffffffKwwwwwwK","KffffffKwwwwwwwK","KffffffKwwwwwwK.",".KffffKwwwwwwK..","..KKKKKKKKKKK...","................","................","................","................"],"palette":{"F":"#FCFCFC","K":"#000000","f":"#BCBCBC","l":"#FCFCFC","w":"#F0D0B0"}},{"id":"chicken-sandwich","name":"Chicken sandwich","width":16,"height":16,"pixels":["................","....KKKKKKKK....","..KKbhhbbbbbKK..",".KbhbbbbbbbbbbK.","KbbbbbbbbbbbbbbK","KKKKKKKKKKKKKKKK","KppKppKppKppKppK","KccccccccccccccK","KccKcccKcccKcccK","KccccccccccccccK","KKKKKKKKKKKKKKKK","KbbbbbbbbbbbbbbK",".KbbbbbbbbbbbbK.","..KKKKKKKKKKKK..","................","................"],"palette":{"K":"#000000","b":"#E45C10","c":"#F8B800","h":"#FCA044","p":"#00A800"}},{"id":"drink","name":"Drink","width":16,"height":16,"pixels":["................","................","..........KK....",".........KwK....","........KwK.....","..KKKKKKKwKKKK..","..KllllllllllK..","...KrwrrrrrrK...","...KrwrrrrrrK...","...KrrwwwwrrK...","....KrrrrrrK....","....KrrrrrrK....","....KKKKKKKK....","................","................","................"],"palette":{"K":"#000000","l":"#BCBCBC","r":"#F83800","w":"#FCFCFC"}},{"id":"fries","name":"Fries","width":16,"height":16,"pixels":["................","................","....KK.KK.KK....","...KhfKhfKhfK...","..KhfKhfKhfKhK..","..KffKffKffKfK..",".KKKKKKKKKKKKKK.",".KrrrrrrrrrrrrK.","..KrrrrrrrrrrK..","..KrrRRRRRRrrK..","..KrrrrrrrrrrK..","...KrrrrrrrrK...","...KRRRRRRRRK...","....KKKKKKKK....","................","................"],"palette":{"K":"#000000","R":"#A81000","f":"#F8B800","h":"#F8D878","r":"#F83800"}},{"id":"gift","name":"Gift","width":16,"height":16,"pixels":["................","...KK.....KK....","..KyYK...KYyK...","...KyYK.KYyK....","....KKyKyKK.....","KKKKKKKyKKKKKKKK","KXxxxxxKyxxxxxxK","KxxxxxxKyxxxxxxK","KKKKKKKKyKKKKKKK",".KXxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KKKKKKKKKKKKKK.","................"],"palette":{"K":"#000000","X":"#A4E4FC","Y":"#F87858","x":"#3CBCFC","y":"#F83800"}},{"id":"griddle-sandwich","name":"Griddle cake sandwich","width":16,"height":16,"pixels":["................","................","....KKKKKKKK....","..KKccdccdccKK..",".KccdccccccdccK.","KccccccdcccccccK","KKKKKKKKKKKKKKKK","KeeeeeeeeeeeeeeK","KssssssssssssssK","KssssssssssssssK","KKKKKKKKKKKKKKKK","KccccdcccccdcccK",".KccccccccccccK.","..KKKKKKKKKKKK..","................","................"],"palette":{"K":"#000000","c":"#F8B800","d":"#AC7C00","e":"#FCFCFC","s":"#881400"}},{"id":"hot-dog","name":"Hot dog","width":16,"height":16,"pixels":["................","................","................","................","..KKKKKKKKKKKK..",".KssmsssmsssmsK.","KbsmsssmsssmssbK","KbhbbbbbbbbbbbbK","KbbbbbbbbbbbbbbK",".KbbbbbbbbbbbbK.","..KKKKKKKKKKKK..","................","................","................","................","................"],"palette":{"K":"#000000","b":"#E45C10","h":"#FCA044","m":"#F8B800","s":"#A81000"}},{"id":"nuggets","name":"Nuggets","width":16,"height":16,"pixels":["................","................","................","..KKKK..........",".KhnnnK...KKKK..",".KnnnnK..KhnnnK.","..KKKK...KnnnnK.","....KKKKK.KKKK..","...KhnnnnK......","...KnnnnnK......","....KKKKK.......","................","................","................","................","................"],"palette":{"K":"#000000","h":"#F8D878","n":"#FCA044"}},{"id":"pizza","name":"Pizza slice","width":16,"height":16,"pixels":["................","KKKKKKKKKKKKKKKK","KccccccccccccccK","KccccccccccccccK",".KyhyyyypyyyyyK.",".KyppyyyyyyppyK.","..KyyyyypyyyyK..","..KyyyyppyyyyK..","...KyyyyyyyyK...","...KyypyyyyyK...","....KyyyyyyK....",".....KyyyyK.....","......KyyK......",".......KK.......","................","................"],"palette":{"K":"#000000","c":"#E45C10","h":"#F8D878","p":"#F83800","y":"#F8B800"}},{"id":"plate-lunch","name":"Plate lunch","width":16,"height":16,"pixels":["................","................","................","................","..KKKK...KKKKK..",".KwwwwK.KmmmmmK.",".KwwwwwKmmmvmmK.","KwwwwwwwwwwwwwwK","KgwwwwwwwwwwwwgK",".KggggggggggggK.","..KKKKKKKKKKKK..","................","................","................","................","................"],"palette":{"K":"#000000","g":"#BCBCBC","m":"#881400","v":"#00A800","w":"#FCFCFC"}},{"id":"street-tacos","name":"Street tacos","width":16,"height":16,"pixels":["................","................","................",".gmgm.gmgm.gmgm.","KwmmwKwmmwKwmmwK","KwwwwKwwwwKwwwwK","KwwwwKwwwwKwwwwK","KwwwdKwwwdKwwwdK",".KwdK.KwdK.KwdK.","KKKKKKKKKKKKKKKK","KooooooooooooooK",".KllllllllllllK.","..KKKKKKKKKKKK..","................","................","................"],"palette":{"K":"#000000","d":"#FCA044","g":"#00A800","l":"#BCBCBC","m":"#881400","o":"#FCFCFC","w":"#F0D0B0"}},{"id":"taco","name":"Taco","width":16,"height":16,"pixels":["................","................","....g.t..g.t....","..ggtggggtgggg..",".KggggggggggggK.","KhhhsssssssssssK","KhsssssssssssssK","KssssssssssssssK",".KssssssssssssK.","..KssssssssssK..","...KKssssssKK...",".....KKKKKK.....","................","................","................","................"],"palette":{"K":"#000000","g":"#00A800","h":"#F8D878","s":"#F8B800","t":"#F83800"}}];
+  var by = {}; SPRITES.forEach(function (s) { by[s.id] = s; });
+  // ---- generic pixel helpers ----
+  function canvas(w, h) { var c = []; for (var y = 0; y < h; y++) c.push(new Array(w).fill(null)); c.w = w; c.h = h; return c; }
+  function stamp(c, rows, x0, y0, map) { rows.forEach(function (r, y) { for (var x = 0; x < r.length; x++) { var ch = r[x], col = typeof map === 'string' ? (ch === '1' ? map : null) : map[ch]; var X = x0 + x, Y = y0 + y; if (col && X >= 0 && Y >= 0 && X < c.w && Y < c.h) c[Y][X] = col; } }); }
+  function fill(c, fn) { for (var y = 0; y < c.h; y++) for (var x = 0; x < c.w; x++) { var v = fn(x, y); if (v) c[y][x] = v; } }
+  function svg(c, bg) { var s = '<svg viewBox="0 0 ' + c.w + ' ' + c.h + '" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="' + c.w + '" height="' + c.h + '" fill="' + bg + '"/>'; for (var y = 0; y < c.h; y++) { var x = 0; while (x < c.w) { var k = c[y][x], e = x + 1; while (e < c.w && c[y][e] === k) e++; if (k) s += '<rect x="' + x + '" y="' + y + '" width="' + (e - x) + '" height="1" fill="' + k + '"/>'; x = e; } } return s + '</svg>'; }
+  function spriteSvg(sp, scale) { var c = canvas(sp.width, sp.height); stamp(c, sp.pixels, 0, 0, sp.palette); return svg(c, 'transparent').replace('<svg ', '<svg width="' + sp.width * scale + '" height="' + sp.height * scale + '" '); }
+  // 5x7 font for logos
+  var F = { L:"10000,10000,10000,10000,10000,10000,11111", A:"01110,10001,10001,11111,10001,10001,10001", F:"11111,10000,10000,11110,10000,10000,10000", R:"11110,10001,10001,11110,10100,10010,10001", E:"11111,10000,10000,11110,10000,10000,11111", W:"10001,10001,10001,10101,10101,10101,01010", I:"01110,00100,00100,00100,00100,00100,01110", N:"10001,10001,11001,10101,10011,10001,10001", " ":"000,000,000,000,000,000,000" };
+  function text(str) { var rows = ['', '', '', '', '', '', '']; str.split('').forEach(function (ch, i) { var g = (F[ch] || F[' ']).split(','); for (var r = 0; r < 7; r++) rows[r] += (i ? '0' : '') + g[r]; }); return rows; }
+  function scale(rows, s) { var o = []; rows.forEach(function (r) { var l = r.split('').map(function (c) { return c.repeat(s); }).join(''); for (var k = 0; k < s; k++) o.push(l); }); return o; }
+  // NES palette entries used
+  var K='#000000', W='#FCFCFC', G1='#BCBCBC', PUR='#4428BC', PUR2='#6844FC', GLD='#F8B800', GLD2='#F8D878', BLU='#0058F8', BLU2='#3CBCFC', NAV='#0000BC', GRN='#00A800', GRN2='#007800', RED='#F83800', RED2='#A81000', ORG='#E45C10', BRN='#881400';
+  var PALM = ["...kk.kk...", ".kk..kk..kk", "k...kkkk..k", "...k.kk.k..", "..k..k...k."];
+  var TRUNK = [[16,9],[16,10],[16,11],[15,12],[15,13],[15,14],[14,15],[14,16],[14,17]];
+  function palm(c, dx, dy, col) { stamp(c, PALM, 11 + dx, 4 + dy, { k: col }); TRUNK.forEach(function (p) { var X = p[0] + dx, Y = p[1] + dy; if (Y < c.h && X < c.w) c[Y][X] = col; }); }
+  function ball(c, cx, cy, r, base, seam, kind) {
+    fill(c, function (x, y) { var d = Math.hypot(x + .5 - cx, y + .5 - cy); if (d > r) return null; if (d > r - 1) return K;
+      if (kind === 'bb' && (Math.abs(x + .5 - cx) < .6 || Math.abs(y + .5 - cy) < .6 || Math.abs(Math.hypot(x + .5 - (cx - r - 1), y + .5 - cy) - (r + .3)) < .6 || Math.abs(Math.hypot(x + .5 - (cx + r + 1), y + .5 - cy) - (r + .3)) < .6)) return seam;
+      if (kind === 'base' && (Math.abs(Math.hypot(x + .5 - (cx - r - 2.5), y + .5 - cy) - (r + 1.2)) < .55 || Math.abs(Math.hypot(x + .5 - (cx + r + 2.5), y + .5 - cy) - (r + 1.2)) < .55)) return seam;
+      return base; });
+  }
+  var LOGOS = [
+    { id:'L1', name:'LA on purple', tag:'team', note:'Gold LA with a blue drop shadow on purple. Plain, bold, and readable at every size.', draw:function(){ var c=canvas(32,32); fill(c,function(){return PUR;}); var la=scale(text('LA'),2); stamp(c,la,6,10,BLU); stamp(c,la,5,9,GLD); for(var x=5;x<27;x++){c[25][x]=W;} return svg(c,PUR);} },
+    { id:'L2', name:'Palm sunset, LA colors', tag:'team', rec:true, note:'Your palm, recolored: purple sky, gold sun, blue Pacific with white sparkle. Keeps the icon you liked, adds the team colors.', draw:function(){ var c=canvas(32,32); fill(c,function(x,y){ if(y<=21 && Math.hypot(x+.5-15,y+.5-21)<=8) return (y%3===0&&y>16)?GLD2:GLD; if(y<=8) return PUR; if(y<=15) return PUR2; if(y<=21) return '#940084'; return ((x+y)%6===0&&y%2===0)?W:BLU; }); palm(c,5,3,K); palm(c,5,4,K); return svg(c,PUR);} },
+    { id:'L3', name:'Split city', tag:'team', note:'Diagonal split: purple and gold "L", blue and white "A". The most direct "two teams" read, and the most likely to look affiliated.', draw:function(){ var c=canvas(32,32); fill(c,function(x,y){ return (x+y<32)?PUR:BLU; }); var L=scale(text('L'),3), A=scale(text('A'),3); stamp(c,L,3,4,GLD); stamp(c,A,15,8,W); return svg(c,PUR);} },
+    { id:'L4', name:'LA plus the balls', tag:'team', note:'Gold LA over a basketball and a baseball. Says "LA" and "sports" together; slightly busy at the smallest size.', draw:function(){ var c=canvas(32,32); fill(c,function(){return NAV;}); var la=scale(text('LA'),2); stamp(c,la,6,3,PUR); stamp(c,la,5,2,GLD); ball(c,9,24,7,ORG,K,'bb'); ball(c,23,24,7,W,RED,'base'); return svg(c,NAV);} },
+    { id:'L5', name:'Pennant', tag:'team', note:'A stadium pennant in purple with gold LA on a blue pole. Instantly reads as "fan", without any team mark.', draw:function(){ var c=canvas(32,32); fill(c,function(x,y){ if(x>=4&&x<=5&&y>=3&&y<=29) return G1; if(x>=6&&y>=4&&y<=20){ var half=8, mid=12; var w=28-Math.abs(y-mid)*(22/half); if(x<=6+w) return (x===6||Math.abs(y-mid)>=7.5)?K:PUR; } return null; }); stamp(c,text('LA'),9,9,GLD); return svg(c,BLU);} },
+    { id:'L6', name:'Taco trophy', tag:'team', note:'A gold taco on purple with a white LA. The food reward is the hero; reads as "food app" more than "sports app".', draw:function(){ var c=canvas(32,32); fill(c,function(){return PUR;}); var t=by['taco']; if(t){ stamp(c,t.pixels,8,9,t.palette); } stamp(c,text('LA'),11,24,W); return svg(c,PUR);} },
+    { id:'L7', name:'Palm on the LA flag', tag:'city', rec:true, note:'The City of LA flag\'s jagged green, gold and red bands behind a black palm. Unmistakably LA, owned by no team: the zero-risk pick.', draw:function(){ var c=canvas(32,32); fill(c,function(x,y){ var j=(y%4<2)?1:0; if(x<9+j) return GRN; if(x<22+j) return GLD; return RED; }); palm(c,4,6,K); palm(c,4,7,K); for(var x=0;x<32;x++){ c[30][x]=K; c[31][x]=K; } return svg(c,GRN);} },
+    { id:'L8', name:'LA in flag colors', tag:'city', note:'Gold LA with a red drop shadow on LA-flag green, and a white baseline. The flag-color twin of logo 1.', draw:function(){ var c=canvas(32,32); fill(c,function(){return GRN2;}); var la=scale(text('LA'),2); stamp(c,la,6,10,RED2); stamp(c,la,5,9,GLD); for(var x=5;x<27;x++){c[25][x]=W;} return svg(c,GRN2);} },
+    { id:'L0', name:'Current palm (for comparison)', tag:'cur', note:'Today\'s icon. Pretty, but it says "beach" more than "LA sports deals".', draw:function(){ var c=canvas(24,24); fill(c,function(x,y){ if(y<=17&&Math.hypot(x-11.5,y-16)<=6.2) return (y%3===0&&y>12)?'#DF7126':'#FBF236'; if(y<=5) return '#3F3F74'; if(y<=9) return '#76428A'; if(y<=13) return '#D95763'; if(y<=17) return '#DF7126'; return ((x+y)%5===0&&y%2===0)?'#5FCDE4':'#306082'; }); palm(c,0,0,'#141021'); return svg(c,'#222034');} }
+  ];
+  var cache = {}; LOGOS.forEach(function(l){ cache[l.id]=l.draw(); });
+  var grid = document.getElementById('logos-grid');
+  var tags = { team:'team colors', city:'LA flag colors', cur:'current' };
+  LOGOS.forEach(function (l, i) {
+    grid.insertAdjacentHTML('beforeend', '<div class="lg' + (l.rec ? ' rec' : '') + '"><div class="ic">' + cache[l.id] + '</div><div><h3>' + (l.id === 'L0' ? '' : 'Logo ' + l.id.slice(1) + ' · ') + l.name + '</h3><span class="tag ' + l.tag + '">' + tags[l.tag] + '</span><p>' + l.note + '</p><div class="sm"><div style="width:58px;height:58px">' + cache[l.id] + '</div><div style="width:40px;height:40px">' + cache[l.id] + '</div></div>' + (l.rec ? '<div class="rec-l">Recommended</div>' : '') + '</div></div>');
+  });
+  document.querySelectorAll('[data-logo]').forEach(function(el){ el.innerHTML = cache[el.getAttribute('data-logo')] || ''; });
+  document.querySelectorAll('[data-sprite]').forEach(function(el){ var sp=by[el.getAttribute('data-sprite')]; if(sp) el.innerHTML=spriteSvg(sp, +el.getAttribute('data-s')||2); });
+
+  // ---- sport badges (original 16x16) ----
+  function badge(kind) {
+    var c = canvas(16, 16);
+    if (kind === 'hockey') { stamp(c, ["............KK..","...........KbK..","...........KbK..","..........KbK...","..........KbK...",".........KbK....",".........KbK....","........KbK.....","........KtK.....",".......KtK......","..KKKKKKtK......",".KbbbbbbbK......",".KKKKKKKK.......","..........KKKK..",".........KggggK.","..........KKKK.."], 0, 0, { K:K, b:'#AC7C00', t:W, g:'#7C7C7C' }); return c; }
+    if (kind === 'football') { fill(c, function (x, y) { var d = Math.pow((x - 7.5) / 7.6, 2) + Math.pow((y - 7.5) / 5.2, 2); if (d > 1) return null; if (d > .62) return K; if (y === 7 && x >= 5 && x <= 10) return W; if ((x === 6 || x === 8 || x === 10) && y >= 6 && y <= 8) return W; return BRN; }); return c; }
+    if (kind === 'basketball') { ball(c, 8, 8, 7.5, ORG, K, 'bb'); return c; }
+    if (kind === 'baseball') { ball(c, 8, 8, 7.5, W, RED, 'base'); return c; }
+    fill(c, function (x, y) { var d = Math.hypot(x + .5 - 8, y + .5 - 8); if (d > 7.5) return null; if (d > 6.5) return K; var sp = [[8,8],[3.5,4.5],[12.5,4.5],[3.5,12],[12.5,12],[8,14]]; for (var i = 0; i < sp.length; i++) if (Math.hypot(x + .5 - sp[i][0], y + .5 - sp[i][1]) <= 1.7) return K; return W; }); return c;
+  }
+  function gray(c) { var o = canvas(c.w, c.h); for (var y = 0; y < c.h; y++) for (var x = 0; x < c.w; x++) { var v = c[y][x]; if (!v) continue; var n = parseInt(v.slice(1), 16), l = (.299 * (n >> 16) + .587 * ((n >> 8) & 255) + .114 * (n & 255)) / 255; o[y][x] = l < .1 ? K : (l < .45 ? '#7C7C7C' : (l < .8 ? '#BCBCBC' : '#BCBCBC')); } return o; }
+  function badgeSvg(kind, s, off) { var c = badge(kind); if (off) c = gray(c); return svg(c, 'transparent').replace('<svg ', '<svg width="' + 16 * s + '" height="' + 16 * s + '" '); }
+
+  var TEAMS = [
+    { n:'Kings', k:'hockey', on:1, f:1, st:'1 DEAL' }, { n:'Ducks', k:'hockey', on:1, f:1, st:'1 DEAL' },
+    { n:'Lakers', k:'basketball', on:1, st:'NO DEAL' }, { n:'Clippers', k:'basketball', on:1, st:'NO DEAL' },
+    { n:'Rams', k:'football', on:1, st:'NO DEAL' }, { n:'Chargers', k:'football', on:1, st:'NO DEAL' },
+    { n:'LAFC', k:'soccer', on:1, f:1, st:'1 DEAL' }, { n:'USC', k:'football', on:1, st:'NO DEAL' },
+    { n:'UCLA', k:'football', on:1, st:'NO DEAL' },
+    { n:'Dodgers', k:'baseball', on:0, f:1, st:'MAR' }, { n:'Angels', k:'baseball', on:0, st:'MAR' },
+    { n:'Galaxy', k:'soccer', on:0, st:'FEB' }, { n:'Angel City', k:'soccer', on:0, st:'FEB 11' },
+    { n:'Sparks', k:'basketball', on:0, st:'MAY' }
+  ];
+  function tile(t, s) { return '<div class="tile' + (t.f ? ' on' : '') + (t.on ? '' : ' off') + '"><div class="b">' + badgeSvg(t.k, s || 1, !t.on) + '</div><span class="nm">' + t.n + '</span><small>' + (t.on ? t.st : 'BACK ' + t.st) + '</small></div>'; }
+  var on = TEAMS.filter(function (t) { return t.on; }), off = TEAMS.filter(function (t) { return !t.on; });
+  document.getElementById('tA-on').innerHTML = on.map(function (t) { return tile(t, 1); }).join('');
+  document.getElementById('tA-off').innerHTML = off.map(function (t) { return tile(t, 1); }).join('');
+  document.getElementById('tB').innerHTML = TEAMS.filter(function (t) { return t.k === 'basketball'; }).map(function (t) { return tile(t, 3); }).join('');
+  document.getElementById('tC').innerHTML = TEAMS.map(function (t, i) { return '<div class="lrow' + (t.on ? '' : ' off') + '"><span class="ck' + (t.f ? ' on' : '') + '"></span>' + badgeSvg(t.k, 1, !t.on) + '<span class="nm' + (i === 0 ? ' cur' : '') + '">' + t.n + '</span><span class="st">' + (t.on ? t.st : 'BACK ' + t.st) + '</span></div>'; }).join('');
+  var mine = TEAMS.filter(function (t) { return t.f; });
+  document.getElementById('tD').innerHTML = mine.map(function (t) { return tile(t, 2); }).join('') + '<div class="slot empty">+</div><div class="slot empty">+</div>';
+  document.getElementById('tD-more').innerHTML = TEAMS.filter(function (t) { return !t.f; }).map(function (t) { return '<span style="' + (t.on ? 'color:#FCFCFC;background:#004058' : '') + '">' + badgeSvg(t.k, 1, !t.on) + t.n + '</span>'; }).join('');
+
+  var root = document.documentElement, key = 'la-r2-theme';
+  try { var sv = localStorage.getItem(key); if (sv) root.setAttribute('data-theme', sv); } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () { var d = root.getAttribute('data-theme') === 'dark' || (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches); var n = d ? 'light' : 'dark'; root.setAttribute('data-theme', n); try { localStorage.setItem(key, n); } catch (e) {} });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freebies LA Pivot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+/* Design idea: California freeway signage. Overpass is a free cut of Highway Gothic,
+   the typeface on every LA freeway sign. Each pivot option is an "exit". */
+:root {
+  --sign: #00653f;        /* Caltrans sign green */
+  --sign-ink: #ffffff;
+  --tab: #f3c300;         /* reflective exit-tab yellow */
+  --tab-ink: #1d1d1b;
+  --ground: #e8ebe6;      /* sun-bleached concrete */
+  --panel: #f7f8f5;
+  --ink: #1d211f;
+  --muted: #545c57;
+  --rule: #c9cfc8;
+  --warn: #b3261e;
+  --ok: #1f6b3a;
+  --maybe: #8a5a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sign: #0b7a4d; --ground: #141816; --panel: #1c211e; --ink: #e9ede9;
+    --muted: #a3ada6; --rule: #334038; --warn: #ff8a80; --ok: #7fd49b; --maybe: #f0c060;
+  }
+}
+:root[data-theme="dark"] {
+  --sign: #0b7a4d; --ground: #141816; --panel: #1c211e; --ink: #e9ede9;
+  --muted: #a3ada6; --rule: #334038; --warn: #ff8a80; --ok: #7fd49b; --maybe: #f0c060;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: "Overpass", system-ui, sans-serif; font-size: 17px; line-height: 1.55;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--tab); outline-offset: 2px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+p, li { max-width: 72ch; }
+h2 { font-size: 1.9rem; line-height: 1.15; font-weight: 900; margin: 0 0 .5rem; letter-spacing: -.01em; }
+h3 { font-size: 1.25rem; font-weight: 800; margin: 1.6rem 0 .4rem; }
+h4 { font-size: 1rem; font-weight: 800; margin: 1.2rem 0 .3rem; }
+small, .muted { color: var(--muted); }
+
+/* ---------- Hero: overhead freeway gantry ---------- */
+.gantry { padding: 40px 0 28px; }
+.gantry .posts { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.sign {
+  background: var(--sign); color: var(--sign-ink); border-radius: 10px;
+  border: 3px solid #fff; box-shadow: 0 0 0 3px var(--sign);
+  padding: 22px 26px 26px; position: relative;
+}
+.sign .tab {
+  position: absolute; top: -3px; right: 26px; transform: translateY(-100%);
+  background: var(--tab); color: var(--tab-ink); font-weight: 900;
+  padding: 4px 12px 2px; border-radius: 6px 6px 0 0; border: 3px solid #fff; border-bottom: 0;
+  font-size: .95rem;
+}
+.sign h1 { margin: 0; font-size: clamp(2.3rem, 7vw, 4.6rem); line-height: .95; font-weight: 900; letter-spacing: -.01em; }
+.sign .sub { font-size: clamp(1.05rem, 2.4vw, 1.45rem); font-weight: 600; margin-top: 10px; max-width: 46ch; }
+.sign .arrows { display: flex; gap: 22px; margin-top: 18px; font-size: 1.6rem; font-weight: 900; flex-wrap: wrap; }
+.sign .arrows span { display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; }
+.sign .arrows b { font-size: 1.8rem; line-height: 1; }
+.intro { margin-top: 22px; }
+
+/* ---------- Sections ---------- */
+section.block { padding: 36px 0; border-top: 2px solid var(--rule); }
+.grid2 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 820px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 18px 20px; }
+.panel h3:first-child, .panel h4:first-child { margin-top: 0; }
+table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 800; }
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.st { font-weight: 800; white-space: nowrap; }
+.st.ok { color: var(--ok); } .st.maybe { color: var(--maybe); } .st.no { color: var(--warn); }
+
+/* season strip */
+.season { display: grid; grid-template-columns: 140px repeat(12, 1fr); gap: 2px; font-size: .8rem; min-width: 640px; }
+.season .m { text-align: center; color: var(--muted); font-weight: 600; padding-bottom: 4px; }
+.season .lbl { font-weight: 800; padding-right: 8px; align-self: center; font-size: .85rem; }
+.season .c { height: 22px; background: color-mix(in srgb, var(--rule) 45%, transparent); }
+.season .c.on { background: var(--sign); }
+.season .c.po { background: color-mix(in srgb, var(--sign) 50%, transparent); }
+.season .c.now { box-shadow: inset 0 0 0 2px var(--tab); }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: .85rem; margin-top: 10px; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 6px; }
+
+/* ---------- Exit index ---------- */
+.exits { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 700px) { .exits { grid-template-columns: 1fr 1fr; } }
+.exit {
+  display: grid; grid-template-columns: 74px 1fr; gap: 14px; align-items: center;
+  background: var(--sign); color: #fff; text-decoration: none; border-radius: 8px; padding: 10px 14px;
+  border: 2px solid #fff; box-shadow: 0 0 0 2px var(--sign);
+}
+.exit:hover { filter: brightness(1.08); }
+.exit .no { background: var(--tab); color: var(--tab-ink); font-weight: 900; text-align: center; border-radius: 4px; padding: 4px 0 2px; line-height: 1.1; font-size: .78rem; }
+.exit .no b { display: block; font-size: 1.5rem; }
+.exit .t { font-weight: 800; font-size: 1.05rem; line-height: 1.2; }
+.exit .d { font-size: .88rem; opacity: .88; }
+
+/* comparison */
+.meter { display: inline-flex; gap: 2px; vertical-align: middle; }
+.meter i { width: 9px; height: 12px; background: var(--rule); display: block; }
+.meter i.f { background: var(--sign); }
+.meter.risk i.f { background: var(--warn); }
+.rec { font-weight: 800; color: var(--ok); }
+
+/* ---------- Option detail ---------- */
+.opt { padding: 44px 0 30px; border-top: 2px solid var(--rule); scroll-margin-top: 10px; }
+.opt-head { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; }
+.opt-head .no { background: var(--tab); color: var(--tab-ink); font-weight: 900; border-radius: 6px; padding: 8px 14px 4px; text-align: center; line-height: 1; }
+.opt-head .no span { font-size: .8rem; display: block; }
+.opt-head .no b { font-size: 2.4rem; display: block; }
+.opt-head .tag { font-size: 1.15rem; color: var(--muted); margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0 4px; font-size: .92rem; }
+.facts div b { font-weight: 800; }
+.swatches { display: flex; gap: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); max-width: 420px; }
+.swatches div { flex: 1; height: 56px; position: relative; }
+.swatches div span { position: absolute; bottom: 4px; left: 6px; font-size: .68rem; font-weight: 600; padding: 1px 4px; border-radius: 3px; background: rgba(255,255,255,.85); color: #111; }
+.store { border: 1px solid var(--rule); background: var(--panel); border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; max-width: 520px; }
+.store .icon { width: 64px; height: 64px; border-radius: 15px; display: grid; place-items: center; font-weight: 900; font-size: 1.15rem; line-height: 1; text-align: center; }
+.store .n { font-weight: 800; }
+.store .s { color: var(--muted); font-size: .92rem; }
+.store .k { font-size: .78rem; color: var(--muted); margin-top: 4px; word-break: break-word; }
+.push { margin-top: 12px; max-width: 520px; background: color-mix(in srgb, var(--panel) 70%, var(--rule)); border-radius: 14px; padding: 10px 14px; font-size: .9rem; }
+.push b { display: block; }
+.push small { float: right; }
+details.walk { margin-top: 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; }
+details.walk summary { cursor: pointer; padding: 14px 18px; font-weight: 800; font-size: 1.05rem; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+details.walk summary::-webkit-details-marker { display: none; }
+details.walk summary::after { content: "+"; font-weight: 900; font-size: 1.3rem; line-height: 1; }
+details.walk[open] summary::after { content: "–"; }
+details.walk .body { padding: 0 18px 18px; }
+details.walk ol { padding-left: 1.3rem; }
+details.walk ol li { margin-bottom: .55rem; }
+code { font-size: .86em; background: color-mix(in srgb, var(--rule) 45%, transparent); padding: 1px 5px; border-radius: 4px; word-break: break-word; }
+.changes { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 760px) { .changes { grid-template-columns: 1fr 1fr; } }
+.changes .panel ul { margin: .3rem 0 0; padding-left: 1.1rem; font-size: .93rem; }
+.verdict { margin-top: 14px; padding-left: 14px; border-left: 4px solid var(--tab); font-weight: 600; }
+
+.ctrl { position: fixed; right: 16px; bottom: 16px; display: flex; gap: 8px; z-index: 5; }
+.ctrl button { font: inherit; font-weight: 800; font-size: .85rem; border: 2px solid #fff; background: var(--sign); color: #fff; border-radius: 6px; padding: 8px 12px; cursor: pointer; box-shadow: 0 0 0 2px var(--sign); }
+footer { padding: 30px 0 80px; color: var(--muted); font-size: .88rem; border-top: 2px solid var(--rule); }
+@media print { .ctrl { display: none; } details.walk { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<header class="wrap gantry">
+  <div class="sign">
+    <div class="tab">10 exits</div>
+    <h1>Freebies, LA only</h1>
+    <div class="sub">Baseball is over. Here are ten ways to rebuild the app around every LA team and the food deals they trigger, with what changes in each.</div>
+    <div class="arrows">
+      <span><b>↑</b> Research: what's out there</span>
+      <span><b>↘</b> Ten options, each with a full walkthrough</span>
+      <span><b>↗</b> Recommended route</span>
+    </div>
+  </div>
+  <p class="intro muted">Prepared 15 Nov 2026 from three inputs: a read of this repo, web research on LA deals, competitors and data feeds, and guidance from the Expo, mobile-taste and apple-skills plugins (redesign, design-system, App Store keyword and description skills). Items marked <em>unverified</em> need a human check against the sponsor's own page before they ship.</p>
+</header>
+
+<main>
+<!-- ================= RESEARCH ================= -->
+<section class="block wrap" id="research">
+  <h2>What we found</h2>
+  <p>Four facts shape every option below.</p>
+  <div class="grid2">
+    <div class="panel">
+      <h3>1. The competition is thin</h3>
+      <p>Two small indie iOS apps cover SoCal sports deals. None of them push from live game data at the moment a deal fires.</p>
+    </div>
+    <div class="panel">
+      <h3>2. Winter deals are scarce</h3>
+      <p>Right now only a handful of LA deals can be claimed from home: Ducks + McDonald's for sure, Kings + El Pollo Loco probably, and LAFC + Ono during the playoffs. No current Lakers, Rams, Chargers or Galaxy trigger deal turned up.</p>
+    </div>
+    <div class="panel">
+      <h3>3. Chick-fil-A moved in-venue</h3>
+      <p>Since 2026, Chick-fil-A SoCal deals (Ducks, LAFC, Clippers) appear to be claimable only inside the arena. An app that tells someone at home about them wastes their attention. We need an "at the game only" flag.</p>
+    </div>
+    <div class="panel">
+      <h3>4. Free data has strings attached</h3>
+      <p>ESPN's unofficial API returns JSON for all eight leagues we need, but Disney's terms ban automated and commercial use. The NHL API is in the same position. Budget for a licensed feed before monetizing.</p>
+    </div>
+  </div>
+
+  <h3>Competitors</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>App / source</th><th>Coverage</th><th>How it alerts</th><th>Rating</th><th>Where it's weak</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://apps.apple.com/us/app/meal-steals-local-food-deals/id6756455909">Meal Steals</a> (iOS)</td><td>All LA/OC/Ventura food deals, sports included; lets users pick stadiums for Chick-fil-A alerts</td><td>Push</td><td>4.8★ (85)</td><td>General deal feed, not driven by games; notification bugs mentioned in release notes; no Android app found</td></tr>
+      <tr><td><a href="https://apps.apple.com/us/app/id6471648480">Hometown Deals</a> (iOS)</td><td>MLS, MLB, NFL, NCAAF; no NBA/NHL</td><td>Push</td><td>4.8★ (21)</td><td>Last updated June 2025; looks abandoned</td></tr>
+      <tr><td><a href="https://apps.apple.com/ph/app/promonight/id6761309246">PromoNight</a> (iOS)</td><td>Giveaway nights, all leagues</td><td>9am reminder on promo days</td><td>Too few ratings</td><td>Schedule-based; doesn't track triggers</td></tr>
+      <tr><td><a href="https://github.com/CampAsAChamp/los-angeles-sports-chick-fil-a-scraper">CFA scraper</a> (GitHub)</td><td>Angels, Ducks, LAFC (Chick-fil-A only)</td><td>8am email</td><td>—</td><td>One person's script, which shows there's demand</td></tr>
+      <tr><td>Dodger Blue, Slickdeals, Doctor of Credit</td><td>Dodgers / one-off posts</td><td>Articles, forum threads</td><td>—</td><td>Posted by hand after the fact; fans confused about the rules</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">We use competitors to position the product, not as a data source. Deal facts come from team and sponsor pages, which are public facts. Copying a competitor's curated list or wording invites a takedown and an App Store complaint.</p>
+
+  <h3>LA deal inventory</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Team</th><th>Sponsor</th><th>Trigger</th><th>Reward</th><th>Claim</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Ducks</td><td>McDonald's</td><td>Home win</td><td>$2 McGriddles</td><td>App, next morning</td><td class="st ok">Confirmed 26-27</td></tr>
+      <tr><td>Kings</td><td>El Pollo Loco</td><td>Home win</td><td>Free BRC burrito with a large drink</td><td>Loco Rewards</td><td class="st maybe">Unverified 26-27</td></tr>
+      <tr><td>LAFC</td><td>Ono Hawaiian BBQ</td><td>First-half goal at home</td><td>$5.99 chicken plate</td><td>Code, next business day</td><td class="st maybe">Playoffs only, season unstated</td></tr>
+      <tr><td>Ducks</td><td>Chick-fil-A</td><td>5+ goals at home</td><td>Chicken sandwich</td><td>In arena only</td><td class="st maybe">Confirmed, in-venue</td></tr>
+      <tr><td>LAFC</td><td>Chick-fil-A</td><td>Home win</td><td>Chicken sandwich</td><td>In stadium only</td><td class="st maybe">In-venue</td></tr>
+      <tr><td>Clippers</td><td>Chick-fil-A</td><td>Opponent misses 2 straight FTs in Q4</td><td>Chicken sandwich</td><td>Likely in-venue</td><td class="st maybe">Last seen 25-26</td></tr>
+      <tr><td>Dodgers</td><td>Jack in the Box · Panda · McDonald's · Habit · Uber Eats</td><td>7+ K · home win · 6+ runs · home DP · road save</td><td>Various</td><td>Codes / apps</td><td class="st maybe">2026 (secondary source)</td></tr>
+      <tr><td>Angels</td><td>Del Taco · McDonald's · Mountain Mike's</td><td>5+ runs home · any win · shutout</td><td>Tacos · fries · pizza</td><td>Apps, next day</td><td class="st maybe">2026 unverified</td></tr>
+      <tr><td>Lakers, Rams, Chargers, Sparks, Galaxy, USC/UCLA</td><td colspan="4">No current win-triggered food deal found</td><td class="st no">Gap</td></tr>
+      <tr><td>Angel City FC</td><td>Once Upon a Farm</td><td>"When We Win"</td><td colspan="2">Terms unknown</td><td class="st maybe">Unverified</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Who's playing when</h3>
+  <div class="tablewrap">
+    <div class="season" role="img" aria-label="Season calendar for LA teams by month">
+      <div></div>
+      <div class="m">Jan</div><div class="m">Feb</div><div class="m">Mar</div><div class="m">Apr</div><div class="m">May</div><div class="m">Jun</div><div class="m">Jul</div><div class="m">Aug</div><div class="m">Sep</div><div class="m">Oct</div><div class="m now" style="color:var(--ink)">Nov</div><div class="m">Dec</div>
+      <!-- months: index 1..12 ; on = regular season ; po = playoffs -->
+      <div class="lbl">NBA · Lakers, Clippers</div>
+      <div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c po"></div><div class="c po"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on now"></div><div class="c on"></div>
+      <div class="lbl">NHL · Kings, Ducks</div>
+      <div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c po"></div><div class="c po"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on now"></div><div class="c on"></div>
+      <div class="lbl">NFL · Rams, Chargers</div>
+      <div class="c po"></div><div class="c po"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on now"></div><div class="c on"></div>
+      <div class="lbl">MLS · LAFC, Galaxy</div>
+      <div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c po now"></div><div class="c on"></div>
+      <div class="lbl">NWSL · Angel City</div>
+      <div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c po now"></div><div class="c"></div>
+      <div class="lbl">MLB · Dodgers, Angels</div>
+      <div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c po"></div><div class="c now"></div><div class="c"></div>
+      <div class="lbl">WNBA · Sparks</div>
+      <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c on"></div><div class="c"></div><div class="c now"></div><div class="c"></div>
+    </div>
+  </div>
+  <div class="legend"><span><i style="background:var(--sign)"></i>Regular season</span><span><i style="background:color-mix(in srgb,var(--sign) 50%,transparent)"></i>Playoffs</span><span><i style="box-shadow:inset 0 0 0 2px var(--tab)"></i>Now</span></div>
+  <p class="muted">2027 changes: MLS plays a Feb–May "sprint season" and then switches to a fall–spring calendar from late July. NWSL opens 11 Feb at BMO Stadium and breaks seven weeks for the World Cup. MLB plans Opening Day 24–25 March, pending a labor deal. Some LA team is playing every month except roughly June–July.</p>
+
+  <h3>What the codebase allows today</h3>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Ready to use</h4>
+      <ul>
+        <li><code>Source</code> interface with a league registry: adding a league means adding a package.</li>
+        <li>Server-driven UI: screens render blocks from <code>/config</code>, so layout changes can ship without an app release.</li>
+        <li>Feature flags per league, redemption windows (<code>same_day</code>, <code>next_day</code>, <code>week</code>), Expo push, reminders.</li>
+        <li>A richer rule evaluator (<code>internal/rules</code>) with compound conditions, already written but not used.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Blocks the pivot</h4>
+      <ul>
+        <li>Only MLB has a Source. Metrics are flat ints with MLB names.</li>
+        <li>No teams table; team data is copied onto every event row.</li>
+        <li>The checker runs once each morning against "yesterday". That doesn't fit live alerts or late West Coast games.</li>
+        <li>No concept of ties or draws (MLS, NWSL, NHL shootouts), and no in-venue flag.</li>
+        <li>Mobile league map uses uppercase keys while the DB stores lowercase, so the filter never matches.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted">Rules for every option: keep the bundle ID <code>io.bitsugar.freebies</code> and the App Store record, which preserves ratings and installs. Rename the display name, icon, colors, listing and screenshots in a normal update. Don't put team names or logos in the app name or icon (App Store guideline 5.2 and team trademarks). Naming teams in the description as a factual reference is normal practice. The codebase was read at commit <code>0f20817</code>; <code>main</code> has since moved to Expo SDK 58 (#60), so re-check the mobile details on the branch.</p>
+</section>
+
+<!-- ================= INDEX ================= -->
+<section class="block wrap" id="index">
+  <h2>The ten exits</h2>
+  <p>Each one is a complete direction. Several combine well; the recommendation at the end stacks four of them.</p>
+  <nav class="exits" aria-label="Options">
+    <a class="exit" href="#o1"><div class="no">EXIT<b>1</b></div><div><div class="t">Straight LA rebrand</div><div class="d">Same app, LA teams only, new look</div></div></a>
+    <a class="exit" href="#o2"><div class="no">EXIT<b>2</b></div><div><div class="t">In season now</div><div class="d">Home screen follows the LA sports calendar</div></div></a>
+    <a class="exit" href="#o3"><div class="no">EXIT<b>3</b></div><div><div class="t">Morning-after digest</div><div class="d">One push at 7am: what you won last night</div></div></a>
+    <a class="exit" href="#o4"><div class="no">EXIT<b>4</b></div><div><div class="t">Live trigger alerts</div><div class="d">Push the moment it happens, in-game</div></div></a>
+    <a class="exit" href="#o5"><div class="no">EXIT<b>5</b></div><div><div class="t">At the game mode</div><div class="d">In-venue deals for the fans in the seats</div></div></a>
+    <a class="exit" href="#o6"><div class="no">EXIT<b>6</b></div><div><div class="t">Gameday companion</div><div class="d">Giveaway nights plus triggered deals</div></div></a>
+    <a class="exit" href="#o7"><div class="no">EXIT<b>7</b></div><div><div class="t">All LA food deals, sports first</div><div class="d">Take on Meal Steals directly</div></div></a>
+    <a class="exit" href="#o8"><div class="no">EXIT<b>8</b></div><div><div class="t">Fan-verified deals</div><div class="d">"Worked for me" confirmations</div></div></a>
+    <a class="exit" href="#o9"><div class="no">EXIT<b>9</b></div><div><div class="t">Lock screen native</div><div class="d">Widgets, Live Activities, Wallet</div></div></a>
+    <a class="exit" href="#o10"><div class="no">EXIT<b>10</b></div><div><div class="t">Local sponsor marketplace</div><div class="d">LA restaurants create their own triggers</div></div></a>
+  </nav>
+
+  <h3>Side by side</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Option</th><th>Effort</th><th>User value</th><th>Risk</th><th>Ships in</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>1 · LA rebrand</td><td><span class="meter"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i></i><i></i><i></i><i></i></span></td><td>1–2 wks</td><td class="rec">Do it (base)</td></tr>
+      <tr><td>2 · In season now</td><td><span class="meter"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i></i><i></i><i></i><i></i></span></td><td>1 wk</td><td class="rec">Do it</td></tr>
+      <tr><td>3 · Morning digest</td><td><span class="meter"><i class="f"></i><i></i><i></i><i></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i></i><i></i><i></i><i></i></span></td><td>3–5 days</td><td class="rec">Do it</td></tr>
+      <tr><td>4 · Live alerts</td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td>3–5 wks</td><td>Phase 2 (the moat)</td></tr>
+      <tr><td>5 · At the game</td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td>2 wks</td><td class="rec">Flag now, mode later</td></tr>
+      <tr><td>6 · Gameday companion</td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td>2–3 wks</td><td>Good winter filler</td></tr>
+      <tr><td>7 · All LA food deals</td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td>4–6 wks</td><td>Changes the product; decide deliberately</td></tr>
+      <tr><td>8 · Fan-verified</td><td><span class="meter"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td>1–2 wks</td><td>After you have users</td></tr>
+      <tr><td>9 · Lock screen native</td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td><td>3–4 wks</td><td>Pairs with option 4</td></tr>
+      <tr><td>10 · Sponsor marketplace</td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></td><td><span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="meter risk"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td><td>2–3 mo</td><td>Business model, not v2.0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================= OPTIONS ================= -->
+<div class="wrap">
+
+<!-- 1 -->
+<article class="opt" id="o1">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>1</b></div>
+    <div><h2>Straight LA rebrand</h2><p class="tag">Keep the product. Change who it's for, what it's called, and how it looks.</p></div></div>
+  <div class="facts"><div><b>For:</b> any LA fan who wants free food when their team wins</div><div><b>Effort:</b> S–M</div><div><b>Ships in:</b> 1–2 weeks</div></div>
+  <p>The smallest move that's still a real pivot. Retire the San Diego, Colorado and Arizona offers, add every LA team, seed the deals we can verify, and give the app an LA identity. Everything else on this page builds on top of this, so it's the foundation whichever direction you choose.</p>
+  <div class="changes">
+    <div class="panel"><h4>App</h4><ul><li>New palette in <code>useTheme.tsx</code>; remove the ~15 hardcoded hex values</li><li>Replace the emoji tab icons with one icon family (a mobile-taste anti-pattern)</li><li>New icon, splash, adaptive icon, and the missing <code>notification-icon.png</code></li><li>Fix the league flag case bug; read the league list from the API</li></ul></div>
+    <div class="panel"><h4>Backend</h4><ul><li>Migration: deactivate non-LA events; seed league rows for nba, nhl, nfl, mls, nwsl, wnba</li><li>Source for NHL first (in season, with confirmed deals), then NBA</li><li>Add <code>in_venue_only</code> and <code>verified_at</code> to events</li></ul></div>
+    <div class="panel"><h4>Store and docs</h4><ul><li>New name, subtitle, keywords, description and screenshots</li><li>README, AGENTS/CLAUDE.md, privacy policy</li></ul></div>
+    <div class="panel"><h4>Brand</h4><ul><li>LA dusk palette: jacaranda, sodium-lamp amber, Pacific blue-black</li><li>Avoid team colors so no single fan base claims the app</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#7b5ea7"><span>#7B5EA7 jacaranda</span></div><div style="background:#f4a51c"><span>#F4A51C sodium</span></div><div style="background:#14213d"><span>#14213D Pacific night</span></div><div style="background:#f6f1fa"><span>#F6F1FA haze</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#14213d;color:#f4a51c">LA<br>FREE</div><div><div class="n">LA Freebies: Game Day Deals</div><div class="s">Free food when LA teams win</div><div class="k">keywords: lakers,dodgers,kings,ducks,lafc,clippers,rams,chargers,galaxy,free,food,deals,sports,alert</div></div></div>
+  <div class="push"><small>now</small><b>Ducks won at home</b>$2 McGriddles tomorrow morning in the McDonald's app.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Branch.</b> <code>feat/la-pivot</code> from <code>main</code>. Pull first: main is on SDK 58.</li>
+    <li><b>Lock the deal list.</b> Check every row of the inventory table against the sponsor's own page. Anything unverified ships with <code>is_active = 0</code>.</li>
+    <li><b>Migration.</b> Next sequence number: deactivate SD/COL/ARI events, insert league rows and <code>enable_*</code> flags, add <code>in_venue_only</code> and <code>verified_at</code> columns, seed Ducks/McDonald's and Kings/El Pollo Loco.</li>
+    <li><b>NHL Source.</b> <code>internal/sources/nhl</code> implementing <code>Source</code>; metrics <code>goals</code>, <code>win</code>, <code>home_win</code>, <code>shutout</code>. Fixture-based tests like the MLB ones.</li>
+    <li><b>Mobile tokens.</b> Run the mobile-design-system skill: semantic tokens (<code>bg</code>, <code>surface</code>, <code>ink</code>, <code>accent</code>, <code>win</code>), light and dark, then replace the stray hex values.</li>
+    <li><b>Icons and copy.</b> Swap emoji tabs for one icon set; rewrite the "Freebies is temporarily down" copy and push titles in <code>worker/service.go</code>.</li>
+    <li><b>Assets.</b> Icon, splash and adaptive icon in the new palette (the apple-skills app-icon-generator can help); add the notification icon.</li>
+    <li><b>Store.</b> Run keyword-optimizer and app-description-writer; take new screenshots with real LA deals on screen.</li>
+    <li><b>Ship.</b> EAS build, TestFlight, submit as 2.0 with "What's New: now covering every LA team".</li>
+  </ol></div></details>
+  <p class="verdict">Do this no matter what. It's the base the other options build on.</p>
+</article>
+
+<!-- 2 -->
+<article class="opt" id="o2">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>2</b></div>
+    <div><h2>In season now</h2><p class="tag">The home screen follows the LA sports calendar, so the app never looks empty.</p></div></div>
+  <div class="facts"><div><b>For:</b> fans of more than one LA team</div><div><b>Effort:</b> S</div><div><b>Ships in:</b> 1 week</div></div>
+  <p>The biggest risk after a pivot is opening the app in February and finding nothing to claim. This option puts "who plays next and what it unlocks" at the top: tonight's LA games, the deal tied to each, and a quiet "back in March" row for teams in their off-season. Because the screens are server-driven, the ordering can live in the API and change week to week with no app release.</p>
+  <div class="changes">
+    <div class="panel"><h4>App</h4><ul><li>New <code>TonightBlock</code>: LA games today with their deal lines</li><li>Off-season teams collapse into one row with the return date</li><li>Empty state that points somewhere instead of "No deals"</li></ul></div>
+    <div class="panel"><h4>Backend</h4><ul><li>Schedule endpoint per league (scoreboard by date)</li><li>A <code>teams</code> table with <code>season_start</code>/<code>season_end</code></li><li><code>/config</code> orders blocks by what's in season</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#0f3d3e"><span>#0F3D3E arena</span></div><div style="background:#e8c547"><span>#E8C547 scoreboard</span></div><div style="background:#f2f4f3"><span>#F2F4F3 court</span></div><div style="background:#c8553d"><span>#C8553D brick</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#0f3d3e;color:#e8c547">ON<br>NOW</div><div><div class="n">LA Freebies</div><div class="s">Tonight's games, tomorrow's food</div><div class="k">keywords: la,sports,schedule,free food,deals,kings,ducks,lakers,clippers,lafc,angel city,tonight</div></div></div>
+  <div class="push"><small>5:30 PM</small><b>Tonight in LA</b>Kings home vs SJ: a win means a free burrito tomorrow.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Teams table.</b> Migration: <code>teams(id, league, name, short, venue, color, season_start, season_end)</code>. Backfill it from the event rows, then point events at <code>team_id</code>.</li>
+    <li><b>Schedule.</b> Add <code>GetSchedule(ctx, date)</code> to each Source, or a separate <code>Scheduler</code> interface so old sources don't break.</li>
+    <li><b>Endpoint.</b> <code>GET /tonight</code> returns LA games for the day with their linked events, cached for 10 minutes.</li>
+    <li><b>Block.</b> Build <code>TonightBlock</code> with the mobile-taste skill. Top-aligned list, no card stack, one hero row for the game that starts next.</li>
+    <li><b>Ordering.</b> <code>/config</code> puts Tonight first when there are games and Deals first when something is claimable.</li>
+    <li><b>Pre-game push (opt-in).</b> 5:30pm PT on game days, only for teams the user follows, and only when a deal is attached.</li>
+  </ol></div></details>
+  <p class="verdict">Cheap, and it fixes the winter emptiness problem directly. Ship it with Exit 1.</p>
+</article>
+
+<!-- 3 -->
+<article class="opt" id="o3">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>3</b></div>
+    <div><h2>Morning-after digest</h2><p class="tag">One push at 7am: everything you won last night, and how to claim it.</p></div></div>
+  <div class="facts"><div><b>For:</b> casual fans who won't watch every game</div><div><b>Effort:</b> S</div><div><b>Ships in:</b> 3–5 days</div></div>
+  <p>Many LA deals redeem the <em>next day</em> (McGriddles, Del Taco, Ono, Panda), and your scheduler already runs at 7 and 9am PT. Batching every triggered deal into one daily summary cuts notification fatigue, fits the current architecture with no live data, and feels like a morning ritual. It's also what the GitHub scraper does by email, which shows people want it.</p>
+  <div class="changes">
+    <div class="panel"><h4>Backend</h4><ul><li>Group triggered events per user into one notification</li><li>Digest body: "2 deals: McGriddles · Burrito"</li><li>Skip on days with nothing (no "no deals today" spam)</li></ul></div>
+    <div class="panel"><h4>App</h4><ul><li>A "This morning" screen that opens from the push</li><li>Settings: digest vs instant, delivery time</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#ff9f68"><span>#FF9F68 sunrise</span></div><div style="background:#fff4e6"><span>#FFF4E6 morning</span></div><div style="background:#2d3047"><span>#2D3047 coffee</span></div><div style="background:#1b998b"><span>#1B998B claimed</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#ff9f68;color:#2d3047">7AM</div><div><div class="n">LA Freebies: Morning Deals</div><div class="s">What your team won you</div><div class="k">keywords: breakfast,free,deal,mcgriddle,la,sports,win,morning,alert,kings,ducks,dodgers,angels</div></div></div>
+  <div class="push"><small>7:00 AM</small><b>You won 2 things last night</b>Ducks: $2 McGriddles until 10:30am · Kings: free BRC burrito today</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Worker.</b> In <code>worker/service.go</code>, group notifications by user after <code>check-triggers</code> and send one Expo push per user.</li>
+    <li><b>Expiry copy.</b> Use the redemption window to write the deadline ("until 10:30am" for breakfast items). Add <code>redeem_until_local</code> to the payload.</li>
+    <li><b>Preference.</b> Add <code>notify_mode</code> (<code>digest</code>|<code>instant</code>) and <code>digest_hour</code> to users; default to digest.</li>
+    <li><b>Landing screen.</b> Push deep-links to <code>freebie://today</code>, which shows that morning's deals with one tap to each sponsor app.</li>
+    <li><b>Scheduler.</b> Keep <code>0 14 * * *</code> UTC (7am PT); drop the 9am run or use it only for late-finishing games.</li>
+    <li><b>Test.</b> Add a <code>triggers/checker.go</code> test suite (there isn't one yet) with fixtures for a two-deal night.</li>
+  </ol></div></details>
+  <p class="verdict">Highest return for the effort on this page. Make it the default notification style.</p>
+</article>
+
+<!-- 4 -->
+<article class="opt" id="o4">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>4</b></div>
+    <div><h2>Live trigger alerts</h2><p class="tag">Push the moment the 5th goal goes in, not the next morning.</p></div></div>
+  <div class="facts"><div><b>For:</b> fans watching the game</div><div><b>Effort:</b> L</div><div><b>Ships in:</b> 3–5 weeks</div></div>
+  <p>No competitor does this, so it's the real moat. It needs in-game polling and play-by-play data. The Clippers free-throw deal and the LAFC first-half-goal deal can't be detected from final scores at all. It's also where the data licensing question matters most: polling every 30 seconds across six leagues is plainly "automated access".</p>
+  <div class="changes">
+    <div class="panel"><h4>Backend</h4><ul><li>A live poller: only LA games in progress, 20–60s interval, cached</li><li>Event-level metrics: goals by period, free throws by quarter</li><li>Switch to the existing <code>internal/rules</code> evaluator for compound rules</li><li>Dedupe per <code>game_id + rule</code>, as today</li></ul></div>
+    <div class="panel"><h4>Infra and legal</h4><ul><li>The CronJob model doesn't fit; needs a long-running worker or a per-minute job during game windows</li><li>Price a licensed feed (Sportradar or similar) before launch</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#0a0a0a"><span>#0A0A0A broadcast</span></div><div style="background:#ff3b30"><span>#FF3B30 live</span></div><div style="background:#f5f5f7"><span>#F5F5F7 graphic</span></div><div style="background:#ffd60a"><span>#FFD60A goal light</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#0a0a0a;color:#ff3b30">LIVE</div><div><div class="n">LA Freebies Live</div><div class="s">Deal alerts as it happens</div><div class="k">keywords: live,score,alert,free,food,la,clippers,lafc,ducks,kings,goal,push,real time,deals</div></div></div>
+  <div class="push"><small>8:47 PM</small><b>That's 5 for the Ducks</b>Free Chick-fil-A sandwich if you're at Honda Center. Claim by 11:59pm.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Licensing decision first.</b> Get quotes from licensed providers, and decide whether to prototype on the ESPN/NHL endpoints knowing they're against ToS.</li>
+    <li><b>Extend the interface.</b> <code>LiveSource</code> with <code>GetLiveGame(ctx, gameID) (*LiveState, error)</code> returning period, clock and an event list.</li>
+    <li><b>Rules.</b> Wire up <code>internal/rules</code>. Express "opponent misses 2 straight FTs in Q4 at home" as a sequence rule; add an operator if needed.</li>
+    <li><b>Worker.</b> A <code>live</code> command that runs only between the first LA tip-off and the last final. Use the Exit 2 schedule to know when.</li>
+    <li><b>Push.</b> Use the iOS <code>time-sensitive</code> interruption level for live alerts (Expo supports it). Respect quiet hours.</li>
+    <li><b>Safety.</b> Hold a trigger until the play is official (reviews and overturned goals happen). Add a 60-second confirmation delay.</li>
+    <li><b>Load test</b> on a busy night: Lakers + Clippers + Kings + Ducks at once.</li>
+  </ol></div></details>
+  <p class="verdict">Build it as phase 2, after the rebrand proves people want LA deals. Settle the data license first.</p>
+</article>
+
+<!-- 5 -->
+<article class="opt" id="o5">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>5</b></div>
+    <div><h2>At the game mode</h2><p class="tag">Some deals only work in your seat. Show those to the people in the seats.</p></div></div>
+  <div class="facts"><div><b>For:</b> season-ticket holders and anyone attending</div><div><b>Effort:</b> M</div><div><b>Ships in:</b> 2 weeks</div></div>
+  <p>Chick-fil-A's 2026 change turned a big share of LA deals into in-venue claims. Rather than hiding them, make them a mode: when you're at Crypto.com Arena, Intuit Dome, Honda Center, BMO Stadium, SoFi, Dodger Stadium or Angel Stadium, the app lists exactly what can trigger tonight and pushes the moment it does. Everyone else never sees these deals.</p>
+  <div class="changes">
+    <div class="panel"><h4>App</h4><ul><li>"I'm at the game" toggle (manual first; geofence later)</li><li>A venue card: tonight's in-venue triggers, claim steps</li></ul></div>
+    <div class="panel"><h4>Backend</h4><ul><li><code>in_venue_only</code> flag plus a <code>venue</code> on teams</li><li>Filter in-venue deals out of everyone else's feed and pushes</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#1e1e24"><span>#1E1E24 concourse</span></div><div style="background:#00c2a8"><span>#00C2A8 seat</span></div><div style="background:#fafafa"><span>#FAFAFA ticket</span></div><div style="background:#ff6b6b"><span>#FF6B6B jumbotron</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#1e1e24;color:#00c2a8">SEC<br>FREE</div><div><div class="n">LA Freebies</div><div class="s">Deals for fans in the seats</div><div class="k">keywords: stadium,arena,game day,chick fil a,honda center,bmo,intuit dome,la,free,deals,ticket</div></div></div>
+  <div class="push"><small>9:58 PM</small><b>LAFC won, and you're here</b>Claim your sandwich in the Chick-fil-A app before you leave the stadium.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Flag it now.</b> The <code>in_venue_only</code> column ships with Exit 1 regardless, so at-home users never get useless pushes.</li>
+    <li><b>Manual mode.</b> A "Going tonight" button on the game row stores <code>attending(user_id, game_id)</code>. No location permission needed.</li>
+    <li><b>Venue copy.</b> Per-deal claim steps ("open the CFA app, enable location, claim before 11:59pm").</li>
+    <li><b>Optional geofence.</b> <code>expo-location</code> with region monitoring for 8 venues; only after users opt in. This adds a privacy-policy update and App Review questions.</li>
+    <li><b>Push targeting.</b> In-venue triggers go only to <code>attending</code> users for that game.</li>
+  </ol></div></details>
+  <p class="verdict">Ship the flag with Exit 1 now. Build the full mode once live alerts (Exit 4) exist, since in-venue deals expire the same night.</p>
+</article>
+
+<!-- 6 -->
+<article class="opt" id="o6">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>6</b></div>
+    <div><h2>Gameday companion</h2><p class="tag">Bobblehead nights, giveaways and triggered deals in one LA calendar.</p></div></div>
+  <div class="facts"><div><b>For:</b> fans picking which game to attend</div><div><b>Effort:</b> M</div><div><b>Ships in:</b> 2–3 weeks</div></div>
+  <p>Triggered food deals are thin in winter; promo nights aren't. Lakers alone published a full 2026-27 giveaway schedule. Adding scheduled giveaways makes the app useful every week, and gives you content for Lakers, Rams and Chargers, which have no trigger deals right now. PromoNight does this nationally with no trigger alerts; you'd do both, for LA only.</p>
+  <div class="changes">
+    <div class="panel"><h4>Data</h4><ul><li>A <code>promos</code> table: team, date, giveaway, quantity, source URL</li><li>Entered by hand from team promo pages once a season</li></ul></div>
+    <div class="panel"><h4>App</h4><ul><li>Calendar tab: month view with giveaway markers</li><li>"Remind me" sends a push the morning of a promo game</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#ef476f"><span>#EF476F promo</span></div><div style="background:#ffd166"><span>#FFD166 giveaway</span></div><div style="background:#073b4c"><span>#073B4C program</span></div><div style="background:#fbfbf8"><span>#FBFBF8 paper</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#073b4c;color:#ffd166">GAME<br>DAY</div><div><div class="n">LA Freebies: Gameday</div><div class="s">Giveaways and game deals</div><div class="k">keywords: giveaway,bobblehead,promo night,schedule,lakers,rams,chargers,la,free,stadium,deals</div></div></div>
+  <div class="push"><small>9:00 AM</small><b>Bobblehead night tonight</b>First 15,000 fans at Crypto.com Arena. Doors open at 5:30.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Schema.</b> <code>promos(id, team_id, game_date, title, detail, limit_count, source_url, verified_at)</code>.</li>
+    <li><b>Data entry.</b> Seed from each team's official promo page with a source URL on every row. A small admin CLI (<code>freebie promos add</code>) beats a migration per change.</li>
+    <li><b>Calendar block.</b> Use mobile-nav-plan to decide whether this is a tab (likely: Deals, Calendar, Profile).</li>
+    <li><b>Reminders.</b> Reuse the reminder worker; push at 9am PT on promo days, only for followed teams.</li>
+    <li><b>Upkeep.</b> Each team publishes once a season, so roughly 2 hours of data work per team per year.</li>
+  </ol></div></details>
+  <p class="verdict">A strong add-on for the winter gap. Add it after Exits 1–3 if the deals feed feels sparse.</p>
+</article>
+
+<!-- 7 -->
+<article class="opt" id="o7">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>7</b></div>
+    <div><h2>All LA food deals, sports first</h2><p class="tag">Widen from "sports-triggered" to "every good LA food deal", with sports as the headline.</p></div></div>
+  <div class="facts"><div><b>For:</b> deal hunters, not only sports fans</div><div><b>Effort:</b> L</div><div><b>Ships in:</b> 4–6 weeks</div></div>
+  <p>This is Meal Steals' market (4.8★), with your live sports engine as the difference. A much bigger audience, and it removes the empty-season problem completely. The cost is ongoing: someone has to find and verify deals every week, and the product stops being about sports.</p>
+  <div class="changes">
+    <div class="panel"><h4>Product</h4><ul><li>Deal types: sports-triggered, daily, birthday, app-exclusive, happy hour</li><li>Filters by neighborhood and cuisine</li></ul></div>
+    <div class="panel"><h4>Operations</h4><ul><li>Weekly curation; a submit-a-deal form</li><li>Expiry checks so dead deals disappear</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#e63946"><span>#E63946 salsa</span></div><div style="background:#f1faee"><span>#F1FAEE tortilla</span></div><div style="background:#2a9d8f"><span>#2A9D8F lime</span></div><div style="background:#264653"><span>#264653 night</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#e63946;color:#f1faee">LA<br>EATS</div><div><div class="n">LA Freebies: Food Deals</div><div class="s">Free food, LA sports, every day</div><div class="k">keywords: food deals,free food,la,restaurant,coupon,happy hour,birthday,sports,taco,burger,offer</div></div></div>
+  <div class="push"><small>11:30 AM</small><b>Taco Tuesday near you</b>3 deals within a mile, including one from last night's Kings win.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Decide it's the product.</b> This is a positioning change, not a feature. Do it only if you want to run curation weekly.</li>
+    <li><b>Generalize events.</b> Make <code>trigger_rule</code> nullable; add <code>deal_type</code>, <code>valid_days</code> and <code>location</code>.</li>
+    <li><b>Curation tool.</b> A CLI or small admin page so adding a deal doesn't need a migration.</li>
+    <li><b>Discovery UI.</b> Filters and map; this is mobile-redesign-app territory (navigation restructure, gated).</li>
+    <li><b>Store.</b> Category moves from Sports to Food &amp; Drink as primary.</li>
+  </ol></div></details>
+  <p class="verdict">Biggest market and biggest commitment. Don't drift into this one; decide it on purpose.</p>
+</article>
+
+<!-- 8 -->
+<article class="opt" id="o8">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>8</b></div>
+    <div><h2>Fan-verified deals</h2><p class="tag">"Worked for me at the Silver Lake McDonald's" beats any sponsor fine print.</p></div></div>
+  <div class="facts"><div><b>For:</b> anyone burned by a dead deal</div><div><b>Effort:</b> S–M</div><div><b>Ships in:</b> 1–2 weeks</div></div>
+  <p>Slickdeals threads show fans constantly confused about whether a deal still works. A one-tap "Worked / Didn't work" after redemption builds trust, gives you free QA on deal status (you'd have learned Chick-fil-A went in-venue within a day), and creates a bit of community.</p>
+  <div class="changes">
+    <div class="panel"><h4>App</h4><ul><li>Two buttons on each active deal; a count, "34 fans claimed this"</li><li>Optional short note, moderated</li></ul></div>
+    <div class="panel"><h4>Backend</h4><ul><li><code>redemptions(user_id, event_id, game_id, worked, note)</code></li><li>Auto-flag a deal for review after 3 "didn't work" reports</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#3a86ff"><span>#3A86FF trust</span></div><div style="background:#06d6a0"><span>#06D6A0 worked</span></div><div style="background:#ef476f"><span>#EF476F didn't</span></div><div style="background:#f8f9fb"><span>#F8F9FB base</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#3a86ff;color:#fff">✓<br>LA</div><div><div class="n">LA Freebies</div><div class="s">Fan-checked sports deals</div><div class="k">keywords: verified,deals,free food,la,sports,fans,working,coupon,code,kings,ducks,dodgers</div></div></div>
+  <div class="push"><small>12:10 PM</small><b>Did your burrito work?</b>Tap to tell other Kings fans.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Table and endpoint.</b> <code>POST /deals/{id}/redemption</code>, one per user per trigger.</li>
+    <li><b>UI.</b> Add to <code>ActiveDealCard</code> after the user taps "Open sponsor app" (that's when they know).</li>
+    <li><b>Signal.</b> Show the count only above a threshold (5+) so new deals don't look dead.</li>
+    <li><b>Moderation.</b> Notes off at launch; turn on later with a word filter. Apple requires reporting/blocking for user-generated content (guideline 1.2).</li>
+    <li><b>Ops.</b> Alert yourself when a deal crosses the failure threshold.</li>
+  </ol></div></details>
+  <p class="verdict">Cheap and useful, but it needs users to mean anything. Add it in the release after the rebrand.</p>
+</article>
+
+<!-- 9 -->
+<article class="opt" id="o9">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>9</b></div>
+    <div><h2>Lock screen native</h2><p class="tag">Widgets, Live Activities and Wallet: the deal is visible without opening the app.</p></div></div>
+  <div class="facts"><div><b>For:</b> iPhone users who glance, not browse</div><div><b>Effort:</b> M–L</div><div><b>Ships in:</b> 3–4 weeks</div></div>
+  <p>A Live Activity during a Kings game that shows "Kings 2 – SJ 1 · win = free burrito" is the clearest pitch the product can have. Home-screen widgets show tonight's games and today's claimable deals. Expo SDK 58 supports native targets through config plugins (<code>expo-apple-targets</code> or the newer Expo widgets APIs; the Expo skills cover this), so this doesn't require leaving React Native.</p>
+  <div class="changes">
+    <div class="panel"><h4>Native</h4><ul><li>WidgetKit extension (SwiftUI) reading a shared app group</li><li>ActivityKit Live Activity, updated by push</li></ul></div>
+    <div class="panel"><h4>Backend</h4><ul><li>APNs Live Activity push tokens (Expo push doesn't cover these; needs direct APNs)</li><li>Score updates come from the Exit 4 poller</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#111827"><span>#111827 glass</span></div><div style="background:#a3e635"><span>#A3E635 win</span></div><div style="background:#e5e7eb"><span>#E5E7EB frost</span></div><div style="background:#60a5fa"><span>#60A5FA sky</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#111827;color:#a3e635">2–1</div><div><div class="n">LA Freebies</div><div class="s">Live scores that pay off</div><div class="k">keywords: live activity,widget,score,la,kings,ducks,lakers,clippers,free food,deals,lock screen</div></div></div>
+  <div class="push"><small>LIVE</small><b>Kings 2 – SJ 1 · 3rd · 8:14</b>Hold on: a win = free BRC burrito tomorrow.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Read first.</b> The Expo skills <code>expo-native-ui</code> and <code>expo-module</code>, plus apple-skills widget and Live Activity references.</li>
+    <li><b>Widget.</b> Small and medium sizes; data from a shared App Group written by the RN app on refresh.</li>
+    <li><b>Live Activity.</b> Start when a followed team's game begins (needs Exit 2's schedule); update by APNs push from the Exit 4 poller.</li>
+    <li><b>APNs direct.</b> Add a <code>.p8</code> key and a small APNs client in Go alongside the Expo push.</li>
+    <li><b>Wallet (optional).</b> Passes for redemption codes (e.g. DODGERSWIN) with an expiry date.</li>
+    <li><b>Android.</b> Equivalent home-screen widget later; Live Activities are iOS only.</li>
+  </ol></div></details>
+  <p class="verdict">The most impressive version of the product. Do it together with Exit 4, since they share the live data.</p>
+</article>
+
+<!-- 10 -->
+<article class="opt" id="o10">
+  <div class="opt-head"><div class="no"><span>EXIT</span><b>10</b></div>
+    <div><h2>Local sponsor marketplace</h2><p class="tag">Let an Echo Park taqueria say "free taco if LAFC scores 3" in five minutes.</p></div></div>
+  <div class="facts"><div><b>For:</b> local LA restaurants (they pay) and fans (they eat)</div><div><b>Effort:</b> XL</div><div><b>Ships in:</b> 2–3 months</div></div>
+  <p>Big chains already run their own team deals. Local places can't afford a team sponsorship, but they can afford "$49/month for our deal in front of 5,000 LA fans". That fills the Lakers/Rams/Chargers gap with deals nobody else has, and it's a real revenue model. It's also a second product: sales, billing, a business dashboard, and liability (avoid team trademarks in sponsor copy).</p>
+  <div class="changes">
+    <div class="panel"><h4>New surfaces</h4><ul><li>Web dashboard for businesses: build a rule, set a cap, see redemptions</li><li>Stripe billing</li></ul></div>
+    <div class="panel"><h4>Engine</h4><ul><li>The <code>internal/rules</code> evaluator becomes public-facing</li><li>Redemption codes per user, capped per business</li></ul></div>
+  </div>
+  <h4>Palette</h4>
+  <div class="swatches"><div style="background:#2b2d42"><span>#2B2D42 storefront</span></div><div style="background:#ff7f11"><span>#FF7F11 neon</span></div><div style="background:#edf2f4"><span>#EDF2F4 menu</span></div><div style="background:#8d99ae"><span>#8D99AE chalk</span></div></div>
+  <h4>Listing sketch</h4>
+  <div class="store"><div class="icon" style="background:#2b2d42;color:#ff7f11">LOCAL</div><div><div class="n">LA Freebies</div><div class="s">Local spots, game-day deals</div><div class="k">keywords: local,restaurant,la,neighborhood,taco,bar,game day,sports,free,deals,small business</div></div></div>
+  <div class="push"><small>10:02 PM</small><b>LAFC scored 3</b>Free taco at a spot 0.4 mi away tomorrow. 50 left.</div>
+  <details class="walk"><summary>Full walkthrough</summary><div class="body"><ol>
+    <li><b>Validate first.</b> Pitch 10 local spots near BMO, Crypto.com and SoFi with a mockup. Three yeses before building anything.</li>
+    <li><b>Concierge MVP.</b> You create their rules by hand as migrations; bill by invoice. No dashboard yet.</li>
+    <li><b>Per-user codes.</b> A unique code per user per trigger, with a cap. This is what businesses will ask about first.</li>
+    <li><b>Dashboard.</b> Only after paying customers: rule builder with plain-English preview ("if LAFC scores 3+ at home…").</li>
+    <li><b>Legal.</b> Terms for sponsors, no team marks in offers, and a sweepstakes-law check if anything is "first X fans".</li>
+  </ol></div></details>
+  <p class="verdict">The long-term business. Start with the concierge MVP once the app has an LA audience.</p>
+</article>
+
+</div>
+
+<!-- ================= RECOMMENDATION ================= -->
+<section class="block wrap" id="route">
+  <h2>Recommended route</h2>
+  <p>Stack the cheap options into a 2.0 release while hockey and basketball are in season. Add the live-data moat once you know people use it, then the business model.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Release</th><th>Contents</th><th>Target</th><th>Why then</th></tr></thead>
+    <tbody>
+      <tr><td><b>2.0 LA</b></td><td>Exit 1 rebrand · Exit 2 In season now · Exit 3 morning digest · the in-venue flag from Exit 5 · NHL source</td><td>Mid-December 2026</td><td>NHL and NBA are mid-season, and the Ducks deal is confirmed</td></tr>
+      <tr><td><b>2.1</b></td><td>NBA + NFL sources · Exit 6 giveaway calendar · Exit 8 "worked for me"</td><td>January 2027</td><td>Covers Lakers/Rams/Chargers fans before deals exist for them</td></tr>
+      <tr><td><b>2.2</b></td><td>MLS + NWSL sources · re-verify Dodgers/Angels deals</td><td>Early February 2027</td><td>MLS sprint season and Angel City's 11 Feb opener</td></tr>
+      <tr><td><b>3.0</b></td><td>Exit 4 live alerts · Exit 9 Live Activities · full Exit 5 mode · licensed data</td><td>Before Opening Day, late March 2027</td><td>Baseball brings back the biggest deal set and the most users</td></tr>
+      <tr><td><b>Later</b></td><td>Exit 10 concierge marketplace pilot</td><td>Summer 2027</td><td>Needs an audience to sell</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Decisions only you can make</h3>
+  <ol>
+    <li>Name: keep "Freebies" with an LA subtitle, or go with "LA Freebies" or something else.</li>
+    <li>Is Orange County in? (Ducks and Angels say yes. "LA" in the name says maybe.)</li>
+    <li>Sports-only (Exits 1–6, 8–9) or also all food deals (Exit 7)?</li>
+    <li>Budget for licensed data before live alerts, or prototype on the unofficial feeds first.</li>
+  </ol>
+  <h3>Skills to use in each step</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Step</th><th>Skill</th></tr></thead>
+    <tbody>
+      <tr><td>Concept, name, scope</td><td>superpowers brainstorming</td></tr>
+      <tr><td>App audit and phased redesign</td><td>mobile-taste-skill: mobile-design-review → mobile-redesign-app → mobile-design-system</td></tr>
+      <tr><td>Tabs and navigation</td><td>mobile-taste-skill: mobile-nav-plan</td></tr>
+      <tr><td>Widgets, native UI, store builds</td><td>expo: expo-native-ui, expo-ui, eas-app-stores</td></tr>
+      <tr><td>Icon, listing, keywords, screenshots</td><td>apple-skills: app-icon-generator, keyword-optimizer, app-description-writer, screenshot-planner</td></tr>
+      <tr><td>Plan and execution</td><td>superpowers writing-plans → subagent-driven-development</td></tr>
+    </tbody>
+  </table></div>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>Sources: team partner pages (nhl.com/ducks, nhl.com/kings, lafc.com/club/promotions, mlb.com/angels), Dodger Blue's 2026 deal roundup, Slickdeals and Doctor of Credit threads, App Store listings for Meal Steals, Hometown Deals and PromoNight, the NBA and MLB schedule announcements, and Disney's and the NHL's terms of use. Statuses as of 15 Nov 2026; verify before shipping.</p>
+</footer>
+
+<div class="ctrl">
+  <button type="button" id="openAll">Expand all</button>
+  <button type="button" id="theme" aria-label="Toggle dark mode">Theme</button>
+</div>
+<script>
+(function () {
+  var btn = document.getElementById('openAll'), open = false;
+  btn.addEventListener('click', function () {
+    open = !open;
+    document.querySelectorAll('details.walk').forEach(function (d) { d.open = open; });
+    btn.textContent = open ? 'Collapse all' : 'Expand all';
+  });
+  var root = document.documentElement, key = 'la-pivot-theme';
+  try { var saved = localStorage.getItem(key); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

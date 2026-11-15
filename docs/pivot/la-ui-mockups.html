@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LA UI Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800;900&family=DM+Serif+Display&family=Manrope:wght@400;600;800&family=Bowlby+One&family=Rubik:wght@400;600;800&family=Doto:wght@600;900&family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;600;800&family=Bungee&family=Nunito:wght@400;700;800&family=Libre+Franklin:wght@400;600;800;900&family=Archivo+Black&family=Archivo:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #eef0ed; --panel: #ffffff; --ink: #1b1f1d; --muted: #59625d; --rule: #d3d8d2; --accent: #00653f; --tab: #f3c300;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #131715; --panel: #1b201d; --ink: #e8ece9; --muted: #a2aca5; --rule: #2f3a33; --accent: #2fae78; }
+}
+:root[data-theme="dark"] { --bg: #131715; --panel: #1b201d; --ink: #e8ece9; --muted: #a2aca5; --rule: #2f3a33; --accent: #2fae78; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 "Overpass", system-ui, sans-serif; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--tab); outline-offset: 2px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+header.top { padding: 36px 0 20px; }
+header.top h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1; margin: 0 0 10px; font-weight: 900; letter-spacing: -.01em; }
+header.top p { max-width: 70ch; margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; padding: 0; list-style: none; }
+.jump a { display: inline-block; text-decoration: none; background: var(--panel); border: 1px solid var(--rule); border-radius: 999px; padding: 5px 12px 3px; font-weight: 600; font-size: .9rem; }
+.jump a b { color: var(--accent); margin-right: 4px; }
+.shared { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; margin: 18px 0 0; }
+.shared h2 { margin: 0 0 6px; font-size: 1.1rem; }
+.shared ul { margin: 6px 0 0; padding-left: 1.1rem; }
+.shared li { max-width: 80ch; }
+
+.mock { display: grid; grid-template-columns: 1fr; gap: 24px; padding: 40px 0; border-top: 2px solid var(--rule); scroll-margin-top: 8px; }
+@media (min-width: 860px) { .mock { grid-template-columns: 320px 1fr; gap: 40px; } }
+.stage { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.info h2 { font-size: 2rem; line-height: 1.1; margin: 0 0 4px; font-weight: 900; }
+.info .num { color: var(--accent); font-weight: 900; font-size: 1rem; }
+.info .idea { font-size: 1.1rem; margin: 6px 0 14px; max-width: 62ch; }
+.info h3 { font-size: 1rem; margin: 18px 0 6px; font-weight: 800; }
+.info p, .info li { max-width: 68ch; }
+.sw { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); max-width: 460px; }
+.sw div { flex: 1; height: 44px; position: relative; }
+.sw span { position: absolute; left: 5px; bottom: 4px; font-size: .64rem; font-weight: 600; background: rgba(255,255,255,.88); color: #111; padding: 0 4px; border-radius: 3px; }
+.pc { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 620px) { .pc { grid-template-columns: 1fr 1fr; } }
+.pc div { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; font-size: .93rem; }
+.pc ul { margin: 4px 0 0; padding-left: 1.05rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: .93rem; }
+.meta b { font-weight: 800; }
+details { margin-top: 16px; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; }
+summary { cursor: pointer; padding: 12px 16px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-weight: 900; }
+details[open] summary::after { content: "–"; }
+details .b { padding: 0 16px 14px; }
+details ol { padding-left: 1.2rem; margin: 0; }
+details li { margin-bottom: .45rem; font-size: .95rem; }
+code { font-size: .85em; background: color-mix(in srgb, var(--rule) 55%, transparent); padding: 1px 5px; border-radius: 4px; word-break: break-word; }
+.pick { font-weight: 700; border-left: 4px solid var(--tab); padding-left: 12px; margin-top: 14px; }
+
+/* ===== Phone frame (shared) ===== */
+.phone { width: 300px; height: 630px; border-radius: 46px; border: 11px solid #0d0d0f; background: #0d0d0f; box-shadow: 0 18px 40px -18px rgba(0,0,0,.45); position: relative; flex: none; }
+.phone::before { content: ""; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 92px; height: 26px; border-radius: 20px; background: #0d0d0f; z-index: 3; }
+.scr { position: absolute; inset: 0; border-radius: 35px; overflow: hidden; display: flex; flex-direction: column; }
+.sb { display: flex; justify-content: space-between; padding: 12px 24px 0; font-size: 12px; font-weight: 700; height: 40px; flex: none; font-family: -apple-system, system-ui, sans-serif; }
+.sb i { font-style: normal; letter-spacing: 1px; }
+.body { flex: 1; overflow: hidden; padding: 4px 16px 0; }
+.tb { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 6px 20px; font-size: 10px; text-align: center; }
+.tb span { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.tb svg { width: 20px; height: 20px; }
+.ic { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.push { width: 300px; border-radius: 18px; padding: 9px 12px; font: 12.5px/1.35 -apple-system, system-ui, sans-serif; background: color-mix(in srgb, var(--panel) 80%, var(--rule)); border: 1px solid var(--rule); }
+.push b { display: block; font-size: 13px; }
+.push small { float: right; color: var(--muted); }
+
+/* ===== 1 Freeway ===== */
+.m1 .scr { background: #e7eae4; color: #1d1d1b; font-family: "Overpass", sans-serif; }
+.m1 .sign { background: #00653f; color: #fff; border: 2px solid #fff; box-shadow: 0 0 0 2px #00653f; border-radius: 7px; padding: 10px 12px 9px; position: relative; margin-top: 18px; }
+.m1 .sign .tab { position: absolute; top: -20px; right: 10px; background: #f3c300; color: #1d1d1b; font-weight: 900; font-size: 11px; padding: 3px 8px 1px; border-radius: 4px 4px 0 0; border: 2px solid #fff; border-bottom: 0; }
+.m1 .sign h1 { margin: 0; font-size: 26px; font-weight: 900; line-height: 1; }
+.m1 .sign p { margin: 3px 0 0; font-size: 12px; font-weight: 600; }
+.m1 h2 { font-size: 12px; font-weight: 800; margin: 16px 0 6px; color: #4b544f; }
+.m1 .deal { background: #00653f; color: #fff; border-radius: 6px; padding: 9px 11px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #00653f; }
+.m1 .deal b { font-size: 16px; font-weight: 900; line-height: 1.1; }
+.m1 .deal .r { grid-row: span 2; align-self: center; font-size: 22px; font-weight: 900; }
+.m1 .deal small { font-size: 11px; opacity: .9; }
+.m1 .deal.in { background: #3b4540; box-shadow: 0 0 0 1.5px #3b4540; }
+.m1 .row { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid #c9cfc8; font-size: 12.5px; }
+.m1 .shield { width: 34px; height: 36px; background: #fff; border: 2px solid #1d1d1b; clip-path: polygon(0 12%, 50% 0, 100% 12%, 100% 60%, 50% 100%, 0 60%); display: grid; place-items: center; font-weight: 900; font-size: 10px; padding-bottom: 6px; }
+.m1 .row b { display: block; font-weight: 800; font-size: 13px; }
+.m1 .row .t { font-weight: 800; }
+.m1 .tb { background: #00653f; color: rgba(255,255,255,.7); }
+.m1 .tb .on { color: #f3c300; }
+
+/* ===== 2 Golden hour ===== */
+.m2 .scr { background: #1c1430; color: #f6e8dc; font-family: "Manrope", sans-serif; }
+.m2 .sky { margin: -44px -16px 0; padding: 56px 18px 18px; background: linear-gradient(180deg, #2b1b4a 0%, #8d3b6b 48%, #f2784b 82%, #fbc26b 100%); position: relative; }
+.m2 .sky svg { position: absolute; right: 8px; bottom: 0; width: 120px; height: 90px; }
+.m2 .sky .k { font-size: 11px; font-weight: 600; opacity: .85; }
+.m2 .sky h1 { font-family: "DM Serif Display", serif; font-weight: 400; font-size: 34px; line-height: 1; margin: 4px 0 0; max-width: 180px; }
+.m2 .card { background: #2a2041; border-radius: 14px; padding: 12px 14px; margin-top: 12px; }
+.m2 .card .who { font-size: 11px; color: #fbc26b; font-weight: 800; }
+.m2 .card b { display: block; font-family: "DM Serif Display", serif; font-weight: 400; font-size: 21px; line-height: 1.1; margin: 2px 0; }
+.m2 .card small { font-size: 11.5px; color: #d6c3d8; }
+.m2 .btn { display: inline-block; margin-top: 8px; background: #fbc26b; color: #1c1430; font-weight: 800; font-size: 12px; padding: 6px 12px; border-radius: 999px; }
+.m2 h2 { font-size: 12px; margin: 16px 0 4px; color: #d6c3d8; font-weight: 600; }
+.m2 .g { display: flex; justify-content: space-between; font-size: 12.5px; padding: 7px 0; border-bottom: 1px solid #3a2d55; }
+.m2 .g span:last-child { color: #fbc26b; font-weight: 800; }
+.m2 .tb { background: #160f26; color: #8c7fa3; }
+.m2 .tb .on { color: #fbc26b; }
+
+/* ===== 3 Taco truck ===== */
+.m3 .scr { background: #ffd23f; color: #1a1a1a; font-family: "Rubik", sans-serif; }
+.m3 .awn { margin: -44px -16px 0; height: 62px; background: repeating-linear-gradient(90deg, #e4002b 0 26px, #fff 26px 52px); border-bottom: 4px solid #1a1a1a; position: relative; }
+.m3 .awn::after { content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 12px; background: radial-gradient(circle at 13px 0, #e4002b 12px, transparent 13px) 0 0/52px 12px, radial-gradient(circle at 39px 0, #fff 12px, transparent 13px) 0 0/52px 12px; }
+.m3 h1 { font-family: "Bowlby One", sans-serif; font-weight: 400; font-size: 30px; line-height: .95; margin: 22px 0 2px; color: #e4002b; text-shadow: 2px 2px 0 #1a1a1a; }
+.m3 .sub { font-weight: 800; font-size: 12px; }
+.m3 .sticker { display: inline-block; background: #1a1a1a; color: #ffd23f; font-family: "Bowlby One", sans-serif; font-size: 13px; padding: 4px 10px; transform: rotate(-4deg); margin: 10px 0 2px; border-radius: 4px; }
+.m3 .menu { background: #1a1a1a; color: #fff; border-radius: 8px; padding: 10px 12px; margin-top: 8px; border: 3px solid #fff; box-shadow: 0 0 0 3px #1a1a1a; }
+.m3 .it { display: flex; align-items: baseline; gap: 6px; font-weight: 800; font-size: 13px; margin: 5px 0; }
+.m3 .it .dots { flex: 1; border-bottom: 2px dotted #ffd23f; transform: translateY(-3px); }
+.m3 .it .p { color: #ffd23f; font-family: "Bowlby One", sans-serif; font-weight: 400; }
+.m3 .it small { display: block; font-weight: 400; font-size: 10.5px; color: #cfcfcf; }
+.m3 h2 { font-family: "Bowlby One", sans-serif; font-weight: 400; font-size: 15px; margin: 14px 0 4px; }
+.m3 .g { font-size: 12.5px; font-weight: 600; padding: 6px 0; border-bottom: 2px solid #1a1a1a; display: flex; justify-content: space-between; }
+.m3 .tb { background: #e4002b; color: #ffd9de; border-top: 4px solid #1a1a1a; }
+.m3 .tb .on { color: #fff; font-weight: 800; }
+
+/* ===== 4 Jumbotron ===== */
+.m4 .scr { background: #050505; color: #ffb000; font-family: "Doto", monospace; }
+.m4 .board { border: 2px solid #2a2a2a; border-radius: 6px; padding: 10px; margin-top: 10px; background: radial-gradient(#1a1200 1px, transparent 1.5px) 0 0/4px 4px, #0b0b0b; }
+.m4 .live { color: #ff3b30; font-weight: 900; font-size: 12px; }
+.m4 .score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; margin: 6px 0; }
+.m4 .score .t { font-size: 15px; font-weight: 900; }
+.m4 .score .n { font-size: 46px; font-weight: 900; line-height: 1; text-shadow: 0 0 8px rgba(255,176,0,.6); }
+.m4 .score .mid { font-size: 12px; color: #9a6a00; }
+.m4 .meter { height: 10px; background: #1f1600; border-radius: 2px; overflow: hidden; margin-top: 6px; }
+.m4 .meter i { display: block; height: 100%; width: 72%; background: repeating-linear-gradient(90deg, #ffb000 0 6px, transparent 6px 8px); }
+.m4 .cap { font-size: 12px; font-weight: 900; margin-top: 6px; color: #fff3cc; }
+.m4 h2 { font-size: 12px; font-weight: 900; margin: 14px 0 4px; color: #9a6a00; }
+.m4 .row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; padding: 7px 0; border-bottom: 1px dashed #2a2a2a; }
+.m4 .row .ok { color: #3dff7a; }
+.m4 .row small { display: block; font-size: 10.5px; color: #9a6a00; font-weight: 600; }
+.m4 .tb { background: #0b0b0b; color: #6b4b00; border-top: 1px solid #2a2a2a; font-family: "Doto", monospace; font-weight: 900; }
+.m4 .tb .on { color: #ffb000; }
+
+/* ===== 5 Marquee ===== */
+.m5 .scr { background: #4a0d12; color: #f6e3b4; font-family: "Big Shoulders Display", sans-serif; }
+.m5 .mq { margin-top: 8px; background: #d4a64a; border-radius: 6px; padding: 9px; position: relative; }
+.m5 .mq::before { content: ""; position: absolute; inset: 3px; border-radius: 4px; background: radial-gradient(circle, #fff6c9 2.2px, transparent 2.8px) 0 0/12px 12px; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); padding: 4px; }
+.m5 .lb { background: #f7f3e8; color: #111; padding: 8px 10px; position: relative; border-radius: 2px; background-image: repeating-linear-gradient(180deg, transparent 0 21px, #d9d2bf 21px 22px); }
+.m5 .lb div { font-weight: 900; font-size: 19px; line-height: 22px; text-transform: uppercase; letter-spacing: .04em; text-align: center; }
+.m5 .lb .s { font-size: 13px; font-weight: 800; color: #4a0d12; }
+.m5 h2 { font-size: 15px; font-weight: 800; color: #d4a64a; margin: 14px 0 6px; letter-spacing: .03em; }
+.m5 .tix { display: grid; grid-template-columns: 1fr auto; background: #f6e3b4; color: #2b0709; border-radius: 6px; margin-bottom: 8px; position: relative; }
+.m5 .tix > div { padding: 8px 10px; }
+.m5 .tix .stub { border-left: 2px dashed #4a0d12; font-weight: 900; font-size: 22px; display: grid; place-items: center; min-width: 58px; }
+.m5 .tix b { font-size: 18px; font-weight: 900; display: block; line-height: 1.05; }
+.m5 .tix small { font-family: "Public Sans", sans-serif; font-size: 10.5px; }
+.m5 .tb { background: #2b0709; color: #a8865a; font-family: "Big Shoulders Display", sans-serif; font-weight: 800; font-size: 12px; }
+.m5 .tb .on { color: #f6e3b4; }
+
+/* ===== 6 Metro lines ===== */
+.m6 .scr { background: #ffffff; color: #111; font-family: "Public Sans", sans-serif; }
+.m6 h1 { font-size: 26px; font-weight: 800; margin: 12px 0 2px; }
+.m6 .sub { font-size: 12px; color: #555; }
+.m6 .line { position: relative; padding-left: 40px; margin-top: 14px; }
+.m6 .line::before { content: ""; position: absolute; left: 13px; top: 4px; bottom: 4px; width: 6px; border-radius: 3px; background: var(--c); }
+.m6 .bul { position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--c); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 11px; border: 3px solid #fff; }
+.m6 .ln { font-weight: 800; font-size: 13px; padding-top: 6px; }
+.m6 .stop { position: relative; font-size: 12px; padding: 5px 0; color: #333; }
+.m6 .stop::before { content: ""; position: absolute; left: -32px; top: 9px; width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 3px solid var(--c); }
+.m6 .stop b { color: #111; }
+.m6 .stop .dl { display: inline-block; background: var(--c); color: #fff; font-weight: 800; font-size: 10.5px; padding: 1px 6px; border-radius: 3px; margin-left: 4px; }
+.m6 .tb { background: #f4f4f4; color: #777; border-top: 1px solid #e0e0e0; }
+.m6 .tb .on { color: #111; font-weight: 800; }
+
+/* ===== 7 Venice lifeguard ===== */
+.m7 .scr { background: #bfe6f5; color: #0b3954; font-family: "Nunito", sans-serif; }
+.m7 h1 { font-family: "Bungee", sans-serif; font-weight: 400; font-size: 24px; line-height: 1; margin: 12px 0 0; color: #0b3954; }
+.m7 .waves { height: 14px; margin: 6px -16px 0; background: radial-gradient(circle at 10px -4px, transparent 10px, #219ebc 11px, #219ebc 13px, transparent 14px) 0 0/20px 14px; }
+.m7 .tower { background: #219ebc; color: #fff; border-radius: 10px 10px 4px 4px; padding: 10px 12px; margin-top: 12px; position: relative; }
+.m7 .tower .num { position: absolute; top: -10px; right: 12px; background: #ffb703; color: #0b3954; font-family: "Bungee", sans-serif; font-size: 13px; padding: 2px 8px; border-radius: 4px; }
+.m7 .tower b { display: block; font-family: "Bungee", sans-serif; font-weight: 400; font-size: 17px; line-height: 1.1; }
+.m7 .tower small { font-size: 11.5px; font-weight: 700; color: #dff4fb; }
+.m7 .tower.y { background: #ffb703; color: #0b3954; }
+.m7 .tower.y .num { background: #219ebc; color: #fff; }
+.m7 .tower.y small { color: #4a3400; }
+.m7 h2 { font-family: "Bungee", sans-serif; font-weight: 400; font-size: 13px; margin: 14px 0 4px; }
+.m7 .g { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; padding: 6px 0; border-bottom: 2px dotted #219ebc; }
+.m7 .tb { background: #0b3954; color: #8ecae6; }
+.m7 .tb .on { color: #ffb703; }
+
+/* ===== 8 Thomas Guide ===== */
+.m8 .scr { background: #fbf8ec; color: #1f1f1f; font-family: "Libre Franklin", sans-serif; }
+.m8 .cover { margin: -44px -16px 0; padding: 48px 16px 10px; background: #f5c400; border-bottom: 3px solid #1f1f1f; }
+.m8 .cover h1 { font-weight: 900; font-size: 22px; line-height: 1; margin: 0; }
+.m8 .cover p { margin: 2px 0 0; font-size: 11px; font-weight: 600; }
+.m8 .map { height: 170px; margin: 10px -2px 0; border: 2px solid #1f1f1f; position: relative; background:
+  linear-gradient(transparent 0 0),
+  repeating-linear-gradient(0deg, transparent 0 33px, #c9c2a3 33px 34px),
+  repeating-linear-gradient(90deg, transparent 0 44px, #c9c2a3 44px 45px), #f3eed8; overflow: hidden; }
+.m8 .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.m8 .pin { position: absolute; width: 22px; height: 22px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #d62828; border: 2px solid #1f1f1f; }
+.m8 .pin.g { background: #6c757d; }
+.m8 .pl { position: absolute; font-size: 9.5px; font-weight: 800; background: #fbf8ec; padding: 0 3px; border: 1px solid #1f1f1f; }
+.m8 .gl { position: absolute; font-size: 9px; font-weight: 800; color: #8a8064; }
+.m8 .it { display: grid; grid-template-columns: 34px 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid #d8d1b5; font-size: 12px; }
+.m8 .it .c { font-weight: 900; font-size: 12px; border: 2px solid #1f1f1f; text-align: center; height: 26px; line-height: 23px; background: #fff; }
+.m8 .it b { display: block; font-size: 13.5px; font-weight: 800; }
+.m8 .tb { background: #1f1f1f; color: #b8b09a; }
+.m8 .tb .on { color: #f5c400; }
+
+/* ===== 9 Xerox flyer ===== */
+.m9 .scr { background: #f2f2f0; color: #0a0a0a; font-family: "Archivo", sans-serif; }
+.m9 .scr::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-radial-gradient(circle at 30% 20%, rgba(0,0,0,.05) 0 1px, transparent 1px 3px); mix-blend-mode: multiply; }
+.m9 h1 { font-family: "Archivo Black", sans-serif; font-size: 40px; line-height: .85; margin: 12px 0 4px; text-transform: uppercase; letter-spacing: -.02em; }
+.m9 h1 span { background: #ff2e88; padding: 0 4px; }
+.m9 .tape { position: relative; background: #0a0a0a; color: #fff; padding: 10px 12px; margin-top: 14px; transform: rotate(-1.2deg); }
+.m9 .tape::before { content: ""; position: absolute; top: -8px; left: 40%; width: 60px; height: 16px; background: rgba(255,255,200,.75); transform: rotate(3deg); }
+.m9 .tape b { font-family: "Archivo Black", sans-serif; font-size: 18px; line-height: 1.05; display: block; }
+.m9 .tape small { font-size: 11px; }
+.m9 .tape.p { background: #ff2e88; color: #0a0a0a; transform: rotate(1deg); }
+.m9 h2 { font-family: "Archivo Black", sans-serif; font-size: 13px; margin: 16px 0 0; text-transform: uppercase; }
+.m9 .tear { display: grid; grid-template-columns: repeat(3, 1fr); margin: 6px -16px 0; border-top: 2px dashed #0a0a0a; }
+.m9 .tear div { border-right: 2px dashed #0a0a0a; padding: 6px 4px; font-size: 10.5px; font-weight: 600; writing-mode: vertical-rl; transform: rotate(180deg); height: 112px; text-align: left; }
+.m9 .tear div b { font-family: "Archivo Black", sans-serif; font-weight: 400; }
+.m9 .tb { background: #0a0a0a; color: #9a9a9a; position: relative; z-index: 1; }
+.m9 .tb .on { color: #ff2e88; }
+
+/* ===== 10 Native clean ===== */
+.m10 .scr { background: #f2f2f7; color: #000; font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; }
+.m10 h1 { font-size: 30px; font-weight: 800; margin: 8px 0 0; letter-spacing: -.02em; }
+.m10 .sub { font-size: 12px; color: #6e6e73; margin-bottom: 4px; }
+.m10 h2 { font-size: 11.5px; color: #6e6e73; font-weight: 500; margin: 14px 4px 5px; }
+.m10 .grp { background: #fff; border-radius: 12px; overflow: hidden; }
+.m10 .cell { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; border-bottom: .5px solid #d1d1d6; font-size: 13px; }
+.m10 .cell:last-child { border-bottom: 0; }
+.m10 .dot { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 10px; }
+.m10 .cell b { display: block; font-weight: 600; font-size: 14px; }
+.m10 .cell small { color: #6e6e73; font-size: 11.5px; }
+.m10 .cell .r { color: #8e6cc0; font-weight: 600; font-size: 12px; }
+.m10 .claim { background: #8e6cc0; color: #fff; border-radius: 999px; padding: 4px 10px; font-weight: 600; font-size: 12px; }
+.m10 .tb { background: rgba(249,249,249,.94); color: #8e8e93; border-top: .5px solid #c6c6c8; }
+.m10 .tb .on { color: #8e6cc0; }
+
+footer { padding: 30px 0 70px; border-top: 2px solid var(--rule); color: var(--muted); font-size: .9rem; }
+.ctrl { position: fixed; right: 16px; bottom: 16px; display: flex; gap: 8px; z-index: 5; }
+.ctrl button { font: inherit; font-weight: 800; font-size: .85rem; border: 0; background: var(--accent); color: #fff; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-tonight" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-deals" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8" r="1.4"/></symbol>
+  <symbol id="i-teams" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c2.8 0 5 2.2 5 5"/></symbol>
+  <symbol id="i-you" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></symbol>
+</svg>
+
+<header class="wrap top">
+  <h1>Ten LA looks for Freebies</h1>
+  <p>Every phone below shows the same home screen with the same real LA deals, so the only thing changing is the design. Pick one or two you react to and I'll take them to a full redesign plan using the mobile-taste skill.</p>
+  <ul class="jump">
+    <li><a href="#m1"><b>1</b>Freeway</a></li><li><a href="#m2"><b>2</b>Golden hour</a></li><li><a href="#m3"><b>3</b>Taco truck</a></li><li><a href="#m4"><b>4</b>Jumbotron</a></li><li><a href="#m5"><b>5</b>Marquee</a></li><li><a href="#m6"><b>6</b>Metro lines</a></li><li><a href="#m7"><b>7</b>Venice lifeguard</a></li><li><a href="#m8"><b>8</b>Thomas Guide</a></li><li><a href="#m9"><b>9</b>Silver Lake flyer</a></li><li><a href="#m10"><b>10</b>Native clean</a></li>
+  </ul>
+  <div class="shared">
+    <h2>The same in every mockup</h2>
+    <ul>
+      <li><b>New tabs:</b> Tonight · Deals · Teams · You. These replace today's Deals · Discover · Profile and swap the emoji tab icons for one line-icon set.</li>
+      <li><b>Home screen order:</b> deals you can claim right now first, then tonight's LA games and what each one unlocks.</li>
+      <li><b>Sample data:</b> Ducks beat Seattle 4–2 at home (McDonald's $2 McGriddles, confirmed for 2026-27). Kings host San Jose tonight (El Pollo Loco burrito on a win, unverified for 26-27). LAFC playoff home game (Ono $5.99 plate on a first-half goal). Lakers have a game but no deal.</li>
+      <li><b>No team logos or team colors as the brand.</b> The app belongs to all of LA, and team marks would put the App Store review at risk.</li>
+    </ul>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ========== 1 FREEWAY ========== -->
+<section class="mock" id="m1">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Exit here: Ducks won</b>$2 McGriddles until 10:30am</div>
+    <div class="phone m1"><div class="scr">
+      <div class="sb"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <div class="sign"><div class="tab">2 DEALS</div><h1>LA Freebies</h1><p>Sunday, Nov 15 · Los Angeles</p></div>
+        <h2>Claim now</h2>
+        <div class="deal"><b>$2 McGriddles</b><span class="r">↗</span><small>Ducks won 4–2 · McDonald's app · until 10:30am</small></div>
+        <div class="deal in"><b>Chicken sandwich</b><span class="r">↑</span><small>Ducks 5+ goals · only at Honda Center</small></div>
+        <h2>Tonight</h2>
+        <div class="row"><div class="shield">LAK</div><div><b>Kings vs Sharks</b>Win → free BRC burrito</div><span class="t">7:30</span></div>
+        <div class="row"><div class="shield">LAFC</div><div><b>LAFC playoff, home</b>1st-half goal → $5.99 plate</div><span class="t">7:00</span></div>
+        <div class="row"><div class="shield">LAL</div><div><b>Lakers vs Suns</b>No deal</div><span class="t">7:30</span></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 1</div>
+    <h2>Freeway</h2>
+    <p class="idea">Every deal is an overhead freeway sign. Caltrans green, reflective-yellow exit tabs, and Overpass, a free cut of the Highway Gothic typeface used on real signs. Everyone in LA reads these signs every day.</p>
+    <div class="sw"><div style="background:#00653f"><span>#00653F sign</span></div><div style="background:#f3c300"><span>#F3C300 exit tab</span></div><div style="background:#e7eae4"><span>#E7EAE4 concrete</span></div><div style="background:#1d1d1b"><span>#1D1D1B asphalt</span></div><div style="background:#3b4540"><span>#3B4540 in-venue</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Overpass 600/800/900</div><div><b>Effort:</b> M</div><div><b>Dark mode:</b> signs already work on dark</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Unmistakably LA, with no team marks</li><li>Signs make the hierarchy obvious: deal, team, how to claim</li><li>The icon writes itself: a green sign with a yellow tab</li></ul></div><div><b>Watch</b><ul><li>Lots of green can look like a transit or government app</li><li>Shield badges need care so they don't read as team logos</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li><code>src/hooks/useTheme.tsx</code>: replace the Material palette with tokens <code>sign</code>, <code>signInk</code>, <code>tab</code>, <code>ground</code>, <code>asphalt</code>, <code>muted</code>; dark mode swaps ground to asphalt and keeps the signs.</li>
+      <li>Add <code>expo-font</code> with Overpass and a typography scale token (none exists today; about 48 inline font sizes to move over).</li>
+      <li>New <code>SignCard</code> component replaces <code>ActiveDealCard</code>: 2px white inner border, optional exit tab for counts.</li>
+      <li><code>RouteShield</code> component for team rows: clip-path shape, team short code, no team color.</li>
+      <li><code>App.tsx</code>: tabs become Tonight, Deals, Teams, You with line icons (<code>@expo/vector-icons</code> Feather or SF Symbols through <code>expo-symbols</code>).</li>
+      <li>New <code>TonightBlock</code> in <code>components/blocks/</code>, registered in <code>BlockRenderer</code> and served from <code>/config</code>.</li>
+      <li>Icon: green rounded square, yellow tab top-right, white "LA". Splash in the same palette; update <code>app.json</code> colors.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 2 GOLDEN HOUR ========== -->
+<section class="mock" id="m2">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Morning, Ducks fans</b>Your $2 McGriddles is ready until 10:30.</div>
+    <div class="phone m2"><div class="scr">
+      <div class="sb" style="position:relative;z-index:2;color:#fff"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <div class="sky">
+          <div class="k">Sunday in Los Angeles</div>
+          <h1>Two things are free today</h1>
+          <svg viewBox="0 0 120 90" aria-hidden="true"><g fill="#1c1430"><rect x="78" y="28" width="3.5" height="62" rx="1.5"/><path d="M80 30c-10-8-24-6-30 2 10-3 20-2 30-2zm0 0c8-11 22-12 30-6-10 0-20 2-30 6zm0 0c-4-10-1-20 6-24-3 8-4 16-6 24zm0 0c-12 0-20 8-22 16 6-8 14-13 22-16zm0 0c10 2 18 10 18 18-5-8-12-14-18-18z"/><rect x="100" y="44" width="3" height="46" rx="1.5"/><path d="M101.5 46c-7-6-17-5-21 1 7-2 14-1.5 21-1zm0 0c6-8 15-8 20-4-7 0-13 1.5-20 4zm0 0c-8 1-13 6-14 11 4-5 9-8.5 14-11z"/></g></svg>
+        </div>
+        <div class="card"><div class="who">Ducks won 4–2</div><b>$2 McGriddles</b><small>McDonald's app · breakfast until 10:30am</small><br><span class="btn">Open McDonald's</span></div>
+        <h2>Tonight's possibilities</h2>
+        <div class="g"><span>Kings vs Sharks, 7:30</span><span>Burrito on a win</span></div>
+        <div class="g"><span>LAFC playoff, 7:00</span><span>$5.99 on a 1st-half goal</span></div>
+        <div class="g"><span>Lakers vs Suns, 7:30</span><span style="color:#8c7fa3;font-weight:600">No deal</span></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 2</div>
+    <h2>Golden hour</h2>
+    <p class="idea">The sky over the 10 at 4:45pm: plum into coral into gold, with palm silhouettes. A warm editorial serif makes it feel like a lifestyle app rather than a coupon app.</p>
+    <div class="sw"><div style="background:#2b1b4a"><span>#2B1B4A dusk</span></div><div style="background:#8d3b6b"><span>#8D3B6B haze</span></div><div style="background:#f2784b"><span>#F2784B coral</span></div><div style="background:#fbc26b"><span>#FBC26B gold</span></div><div style="background:#1c1430"><span>#1C1430 night</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> DM Serif Display + Manrope</div><div><b>Effort:</b> M</div><div><b>Dark mode:</b> dark-first; light variant needs separate design</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>The prettiest of the ten; makes great App Store screenshots</li><li>Friendly copy ("Two things are free today") fits the tone</li></ul></div><div><b>Watch</b><ul><li>Sunset gradients and palms are the obvious LA cliché</li><li>Less clear at a glance during a game</li><li>The sky gradient is the only gradient; resist adding more</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li><code>useTheme.tsx</code>: dark-first token set; light mode becomes a "daytime" sky (pale gold to white).</li>
+      <li><code>expo-linear-gradient</code> used only on the home header; one <code>SkyHeader</code> component.</li>
+      <li>Palm silhouette as a single SVG via <code>react-native-svg</code> (already an Expo-supported package).</li>
+      <li>Fonts: DM Serif Display for headings and deal names, Manrope for body.</li>
+      <li>Headline copy written by the server ("Two things are free today"), so it can change without a release.</li>
+      <li>Icon: gold sun half-set behind a plum horizon.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 3 TACO TRUCK ========== -->
+<section class="mock" id="m3">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>¡Ganaron! Ducks won</b>$2 McGriddles, today only.</div>
+    <div class="phone m3"><div class="scr">
+      <div class="sb" style="position:relative;z-index:2"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <div class="awn"></div>
+        <h1>LA Freebies</h1>
+        <div class="sub">Free food when LA wins</div>
+        <div class="sticker">¡Ganaron!</div>
+        <div class="menu">
+          <div class="it"><span>McGriddles<small>Ducks won · McDonald's app · til 10:30</small></span><span class="dots"></span><span class="p">$2</span></div>
+          <div class="it"><span>Chicken sandwich<small>At Honda Center only</small></span><span class="dots"></span><span class="p">FREE</span></div>
+        </div>
+        <h2>On deck tonight</h2>
+        <div class="g"><span>Kings vs Sharks · 7:30</span><span>Burrito if they win</span></div>
+        <div class="g"><span>LAFC playoff · 7:00</span><span>$5.99 plate</span></div>
+        <div class="g"><span>Lakers vs Suns · 7:30</span><span>—</span></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 3</div>
+    <h2>Taco truck</h2>
+    <p class="idea">A loncheria parked outside the stadium: a striped awning, a hand-painted menu board with dotted price leaders, and a bilingual "¡Ganaron!" sticker. The deal is the menu item.</p>
+    <div class="sw"><div style="background:#ffd23f"><span>#FFD23F truck</span></div><div style="background:#e4002b"><span>#E4002B salsa</span></div><div style="background:#1a1a1a"><span>#1A1A1A board</span></div><div style="background:#ffffff"><span>#FFFFFF awning</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Bowlby One + Rubik</div><div><b>Effort:</b> M</div><div><b>Dark mode:</b> black board becomes the background</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Food-first: you understand the product in one glance</li><li>Bilingual touches speak to a large part of LA</li><li>Loud enough to stand out in the App Store</li></ul></div><div><b>Watch</b><ul><li>Spanish copy needs a native speaker's review, and it must feel genuine</li><li>The red and yellow are close to McDonald's and Jack in the Box branding</li><li>Hard to keep calm in dense lists</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li>Tokens: <code>truck</code>, <code>salsa</code>, <code>board</code>, <code>awning</code>; dark mode uses the board black as the background.</li>
+      <li><code>MenuBoard</code> component: rows with dotted leaders (a flex spacer with a dotted bottom border) and a price/FREE slot.</li>
+      <li><code>Awning</code> header made with <code>react-native-svg</code> stripes and scallops.</li>
+      <li>i18n for the bilingual strings (<code>expo-localization</code> plus a small strings table); keep sticker words server-provided.</li>
+      <li>Icon: yellow truck window with a striped awning edge.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 4 JUMBOTRON ========== -->
+<section class="mock" id="m4">
+  <div class="stage">
+    <div class="push"><small>LIVE</small><b>KINGS 2 – SJ 1 · 3RD</b>8:14 left. A win means a free burrito.</div>
+    <div class="phone m4"><div class="scr">
+      <div class="sb" style="color:#ffb000"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <div class="board">
+          <div class="live">● LIVE  3RD 8:14</div>
+          <div class="score"><div><div class="n">2</div><div class="t">KINGS</div></div><div class="mid">vs</div><div><div class="n">1</div><div class="t">SHARKS</div></div></div>
+          <div class="meter"><i></i></div>
+          <div class="cap">WIN = FREE BRC BURRITO</div>
+        </div>
+        <h2>UNLOCKED</h2>
+        <div class="row"><span>$2 MCGRIDDLES<small>DUCKS W 4–2 · TIL 10:30</small></span><span class="ok">CLAIM</span></div>
+        <div class="row"><span>CHICKEN SANDWICH<small>HONDA CENTER ONLY</small></span><span>IN ARENA</span></div>
+        <h2>UP NEXT</h2>
+        <div class="row"><span>LAFC  PLAYOFF<small>1ST-HALF GOAL = $5.99</small></span><span>7:00</span></div>
+        <div class="row"><span>LAKERS  SUNS<small>NO DEAL</small></span><span>7:30</span></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>LIVE</span><span><svg class="ic"><use href="#i-deals"/></svg>DEALS</span><span><svg class="ic"><use href="#i-teams"/></svg>TEAMS</span><span><svg class="ic"><use href="#i-you"/></svg>YOU</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 4</div>
+    <h2>Jumbotron</h2>
+    <p class="idea">The arena scoreboard: amber LED dot-matrix on black, live score on top, and a progress bar for "how close is my free food". Made for the second screen during the game.</p>
+    <div class="sw"><div style="background:#050505"><span>#050505 board</span></div><div style="background:#ffb000"><span>#FFB000 LED</span></div><div style="background:#ff3b30"><span>#FF3B30 live</span></div><div style="background:#3dff7a"><span>#3DFF7A unlocked</span></div><div style="background:#9a6a00"><span>#9A6A00 dim</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Doto (LED) for numbers and labels</div><div><b>Effort:</b> M (UI) + L (live data)</div><div><b>Dark mode:</b> dark only</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Pairs exactly with live alerts and Live Activities</li><li>The progress meter ("72% there") is a hook no competitor has</li></ul></div><div><b>Watch</b><ul><li>Needs live in-game data to be honest; the paid-feed decision comes first</li><li>All-caps dot-matrix text is tiring outside of game time</li><li>Dark-only conflicts with the app's light-mode support</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li>Backend first: a live poller and a <code>GET /live</code> endpoint (option 4 on the options page). Without it this is a costume.</li>
+      <li><code>Scoreboard</code> component with a <code>DealMeter</code>: progress = how close the current game state is to the trigger (e.g. goals/5, or win probability for "win" rules).</li>
+      <li>Doto for scores only; keep a readable sans for body text to fix the all-caps fatigue.</li>
+      <li>Force dark: <code>userInterfaceStyle: "dark"</code> in <code>app.json</code>, or keep light mode as a "day game" variant.</li>
+      <li>Polling at 20s while a followed game is live, with <code>AppState</code> pausing in the background.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 5 MARQUEE ========== -->
+<section class="mock" id="m5">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Now showing: free breakfast</b>Ducks won. $2 McGriddles until 10:30.</div>
+    <div class="phone m5"><div class="scr">
+      <div class="sb" style="color:#f6e3b4"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <div class="mq"><div class="lb">
+          <div class="s">Now showing</div>
+          <div>Kings vs Sharks</div>
+          <div class="s">Tonight 7:30 · win = burrito</div>
+        </div></div>
+        <h2>YOUR TICKETS</h2>
+        <div class="tix"><div><b>$2 McGriddles</b><small>Ducks won 4–2 · McDonald's app · until 10:30am</small></div><div class="stub">$2</div></div>
+        <div class="tix" style="opacity:.75"><div><b>Chicken sandwich</b><small>Ducks 5+ goals · Honda Center only</small></div><div class="stub" style="font-size:13px">IN<br>ARENA</div></div>
+        <h2>COMING ATTRACTIONS</h2>
+        <div class="tix"><div><b>LAFC playoff</b><small>7:00 · 1st-half goal = $5.99 Ono plate</small></div><div class="stub" style="font-size:15px">7:00</div></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>TONIGHT</span><span><svg class="ic"><use href="#i-deals"/></svg>TICKETS</span><span><svg class="ic"><use href="#i-teams"/></svg>TEAMS</span><span><svg class="ic"><use href="#i-you"/></svg>YOU</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 5</div>
+    <h2>Marquee</h2>
+    <p class="idea">Old Hollywood movie palace on Broadway: a bulb-lit marquee with a letterboard for tonight's headline game, and every unlocked deal is a ticket with a tear-off stub.</p>
+    <div class="sw"><div style="background:#4a0d12"><span>#4A0D12 velvet</span></div><div style="background:#d4a64a"><span>#D4A64A brass</span></div><div style="background:#f7f3e8"><span>#F7F3E8 letterboard</span></div><div style="background:#f6e3b4"><span>#F6E3B4 ticket</span></div><div style="background:#2b0709"><span>#2B0709 balcony</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Big Shoulders Display + Public Sans</div><div><b>Effort:</b> M</div><div><b>Dark mode:</b> dark-first</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>"Tickets" is a natural name for claimable deals</li><li>The marquee gives one headline game a stage</li></ul></div><div><b>Watch</b><ul><li>Reads more Hollywood than sports</li><li>Bulb borders get busy at small sizes</li><li>"Tickets" could be confused with real game tickets</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li><code>Marquee</code> component: brass frame, bulb dots via <code>react-native-svg</code> pattern, letterboard rows with fixed line height.</li>
+      <li><code>TicketCard</code> replaces <code>ActiveDealCard</code>: perforated stub (dashed border) with value or status.</li>
+      <li>Rename the Deals tab to Tickets; update the copy in <code>ActiveDealsBlock</code> and push titles in <code>worker/service.go</code>.</li>
+      <li>Optional: one-time bulb "chase" animation when a new ticket arrives, with Reanimated, respecting reduced motion.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 6 METRO ========== -->
+<section class="mock" id="m6">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Ducks line: deal stop reached</b>$2 McGriddles until 10:30.</div>
+    <div class="phone m6"><div class="scr">
+      <div class="sb"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <h1>Tonight</h1>
+        <div class="sub">3 LA lines running · 1 deal ready</div>
+        <div class="line" style="--c:#f47a20"><div class="bul">ANA</div><div class="ln">Ducks</div>
+          <div class="stop"><b>Won 4–2</b><span class="dl">$2 McGriddles</span></div>
+          <div class="stop">Next: Sat vs CGY</div></div>
+        <div class="line" style="--c:#6b4fa0"><div class="bul">LAK</div><div class="ln">Kings</div>
+          <div class="stop"><b>vs Sharks 7:30</b> · win = burrito</div></div>
+        <div class="line" style="--c:#0072bc"><div class="bul">LAFC</div><div class="ln">LAFC</div>
+          <div class="stop"><b>Playoff 7:00</b> · 1st-half goal = $5.99</div></div>
+        <div class="line" style="--c:#9a9a9a"><div class="bul">LAL</div><div class="ln">Lakers</div>
+          <div class="stop">vs Suns 7:30 · no deal yet</div></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Lines</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 6</div>
+    <h2>Metro lines</h2>
+    <p class="idea">The LA Metro map: each team you follow is a colored line, games are stops, and deals are stations you've reached. Clean, white, systematic, and it scales to fifteen teams without clutter.</p>
+    <div class="sw"><div style="background:#ffffff"><span>#FFFFFF</span></div><div style="background:#111111"><span>#111111 ink</span></div><div style="background:#f47a20"><span>#F47A20 line</span></div><div style="background:#6b4fa0"><span>#6B4FA0 line</span></div><div style="background:#0072bc"><span>#0072BC line</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Public Sans</div><div><b>Effort:</b> S–M</div><div><b>Dark mode:</b> easy; lines pop on dark</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Most scalable layout: a season reads as a timeline</li><li>Following a team = "adding a line" is an intuitive model</li><li>Easiest to build and the most accessible</li></ul></div><div><b>Watch</b><ul><li>Line colors drift toward team colors; assign from a neutral set, not each team's</li><li>Metro mostly sells to people who already ride it</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li>Tokens: neutral base plus a categorical palette of 8 line colors assigned per team in the API (not team brand colors).</li>
+      <li><code>TeamLine</code> component: vertical bar, bullet with short code, stop rows; FlatList of lines.</li>
+      <li>Rename Teams tab to Lines; "Add a line" replaces the Discover screen's subscribe flow.</li>
+      <li>Needs the <code>teams</code> table and a next-game field per team (schedule endpoint).</li>
+      <li>Icon: three colored lines crossing at a white station dot.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 7 VENICE ========== -->
+<section class="mock" id="m7">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Tower 1 is open: Ducks won</b>$2 McGriddles until 10:30.</div>
+    <div class="phone m7"><div class="scr">
+      <div class="sb"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <h1>LA Freebies</h1>
+        <div class="waves"></div>
+        <div class="tower"><span class="num">1</span><b>$2 McGriddles</b><small>Ducks won 4–2 · McDonald's app · til 10:30</small></div>
+        <div class="tower y"><span class="num">2</span><b>Chicken sandwich</b><small>Ducks 5+ goals · Honda Center only</small></div>
+        <h2>Tonight's swell</h2>
+        <div class="g"><span>Kings vs Sharks 7:30</span><span>Burrito on a win</span></div>
+        <div class="g"><span>LAFC playoff 7:00</span><span>$5.99 plate</span></div>
+        <div class="g"><span>Lakers vs Suns 7:30</span><span>No deal</span></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 7</div>
+    <h2>Venice lifeguard</h2>
+    <p class="idea">Painted lifeguard towers from Venice to Zuma: sky blue, tower yellow, chunky stenciled numbers. Deals are numbered towers. Sunny, playful, and readable in daylight.</p>
+    <div class="sw"><div style="background:#bfe6f5"><span>#BFE6F5 sky</span></div><div style="background:#219ebc"><span>#219EBC tower</span></div><div style="background:#ffb703"><span>#FFB703 tower</span></div><div style="background:#0b3954"><span>#0B3954 deep</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Bungee + Nunito</div><div><b>Effort:</b> S–M</div><div><b>Dark mode:</b> deep navy ocean</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Happy and approachable; good for casual fans</li><li>High-contrast towers read well outdoors</li></ul></div><div><b>Watch</b><ul><li>Beach imagery says Westside, not the whole basin</li><li>The surf metaphors ("swell") get cute fast</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li>Tokens: <code>sky</code>, <code>tower</code>, <code>towerAlt</code>, <code>deep</code>; alternate blue and yellow tower cards by index.</li>
+      <li><code>TowerCard</code> with a number badge overlapping the top edge.</li>
+      <li>Waves divider as a repeating SVG path.</li>
+      <li>Bungee only for display sizes, never for body text.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 8 THOMAS GUIDE ========== -->
+<section class="mock" id="m8">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Grid C3: Ducks won</b>$2 McGriddles at any McDonald's until 10:30.</div>
+    <div class="phone m8"><div class="scr">
+      <div class="sb" style="position:relative;z-index:2"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <div class="cover"><h1>LA Freebies</h1><p>Street guide to tonight's free food</p></div>
+        <div class="map">
+          <svg viewBox="0 0 270 170" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 C60 110 90 70 150 60 S240 30 270 20" stroke="#e85d04" stroke-width="5" fill="none"/><path d="M40 0 C60 60 70 110 120 170" stroke="#e85d04" stroke-width="4" fill="none"/><path d="M0 40 L270 95" stroke="#f9c74f" stroke-width="3" fill="none"/><path d="M185 0 L215 170" stroke="#f9c74f" stroke-width="3" fill="none"/></svg>
+          <span class="gl" style="left:4px;top:2px">A1</span><span class="gl" style="left:224px;top:138px">F5</span>
+          <span class="pin" style="left:118px;top:64px"></span><span class="pl" style="left:140px;top:66px">Kings 7:30</span>
+          <span class="pin" style="left:60px;top:104px"></span><span class="pl" style="left:82px;top:106px">LAFC 7:00</span>
+          <span class="pin g" style="left:206px;top:116px"></span><span class="pl" style="left:162px;top:146px">Honda Ctr</span>
+        </div>
+        <div class="it"><span class="c">C3</span><div><b>$2 McGriddles</b>Ducks won · any McDonald's · til 10:30</div></div>
+        <div class="it"><span class="c">B4</span><div><b>Kings vs Sharks</b>Crypto.com Arena · win = burrito</div></div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Map</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 8</div>
+    <h2>Thomas Guide</h2>
+    <p class="idea">The spiral-bound street atlas every LA car had in the glovebox: yellow cover, grid-lettered map pages, freeways in orange. Venues are pins; deals have a grid reference. Nostalgic for Angelenos over 30, and new to everyone else.</p>
+    <div class="sw"><div style="background:#f5c400"><span>#F5C400 cover</span></div><div style="background:#f3eed8"><span>#F3EED8 map</span></div><div style="background:#e85d04"><span>#E85D04 freeway</span></div><div style="background:#d62828"><span>#D62828 pin</span></div><div style="background:#1f1f1f"><span>#1F1F1F ink</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Libre Franklin 400–900</div><div><b>Effort:</b> M–L (map)</div><div><b>Dark mode:</b> "night map": dark paper, same freeways</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>The most original idea here; very local</li><li>A map is useful for in-venue and "near me" deals</li></ul></div><div><b>Watch</b><ul><li>Most deals are claimed in an app, not at a location, so the map is half decoration</li><li>A real map component adds weight and work</li><li>The paper tone sits near the overused "cream" look; keep it map-tinted, not beige</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li>Start with a static stylized SVG map of the basin (8 venues), not a live map SDK.</li>
+      <li><code>GridRef</code> badge: computed from venue lat/lng over a fixed grid, stored on the <code>teams</code>/venues table.</li>
+      <li>Later: <code>react-native-maps</code> with a custom style JSON in the same palette for location-based deals.</li>
+      <li>Icon: yellow cover with a black spiral edge and a red pin.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 9 FLYER ========== -->
+<section class="mock" id="m9">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>DUCKS WON. FREE-ISH BREAKFAST.</b>$2 McGriddles until 10:30.</div>
+    <div class="phone m9"><div class="scr">
+      <div class="sb" style="position:relative;z-index:2"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body" style="position:relative;z-index:1">
+        <h1>Free <span>food</span> tonight</h1>
+        <div class="tape"><b>$2 McGriddles</b><small>Ducks won 4–2 · McDonald's app · til 10:30am</small></div>
+        <div class="tape p"><b>Kings vs Sharks 7:30</b><small>They win, you get a free BRC burrito</small></div>
+        <h2>Tear one off</h2>
+        <div class="tear">
+          <div><b>LAFC 7:00</b> · goal = $5.99</div>
+          <div><b>Honda Ctr</b> · in arena only</div>
+          <div><b>Lakers 7:30</b> · no deal</div>
+        </div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 9</div>
+    <h2>Silver Lake flyer</h2>
+    <p class="idea">A photocopied show flyer on a telephone pole: black and white, one hot-pink highlighter, tape, and tear-off tabs for tonight's games. Loud, indie, and nothing like a coupon app.</p>
+    <div class="sw"><div style="background:#f2f2f0"><span>#F2F2F0 copy paper</span></div><div style="background:#0a0a0a"><span>#0A0A0A toner</span></div><div style="background:#ff2e88"><span>#FF2E88 highlighter</span></div><div style="background:#ffffc8"><span>#FFFFC8 tape</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> Archivo Black + Archivo</div><div><b>Effort:</b> M</div><div><b>Dark mode:</b> inverted print</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Strongest personality; great for TikTok and Instagram</li><li>Tear-off tabs are a fun way to show tonight's games</li></ul></div><div><b>Watch</b><ul><li>Rotated cards and sideways text hurt readability and accessibility</li><li>Might feel too hip for a family Dodgers fan</li><li>The texture overlay costs performance on older Android phones</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li>Tokens: <code>paper</code>, <code>toner</code>, <code>highlight</code>; one accent only.</li>
+      <li><code>TapedCard</code> with a slight rotation (±1°) only on the top two cards; lists stay straight.</li>
+      <li>Tear-off tabs as a horizontal FlatList; make the text horizontal for accessibility (the vertical text here is mockup flair).</li>
+      <li>Grain via a static PNG overlay, not a shader.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<!-- ========== 10 NATIVE ========== -->
+<section class="mock" id="m10">
+  <div class="stage">
+    <div class="push"><small>7:00 AM</small><b>Ducks won 4–2</b>Your $2 McGriddles is ready in the McDonald's app until 10:30.</div>
+    <div class="phone m10"><div class="scr">
+      <div class="sb"><span>9:41</span><i>●●● ▮</i></div>
+      <div class="body">
+        <h1>Tonight</h1>
+        <div class="sub">Sunday, November 15</div>
+        <h2>Ready to claim</h2>
+        <div class="grp">
+          <div class="cell"><span class="dot" style="background:#f47a20">ANA</span><div><b>$2 McGriddles</b><small>Ducks won · until 10:30am</small></div><span class="claim">Claim</span></div>
+          <div class="cell"><span class="dot" style="background:#8e8e93">ANA</span><div><b>Chicken sandwich</b><small>Honda Center only</small></div><span class="r">At game</span></div>
+        </div>
+        <h2>Games tonight</h2>
+        <div class="grp">
+          <div class="cell"><span class="dot" style="background:#5e5ce6">LAK</span><div><b>Kings vs Sharks</b><small>Win → free BRC burrito</small></div><span class="r">7:30</span></div>
+          <div class="cell"><span class="dot" style="background:#30b0c7">LAFC</span><div><b>LAFC playoff</b><small>1st-half goal → $5.99 plate</small></div><span class="r">7:00</span></div>
+          <div class="cell"><span class="dot" style="background:#c7c7cc">LAL</span><div><b>Lakers vs Suns</b><small>No deal</small></div><span class="r" style="color:#8e8e93">7:30</span></div>
+        </div>
+      </div>
+      <nav class="tb"><span class="on"><svg class="ic"><use href="#i-tonight"/></svg>Tonight</span><span><svg class="ic"><use href="#i-deals"/></svg>Deals</span><span><svg class="ic"><use href="#i-teams"/></svg>Teams</span><span><svg class="ic"><use href="#i-you"/></svg>You</span></nav>
+    </div></div>
+  </div>
+  <div class="info">
+    <div class="num">Look 10</div>
+    <h2>Native clean</h2>
+    <p class="idea">No costume: iOS grouped lists, system type, large titles, one jacaranda-purple accent (the trees that bloom over LA every May). It looks like it shipped with the phone, and lets widgets and Live Activities feel at home.</p>
+    <div class="sw"><div style="background:#f2f2f7"><span>#F2F2F7 grouped</span></div><div style="background:#ffffff"><span>#FFFFFF cell</span></div><div style="background:#8e6cc0"><span>#8E6CC0 jacaranda</span></div><div style="background:#000000"><span>#000000 label</span></div><div style="background:#6e6e73"><span>#6E6E73 secondary</span></div></div>
+    <div class="meta" style="margin-top:10px"><div><b>Type:</b> SF Pro (system)</div><div><b>Effort:</b> S</div><div><b>Dark mode:</b> free with system colors</div></div>
+    <h3>Pros and cons</h3>
+    <div class="pc"><div><b>Works</b><ul><li>Least effort, most accessible, ages well</li><li>Closest to Apple's guidelines; easy App Review</li><li>Best base for option 9 (widgets, Live Activities)</li></ul></div><div><b>Watch</b><ul><li>The only "LA" is a purple accent; the icon and screenshots must carry the brand</li><li>Looks like many other apps</li></ul></div></div>
+    <details><summary>What changes in the code</summary><div class="b"><ol>
+      <li><code>useTheme.tsx</code>: map tokens to iOS system colors (<code>PlatformColor('systemGroupedBackground')</code> etc.) with Android Material 3 equivalents.</li>
+      <li>Consider <code>@expo/ui</code> (SwiftUI-backed components in SDK 58) for lists and buttons; the Expo <code>expo-ui</code> skill covers it.</li>
+      <li>Native large-title headers via React Navigation <code>headerLargeTitle</code>.</li>
+      <li>Remove all hardcoded hex values; nothing custom except the accent.</li>
+      <li>Icon carries the brand: jacaranda blossom on deep purple.</li>
+    </ol></div></details>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p><b>How to choose:</b> pick the look that matches who you're building for. Watching the game: Jumbotron. Casual fans: Golden hour or Venice. All of LA, with personality and room to grow: Freeway or Metro. Lowest effort: Native clean. You can also mix: Native clean's structure with Freeway's signs for the deal cards is a strong combination.</p>
+  <p>Mockups are HTML approximations of phone screens, not final designs. Sample deals as of 15 Nov 2026; the Kings deal is unverified for this season.</p>
+</footer>
+
+<div class="ctrl">
+  <button type="button" id="theme" aria-label="Toggle dark mode">Theme</button>
+</div>
+<script>
+(function () {
+  var root = document.documentElement, key = 'la-mock-theme';
+  try { var s = localStorage.getItem(key); if (s) root.setAttribute('data-theme', s); } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
