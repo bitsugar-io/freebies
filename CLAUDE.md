@@ -1,7 +1,7 @@
 # Claude Code
 
-All agent guidance lives in [AGENTS.md](AGENTS.md): the test command, which docs to read, running
-tools through mise, and the commit trailer. This file exists so Claude Code finds it; the content is
-upstream.
+All agent guidance lives in [AGENTS.md](AGENTS.md): the test commands, running tools through mise,
+the skills, server-driven content, the UI rules, leaving the running app alone, reporting what you
+checked, and the commit trailer. This file exists so Claude Code finds it; the content is upstream.
 
 @AGENTS.md
