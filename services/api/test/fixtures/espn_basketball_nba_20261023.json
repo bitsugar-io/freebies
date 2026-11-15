@@ -1,0 +1,274 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 19057,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "13",
+       "linescores": [
+        {
+         "displayValue": "27",
+         "period": 1,
+         "value": 27.0
+        },
+        {
+         "displayValue": "37",
+         "period": 2,
+         "value": 37.0
+        },
+        {
+         "displayValue": "39",
+         "period": 3,
+         "value": 39.0
+        },
+        {
+         "displayValue": "22",
+         "period": 4,
+         "value": 22.0
+        }
+       ],
+       "order": 0,
+       "score": "125",
+       "team": {
+        "abbreviation": "LAL",
+        "alternateColor": "fdb927",
+        "color": "552583",
+        "displayName": "Los Angeles Lakers",
+        "id": "13",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Lakers",
+        "shortDisplayName": "Lakers"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "12",
+       "linescores": [
+        {
+         "displayValue": "31",
+         "period": 1,
+         "value": 31.0
+        },
+        {
+         "displayValue": "33",
+         "period": 2,
+         "value": 33.0
+        },
+        {
+         "displayValue": "26",
+         "period": 3,
+         "value": 26.0
+        },
+        {
+         "displayValue": "27",
+         "period": 4,
+         "value": 27.0
+        }
+       ],
+       "order": 1,
+       "score": "117",
+       "team": {
+        "abbreviation": "LAC",
+        "alternateColor": "c8102e",
+        "color": "12173f",
+        "displayName": "LA Clippers",
+        "id": "12",
+        "isActive": true,
+        "location": "LA",
+        "name": "Clippers",
+        "shortDisplayName": "Clippers"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-10-24T02:00Z",
+     "id": "401909851",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-24T02:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-24T02:00Z",
+   "id": "401909851",
+   "name": "LA Clippers at Los Angeles Lakers",
+   "shortName": "LAC @ LAL",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 16354,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "15",
+       "linescores": [
+        {
+         "displayValue": "32",
+         "period": 1,
+         "value": 32.0
+        },
+        {
+         "displayValue": "30",
+         "period": 2,
+         "value": 30.0
+        },
+        {
+         "displayValue": "42",
+         "period": 3,
+         "value": 42.0
+        },
+        {
+         "displayValue": "21",
+         "period": 4,
+         "value": 21.0
+        }
+       ],
+       "order": 0,
+       "score": "125",
+       "team": {
+        "abbreviation": "MIL",
+        "alternateColor": "eee1c6",
+        "color": "00471b",
+        "displayName": "Milwaukee Bucks",
+        "id": "15",
+        "isActive": true,
+        "location": "Milwaukee",
+        "name": "Bucks",
+        "shortDisplayName": "Bucks"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "homeAway": "away",
+       "id": "4",
+       "linescores": [
+        {
+         "displayValue": "17",
+         "period": 1,
+         "value": 17.0
+        },
+        {
+         "displayValue": "44",
+         "period": 2,
+         "value": 44.0
+        },
+        {
+         "displayValue": "41",
+         "period": 3,
+         "value": 41.0
+        },
+        {
+         "displayValue": "30",
+         "period": 4,
+         "value": 30.0
+        }
+       ],
+       "order": 1,
+       "score": "132",
+       "team": {
+        "abbreviation": "CHI",
+        "alternateColor": "000000",
+        "color": "ce1141",
+        "displayName": "Chicago Bulls",
+        "id": "4",
+        "isActive": true,
+        "location": "Chicago",
+        "name": "Bulls",
+        "shortDisplayName": "Bulls"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-10-23T20:00Z",
+     "id": "401909848",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-23T20:00Z",
+     "status": {
+      "clock": 720.0,
+      "displayClock": "12:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-23T20:00Z",
+   "id": "401909848",
+   "name": "Chicago Bulls at Milwaukee Bucks",
+   "shortName": "CHI @ MIL",
+   "status": {
+    "clock": 720.0,
+    "displayClock": "12:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,634 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "DWDDW",
+       "homeAway": "home",
+       "id": "187",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "ffffff",
+        "color": "00235d",
+        "displayName": "LA Galaxy",
+        "id": "187",
+        "isActive": true,
+        "location": "LA Galaxy",
+        "name": "LA Galaxy",
+        "shortDisplayName": "LA Galaxy"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "WWWWD",
+       "homeAway": "away",
+       "id": "9723",
+       "order": 1,
+       "score": "0",
+       "team": {
+        "abbreviation": "POR",
+        "alternateColor": "c99700",
+        "color": "2c5234",
+        "displayName": "Portland Timbers",
+        "id": "9723",
+        "isActive": true,
+        "location": "Portland Timbers",
+        "name": "Portland Timbers",
+        "shortDisplayName": "Portland"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-10-15T02:30Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "17'",
+        "value": 982.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "29'",
+        "value": 1711.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "31'",
+        "value": 1821.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "38'",
+        "value": 2270.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9723"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "47'",
+        "value": 2813.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "62'",
+        "value": 3677.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9723"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "80'",
+        "value": 4760.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "82'",
+        "value": 4867.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9723"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761874",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-15T02:30Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+4'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-15T02:30Z",
+   "id": "761874",
+   "name": "Portland Timbers at LA Galaxy",
+   "shortName": "POR @ LA",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+4'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "LLDDW",
+       "homeAway": "home",
+       "id": "18966",
+       "order": 0,
+       "score": "3",
+       "team": {
+        "abbreviation": "LAFC",
+        "alternateColor": "c7a36f",
+        "color": "000000",
+        "displayName": "LAFC",
+        "id": "18966",
+        "isActive": true,
+        "location": "LAFC",
+        "name": "LAFC",
+        "shortDisplayName": "LAFC"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LLLWL",
+       "homeAway": "away",
+       "id": "20906",
+       "order": 1,
+       "score": "1",
+       "team": {
+        "abbreviation": "ATX",
+        "alternateColor": "000000",
+        "color": "00b140",
+        "displayName": "Austin FC",
+        "id": "20906",
+        "isActive": true,
+        "location": "Austin FC",
+        "name": "Austin FC",
+        "shortDisplayName": "Austin"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-10-15T02:30Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "52'",
+        "value": 3062.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "66'",
+        "value": 3914.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "20906"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "67'",
+        "value": 3997.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "72'",
+        "value": 4313.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "761873",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-15T02:30Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+6'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-15T02:30Z",
+   "id": "761873",
+   "name": "Austin FC at LAFC",
+   "shortName": "ATX @ LAFC",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+6'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "LDLLD",
+       "homeAway": "home",
+       "id": "9720",
+       "order": 0,
+       "score": "0",
+       "team": {
+        "abbreviation": "MTL",
+        "alternateColor": "c1c5c8",
+        "color": "003da6",
+        "displayName": "CF Montr\u00e9al",
+        "id": "9720",
+        "isActive": true,
+        "location": "CF Montr\u00e9al",
+        "name": "CF Montr\u00e9al",
+        "shortDisplayName": "CF Montr\u00e9al"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "LWLLL",
+       "homeAway": "away",
+       "id": "18418",
+       "order": 1,
+       "score": "3",
+       "team": {
+        "abbreviation": "ATL",
+        "alternateColor": "aa9767",
+        "color": "9d2235",
+        "displayName": "Atlanta United FC",
+        "id": "18418",
+        "isActive": true,
+        "location": "Atlanta United FC",
+        "name": "Atlanta United FC",
+        "shortDisplayName": "Atlanta"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "date": "2026-10-14T23:30Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "22'",
+        "value": 1295.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18418"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "41'",
+        "value": 2460.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18418"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "58'",
+        "value": 3427.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "18418"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "60'",
+        "value": 3548.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18418"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "83'",
+        "value": 4968.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9720"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "90'+1'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "18418"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761864",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-14T23:30Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+5'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-14T23:30Z",
+   "id": "761864",
+   "name": "Atlanta United FC at CF Montr\u00e9al",
+   "shortName": "ATL @ MTL",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+5'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

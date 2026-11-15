@@ -1,0 +1,385 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 17071,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "21",
+       "linescores": [
+        {
+         "displayValue": "24",
+         "period": 1,
+         "value": 24.0
+        },
+        {
+         "displayValue": "30",
+         "period": 2,
+         "value": 30.0
+        },
+        {
+         "displayValue": "16",
+         "period": 3,
+         "value": 16.0
+        }
+       ],
+       "order": 0,
+       "score": "70",
+       "team": {
+        "abbreviation": "PHX",
+        "alternateColor": "e56020",
+        "color": "29127a",
+        "displayName": "Phoenix Suns",
+        "id": "21",
+        "isActive": true,
+        "location": "Phoenix",
+        "name": "Suns",
+        "shortDisplayName": "Suns"
+       },
+       "type": "team"
+      },
+      {
+       "homeAway": "away",
+       "id": "13",
+       "linescores": [
+        {
+         "displayValue": "33",
+         "period": 1,
+         "value": 33.0
+        },
+        {
+         "displayValue": "31",
+         "period": 2,
+         "value": 31.0
+        },
+        {
+         "displayValue": "35",
+         "period": 3,
+         "value": 35.0
+        }
+       ],
+       "order": 1,
+       "score": "99",
+       "team": {
+        "abbreviation": "LAL",
+        "alternateColor": "fdb927",
+        "color": "552583",
+        "displayName": "Los Angeles Lakers",
+        "id": "13",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Lakers",
+        "shortDisplayName": "Lakers"
+       },
+       "type": "team"
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-15T21:00Z",
+     "id": "401909986",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": true,
+     "startDate": "2026-11-15T21:00Z",
+     "status": {
+      "clock": 105.0,
+      "displayClock": "1:45",
+      "period": 3,
+      "type": {
+       "completed": false,
+       "description": "In Progress",
+       "detail": "1:45 - 3rd Quarter",
+       "id": "2",
+       "name": "STATUS_IN_PROGRESS",
+       "shortDetail": "1:45 - 3rd",
+       "state": "in"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-15T21:00Z",
+   "id": "401909986",
+   "name": "Los Angeles Lakers at Phoenix Suns",
+   "shortName": "LAL @ PHX",
+   "status": {
+    "clock": 105.0,
+    "displayClock": "1:45",
+    "period": 3,
+    "type": {
+     "completed": false,
+     "description": "In Progress",
+     "detail": "1:45 - 3rd Quarter",
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "shortDetail": "1:45 - 3rd",
+     "state": "in"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "12",
+       "linescores": [
+        {
+         "displayValue": "22",
+         "period": 1,
+         "value": 22.0
+        },
+        {
+         "displayValue": "29",
+         "period": 2,
+         "value": 29.0
+        },
+        {
+         "displayValue": "1",
+         "period": 3,
+         "value": 1.0
+        }
+       ],
+       "order": 0,
+       "score": "52",
+       "team": {
+        "abbreviation": "LAC",
+        "alternateColor": "c8102e",
+        "color": "12173f",
+        "displayName": "LA Clippers",
+        "id": "12",
+        "isActive": true,
+        "location": "LA",
+        "name": "Clippers",
+        "shortDisplayName": "Clippers"
+       },
+       "type": "team"
+      },
+      {
+       "homeAway": "away",
+       "id": "30",
+       "linescores": [
+        {
+         "displayValue": "21",
+         "period": 1,
+         "value": 21.0
+        },
+        {
+         "displayValue": "31",
+         "period": 2,
+         "value": 31.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        }
+       ],
+       "order": 1,
+       "score": "59",
+       "team": {
+        "abbreviation": "CHA",
+        "alternateColor": "1d1060",
+        "color": "008ca8",
+        "displayName": "Charlotte Hornets",
+        "id": "30",
+        "isActive": true,
+        "location": "Charlotte",
+        "name": "Hornets",
+        "shortDisplayName": "Hornets"
+       },
+       "type": "team"
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-15T21:30Z",
+     "id": "401909987",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": true,
+     "startDate": "2026-11-15T21:30Z",
+     "status": {
+      "clock": 583.0,
+      "displayClock": "9:43",
+      "period": 3,
+      "type": {
+       "completed": false,
+       "description": "In Progress",
+       "detail": "9:43 - 3rd Quarter",
+       "id": "2",
+       "name": "STATUS_IN_PROGRESS",
+       "shortDetail": "9:43 - 3rd",
+       "state": "in"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-15T21:30Z",
+   "id": "401909987",
+   "name": "Charlotte Hornets at LA Clippers",
+   "shortName": "CHA @ LAC",
+   "status": {
+    "clock": 583.0,
+    "displayClock": "9:43",
+    "period": 3,
+    "type": {
+     "completed": false,
+     "description": "In Progress",
+     "detail": "9:43 - 3rd Quarter",
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "shortDetail": "9:43 - 3rd",
+     "state": "in"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 21024,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "20",
+       "linescores": [
+        {
+         "displayValue": "29",
+         "period": 1,
+         "value": 29.0
+        },
+        {
+         "displayValue": "29",
+         "period": 2,
+         "value": 29.0
+        },
+        {
+         "displayValue": "39",
+         "period": 3,
+         "value": 39.0
+        },
+        {
+         "displayValue": "34",
+         "period": 4,
+         "value": 34.0
+        }
+       ],
+       "order": 0,
+       "score": "131",
+       "team": {
+        "abbreviation": "PHI",
+        "alternateColor": "e01234",
+        "color": "1d428a",
+        "displayName": "Philadelphia 76ers",
+        "id": "20",
+        "isActive": true,
+        "location": "Philadelphia",
+        "name": "76ers",
+        "shortDisplayName": "76ers"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "11",
+       "linescores": [
+        {
+         "displayValue": "35",
+         "period": 1,
+         "value": 35.0
+        },
+        {
+         "displayValue": "22",
+         "period": 2,
+         "value": 22.0
+        },
+        {
+         "displayValue": "30",
+         "period": 3,
+         "value": 30.0
+        },
+        {
+         "displayValue": "37",
+         "period": 4,
+         "value": 37.0
+        }
+       ],
+       "order": 1,
+       "score": "124",
+       "team": {
+        "abbreviation": "IND",
+        "alternateColor": "ffd520",
+        "color": "0c2340",
+        "displayName": "Indiana Pacers",
+        "id": "11",
+        "isActive": true,
+        "location": "Indiana",
+        "name": "Pacers",
+        "shortDisplayName": "Pacers"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-15T18:00Z",
+     "id": "401909985",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": true,
+     "startDate": "2026-11-15T18:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-15T18:00Z",
+   "id": "401909985",
+   "name": "Indiana Pacers at Philadelphia 76ers",
+   "shortName": "IND @ PHI",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

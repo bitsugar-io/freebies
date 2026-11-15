@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -59,36 +61,18 @@ func (h *Handler) ListLeagues(w http.ResponseWriter, r *http.Request) {
 func eventToResponse(e db.Event) EventResponse {
 	var regionCode *string
 	var regionName *string
-	if e.RegionCode.Valid {
+	if e.RegionCode.Valid && e.RegionCode.String != "" {
 		regionCode = &e.RegionCode.String
 		if name, ok := RegionNames[e.RegionCode.String]; ok {
 			regionName = &name
 		}
 	}
-	var teamColor *string
-	if e.TeamColor.Valid {
-		teamColor = &e.TeamColor.String
-	}
-	var icon *string
-	if e.Icon.Valid {
-		icon = &e.Icon.String
-	}
-	var triggerRule *string
-	if e.TriggerRule.Valid {
-		triggerRule = &e.TriggerRule.String
-	}
-	var offerUrl *string
-	if e.OfferUrl.Valid {
-		offerUrl = &e.OfferUrl.String
-	}
-	var affiliateUrl *string
-	if e.AffiliateUrl.Valid {
-		affiliateUrl = &e.AffiliateUrl.String
-	}
-	var affiliateTagline *string
-	if e.AffiliateTagline.Valid {
-		affiliateTagline = &e.AffiliateTagline.String
-	}
+	teamColor := optionalString(e.TeamColor)
+	icon := optionalString(e.Icon)
+	triggerRule := optionalString(e.TriggerRule)
+	offerUrl := optionalString(e.OfferUrl)
+	affiliateUrl := optionalString(e.AffiliateUrl)
+	affiliateTagline := optionalString(e.AffiliateTagline)
 	return EventResponse{
 		ID:               e.ID,
 		OfferID:          e.OfferID,
@@ -108,6 +92,7 @@ func eventToResponse(e db.Event) EventResponse {
 		AffiliateUrl:     affiliateUrl,
 		AffiliateTagline: affiliateTagline,
 		IsActive:         e.IsActive == 1,
+		SpriteID:         nullStringPtr(e.SpriteID),
 	}
 }
 
@@ -121,9 +106,12 @@ func (h *Handler) ListEvents(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := make([]EventResponse, len(events))
+	ptrs := make([]*EventResponse, len(events))
 	for i, e := range events {
 		response[i] = eventToResponse(e)
+		ptrs[i] = &response[i]
 	}
+	h.attachSprites(r.Context(), ptrs...)
 	respondJSON(w, http.StatusOK, response)
 }
 
@@ -140,7 +128,9 @@ func (h *Handler) GetEvent(w http.ResponseWriter, r *http.Request) {
 		respondError(w, http.StatusInternalServerError, "failed to get event")
 		return
 	}
-	respondJSON(w, http.StatusOK, eventToResponse(event))
+	resp := eventToResponse(event)
+	h.attachSprites(r.Context(), &resp)
+	respondJSON(w, http.StatusOK, resp)
 }
 
 func userToResponse(u db.User, includeToken bool) UserResponse {
@@ -152,12 +142,18 @@ func userToResponse(u db.User, includeToken bool) UserResponse {
 	if includeToken && u.Token.Valid {
 		token = &u.Token.String
 	}
+	var paused *string
+	if u.AlertsPausedUntil.Valid && u.AlertsPausedUntil.Time.After(time.Now()) {
+		v := u.AlertsPausedUntil.Time.UTC().Format(time.RFC3339)
+		paused = &v
+	}
 	return UserResponse{
-		ID:        u.ID,
-		DeviceID:  u.DeviceID,
-		Platform:  u.Platform,
-		PushToken: pushToken,
-		Token:     token,
+		AlertsPausedUntil: paused,
+		ID:                u.ID,
+		DeviceID:          u.DeviceID,
+		Platform:          u.Platform,
+		PushToken:         pushToken,
+		Token:             token,
 	}
 }
 
@@ -308,21 +304,12 @@ func (h *Handler) ListSubscriptions(w http.ResponseWriter, r *http.Request) {
 	response := make([]SubscriptionResponse, len(rows))
 	for i, row := range rows {
 		var regionCode *string
-		if row.RegionCode.Valid {
+		if row.RegionCode.Valid && row.RegionCode.String != "" {
 			regionCode = &row.RegionCode.String
 		}
-		var teamColor *string
-		if row.TeamColor.Valid {
-			teamColor = &row.TeamColor.String
-		}
-		var icon *string
-		if row.Icon.Valid {
-			icon = &row.Icon.String
-		}
-		var triggerRule *string
-		if row.TriggerRule.Valid {
-			triggerRule = &row.TriggerRule.String
-		}
+		teamColor := optionalString(row.TeamColor)
+		icon := optionalString(row.Icon)
+		triggerRule := optionalString(row.TriggerRule)
 		response[i] = SubscriptionResponse{
 			ID:      row.ID,
 			UserID:  row.UserID,
@@ -342,9 +329,15 @@ func (h *Handler) ListSubscriptions(w http.ResponseWriter, r *http.Request) {
 				TriggerRule:      triggerRule,
 				RegionCode:       regionCode,
 				IsActive:         row.IsActive == 1,
+				SpriteID:         nullStringPtr(row.SpriteID),
 			},
 		}
 	}
+	ptrs := make([]*EventResponse, len(response))
+	for i := range response {
+		ptrs[i] = &response[i].Event
+	}
+	h.attachSprites(r.Context(), ptrs...)
 	respondJSON(w, http.StatusOK, response)
 }
 
@@ -450,42 +443,24 @@ func (h *Handler) ListActiveDeals(w http.ResponseWriter, r *http.Request) {
 
 		var regionCode *string
 		var regionName *string
-		if row.RegionCode.Valid {
+		if row.RegionCode.Valid && row.RegionCode.String != "" {
 			regionCode = &row.RegionCode.String
 			if name, ok := RegionNames[row.RegionCode.String]; ok {
 				regionName = &name
 			}
 		}
 
-		var teamColor *string
-		if row.TeamColor.Valid {
-			teamColor = &row.TeamColor.String
-		}
+		teamColor := optionalString(row.TeamColor)
 
-		var icon *string
-		if row.Icon.Valid {
-			icon = &row.Icon.String
-		}
+		icon := optionalString(row.Icon)
 
-		var triggerRule *string
-		if row.TriggerRule.Valid {
-			triggerRule = &row.TriggerRule.String
-		}
+		triggerRule := optionalString(row.TriggerRule)
 
-		var offerUrl *string
-		if row.OfferUrl.Valid {
-			offerUrl = &row.OfferUrl.String
-		}
+		offerUrl := optionalString(row.OfferUrl)
 
-		var affiliateUrl *string
-		if row.AffiliateUrl.Valid {
-			affiliateUrl = &row.AffiliateUrl.String
-		}
+		affiliateUrl := optionalString(row.AffiliateUrl)
 
-		var affiliateTagline *string
-		if row.AffiliateTagline.Valid {
-			affiliateTagline = &row.AffiliateTagline.String
-		}
+		affiliateTagline := optionalString(row.AffiliateTagline)
 
 		var dismissalType *string
 		if row.DismissalType.Valid {
@@ -497,6 +472,7 @@ func (h *Handler) ListActiveDeals(w http.ResponseWriter, r *http.Request) {
 			EventID:     row.EventID,
 			TriggeredAt: row.TriggeredAt.Format("2006-01-02T15:04:05Z07:00"),
 			ExpiresAt:   expiresAt,
+			AvailableAt: nullTimePtr(row.AvailableAt),
 			Event: EventResponse{
 				ID:               row.ID_2,
 				OfferID:          row.OfferID,
@@ -516,11 +492,65 @@ func (h *Handler) ListActiveDeals(w http.ResponseWriter, r *http.Request) {
 				AffiliateUrl:     affiliateUrl,
 				AffiliateTagline: affiliateTagline,
 				IsActive:         row.IsActive == 1,
+				SpriteID:         nullStringPtr(row.SpriteID),
 			},
 			IsDismissed:   row.IsDismissed == 1,
 			DismissalType: dismissalType,
 		}
 	}
+	ptrs := make([]*EventResponse, len(response))
+	for i := range response {
+		ptrs[i] = &response[i].Event
+	}
+	h.attachSprites(r.Context(), ptrs...)
+	respondJSON(w, http.StatusOK, response)
+}
+
+const (
+	defaultClaimedLimit = 100
+	maxClaimedLimit     = 500
+)
+
+// ListClaimedDeals returns every deal the user claimed ('got_it'), newest claim first. Unlike
+// active deals it keeps deals whose window has closed, so the trophy case never loses history.
+func (h *Handler) ListClaimedDeals(w http.ResponseWriter, r *http.Request) {
+	userID := chi.URLParam(r, "userId")
+
+	limit := defaultClaimedLimit
+	if raw := r.URL.Query().Get("limit"); raw != "" {
+		n, err := strconv.Atoi(raw)
+		if err != nil || n < 1 {
+			respondError(w, http.StatusBadRequest, "limit must be a positive integer")
+			return
+		}
+		limit = min(n, maxClaimedLimit)
+	}
+
+	rows, err := h.queries.ListClaimedDealsForUser(r.Context(), db.ListClaimedDealsForUserParams{
+		UserID: userID,
+		Limit:  int64(limit),
+	})
+	if err != nil {
+		h.logger.Error("failed to list claimed deals", "error", err)
+		respondError(w, http.StatusInternalServerError, "failed to list claimed deals")
+		return
+	}
+
+	const layout = "2006-01-02T15:04:05Z07:00"
+	response := make([]ClaimedDealResponse, len(rows))
+	ptrs := make([]*EventResponse, len(rows))
+	for i, row := range rows {
+		response[i] = ClaimedDealResponse{
+			ID:          row.TriggeredEventID,
+			EventID:     row.Event.ID,
+			ClaimedAt:   row.DismissedAt.UTC().Format(layout),
+			TriggeredAt: row.TriggeredAt.UTC().Format(layout),
+			AvailableAt: nullTimePtr(row.AvailableAt),
+			Event:       eventToResponse(row.Event),
+		}
+		ptrs[i] = &response[i].Event
+	}
+	h.attachSprites(r.Context(), ptrs...)
 	respondJSON(w, http.StatusOK, response)
 }
 
@@ -595,4 +625,23 @@ func (h *Handler) DeleteDismissal(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// nullTimePtr formats a nullable time as RFC 3339 UTC, nil when NULL.
+func nullTimePtr(t sql.NullTime) *string {
+	if !t.Valid {
+		return nil
+	}
+	s := t.Time.UTC().Format("2006-01-02T15:04:05Z07:00")
+	return &s
+}
+
+// optionalString maps a nullable column to an omitted JSON field. NULL and "" both become nil, so
+// clients never get an empty string: the 1.x app renders `{value && <Text>…}`, and "" there is a
+// bare text node outside <Text>.
+func optionalString(ns sql.NullString) *string {
+	if !ns.Valid || ns.String == "" {
+		return nil
+	}
+	return &ns.String
 }

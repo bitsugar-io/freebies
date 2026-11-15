@@ -1,0 +1,274 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 15965,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "6",
+       "linescores": [
+        {
+         "displayValue": "13",
+         "period": 1,
+         "value": 13.0
+        },
+        {
+         "displayValue": "22",
+         "period": 2,
+         "value": 22.0
+        },
+        {
+         "displayValue": "20",
+         "period": 3,
+         "value": 20.0
+        },
+        {
+         "displayValue": "20",
+         "period": 4,
+         "value": 20.0
+        }
+       ],
+       "order": 0,
+       "score": "75",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "fdb927",
+        "color": "552583",
+        "displayName": "Los Angeles Sparks",
+        "id": "6",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Sparks",
+        "shortDisplayName": "Sparks"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "homeAway": "away",
+       "id": "129689",
+       "linescores": [
+        {
+         "displayValue": "15",
+         "period": 1,
+         "value": 15.0
+        },
+        {
+         "displayValue": "11",
+         "period": 2,
+         "value": 11.0
+        },
+        {
+         "displayValue": "20",
+         "period": 3,
+         "value": 20.0
+        },
+        {
+         "displayValue": "30",
+         "period": 4,
+         "value": 30.0
+        }
+       ],
+       "order": 1,
+       "score": "76",
+       "team": {
+        "abbreviation": "GS",
+        "alternateColor": "000000",
+        "color": "b38fcf",
+        "displayName": "Golden State Valkyries",
+        "id": "129689",
+        "isActive": true,
+        "location": "Golden State",
+        "name": "Valkyries",
+        "shortDisplayName": "Valkyries"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-25T02:00Z",
+     "id": "401857218",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-25T02:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-25T02:00Z",
+   "id": "401857218",
+   "name": "Golden State Valkyries at Los Angeles Sparks",
+   "shortName": "GS @ LA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 8911,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "18",
+       "linescores": [
+        {
+         "displayValue": "23",
+         "period": 1,
+         "value": 23.0
+        },
+        {
+         "displayValue": "15",
+         "period": 2,
+         "value": 15.0
+        },
+        {
+         "displayValue": "31",
+         "period": 3,
+         "value": 31.0
+        },
+        {
+         "displayValue": "26",
+         "period": 4,
+         "value": 26.0
+        }
+       ],
+       "order": 0,
+       "score": "95",
+       "team": {
+        "abbreviation": "CON",
+        "alternateColor": "0a2240",
+        "color": "f05023",
+        "displayName": "Connecticut Sun",
+        "id": "18",
+        "isActive": true,
+        "location": "Connecticut",
+        "name": "Sun",
+        "shortDisplayName": "Sun"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "131935",
+       "linescores": [
+        {
+         "displayValue": "20",
+         "period": 1,
+         "value": 20.0
+        },
+        {
+         "displayValue": "16",
+         "period": 2,
+         "value": 16.0
+        },
+        {
+         "displayValue": "21",
+         "period": 3,
+         "value": 21.0
+        },
+        {
+         "displayValue": "24",
+         "period": 4,
+         "value": 24.0
+        }
+       ],
+       "order": 1,
+       "score": "81",
+       "team": {
+        "abbreviation": "TOR",
+        "alternateColor": "7B1B38",
+        "color": "33476D",
+        "displayName": "Toronto Tempo",
+        "id": "131935",
+        "isActive": true,
+        "location": "Toronto",
+        "name": "Tempo",
+        "shortDisplayName": "Tempo"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-24T23:00Z",
+     "id": "401857215",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-24T23:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-24T23:00Z",
+   "id": "401857215",
+   "name": "Toronto Tempo at Connecticut Sun",
+   "shortName": "TOR @ CON",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,161 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 73882,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "14",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "20",
+         "period": 4,
+         "value": 20.0
+        },
+        {
+         "displayValue": "0",
+         "period": 5,
+         "value": 0.0
+        }
+       ],
+       "order": 0,
+       "score": "34",
+       "team": {
+        "abbreviation": "LAR",
+        "alternateColor": "ffd100",
+        "color": "003594",
+        "displayName": "Los Angeles Rams",
+        "id": "14",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Rams",
+        "shortDisplayName": "Rams"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "2",
+       "linescores": [
+        {
+         "displayValue": "6",
+         "period": 1,
+         "value": 6.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "6",
+         "period": 3,
+         "value": 6.0
+        },
+        {
+         "displayValue": "15",
+         "period": 4,
+         "value": 15.0
+        },
+        {
+         "displayValue": "3",
+         "period": 5,
+         "value": 3.0
+        }
+       ],
+       "order": 1,
+       "score": "37",
+       "team": {
+        "abbreviation": "BUF",
+        "alternateColor": "d50a0a",
+        "color": "00338d",
+        "displayName": "Buffalo Bills",
+        "id": "2",
+        "isActive": true,
+        "location": "Buffalo",
+        "name": "Bills",
+        "shortDisplayName": "Bills"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-10-13T00:15Z",
+     "id": "401872994",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-13T00:15Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 5,
+      "type": {
+       "altDetail": "OT",
+       "completed": true,
+       "description": "Final",
+       "detail": "Final/OT",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final/OT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-13T00:15Z",
+   "id": "401872994",
+   "name": "Buffalo Bills at Los Angeles Rams",
+   "shortName": "BUF @ LAR",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 5,
+    "type": {
+     "altDetail": "OT",
+     "completed": true,
+     "description": "Final",
+     "detail": "Final/OT",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final/OT",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 5
+   }
+  }
+ ]
+}

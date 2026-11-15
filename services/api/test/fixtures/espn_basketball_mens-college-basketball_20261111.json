@@ -1,0 +1,373 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 3312,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 9
+       },
+       "homeAway": "home",
+       "id": "26",
+       "linescores": [
+        {
+         "displayValue": "51",
+         "period": 1,
+         "value": 51.0
+        },
+        {
+         "displayValue": "55",
+         "period": 2,
+         "value": 55.0
+        }
+       ],
+       "order": 0,
+       "score": "106",
+       "team": {
+        "abbreviation": "UCLA",
+        "alternateColor": "f2a900",
+        "color": "2774ae",
+        "conferenceId": "7",
+        "displayName": "UCLA Bruins",
+        "id": "26",
+        "isActive": true,
+        "location": "UCLA",
+        "name": "Bruins",
+        "shortDisplayName": "UCLA"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "2029",
+       "linescores": [
+        {
+         "displayValue": "9",
+         "period": 1,
+         "value": 9.0
+        },
+        {
+         "displayValue": "28",
+         "period": 2,
+         "value": 28.0
+        }
+       ],
+       "order": 1,
+       "score": "37",
+       "team": {
+        "abbreviation": "UAPB",
+        "alternateColor": "eaaa00",
+        "color": "e0aa0f",
+        "conferenceId": "26",
+        "displayName": "Arkansas-Pine Bluff Golden Lions",
+        "id": "2029",
+        "isActive": true,
+        "location": "Arkansas-Pine Bluff",
+        "name": "Golden Lions",
+        "shortDisplayName": "AR-Pine Bluff"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-12T02:00Z",
+     "id": "401930177",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-12T02:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-12T02:00Z",
+   "id": "401930177",
+   "name": "Arkansas-Pine Bluff Golden Lions at UCLA Bruins",
+   "shortName": "UAPB @ UCLA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 5087,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "25",
+       "linescores": [
+        {
+         "displayValue": "30",
+         "period": 1,
+         "value": 30.0
+        },
+        {
+         "displayValue": "35",
+         "period": 2,
+         "value": 35.0
+        }
+       ],
+       "order": 0,
+       "score": "65",
+       "team": {
+        "abbreviation": "CAL",
+        "alternateColor": "ffc72c",
+        "color": "041e42",
+        "conferenceId": "2",
+        "displayName": "California Golden Bears",
+        "id": "25",
+        "isActive": true,
+        "location": "California",
+        "name": "Golden Bears",
+        "shortDisplayName": "California"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "curatedRank": {
+        "current": 21
+       },
+       "homeAway": "away",
+       "id": "30",
+       "linescores": [
+        {
+         "displayValue": "39",
+         "period": 1,
+         "value": 39.0
+        },
+        {
+         "displayValue": "38",
+         "period": 2,
+         "value": 38.0
+        }
+       ],
+       "order": 1,
+       "score": "77",
+       "team": {
+        "abbreviation": "USC",
+        "alternateColor": "ffc72c",
+        "color": "9d2235",
+        "conferenceId": "7",
+        "displayName": "USC Trojans",
+        "id": "30",
+        "isActive": true,
+        "location": "USC",
+        "name": "Trojans",
+        "shortDisplayName": "USC"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-12T04:00Z",
+     "id": "401918054",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-12T04:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-12T04:00Z",
+   "id": "401918054",
+   "name": "USC Trojans at California Golden Bears",
+   "shortName": "USC @ CAL",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 7035,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 8
+       },
+       "homeAway": "home",
+       "id": "248",
+       "linescores": [
+        {
+         "displayValue": "45",
+         "period": 1,
+         "value": 45.0
+        },
+        {
+         "displayValue": "47",
+         "period": 2,
+         "value": 47.0
+        }
+       ],
+       "order": 0,
+       "score": "92",
+       "team": {
+        "abbreviation": "HOU",
+        "alternateColor": "ffffff",
+        "color": "c8102e",
+        "conferenceId": "8",
+        "displayName": "Houston Cougars",
+        "id": "248",
+        "isActive": true,
+        "location": "Houston",
+        "name": "Cougars",
+        "shortDisplayName": "Houston"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "55",
+       "linescores": [
+        {
+         "displayValue": "23",
+         "period": 1,
+         "value": 23.0
+        },
+        {
+         "displayValue": "23",
+         "period": 2,
+         "value": 23.0
+        }
+       ],
+       "order": 1,
+       "score": "46",
+       "team": {
+        "abbreviation": "JXST",
+        "alternateColor": "000000",
+        "color": "cc0000",
+        "conferenceId": "11",
+        "displayName": "Jacksonville State Gamecocks",
+        "id": "55",
+        "isActive": true,
+        "location": "Jacksonville State",
+        "name": "Gamecocks",
+        "shortDisplayName": "Jax State"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-12T01:00Z",
+     "id": "401925702",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-12T01:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-12T01:00Z",
+   "id": "401925702",
+   "name": "Jacksonville State Gamecocks at Houston Cougars",
+   "shortName": "JXST @ HOU",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

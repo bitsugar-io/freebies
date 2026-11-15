@@ -1,0 +1,298 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 45800,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 4
+       },
+       "homeAway": "home",
+       "id": "26",
+       "linescores": [
+        {
+         "displayValue": "7",
+         "period": 1,
+         "value": 7.0
+        },
+        {
+         "displayValue": "3",
+         "period": 2,
+         "value": 3.0
+        },
+        {
+         "displayValue": "2",
+         "period": 3,
+         "value": 2.0
+        },
+        {
+         "displayValue": "10",
+         "period": 4,
+         "value": 10.0
+        }
+       ],
+       "order": 0,
+       "score": "22",
+       "team": {
+        "abbreviation": "UCLA",
+        "alternateColor": "f2a900",
+        "color": "2774ae",
+        "conferenceId": "5",
+        "displayName": "UCLA Bruins",
+        "id": "26",
+        "isActive": true,
+        "location": "UCLA",
+        "name": "Bruins",
+        "shortDisplayName": "UCLA"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "356",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 2,
+         "value": 0.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 4,
+         "value": 7.0
+        }
+       ],
+       "order": 1,
+       "score": "14",
+       "team": {
+        "abbreviation": "ILL",
+        "alternateColor": "13294b",
+        "color": "ff5f05",
+        "conferenceId": "5",
+        "displayName": "Illinois Fighting Illini",
+        "id": "356",
+        "isActive": true,
+        "location": "Illinois",
+        "name": "Fighting Illini",
+        "shortDisplayName": "Illinois"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": true,
+     "date": "2026-11-14T02:00Z",
+     "dateValid": true,
+     "id": "401858526",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-14T02:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-14T02:00Z",
+   "id": "401858526",
+   "name": "Illinois Fighting Illini at UCLA Bruins",
+   "shortName": "ILL @ UCLA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 11
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 47495,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "38",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "21",
+         "period": 2,
+         "value": 21.0
+        },
+        {
+         "displayValue": "14",
+         "period": 3,
+         "value": 14.0
+        },
+        {
+         "displayValue": "7",
+         "period": 4,
+         "value": 7.0
+        }
+       ],
+       "order": 0,
+       "score": "42",
+       "team": {
+        "abbreviation": "COLO",
+        "alternateColor": "000000",
+        "color": "cfb87c",
+        "conferenceId": "4",
+        "displayName": "Colorado Buffaloes",
+        "id": "38",
+        "isActive": true,
+        "location": "Colorado",
+        "name": "Buffaloes",
+        "shortDisplayName": "Colorado"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 14
+       },
+       "homeAway": "away",
+       "id": "248",
+       "linescores": [
+        {
+         "displayValue": "3",
+         "period": 1,
+         "value": 3.0
+        },
+        {
+         "displayValue": "17",
+         "period": 2,
+         "value": 17.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "12",
+         "period": 4,
+         "value": 12.0
+        }
+       ],
+       "order": 1,
+       "score": "32",
+       "team": {
+        "abbreviation": "HOU",
+        "alternateColor": "ffffff",
+        "color": "c8102e",
+        "conferenceId": "4",
+        "displayName": "Houston Cougars",
+        "id": "248",
+        "isActive": true,
+        "location": "Houston",
+        "name": "Cougars",
+        "shortDisplayName": "Houston"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": true,
+     "date": "2026-11-14T03:15Z",
+     "dateValid": true,
+     "id": "401856860",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-14T03:15Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-14T03:15Z",
+   "id": "401856860",
+   "name": "Houston Cougars at Colorado Buffaloes",
+   "shortName": "HOU @ COLO",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 11
+   }
+  }
+ ]
+}

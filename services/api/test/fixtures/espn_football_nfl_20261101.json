@@ -1,0 +1,294 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 73621,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "14",
+       "linescores": [
+        {
+         "displayValue": "3",
+         "period": 1,
+         "value": 3.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "14",
+         "period": 3,
+         "value": 14.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 0,
+       "score": "24",
+       "team": {
+        "abbreviation": "LAR",
+        "alternateColor": "ffd100",
+        "color": "003594",
+        "displayName": "Los Angeles Rams",
+        "id": "14",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Rams",
+        "shortDisplayName": "Rams"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "24",
+       "linescores": [
+        {
+         "displayValue": "3",
+         "period": 1,
+         "value": 3.0
+        },
+        {
+         "displayValue": "6",
+         "period": 2,
+         "value": 6.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 1,
+       "score": "9",
+       "team": {
+        "abbreviation": "LAC",
+        "alternateColor": "ffc20e",
+        "color": "0080c6",
+        "displayName": "Los Angeles Chargers",
+        "id": "24",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Chargers",
+        "shortDisplayName": "Chargers"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-01T21:05Z",
+     "id": "401873032",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-01T21:05Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-01T21:05Z",
+   "id": "401873032",
+   "name": "Los Angeles Chargers at Los Angeles Rams",
+   "shortName": "LAC @ LAR",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 8
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 60642,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "2",
+       "linescores": [
+        {
+         "displayValue": "10",
+         "period": 1,
+         "value": 10.0
+        },
+        {
+         "displayValue": "6",
+         "period": 2,
+         "value": 6.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "13",
+         "period": 4,
+         "value": 13.0
+        }
+       ],
+       "order": 0,
+       "score": "36",
+       "team": {
+        "abbreviation": "BUF",
+        "alternateColor": "d50a0a",
+        "color": "00338d",
+        "displayName": "Buffalo Bills",
+        "id": "2",
+        "isActive": true,
+        "location": "Buffalo",
+        "name": "Bills",
+        "shortDisplayName": "Bills"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "33",
+       "linescores": [
+        {
+         "displayValue": "7",
+         "period": 1,
+         "value": 7.0
+        },
+        {
+         "displayValue": "0",
+         "period": 2,
+         "value": 0.0
+        },
+        {
+         "displayValue": "3",
+         "period": 3,
+         "value": 3.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 1,
+       "score": "10",
+       "team": {
+        "abbreviation": "BAL",
+        "alternateColor": "000000",
+        "color": "29126f",
+        "displayName": "Baltimore Ravens",
+        "id": "33",
+        "isActive": true,
+        "location": "Baltimore",
+        "name": "Ravens",
+        "shortDisplayName": "Ravens"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-01T18:00Z",
+     "id": "401873026",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-01T18:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-01T18:00Z",
+   "id": "401873026",
+   "name": "Baltimore Ravens at Buffalo Bills",
+   "shortName": "BAL @ BUF",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 8
+   }
+  }
+ ]
+}

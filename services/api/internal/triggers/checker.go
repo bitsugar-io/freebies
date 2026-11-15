@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/retr0h/freebie/services/api/internal/db"
@@ -19,29 +19,75 @@ type Rule struct {
 	Operator         string `json:"operator"`
 	Value            int    `json:"value"`
 	RedemptionWindow string `json:"redemption_window"`
+	// ExpiresAtLocal optionally narrows the deadline to a Pacific-time clock
+	// time ("HH:MM", 24h) on the day the window ends, e.g. "10:30" for a
+	// breakfast-only deal. Empty means end of day (23:59:59).
+	ExpiresAtLocal string `json:"expires_at_local,omitempty"`
+	// UnlockAfterDays delays the deal: its code works from midnight Pacific
+	// that many days after the game date (2 = "unlocks 2 days after the game").
+	// Default 0: usable as soon as it triggers.
+	UnlockAfterDays int `json:"unlock_after_days,omitempty"`
+	// ValidDays is how many calendar days the deal lasts. With UnlockAfterDays
+	// the first day is the unlock day (7 = "unlock day plus the next 6",
+	// default 1); without, the first day is the day after the game, which is
+	// when the check runs (3 = that day and the next two), and it replaces
+	// RedemptionWindow. Every window ends at 23:59:59 Pacific on its last day.
+	// expires_at_local still applies on the last day when UnlockAfterDays is 0;
+	// it is ignored when the deal unlocks later.
+	ValidDays int `json:"valid_days,omitempty"`
 }
 
 // Checker orchestrates trigger checking for events
 type Checker struct {
 	queries *db.Queries
 	loc     *time.Location
+	logger  *slog.Logger
+	now     func() time.Time
 }
 
+// Option configures a Checker.
+type Option func(*Checker)
+
+// WithLogger sets the structured logger (default slog.Default()).
+func WithLogger(l *slog.Logger) Option { return func(c *Checker) { c.logger = l } }
+
+// WithClock sets the clock used to decide whether a deal's window has already
+// closed; tests use it.
+func WithClock(now func() time.Time) Option { return func(c *Checker) { c.now = now } }
+
 // NewChecker creates a new trigger checker
-func NewChecker(queries *db.Queries) *Checker {
-	loc, _ := time.LoadLocation("America/Los_Angeles")
-	return &Checker{
-		queries: queries,
-		loc:     loc,
+func NewChecker(queries *db.Queries, opts ...Option) *Checker {
+	loc, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		loc = time.FixedZone("PT", -8*3600)
 	}
+	c := &Checker{queries: queries, loc: loc, logger: slog.Default(), now: time.Now}
+	for _, o := range opts {
+		o(c)
+	}
+	return c
 }
+
+// SkippedEvent is a deal the run did not record: it can never fire, or its
+// redemption window had already closed when the run reached it.
+type SkippedEvent struct {
+	EventID string `json:"eventId"`
+	Status  string `json:"status"`
+	Reason  string `json:"reason"`
+}
+
+// StatusExpired marks a triggered deal whose window had already closed.
+const StatusExpired = "EXPIRED"
 
 // CheckResult contains the result of checking a single event
 type CheckResult struct {
 	EventID          string
 	TeamID           string
 	Triggered        bool
-	TriggeredEventID string // ID of created triggered_event (empty if already existed)
+	TriggeredEventID string    // ID of created triggered_event (empty if already existed)
+	ExpiresAt        time.Time // redemption deadline of the created triggered_event
+	Expired          bool      // the rule fired but its window had already closed; nothing recorded
+	AvailableAt      time.Time // when the deal unlocks; zero when usable immediately
 	Rule             *Rule
 	Stats            *sources.GameStats
 	Event            *db.Event
@@ -49,44 +95,67 @@ type CheckResult struct {
 }
 
 // CheckAll checks all active events for trigger conditions (yesterday's games)
-func (c *Checker) CheckAll(ctx context.Context) ([]CheckResult, error) {
-	yesterday := time.Now().In(c.loc).AddDate(0, 0, -1)
+func (c *Checker) CheckAll(ctx context.Context) ([]CheckResult, []SkippedEvent, error) {
+	yesterday := c.now().In(c.loc).AddDate(0, 0, -1)
 	return c.CheckAllForDate(ctx, yesterday)
 }
 
-// CheckAllForDate checks all active events for a specific date
-func (c *Checker) CheckAllForDate(ctx context.Context, date time.Time) ([]CheckResult, error) {
+// CheckAllForDate checks all active events for the games on date (only its
+// Y/M/D, read as a Pacific date, are used). It also returns the deals it
+// skipped: ones that can never fire, and ones whose window had already closed.
+func (c *Checker) CheckAllForDate(ctx context.Context, date time.Time) ([]CheckResult, []SkippedEvent, error) {
 	// Get all active events with trigger rules
 	events, err := c.queries.ListActiveEvents(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("listing active events: %w", err)
+		return nil, nil, fmt.Errorf("listing active events: %w", err)
 	}
 
 	var results []CheckResult
+	var skipped []SkippedEvent
+
+	// Capability check: a deal whose league has no source, or whose metric the
+	// source never emits, can never fire. Say so loudly and skip it instead of
+	// failing the whole run or failing quietly every morning.
+	broken := map[string]bool{}
+	for _, row := range Failures(Audit(events)) {
+		c.logger.Warn("deal can never fire; skipping it",
+			"event_id", row.EventID, "status", string(row.Status), "reason", row.Detail)
+		skipped = append(skipped, SkippedEvent{
+			EventID: row.EventID, Status: string(row.Status), Reason: row.Detail,
+		})
+		broken[row.EventID] = true
+	}
 
 	for _, event := range events {
+		if broken[event.ID] {
+			continue
+		}
 		result := c.checkEventForDate(ctx, event, date)
 		result.Event = &event
 
 		if result.Error != nil {
-			log.Printf("Error checking event %s: %v", event.ID, result.Error)
+			c.logger.Error("checking event failed", "event_id", event.ID, "error", result.Error)
 			results = append(results, result)
 			continue
 		}
 
 		if result.Triggered {
-			// Create triggered event
-			triggeredID, err := c.createTriggeredEvent(ctx, event, result)
-			if err != nil {
-				log.Printf("Error creating triggered event for %s: %v", event.ID, err)
+			if err := c.createTriggeredEvent(ctx, event, &result, date); err != nil {
+				c.logger.Error("creating triggered event failed", "event_id", event.ID, "error", err)
 				result.Error = err
 			}
-			result.TriggeredEventID = triggeredID
+			if result.Expired {
+				skipped = append(skipped, SkippedEvent{
+					EventID: event.ID,
+					Status:  StatusExpired,
+					Reason:  "redemption window already closed at " + result.ExpiresAt.In(c.loc).Format(time.RFC3339),
+				})
+			}
 		}
 		results = append(results, result)
 	}
 
-	return results, nil
+	return results, skipped, nil
 }
 
 func (c *Checker) checkEventForDate(ctx context.Context, event db.Event, date time.Time) CheckResult {
@@ -134,57 +203,126 @@ func (c *Checker) checkEventForDate(ctx context.Context, event db.Event, date ti
 	return result
 }
 
-func (c *Checker) createTriggeredEvent(ctx context.Context, event db.Event, result CheckResult) (string, error) {
+// createTriggeredEvent records the deal for result and fills in its id and
+// window. A deal whose window has already closed (a late or backfill run, say
+// a breakfast-only deal checked at noon) is not recorded: result.Expired is set
+// and nothing is created, so no push goes out for it.
+func (c *Checker) createTriggeredEvent(
+	ctx context.Context,
+	event db.Event,
+	result *CheckResult,
+	gameDate time.Time,
+) error {
 	// Check if we already created a triggered event for this game
 	existing, err := c.queries.GetTriggeredEventByGameID(ctx, db.GetTriggeredEventByGameIDParams{
 		EventID: event.ID,
 		GameID:  sql.NullString{String: result.Stats.GameID, Valid: true},
 	})
 	if err != nil && err != sql.ErrNoRows {
-		return "", fmt.Errorf("checking existing triggered event: %w", err)
+		return fmt.Errorf("checking existing triggered event: %w", err)
 	}
 	if existing.ID != "" {
-		log.Printf("Triggered event already exists for game %s", result.Stats.GameID)
-		return "", nil // Already exists, don't notify again
+		c.logger.Info("triggered event already exists", "event_id", event.ID, "game", result.Stats.GameID)
+		return nil // Already exists, don't notify again
 	}
 
-	// Calculate expiration based on redemption window
-	expiresAt := c.calculateExpiration(result.Rule.RedemptionWindow)
+	availableAt, expiresAt := windowFor(gameDate, *result.Rule, c.loc)
+	result.AvailableAt, result.ExpiresAt = availableAt, expiresAt
+	if !expiresAt.After(c.now()) {
+		result.Expired = true
+		c.logger.Warn("deal window already closed; not recording it",
+			"event_id", event.ID,
+			"status", StatusExpired,
+			"reason", "redemption window closed before this run",
+			"game", result.Stats.GameID,
+			"expires_at", expiresAt.In(c.loc).Format(time.RFC3339),
+		)
+		return nil
+	}
+	available := sql.NullTime{}
+	if !availableAt.IsZero() {
+		available = sql.NullTime{Time: availableAt, Valid: true}
+	}
 
 	// Create the triggered event
 	triggeredID := fmt.Sprintf("triggered-%s-%s", event.ID, result.Stats.GameID)
 	_, err = c.queries.CreateTriggeredEvent(ctx, db.CreateTriggeredEventParams{
-		ID:        triggeredID,
-		EventID:   event.ID,
-		GameID:    sql.NullString{String: result.Stats.GameID, Valid: true},
-		ExpiresAt: sql.NullTime{Time: expiresAt, Valid: true},
+		ID:          triggeredID,
+		EventID:     event.ID,
+		GameID:      sql.NullString{String: result.Stats.GameID, Valid: true},
+		ExpiresAt:   sql.NullTime{Time: expiresAt, Valid: true},
+		AvailableAt: available,
 	})
 	if err != nil {
-		return "", fmt.Errorf("creating triggered event: %w", err)
+		return fmt.Errorf("creating triggered event: %w", err)
 	}
 
-	log.Printf("Created triggered event %s (expires %s)", triggeredID, expiresAt.Format(time.RFC3339))
-	return triggeredID, nil
+	result.TriggeredEventID = triggeredID
+	c.logger.Info("created triggered event",
+		"triggered_event_id", triggeredID,
+		"available_at", availableAt.Format(time.RFC3339),
+		"expires_at", expiresAt.Format(time.RFC3339))
+	return nil
 }
 
-func (c *Checker) calculateExpiration(window string) time.Time {
-	now := time.Now().In(c.loc)
+// Window returns the unlock time (zero if usable at once) and deadline, in UTC,
+// the checker would give a deal with rule r for a game on gameDate (Pacific
+// Y/M/D). `deals trigger` uses it so a hand-made deal gets the real window.
+func Window(gameDate time.Time, r Rule) (availableAt, expiresAt time.Time) {
+	return windowFor(gameDate, r, NewChecker(nil).loc)
+}
 
-	switch window {
-	case "next_day":
-		// Expires at end of next day (11:59:59 PM PT), stored as UTC
-		nextDay := now.AddDate(0, 0, 1)
-		return time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 23, 59, 59, 0, c.loc).UTC()
-	case "same_day":
-		// Expires at end of today (11:59:59 PM PT), stored as UTC
-		return time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 0, c.loc).UTC()
-	case "week":
-		// Expires in 7 days
-		return now.AddDate(0, 0, 7).UTC()
-	default:
-		// Default to next day
-		nextDay := now.AddDate(0, 0, 1)
-		return time.Date(nextDay.Year(), nextDay.Month(), nextDay.Day(), 23, 59, 59, 0, c.loc).UTC()
+// windowFor returns when a triggered deal unlocks (zero if immediately) and
+// when it expires, both UTC. Every window is computed from the game's Pacific
+// date (the Y/M/D of gameDate), never from when the check happens to run, and
+// ends at 23:59:59 Pacific on its last valid day (or at expires_at_local on
+// that day for windows that honor it).
+//
+// Day 1 is the day after the game, when the morning check normally runs:
+// same_day lasts through day 1, next_day through day 2, week through day 7,
+// valid_days N through day N.
+func windowFor(gameDate time.Time, r Rule, loc *time.Location) (availableAt, expiresAt time.Time) {
+	// day(n) is midnight Pacific n days after the game date.
+	day := func(n int) time.Time {
+		return time.Date(gameDate.Year(), gameDate.Month(), gameDate.Day()+n, 0, 0, 0, 0, loc)
+	}
+	// lastMoment is the deadline on d: 23:59:59, or atLocal ("HH:MM") if valid.
+	lastMoment := func(d time.Time, atLocal string) time.Time {
+		hour, min, sec := 23, 59, 59
+		if t, err := time.Parse("15:04", atLocal); err == nil {
+			hour, min, sec = t.Hour(), t.Minute(), 0
+		}
+		return time.Date(d.Year(), d.Month(), d.Day(), hour, min, sec, 0, loc).UTC()
+	}
+
+	switch {
+	case r.UnlockAfterDays > 0:
+		days := r.ValidDays
+		if days < 1 {
+			days = 1
+		}
+		unlock := day(r.UnlockAfterDays)
+		return unlock.UTC(), lastMoment(day(r.UnlockAfterDays+days-1), "")
+	case r.ValidDays > 0:
+		return time.Time{}, lastMoment(day(r.ValidDays), r.ExpiresAtLocal)
+	case r.RedemptionWindow == "next_business_day":
+		// "Valid the next business day after the game": the first weekday
+		// after the game date, whole day (or until expires_at_local). It is a
+		// delayed unlock only when that weekday is later than day 1.
+		n := 1
+		for wd := day(n).Weekday(); wd == time.Saturday || wd == time.Sunday; wd = day(n).Weekday() {
+			n++
+		}
+		if n > 1 {
+			availableAt = day(n).UTC()
+		}
+		return availableAt, lastMoment(day(n), r.ExpiresAtLocal)
+	case r.RedemptionWindow == "same_day":
+		return time.Time{}, lastMoment(day(1), r.ExpiresAtLocal)
+	case r.RedemptionWindow == "week":
+		return time.Time{}, lastMoment(day(7), "")
+	default: // "next_day" and anything unknown
+		return time.Time{}, lastMoment(day(2), r.ExpiresAtLocal)
 	}
 }
 

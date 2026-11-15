@@ -100,6 +100,29 @@ components:
         totalEvents:
           type: integer
           description: Total events checked
+        skippedEvents:
+          type: integer
+          description: Deals not recorded (can never fire, or window already closed)
+        skipped:
+          type: array
+          description: The skipped deals and why
+          items:
+            $ref: "#/components/schemas/SkippedEvent"
+
+    SkippedEvent:
+      type: object
+      required:
+        - eventId
+        - status
+        - reason
+      properties:
+        eventId:
+          type: string
+        status:
+          type: string
+          description: NO_SOURCE, UNKNOWN_METRIC, UNKNOWN_TEAM, BAD_RULE or EXPIRED
+        reason:
+          type: string
 
     SendRemindersResult:
       type: object

@@ -1,0 +1,222 @@
+{
+ "boxscore": {
+  "teams": [
+   {
+    "statistics": [
+     {
+      "displayValue": "22",
+      "name": "firstDowns"
+     },
+     {
+      "displayValue": "14",
+      "name": "firstDownsPassing"
+     },
+     {
+      "displayValue": "7",
+      "name": "firstDownsRushing"
+     },
+     {
+      "displayValue": "1",
+      "name": "firstDownsPenalty"
+     },
+     {
+      "displayValue": "3-14",
+      "name": "thirdDownEff"
+     },
+     {
+      "displayValue": "3-3",
+      "name": "fourthDownEff"
+     },
+     {
+      "displayValue": "73",
+      "name": "totalOffensivePlays"
+     },
+     {
+      "displayValue": "343",
+      "name": "totalYards"
+     },
+     {
+      "displayValue": "4.7",
+      "name": "yardsPerPlay"
+     },
+     {
+      "displayValue": "11",
+      "name": "totalDrives"
+     },
+     {
+      "displayValue": "219",
+      "name": "netPassingYards"
+     },
+     {
+      "displayValue": "26/43",
+      "name": "completionAttempts"
+     },
+     {
+      "displayValue": "5.0",
+      "name": "yardsPerPass"
+     },
+     {
+      "displayValue": "1",
+      "name": "interceptions"
+     },
+     {
+      "displayValue": "1-9",
+      "name": "sacksYardsLost"
+     },
+     {
+      "displayValue": "124",
+      "name": "rushingYards"
+     },
+     {
+      "displayValue": "29",
+      "name": "rushingAttempts"
+     },
+     {
+      "displayValue": "4.3",
+      "name": "yardsPerRushAttempt"
+     },
+     {
+      "displayValue": "2-4",
+      "name": "redZoneAttempts"
+     },
+     {
+      "displayValue": "10-70",
+      "name": "totalPenaltiesYards"
+     },
+     {
+      "displayValue": "2",
+      "name": "turnovers"
+     },
+     {
+      "displayValue": "1",
+      "name": "fumblesLost"
+     },
+     {
+      "displayValue": "1",
+      "name": "interceptions"
+     },
+     {
+      "displayValue": "0",
+      "name": "defensiveTouchdowns"
+     },
+     {
+      "displayValue": "31:52",
+      "name": "possessionTime"
+     }
+    ],
+    "team": {
+     "abbreviation": "LAR",
+     "id": "14"
+    }
+   },
+   {
+    "statistics": [
+     {
+      "displayValue": "16",
+      "name": "firstDowns"
+     },
+     {
+      "displayValue": "13",
+      "name": "firstDownsPassing"
+     },
+     {
+      "displayValue": "1",
+      "name": "firstDownsRushing"
+     },
+     {
+      "displayValue": "2",
+      "name": "firstDownsPenalty"
+     },
+     {
+      "displayValue": "3-12",
+      "name": "thirdDownEff"
+     },
+     {
+      "displayValue": "0-1",
+      "name": "fourthDownEff"
+     },
+     {
+      "displayValue": "58",
+      "name": "totalOffensivePlays"
+     },
+     {
+      "displayValue": "313",
+      "name": "totalYards"
+     },
+     {
+      "displayValue": "5.4",
+      "name": "yardsPerPlay"
+     },
+     {
+      "displayValue": "11",
+      "name": "totalDrives"
+     },
+     {
+      "displayValue": "253",
+      "name": "netPassingYards"
+     },
+     {
+      "displayValue": "24/35",
+      "name": "completionAttempts"
+     },
+     {
+      "displayValue": "6.5",
+      "name": "yardsPerPass"
+     },
+     {
+      "displayValue": "0",
+      "name": "interceptions"
+     },
+     {
+      "displayValue": "4-21",
+      "name": "sacksYardsLost"
+     },
+     {
+      "displayValue": "60",
+      "name": "rushingYards"
+     },
+     {
+      "displayValue": "19",
+      "name": "rushingAttempts"
+     },
+     {
+      "displayValue": "3.2",
+      "name": "yardsPerRushAttempt"
+     },
+     {
+      "displayValue": "1-2",
+      "name": "redZoneAttempts"
+     },
+     {
+      "displayValue": "6-39",
+      "name": "totalPenaltiesYards"
+     },
+     {
+      "displayValue": "2",
+      "name": "turnovers"
+     },
+     {
+      "displayValue": "2",
+      "name": "fumblesLost"
+     },
+     {
+      "displayValue": "0",
+      "name": "interceptions"
+     },
+     {
+      "displayValue": "0",
+      "name": "defensiveTouchdowns"
+     },
+     {
+      "displayValue": "28:08",
+      "name": "possessionTime"
+     }
+    ],
+    "team": {
+     "abbreviation": "WSH",
+     "id": "28"
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,439 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 60361,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "2",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "10",
+         "period": 2,
+         "value": 10.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "14",
+         "period": 4,
+         "value": 14.0
+        }
+       ],
+       "order": 0,
+       "score": "24",
+       "team": {
+        "abbreviation": "BUF",
+        "alternateColor": "d50a0a",
+        "color": "00338d",
+        "displayName": "Buffalo Bills",
+        "id": "2",
+        "isActive": true,
+        "location": "Buffalo",
+        "name": "Bills",
+        "shortDisplayName": "Bills"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "24",
+       "linescores": [
+        {
+         "displayValue": "10",
+         "period": 1,
+         "value": 10.0
+        },
+        {
+         "displayValue": "0",
+         "period": 2,
+         "value": 0.0
+        },
+        {
+         "displayValue": "3",
+         "period": 3,
+         "value": 3.0
+        },
+        {
+         "displayValue": "3",
+         "period": 4,
+         "value": 3.0
+        }
+       ],
+       "order": 1,
+       "score": "16",
+       "team": {
+        "abbreviation": "LAC",
+        "alternateColor": "ffc20e",
+        "color": "0080c6",
+        "displayName": "Los Angeles Chargers",
+        "id": "24",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Chargers",
+        "shortDisplayName": "Chargers"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-27T17:00Z",
+     "id": "401872953",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-27T17:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-27T17:00Z",
+   "id": "401872953",
+   "name": "Los Angeles Chargers at Buffalo Bills",
+   "shortName": "LAC @ BUF",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 3
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 76333,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "7",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 2,
+         "value": 0.0
+        },
+        {
+         "displayValue": "16",
+         "period": 3,
+         "value": 16.0
+        },
+        {
+         "displayValue": "14",
+         "period": 4,
+         "value": 14.0
+        }
+       ],
+       "order": 0,
+       "score": "30",
+       "team": {
+        "abbreviation": "DEN",
+        "alternateColor": "fc4c02",
+        "color": "0a2343",
+        "displayName": "Denver Broncos",
+        "id": "7",
+        "isActive": true,
+        "location": "Denver",
+        "name": "Broncos",
+        "shortDisplayName": "Broncos"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "14",
+       "linescores": [
+        {
+         "displayValue": "7",
+         "period": 1,
+         "value": 7.0
+        },
+        {
+         "displayValue": "9",
+         "period": 2,
+         "value": 9.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "10",
+         "period": 4,
+         "value": 10.0
+        }
+       ],
+       "order": 1,
+       "score": "26",
+       "team": {
+        "abbreviation": "LAR",
+        "alternateColor": "ffd100",
+        "color": "003594",
+        "displayName": "Los Angeles Rams",
+        "id": "14",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Rams",
+        "shortDisplayName": "Rams"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-28T00:20Z",
+     "id": "401872962",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-28T00:20Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-28T00:20Z",
+   "id": "401872962",
+   "name": "Los Angeles Rams at Denver Broncos",
+   "shortName": "LAR @ DEN",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 3
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 65023,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "5",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "10",
+         "period": 2,
+         "value": 10.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "11",
+         "period": 4,
+         "value": 11.0
+        }
+       ],
+       "order": 0,
+       "score": "21",
+       "team": {
+        "abbreviation": "CLE",
+        "alternateColor": "ff3c00",
+        "color": "472a08",
+        "displayName": "Cleveland Browns",
+        "id": "5",
+        "isActive": true,
+        "location": "Cleveland",
+        "name": "Browns",
+        "shortDisplayName": "Browns"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "29",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "3",
+         "period": 2,
+         "value": 3.0
+        },
+        {
+         "displayValue": "6",
+         "period": 3,
+         "value": 6.0
+        },
+        {
+         "displayValue": "9",
+         "period": 4,
+         "value": 9.0
+        }
+       ],
+       "order": 1,
+       "score": "18",
+       "team": {
+        "abbreviation": "CAR",
+        "alternateColor": "000000",
+        "color": "0085ca",
+        "displayName": "Carolina Panthers",
+        "id": "29",
+        "isActive": true,
+        "location": "Carolina",
+        "name": "Panthers",
+        "shortDisplayName": "Panthers"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-27T17:00Z",
+     "id": "401872949",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-27T17:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-27T17:00Z",
+   "id": "401872949",
+   "name": "Carolina Panthers at Cleveland Browns",
+   "shortName": "CAR @ CLE",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,364 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 15860,
+     "competitors": [
+      {
+       "form": "LWWWD",
+       "homeAway": "home",
+       "id": "21422",
+       "order": 0,
+       "score": "0",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "898c8f",
+        "color": "202121",
+        "displayName": "Angel City FC",
+        "id": "21422",
+        "isActive": true,
+        "location": "Angel City FC",
+        "name": "Angel City FC",
+        "shortDisplayName": "Angel City"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "LWWWL",
+       "homeAway": "away",
+       "id": "15364",
+       "order": 1,
+       "score": "0",
+       "team": {
+        "abbreviation": "GFC",
+        "alternateColor": "000000",
+        "color": "a9f1fd",
+        "displayName": "Gotham FC",
+        "id": "15364",
+        "isActive": true,
+        "location": "Gotham FC",
+        "name": "Gotham FC",
+        "shortDisplayName": "Gotham"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-08-24T00:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "45'+5'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "59'",
+        "value": 3513.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "15364"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "67'",
+        "value": 3976.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "90'+5'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "15364"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "401853982",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-08-24T00:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+6'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-08-24T00:00Z",
+   "id": "401853982",
+   "name": "Gotham FC at Angel City FC",
+   "shortName": "GFC @ LA",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+6'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 4405,
+     "competitors": [
+      {
+       "form": "LLLLL",
+       "homeAway": "home",
+       "id": "15360",
+       "order": 0,
+       "score": "3",
+       "team": {
+        "abbreviation": "CHI",
+        "alternateColor": "3AB5E8",
+        "color": "c7102e",
+        "displayName": "Chicago Stars FC",
+        "id": "15360",
+        "isActive": true,
+        "location": "Chicago Stars FC",
+        "name": "Chicago Stars FC",
+        "shortDisplayName": "Chicago"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LLLDL",
+       "homeAway": "away",
+       "id": "20905",
+       "order": 1,
+       "score": "2",
+       "team": {
+        "abbreviation": "LOU",
+        "alternateColor": "14002f",
+        "color": "c5b5f2",
+        "displayName": "Racing Louisville FC",
+        "id": "20905",
+        "isActive": true,
+        "location": "Racing Louisville FC",
+        "name": "Racing Louisville FC",
+        "shortDisplayName": "Louisville"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-08-23T18:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "34'",
+        "value": 2024.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "15360"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "49'",
+        "value": 2899.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "20905"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "62'",
+        "value": 3671.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "15360"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "68'",
+        "value": 4072.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "20905"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "83'",
+        "value": 4952.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "15360"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "401853979",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-08-23T18:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+6'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-08-23T18:00Z",
+   "id": "401853979",
+   "name": "Racing Louisville FC at Chicago Stars FC",
+   "shortName": "LOU @ CHI",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+6'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

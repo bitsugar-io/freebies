@@ -50,7 +50,7 @@ FREEBIE_DATABASE_PATH="libsql://xxx.turso.io?authToken=xxx" ./bin/freebie serve
 
 ## Components
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                     DOKS Cluster                             │
 │  ┌─────────────────────┐   ┌──────────────────────────────┐  │
@@ -77,7 +77,7 @@ The trigger system checks sports API data and creates deals when conditions are 
 
 ### Data Flow
 
-```
+```text
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
 │     events      │     │     sources      │     │    triggers     │
 │   (database)    │────▶│  (API clients)   │────▶│   (evaluator)   │

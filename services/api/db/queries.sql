@@ -86,8 +86,8 @@ DELETE FROM subscriptions WHERE user_id = ? AND event_id = ?;
 SELECT COUNT(*) as count FROM subscriptions WHERE user_id = ?;
 
 -- name: CreateTriggeredEvent :one
-INSERT INTO triggered_events (id, event_id, game_id, expires_at, payload)
-VALUES (?, ?, ?, ?, ?)
+INSERT INTO triggered_events (id, event_id, game_id, expires_at, payload, available_at)
+VALUES (?, ?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: ListTriggeredEvents :many
@@ -98,9 +98,18 @@ ORDER BY te.triggered_at DESC
 LIMIT ?;
 
 -- name: CreateNotification :one
-INSERT INTO notifications (id, user_id, triggered_event_id, status)
-VALUES (?, ?, ?, ?)
+INSERT INTO notifications (id, user_id, triggered_event_id, status, kind, sent_at)
+VALUES (?, ?, ?, ?, ?, ?)
 RETURNING *;
+
+-- name: ListUsersRemindedSince :many
+-- Users who already got a reminder for this deal at or after :since (a UTC
+-- "YYYY-MM-DD HH:MM:SS" string). Failed sends do not count, so they retry.
+SELECT DISTINCT user_id FROM notifications
+WHERE triggered_event_id = sqlc.arg(triggered_event_id)
+  AND kind = 'reminder'
+  AND status = 'sent'
+  AND datetime(sent_at) >= datetime(sqlc.arg(since));
 
 -- name: UpdateNotificationStatus :exec
 UPDATE notifications SET status = ? WHERE id = ?;
@@ -146,6 +155,16 @@ SELECT * FROM dismissals WHERE user_id = ? AND triggered_event_id = ? LIMIT 1;
 -- name: DeleteDismissal :exec
 DELETE FROM dismissals WHERE user_id = ? AND triggered_event_id = ?;
 
+-- name: ListClaimedDealsForUser :many
+-- Every deal the user claimed ('got_it'), including ones whose window has closed.
+SELECT te.id AS triggered_event_id, te.triggered_at, te.available_at, d.dismissed_at, sqlc.embed(e)
+FROM dismissals d
+JOIN triggered_events te ON te.id = d.triggered_event_id
+JOIN events e ON e.id = te.event_id
+WHERE d.user_id = ? AND d.type = 'got_it'
+ORDER BY d.dismissed_at DESC, d.id DESC
+LIMIT ?;
+
 -- name: CountUserClaimedDeals :one
 SELECT COUNT(*) as count FROM dismissals WHERE user_id = ? AND type = 'got_it';
 
@@ -158,7 +177,7 @@ WHERE datetime(te.expires_at) > datetime('now')
 ORDER BY te.expires_at ASC;
 
 -- name: ListUsersForReminder :many
-SELECT DISTINCT u.id, u.push_token, u.platform
+SELECT DISTINCT u.id, u.push_token, u.platform, u.alerts_paused_until
 FROM users u
 JOIN subscriptions s ON s.user_id = u.id
 JOIN triggered_events te ON te.event_id = s.event_id
@@ -197,3 +216,21 @@ SELECT * FROM feature_flags ORDER BY key;
 SELECT * FROM screen_blocks
 WHERE enabled = 1
 ORDER BY screen, position ASC;
+
+-- name: ListSprites :many
+SELECT * FROM sprites ORDER BY id;
+
+-- name: GetSprite :one
+SELECT * FROM sprites WHERE id = ? LIMIT 1;
+
+-- name: ListTeams :many
+SELECT t.id, t.name, t.full_name, t.league, t.sport, t.season_start, t.season_end,
+       t.return_label, t.display_order, t.badge_sprite_id, t.primary_color, t.secondary_color,
+       COALESCE(l.name, UPPER(t.league)) AS league_name,
+       (SELECT COUNT(*) FROM events e WHERE e.team_id = t.id AND e.is_active = 1) AS active_deals
+FROM teams t
+LEFT JOIN leagues l ON l.id = t.league
+ORDER BY t.display_order;
+
+-- name: UpdateUserAlertsPause :exec
+UPDATE users SET alerts_paused_until = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?;

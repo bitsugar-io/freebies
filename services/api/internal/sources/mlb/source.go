@@ -3,7 +3,9 @@ package mlb
 import (
 	"context"
 	"fmt"
+	"maps"
 	"net/http"
+	"slices"
 	"time"
 
 	mlbsdk "github.com/retr0h/mlb-sdk/pkg/mlb"
@@ -45,6 +47,21 @@ func NewSourceWithClient(c *mlbsdk.Client) *Source {
 
 // League returns "mlb".
 func (s *Source) League() string { return "mlb" }
+
+// Metrics lists the metrics the MLB source emits.
+func (s *Source) Metrics() []string {
+	return []string{
+		"strikeouts", "pitching_hits", "pitching_runs", "pitching_walks", "pitching_homers",
+		"runs", "hits", "home_runs", "rbi", "stolen_bases", "double_plays",
+		"home_runs_scored", "home_stolen_bases", "home_double_plays",
+		"win", "home_win",
+	}
+}
+
+// Teams returns the team codes the source maps, sorted.
+func (s *Source) Teams() []string {
+	return slices.Sorted(maps.Keys(TeamIDs))
+}
 
 // GetYesterdaysGame fetches stats from yesterday's game (PT, since deals are
 // LA-anchored). Delegates to GetGameByDate.

@@ -104,7 +104,7 @@ func (q *Queries) CreateDismissal(ctx context.Context, arg CreateDismissalParams
 const createEvent = `-- name: CreateEvent :one
 INSERT INTO events (id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-RETURNING id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at
+RETURNING id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id
 `
 
 type CreateEventParams struct {
@@ -168,6 +168,7 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 		&i.IsActive,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.SpriteID,
 	)
 	return i, err
 }
@@ -204,16 +205,18 @@ func (q *Queries) CreateLeague(ctx context.Context, arg CreateLeagueParams) (Lea
 }
 
 const createNotification = `-- name: CreateNotification :one
-INSERT INTO notifications (id, user_id, triggered_event_id, status)
-VALUES (?, ?, ?, ?)
-RETURNING id, user_id, triggered_event_id, sent_at, status
+INSERT INTO notifications (id, user_id, triggered_event_id, status, kind, sent_at)
+VALUES (?, ?, ?, ?, ?, ?)
+RETURNING id, user_id, triggered_event_id, sent_at, status, kind
 `
 
 type CreateNotificationParams struct {
-	ID               string `json:"id"`
-	UserID           string `json:"user_id"`
-	TriggeredEventID string `json:"triggered_event_id"`
-	Status           string `json:"status"`
+	ID               string    `json:"id"`
+	UserID           string    `json:"user_id"`
+	TriggeredEventID string    `json:"triggered_event_id"`
+	Status           string    `json:"status"`
+	Kind             string    `json:"kind"`
+	SentAt           time.Time `json:"sent_at"`
 }
 
 func (q *Queries) CreateNotification(ctx context.Context, arg CreateNotificationParams) (Notification, error) {
@@ -222,6 +225,8 @@ func (q *Queries) CreateNotification(ctx context.Context, arg CreateNotification
 		arg.UserID,
 		arg.TriggeredEventID,
 		arg.Status,
+		arg.Kind,
+		arg.SentAt,
 	)
 	var i Notification
 	err := row.Scan(
@@ -230,6 +235,7 @@ func (q *Queries) CreateNotification(ctx context.Context, arg CreateNotification
 		&i.TriggeredEventID,
 		&i.SentAt,
 		&i.Status,
+		&i.Kind,
 	)
 	return i, err
 }
@@ -259,17 +265,18 @@ func (q *Queries) CreateSubscription(ctx context.Context, arg CreateSubscription
 }
 
 const createTriggeredEvent = `-- name: CreateTriggeredEvent :one
-INSERT INTO triggered_events (id, event_id, game_id, expires_at, payload)
-VALUES (?, ?, ?, ?, ?)
-RETURNING id, event_id, game_id, triggered_at, expires_at, payload
+INSERT INTO triggered_events (id, event_id, game_id, expires_at, payload, available_at)
+VALUES (?, ?, ?, ?, ?, ?)
+RETURNING id, event_id, game_id, triggered_at, expires_at, payload, available_at
 `
 
 type CreateTriggeredEventParams struct {
-	ID        string         `json:"id"`
-	EventID   string         `json:"event_id"`
-	GameID    sql.NullString `json:"game_id"`
-	ExpiresAt sql.NullTime   `json:"expires_at"`
-	Payload   sql.NullString `json:"payload"`
+	ID          string         `json:"id"`
+	EventID     string         `json:"event_id"`
+	GameID      sql.NullString `json:"game_id"`
+	ExpiresAt   sql.NullTime   `json:"expires_at"`
+	Payload     sql.NullString `json:"payload"`
+	AvailableAt sql.NullTime   `json:"available_at"`
 }
 
 func (q *Queries) CreateTriggeredEvent(ctx context.Context, arg CreateTriggeredEventParams) (TriggeredEvent, error) {
@@ -279,6 +286,7 @@ func (q *Queries) CreateTriggeredEvent(ctx context.Context, arg CreateTriggeredE
 		arg.GameID,
 		arg.ExpiresAt,
 		arg.Payload,
+		arg.AvailableAt,
 	)
 	var i TriggeredEvent
 	err := row.Scan(
@@ -288,6 +296,7 @@ func (q *Queries) CreateTriggeredEvent(ctx context.Context, arg CreateTriggeredE
 		&i.TriggeredAt,
 		&i.ExpiresAt,
 		&i.Payload,
+		&i.AvailableAt,
 	)
 	return i, err
 }
@@ -295,7 +304,7 @@ func (q *Queries) CreateTriggeredEvent(ctx context.Context, arg CreateTriggeredE
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (id, device_id, push_token, platform, token)
 VALUES (?, ?, ?, ?, ?)
-RETURNING id, device_id, push_token, platform, created_at, updated_at, token
+RETURNING id, device_id, push_token, platform, created_at, updated_at, token, alerts_paused_until
 `
 
 type CreateUserParams struct {
@@ -323,6 +332,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Token,
+		&i.AlertsPausedUntil,
 	)
 	return i, err
 }
@@ -387,7 +397,7 @@ func (q *Queries) GetDismissal(ctx context.Context, arg GetDismissalParams) (Dis
 }
 
 const getEvent = `-- name: GetEvent :one
-SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at FROM events WHERE id = ? LIMIT 1
+SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id FROM events WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetEvent(ctx context.Context, id string) (Event, error) {
@@ -413,6 +423,7 @@ func (q *Queries) GetEvent(ctx context.Context, id string) (Event, error) {
 		&i.IsActive,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.SpriteID,
 	)
 	return i, err
 }
@@ -430,6 +441,26 @@ func (q *Queries) GetLeague(ctx context.Context, id string) (League, error) {
 		&i.Icon,
 		&i.DisplayOrder,
 		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getSprite = `-- name: GetSprite :one
+SELECT id, name, width, height, pixels, palette, created_at, updated_at FROM sprites WHERE id = ? LIMIT 1
+`
+
+func (q *Queries) GetSprite(ctx context.Context, id string) (Sprite, error) {
+	row := q.db.QueryRowContext(ctx, getSprite, id)
+	var i Sprite
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Width,
+		&i.Height,
+		&i.Pixels,
+		&i.Palette,
+		&i.CreatedAt,
+		&i.UpdatedAt,
 	)
 	return i, err
 }
@@ -456,7 +487,7 @@ func (q *Queries) GetSubscription(ctx context.Context, arg GetSubscriptionParams
 }
 
 const getTriggeredEvent = `-- name: GetTriggeredEvent :one
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 WHERE te.id = ?
@@ -469,6 +500,7 @@ type GetTriggeredEventRow struct {
 	TriggeredAt      time.Time      `json:"triggered_at"`
 	ExpiresAt        sql.NullTime   `json:"expires_at"`
 	Payload          sql.NullString `json:"payload"`
+	AvailableAt      sql.NullTime   `json:"available_at"`
 	ID_2             string         `json:"id_2"`
 	OfferID          string         `json:"offer_id"`
 	TeamID           string         `json:"team_id"`
@@ -488,6 +520,7 @@ type GetTriggeredEventRow struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 }
 
 func (q *Queries) GetTriggeredEvent(ctx context.Context, id string) (GetTriggeredEventRow, error) {
@@ -500,6 +533,7 @@ func (q *Queries) GetTriggeredEvent(ctx context.Context, id string) (GetTriggere
 		&i.TriggeredAt,
 		&i.ExpiresAt,
 		&i.Payload,
+		&i.AvailableAt,
 		&i.ID_2,
 		&i.OfferID,
 		&i.TeamID,
@@ -519,12 +553,13 @@ func (q *Queries) GetTriggeredEvent(ctx context.Context, id string) (GetTriggere
 		&i.IsActive,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.SpriteID,
 	)
 	return i, err
 }
 
 const getTriggeredEventByGameID = `-- name: GetTriggeredEventByGameID :one
-SELECT id, event_id, game_id, triggered_at, expires_at, payload FROM triggered_events
+SELECT id, event_id, game_id, triggered_at, expires_at, payload, available_at FROM triggered_events
 WHERE event_id = ? AND game_id = ?
 LIMIT 1
 `
@@ -544,12 +579,13 @@ func (q *Queries) GetTriggeredEventByGameID(ctx context.Context, arg GetTriggere
 		&i.TriggeredAt,
 		&i.ExpiresAt,
 		&i.Payload,
+		&i.AvailableAt,
 	)
 	return i, err
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, device_id, push_token, platform, created_at, updated_at, token FROM users WHERE id = ? LIMIT 1
+SELECT id, device_id, push_token, platform, created_at, updated_at, token, alerts_paused_until FROM users WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetUser(ctx context.Context, id string) (User, error) {
@@ -563,12 +599,13 @@ func (q *Queries) GetUser(ctx context.Context, id string) (User, error) {
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Token,
+		&i.AlertsPausedUntil,
 	)
 	return i, err
 }
 
 const getUserByDeviceID = `-- name: GetUserByDeviceID :one
-SELECT id, device_id, push_token, platform, created_at, updated_at, token FROM users WHERE device_id = ? LIMIT 1
+SELECT id, device_id, push_token, platform, created_at, updated_at, token, alerts_paused_until FROM users WHERE device_id = ? LIMIT 1
 `
 
 func (q *Queries) GetUserByDeviceID(ctx context.Context, deviceID string) (User, error) {
@@ -582,12 +619,13 @@ func (q *Queries) GetUserByDeviceID(ctx context.Context, deviceID string) (User,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Token,
+		&i.AlertsPausedUntil,
 	)
 	return i, err
 }
 
 const getUserByToken = `-- name: GetUserByToken :one
-SELECT id, device_id, push_token, platform, created_at, updated_at, token FROM users WHERE token = ? LIMIT 1
+SELECT id, device_id, push_token, platform, created_at, updated_at, token, alerts_paused_until FROM users WHERE token = ? LIMIT 1
 `
 
 func (q *Queries) GetUserByToken(ctx context.Context, token sql.NullString) (User, error) {
@@ -601,12 +639,13 @@ func (q *Queries) GetUserByToken(ctx context.Context, token sql.NullString) (Use
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Token,
+		&i.AlertsPausedUntil,
 	)
 	return i, err
 }
 
 const listActiveEvents = `-- name: ListActiveEvents :many
-SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at FROM events WHERE is_active = 1 ORDER BY created_at DESC
+SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id FROM events WHERE is_active = 1 ORDER BY created_at DESC
 `
 
 func (q *Queries) ListActiveEvents(ctx context.Context) ([]Event, error) {
@@ -638,6 +677,7 @@ func (q *Queries) ListActiveEvents(ctx context.Context) ([]Event, error) {
 			&i.IsActive,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -653,7 +693,7 @@ func (q *Queries) ListActiveEvents(ctx context.Context) ([]Event, error) {
 }
 
 const listActiveTriggeredEvents = `-- name: ListActiveTriggeredEvents :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 WHERE datetime(te.expires_at) > datetime('now')
@@ -667,6 +707,7 @@ type ListActiveTriggeredEventsRow struct {
 	TriggeredAt      time.Time      `json:"triggered_at"`
 	ExpiresAt        sql.NullTime   `json:"expires_at"`
 	Payload          sql.NullString `json:"payload"`
+	AvailableAt      sql.NullTime   `json:"available_at"`
 	ID_2             string         `json:"id_2"`
 	OfferID          string         `json:"offer_id"`
 	TeamID           string         `json:"team_id"`
@@ -686,6 +727,7 @@ type ListActiveTriggeredEventsRow struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 }
 
 func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTriggeredEventsRow, error) {
@@ -704,6 +746,7 @@ func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTr
 			&i.TriggeredAt,
 			&i.ExpiresAt,
 			&i.Payload,
+			&i.AvailableAt,
 			&i.ID_2,
 			&i.OfferID,
 			&i.TeamID,
@@ -723,6 +766,7 @@ func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTr
 			&i.IsActive,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -738,7 +782,7 @@ func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTr
 }
 
 const listActiveTriggeredEventsForUser = `-- name: ListActiveTriggeredEventsForUser :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at,
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id,
     CASE WHEN d.id IS NOT NULL THEN 1 ELSE 0 END as is_dismissed,
     d.type as dismissal_type
 FROM triggered_events te
@@ -761,6 +805,7 @@ type ListActiveTriggeredEventsForUserRow struct {
 	TriggeredAt      time.Time      `json:"triggered_at"`
 	ExpiresAt        sql.NullTime   `json:"expires_at"`
 	Payload          sql.NullString `json:"payload"`
+	AvailableAt      sql.NullTime   `json:"available_at"`
 	ID_2             string         `json:"id_2"`
 	OfferID          string         `json:"offer_id"`
 	TeamID           string         `json:"team_id"`
@@ -780,6 +825,7 @@ type ListActiveTriggeredEventsForUserRow struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 	IsDismissed      int64          `json:"is_dismissed"`
 	DismissalType    sql.NullString `json:"dismissal_type"`
 }
@@ -800,6 +846,7 @@ func (q *Queries) ListActiveTriggeredEventsForUser(ctx context.Context, arg List
 			&i.TriggeredAt,
 			&i.ExpiresAt,
 			&i.Payload,
+			&i.AvailableAt,
 			&i.ID_2,
 			&i.OfferID,
 			&i.TeamID,
@@ -819,6 +866,7 @@ func (q *Queries) ListActiveTriggeredEventsForUser(ctx context.Context, arg List
 			&i.IsActive,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.SpriteID,
 			&i.IsDismissed,
 			&i.DismissalType,
 		); err != nil {
@@ -875,7 +923,7 @@ func (q *Queries) ListAllEnabledScreenBlocks(ctx context.Context) ([]ScreenBlock
 }
 
 const listAllUsers = `-- name: ListAllUsers :many
-SELECT id, device_id, push_token, platform, created_at, updated_at, token FROM users
+SELECT id, device_id, push_token, platform, created_at, updated_at, token, alerts_paused_until FROM users
 `
 
 func (q *Queries) ListAllUsers(ctx context.Context) ([]User, error) {
@@ -895,6 +943,79 @@ func (q *Queries) ListAllUsers(ctx context.Context) ([]User, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Token,
+			&i.AlertsPausedUntil,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listClaimedDealsForUser = `-- name: ListClaimedDealsForUser :many
+SELECT te.id AS triggered_event_id, te.triggered_at, te.available_at, d.dismissed_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+FROM dismissals d
+JOIN triggered_events te ON te.id = d.triggered_event_id
+JOIN events e ON e.id = te.event_id
+WHERE d.user_id = ? AND d.type = 'got_it'
+ORDER BY d.dismissed_at DESC, d.id DESC
+LIMIT ?
+`
+
+type ListClaimedDealsForUserParams struct {
+	UserID string `json:"user_id"`
+	Limit  int64  `json:"limit"`
+}
+
+type ListClaimedDealsForUserRow struct {
+	TriggeredEventID string       `json:"triggered_event_id"`
+	TriggeredAt      time.Time    `json:"triggered_at"`
+	AvailableAt      sql.NullTime `json:"available_at"`
+	DismissedAt      time.Time    `json:"dismissed_at"`
+	Event            Event        `json:"event"`
+}
+
+// Every deal the user claimed ('got_it'), including ones whose window has closed.
+func (q *Queries) ListClaimedDealsForUser(ctx context.Context, arg ListClaimedDealsForUserParams) ([]ListClaimedDealsForUserRow, error) {
+	rows, err := q.db.QueryContext(ctx, listClaimedDealsForUser, arg.UserID, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListClaimedDealsForUserRow{}
+	for rows.Next() {
+		var i ListClaimedDealsForUserRow
+		if err := rows.Scan(
+			&i.TriggeredEventID,
+			&i.TriggeredAt,
+			&i.AvailableAt,
+			&i.DismissedAt,
+			&i.Event.ID,
+			&i.Event.OfferID,
+			&i.Event.TeamID,
+			&i.Event.TeamName,
+			&i.Event.League,
+			&i.Event.TeamColor,
+			&i.Event.Icon,
+			&i.Event.PartnerName,
+			&i.Event.OfferName,
+			&i.Event.OfferDescription,
+			&i.Event.TriggerCondition,
+			&i.Event.TriggerRule,
+			&i.Event.RegionCode,
+			&i.Event.OfferUrl,
+			&i.Event.AffiliateUrl,
+			&i.Event.AffiliateTagline,
+			&i.Event.IsActive,
+			&i.Event.CreatedAt,
+			&i.Event.UpdatedAt,
+			&i.Event.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -910,24 +1031,25 @@ func (q *Queries) ListAllUsers(ctx context.Context) ([]User, error) {
 }
 
 const listEventSubscribers = `-- name: ListEventSubscribers :many
-SELECT s.id, s.user_id, s.event_id, s.created_at, u.id, u.device_id, u.push_token, u.platform, u.created_at, u.updated_at, u.token
+SELECT s.id, s.user_id, s.event_id, s.created_at, u.id, u.device_id, u.push_token, u.platform, u.created_at, u.updated_at, u.token, u.alerts_paused_until
 FROM subscriptions s
 JOIN users u ON s.user_id = u.id
 WHERE s.event_id = ?
 `
 
 type ListEventSubscribersRow struct {
-	ID          string         `json:"id"`
-	UserID      string         `json:"user_id"`
-	EventID     string         `json:"event_id"`
-	CreatedAt   time.Time      `json:"created_at"`
-	ID_2        string         `json:"id_2"`
-	DeviceID    string         `json:"device_id"`
-	PushToken   sql.NullString `json:"push_token"`
-	Platform    string         `json:"platform"`
-	CreatedAt_2 time.Time      `json:"created_at_2"`
-	UpdatedAt   time.Time      `json:"updated_at"`
-	Token       sql.NullString `json:"token"`
+	ID                string         `json:"id"`
+	UserID            string         `json:"user_id"`
+	EventID           string         `json:"event_id"`
+	CreatedAt         time.Time      `json:"created_at"`
+	ID_2              string         `json:"id_2"`
+	DeviceID          string         `json:"device_id"`
+	PushToken         sql.NullString `json:"push_token"`
+	Platform          string         `json:"platform"`
+	CreatedAt_2       time.Time      `json:"created_at_2"`
+	UpdatedAt         time.Time      `json:"updated_at"`
+	Token             sql.NullString `json:"token"`
+	AlertsPausedUntil sql.NullTime   `json:"alerts_paused_until"`
 }
 
 func (q *Queries) ListEventSubscribers(ctx context.Context, eventID string) ([]ListEventSubscribersRow, error) {
@@ -951,6 +1073,7 @@ func (q *Queries) ListEventSubscribers(ctx context.Context, eventID string) ([]L
 			&i.CreatedAt_2,
 			&i.UpdatedAt,
 			&i.Token,
+			&i.AlertsPausedUntil,
 		); err != nil {
 			return nil, err
 		}
@@ -966,7 +1089,7 @@ func (q *Queries) ListEventSubscribers(ctx context.Context, eventID string) ([]L
 }
 
 const listEvents = `-- name: ListEvents :many
-SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at FROM events ORDER BY created_at DESC
+SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id FROM events ORDER BY created_at DESC
 `
 
 func (q *Queries) ListEvents(ctx context.Context) ([]Event, error) {
@@ -998,6 +1121,7 @@ func (q *Queries) ListEvents(ctx context.Context) ([]Event, error) {
 			&i.IsActive,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -1013,7 +1137,7 @@ func (q *Queries) ListEvents(ctx context.Context) ([]Event, error) {
 }
 
 const listExpiringTriggeredEvents = `-- name: ListExpiringTriggeredEvents :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 WHERE datetime(te.expires_at) > datetime('now')
@@ -1028,6 +1152,7 @@ type ListExpiringTriggeredEventsRow struct {
 	TriggeredAt      time.Time      `json:"triggered_at"`
 	ExpiresAt        sql.NullTime   `json:"expires_at"`
 	Payload          sql.NullString `json:"payload"`
+	AvailableAt      sql.NullTime   `json:"available_at"`
 	ID_2             string         `json:"id_2"`
 	OfferID          string         `json:"offer_id"`
 	TeamID           string         `json:"team_id"`
@@ -1047,6 +1172,7 @@ type ListExpiringTriggeredEventsRow struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 }
 
 func (q *Queries) ListExpiringTriggeredEvents(ctx context.Context, dollar_1 sql.NullString) ([]ListExpiringTriggeredEventsRow, error) {
@@ -1065,6 +1191,7 @@ func (q *Queries) ListExpiringTriggeredEvents(ctx context.Context, dollar_1 sql.
 			&i.TriggeredAt,
 			&i.ExpiresAt,
 			&i.Payload,
+			&i.AvailableAt,
 			&i.ID_2,
 			&i.OfferID,
 			&i.TeamID,
@@ -1084,6 +1211,7 @@ func (q *Queries) ListExpiringTriggeredEvents(ctx context.Context, dollar_1 sql.
 			&i.IsActive,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -1159,7 +1287,7 @@ func (q *Queries) ListLeagues(ctx context.Context) ([]League, error) {
 }
 
 const listPendingNotifications = `-- name: ListPendingNotifications :many
-SELECT n.id, n.user_id, n.triggered_event_id, n.sent_at, n.status, u.push_token, u.platform
+SELECT n.id, n.user_id, n.triggered_event_id, n.sent_at, n.status, n.kind, u.push_token, u.platform
 FROM notifications n
 JOIN users u ON n.user_id = u.id
 WHERE n.status = 'pending'
@@ -1171,6 +1299,7 @@ type ListPendingNotificationsRow struct {
 	TriggeredEventID string         `json:"triggered_event_id"`
 	SentAt           time.Time      `json:"sent_at"`
 	Status           string         `json:"status"`
+	Kind             string         `json:"kind"`
 	PushToken        sql.NullString `json:"push_token"`
 	Platform         string         `json:"platform"`
 }
@@ -1190,6 +1319,7 @@ func (q *Queries) ListPendingNotifications(ctx context.Context) ([]ListPendingNo
 			&i.TriggeredEventID,
 			&i.SentAt,
 			&i.Status,
+			&i.Kind,
 			&i.PushToken,
 			&i.Platform,
 		); err != nil {
@@ -1206,8 +1336,109 @@ func (q *Queries) ListPendingNotifications(ctx context.Context) ([]ListPendingNo
 	return items, nil
 }
 
+const listSprites = `-- name: ListSprites :many
+SELECT id, name, width, height, pixels, palette, created_at, updated_at FROM sprites ORDER BY id
+`
+
+func (q *Queries) ListSprites(ctx context.Context) ([]Sprite, error) {
+	rows, err := q.db.QueryContext(ctx, listSprites)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Sprite{}
+	for rows.Next() {
+		var i Sprite
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Width,
+			&i.Height,
+			&i.Pixels,
+			&i.Palette,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listTeams = `-- name: ListTeams :many
+SELECT t.id, t.name, t.full_name, t.league, t.sport, t.season_start, t.season_end,
+       t.return_label, t.display_order, t.badge_sprite_id, t.primary_color, t.secondary_color,
+       COALESCE(l.name, UPPER(t.league)) AS league_name,
+       (SELECT COUNT(*) FROM events e WHERE e.team_id = t.id AND e.is_active = 1) AS active_deals
+FROM teams t
+LEFT JOIN leagues l ON l.id = t.league
+ORDER BY t.display_order
+`
+
+type ListTeamsRow struct {
+	ID             string         `json:"id"`
+	Name           string         `json:"name"`
+	FullName       string         `json:"full_name"`
+	League         string         `json:"league"`
+	Sport          string         `json:"sport"`
+	SeasonStart    string         `json:"season_start"`
+	SeasonEnd      string         `json:"season_end"`
+	ReturnLabel    sql.NullString `json:"return_label"`
+	DisplayOrder   int64          `json:"display_order"`
+	BadgeSpriteID  sql.NullString `json:"badge_sprite_id"`
+	PrimaryColor   sql.NullString `json:"primary_color"`
+	SecondaryColor sql.NullString `json:"secondary_color"`
+	LeagueName     string         `json:"league_name"`
+	ActiveDeals    int64          `json:"active_deals"`
+}
+
+func (q *Queries) ListTeams(ctx context.Context) ([]ListTeamsRow, error) {
+	rows, err := q.db.QueryContext(ctx, listTeams)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListTeamsRow{}
+	for rows.Next() {
+		var i ListTeamsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.FullName,
+			&i.League,
+			&i.Sport,
+			&i.SeasonStart,
+			&i.SeasonEnd,
+			&i.ReturnLabel,
+			&i.DisplayOrder,
+			&i.BadgeSpriteID,
+			&i.PrimaryColor,
+			&i.SecondaryColor,
+			&i.LeagueName,
+			&i.ActiveDeals,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listTriggeredEvents = `-- name: ListTriggeredEvents :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 ORDER BY te.triggered_at DESC
@@ -1221,6 +1452,7 @@ type ListTriggeredEventsRow struct {
 	TriggeredAt      time.Time      `json:"triggered_at"`
 	ExpiresAt        sql.NullTime   `json:"expires_at"`
 	Payload          sql.NullString `json:"payload"`
+	AvailableAt      sql.NullTime   `json:"available_at"`
 	ID_2             string         `json:"id_2"`
 	OfferID          string         `json:"offer_id"`
 	TeamID           string         `json:"team_id"`
@@ -1240,6 +1472,7 @@ type ListTriggeredEventsRow struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 }
 
 func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListTriggeredEventsRow, error) {
@@ -1258,6 +1491,7 @@ func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListT
 			&i.TriggeredAt,
 			&i.ExpiresAt,
 			&i.Payload,
+			&i.AvailableAt,
 			&i.ID_2,
 			&i.OfferID,
 			&i.TeamID,
@@ -1277,6 +1511,7 @@ func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListT
 			&i.IsActive,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -1292,7 +1527,7 @@ func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListT
 }
 
 const listUserSubscriptions = `-- name: ListUserSubscriptions :many
-SELECT s.id, s.user_id, s.event_id, s.created_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at
+SELECT s.id, s.user_id, s.event_id, s.created_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
 FROM subscriptions s
 JOIN events e ON s.event_id = e.id
 WHERE s.user_id = ?
@@ -1323,6 +1558,7 @@ type ListUserSubscriptionsRow struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt_2      time.Time      `json:"created_at_2"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 }
 
 func (q *Queries) ListUserSubscriptions(ctx context.Context, userID string) ([]ListUserSubscriptionsRow, error) {
@@ -1358,6 +1594,7 @@ func (q *Queries) ListUserSubscriptions(ctx context.Context, userID string) ([]L
 			&i.IsActive,
 			&i.CreatedAt_2,
 			&i.UpdatedAt,
+			&i.SpriteID,
 		); err != nil {
 			return nil, err
 		}
@@ -1373,7 +1610,7 @@ func (q *Queries) ListUserSubscriptions(ctx context.Context, userID string) ([]L
 }
 
 const listUsersForReminder = `-- name: ListUsersForReminder :many
-SELECT DISTINCT u.id, u.push_token, u.platform
+SELECT DISTINCT u.id, u.push_token, u.platform, u.alerts_paused_until
 FROM users u
 JOIN subscriptions s ON s.user_id = u.id
 JOIN triggered_events te ON te.event_id = s.event_id
@@ -1386,9 +1623,10 @@ WHERE te.id = ?
 `
 
 type ListUsersForReminderRow struct {
-	ID        string         `json:"id"`
-	PushToken sql.NullString `json:"push_token"`
-	Platform  string         `json:"platform"`
+	ID                string         `json:"id"`
+	PushToken         sql.NullString `json:"push_token"`
+	Platform          string         `json:"platform"`
+	AlertsPausedUntil sql.NullTime   `json:"alerts_paused_until"`
 }
 
 func (q *Queries) ListUsersForReminder(ctx context.Context, id string) ([]ListUsersForReminderRow, error) {
@@ -1400,7 +1638,12 @@ func (q *Queries) ListUsersForReminder(ctx context.Context, id string) ([]ListUs
 	items := []ListUsersForReminderRow{}
 	for rows.Next() {
 		var i ListUsersForReminderRow
-		if err := rows.Scan(&i.ID, &i.PushToken, &i.Platform); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.PushToken,
+			&i.Platform,
+			&i.AlertsPausedUntil,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -1414,8 +1657,46 @@ func (q *Queries) ListUsersForReminder(ctx context.Context, id string) ([]ListUs
 	return items, nil
 }
 
+const listUsersRemindedSince = `-- name: ListUsersRemindedSince :many
+SELECT DISTINCT user_id FROM notifications
+WHERE triggered_event_id = ?1
+  AND kind = 'reminder'
+  AND status = 'sent'
+  AND datetime(sent_at) >= datetime(?2)
+`
+
+type ListUsersRemindedSinceParams struct {
+	TriggeredEventID string      `json:"triggered_event_id"`
+	Since            interface{} `json:"since"`
+}
+
+// Users who already got a reminder for this deal at or after :since (a UTC
+// "YYYY-MM-DD HH:MM:SS" string). Failed sends do not count, so they retry.
+func (q *Queries) ListUsersRemindedSince(ctx context.Context, arg ListUsersRemindedSinceParams) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, listUsersRemindedSince, arg.TriggeredEventID, arg.Since)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []string{}
+	for rows.Next() {
+		var user_id string
+		if err := rows.Scan(&user_id); err != nil {
+			return nil, err
+		}
+		items = append(items, user_id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listUsersWithPushTokens = `-- name: ListUsersWithPushTokens :many
-SELECT id, device_id, push_token, platform, created_at, updated_at, token FROM users WHERE push_token IS NOT NULL AND push_token != ''
+SELECT id, device_id, push_token, platform, created_at, updated_at, token, alerts_paused_until FROM users WHERE push_token IS NOT NULL AND push_token != ''
 `
 
 func (q *Queries) ListUsersWithPushTokens(ctx context.Context) ([]User, error) {
@@ -1435,6 +1716,7 @@ func (q *Queries) ListUsersWithPushTokens(ctx context.Context) ([]User, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Token,
+			&i.AlertsPausedUntil,
 		); err != nil {
 			return nil, err
 		}
@@ -1487,6 +1769,20 @@ type UpdateNotificationStatusParams struct {
 
 func (q *Queries) UpdateNotificationStatus(ctx context.Context, arg UpdateNotificationStatusParams) error {
 	_, err := q.db.ExecContext(ctx, updateNotificationStatus, arg.Status, arg.ID)
+	return err
+}
+
+const updateUserAlertsPause = `-- name: UpdateUserAlertsPause :exec
+UPDATE users SET alerts_paused_until = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+`
+
+type UpdateUserAlertsPauseParams struct {
+	AlertsPausedUntil sql.NullTime `json:"alerts_paused_until"`
+	ID                string       `json:"id"`
+}
+
+func (q *Queries) UpdateUserAlertsPause(ctx context.Context, arg UpdateUserAlertsPauseParams) error {
+	_, err := q.db.ExecContext(ctx, updateUserAlertsPause, arg.AlertsPausedUntil, arg.ID)
 	return err
 }
 
