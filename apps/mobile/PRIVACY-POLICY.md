@@ -1,12 +1,13 @@
-# Privacy Policy for Freebies
+# Privacy Policy for Freebies: LA Sports Deals
 
-**Last Updated: December 2024**
+Last updated: November 2026
 
 ## Overview
 
-Freebies ("we", "our", or "the app") is a mobile application that helps users discover and track
-promotional offers from sports teams. This privacy policy explains how we collect, use, and protect
-your information.
+Freebies: LA Sports Deals ("we", "our", or "the app"), formerly called Freebies: Sports Deal Alerts,
+is a mobile application that tells users when events in Los Angeles, such as LA sports results,
+unlock promotional offers from restaurants. This privacy policy explains how we collect, use, and
+protect your information.
 
 ## Information We Collect
 

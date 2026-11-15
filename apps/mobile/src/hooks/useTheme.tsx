@@ -1,142 +1,95 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useColorScheme } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// NES-style design tokens. Dark only: there is no light theme and no theme picker.
+// This is the only file (besides sprite data) that may contain color literals.
+import { useWindowDimensions } from 'react-native';
 
-const THEME_KEY = 'freebie_theme';
+export const colors = {
+  background: '#000000',
+  /** Cards, text boxes. */
+  surface: '#004058',
+  /** Header bars, selected cells. */
+  surfaceSecondary: '#0000BC',
+  text: '#FCFCFC',
+  textSecondary: '#BCBCBC',
+  /** Disabled and hint text. Only on background, never on surface (2.7:1 there). */
+  textMuted: '#7C7C7C',
+  border: '#FCFCFC',
+  primary: '#F8B800',
+  /** Text and icons on the accent fill. */
+  onAccent: '#000000',
+  accent: '#F8B800',
+  accentLight: '#F8D878',
+  success: '#58D854',
+  successDeep: '#007800',
+  successBackground: '#007800',
+  /** Countdowns, expiring soon. */
+  warning: '#FCA044',
+  warningBackground: '#000000',
+  info: '#3CBCFC',
+  infoBackground: '#000000',
+  /** Errors, live dot. Large text and icons only on surface (3.0:1). */
+  danger: '#F83800',
+  dangerDeep: '#A81000',
+  ice: '#A4E4FC',
+  skin: '#F0D0B0',
+} as const;
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ColorToken = keyof typeof colors;
+
+export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as const;
+
+/** Art pixel size in points. 1 tile = 8 art px. Integer only. */
+export const PX = 3;
+
+export const fonts = {
+  /** Press Start 2P: display, HUD, scores, tab labels, menu rows. Short uppercase only. */
+  display: 'PressStart2P_400Regular',
+} as const;
+
+export type TextVariant =
+  | 'displayXl'
+  | 'displayL'
+  | 'displayM'
+  | 'body'
+  | 'bodyStrong'
+  | 'caption';
+
+interface TypeStyle {
+  display: boolean;
+  fontSize: number;
+  lineHeight: number;
+  /** Cap for accessibility text scaling. */
+  maxScale: number;
+}
+
+/** Type scale. Press Start 2P is never below 12pt. */
+export const type: Record<TextVariant, TypeStyle> = {
+  displayXl: { display: true, fontSize: 24, lineHeight: 34, maxScale: 1.2 },
+  displayL: { display: true, fontSize: 16, lineHeight: 24, maxScale: 1.2 },
+  displayM: { display: true, fontSize: 12, lineHeight: 20, maxScale: 1.3 },
+  body: { display: false, fontSize: 17, lineHeight: 24, maxScale: 2 },
+  bodyStrong: { display: false, fontSize: 17, lineHeight: 24, maxScale: 2 },
+  caption: { display: false, fontSize: 13, lineHeight: 18, maxScale: 2 },
+};
+
+/** Above this system font scale, display text falls back to the system bold face. */
+export const DISPLAY_FALLBACK_SCALE = 1.3;
 
 export interface Theme {
-  mode: ThemeMode;
-  isDark: boolean;
-  colors: {
-    background: string;
-    surface: string;
-    surfaceSecondary: string;
-    text: string;
-    textSecondary: string;
-    textMuted: string;
-    border: string;
-    primary: string;
-    primaryText: string;
-    accent: string;
-    success: string;
-    successBackground: string;
-    warning: string;
-    warningBackground: string;
-    info: string;
-    infoBackground: string;
-  };
+  mode: 'dark';
+  isDark: true;
+  colors: typeof colors;
+  spacing: typeof spacing;
+  type: typeof type;
+  fonts: typeof fonts;
 }
 
-const lightColors: Theme['colors'] = {
-  background: '#f5f5f5',
-  surface: '#ffffff',
-  surfaceSecondary: '#f0f0f0',
-  text: '#1a1a2e',
-  textSecondary: '#333333',
-  textMuted: '#666666',
-  border: '#eeeeee',
-  primary: '#1a1a2e',
-  primaryText: '#ffffff',
-  accent: '#4CAF50',
-  success: '#4CAF50',
-  successBackground: '#e8f5e9',
-  warning: '#f57c00',
-  warningBackground: '#fff3e0',
-  info: '#1976d2',
-  infoBackground: '#e3f2fd',
-};
+const theme: Theme = { mode: 'dark', isDark: true, colors, spacing, type, fonts };
 
-const darkColors: Theme['colors'] = {
-  background: '#121212',
-  surface: '#1e1e1e',
-  surfaceSecondary: '#2a2a2a',
-  text: '#ffffff',
-  textSecondary: '#e0e0e0',
-  textMuted: '#9e9e9e',
-  border: '#333333',
-  primary: '#bb86fc',
-  primaryText: '#000000',
-  accent: '#03dac6',
-  success: '#03dac6',
-  successBackground: '#1a3a36',
-  warning: '#ffb74d',
-  warningBackground: '#3d2e1a',
-  info: '#64b5f6',
-  infoBackground: '#1a2a3d',
-};
-
-interface ThemeContextValue {
-  theme: Theme;
-  setThemeMode: (mode: ThemeMode) => void;
-  toggleTheme: () => void;
+export function useTheme(): { theme: Theme } {
+  return { theme };
 }
 
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const systemColorScheme = useColorScheme();
-  const [mode, setMode] = useState<ThemeMode>('system');
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load saved theme preference
-  useEffect(() => {
-    async function loadTheme() {
-      try {
-        const saved = await AsyncStorage.getItem(THEME_KEY);
-        if (saved && ['light', 'dark', 'system'].includes(saved)) {
-          setMode(saved as ThemeMode);
-        }
-      } catch (error) {
-        console.error('Failed to load theme:', error);
-      } finally {
-        setIsLoaded(true);
-      }
-    }
-    loadTheme();
-  }, []);
-
-  // Save theme preference
-  const setThemeMode = async (newMode: ThemeMode) => {
-    setMode(newMode);
-    try {
-      await AsyncStorage.setItem(THEME_KEY, newMode);
-    } catch (error) {
-      console.error('Failed to save theme:', error);
-    }
-  };
-
-  const toggleTheme = () => {
-    const nextMode = mode === 'light' ? 'dark' : mode === 'dark' ? 'system' : 'light';
-    setThemeMode(nextMode);
-  };
-
-  const isDark = mode === 'system'
-    ? systemColorScheme === 'dark'
-    : mode === 'dark';
-
-  const theme: Theme = {
-    mode,
-    isDark,
-    colors: isDark ? darkColors : lightColors,
-  };
-
-  if (!isLoaded) {
-    return null;
-  }
-
-  return (
-    <ThemeContext.Provider value={{ theme, setThemeMode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-}
-
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+/** True when the user's text size is large enough that pixel fonts should give way to system text. */
+export function useLargeText(): boolean {
+  return useWindowDimensions().fontScale > DISPLAY_FALLBACK_SCALE;
 }

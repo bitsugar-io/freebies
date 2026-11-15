@@ -1,11 +1,17 @@
-import React, { createContext, useContext, useCallback, useEffect, useRef, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useCallback, useEffect, useMemo, useRef, useState, ReactNode } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { useEvents } from '../hooks/useEvents';
+import { useTeams } from '../hooks/useTeams';
 import { useSubscriptions } from '../hooks/useSubscriptions';
+import { useClaimedDeals } from '../hooks/useClaimedDeals';
 import { useActiveDeals } from '../hooks/useActiveDeals';
 import { useUser } from '../hooks/useUser';
-import { usePushNotifications } from '../hooks/usePushNotifications';
-import { Event, ActiveDeal, League, api } from '../api/client';
+import { AlertsStatus, markAlertsPrimed, shouldPrimeAlerts, usePushAlerts } from '../hooks/usePushNotifications';
+import { api, Event, ActiveDeal, ClaimedDeal, Team, UserStats } from '../api/client';
+import { navigationRef } from '../navigation/ref';
+import { useToast } from '../components/pixel/Toast';
+import { teamNameFrom } from '../utils/format';
+import { countActiveFollowed } from '../utils/dealState';
 import { useAppConfig } from './AppConfigContext';
 
 interface AppDataContextType {
@@ -14,125 +20,188 @@ interface AppDataContextType {
   userLoading: boolean;
   userError: string | null;
 
-  // Leagues
-  leagues: League[];
-  leaguesLoading: boolean;
-
   // Events
   events: Event[];
   eventsLoading: boolean;
   eventsError: string | null;
   refetchEvents: () => Promise<void>;
 
+  // Teams (season board from the API)
+  teams: Team[];
+  teamsLoading: boolean;
+  teamsError: string | null;
+  refetchTeams: () => Promise<void>;
+
   // Subscriptions
   isSubscribed: (eventId: string) => boolean;
-  toggleSubscription: (eventId: string) => Promise<void>;
-  subscribedCount: number;
+  /** Follow or unfollow offers in one go. Instant, parallel, with a toast if any fail. */
+  setSubscribed: (eventIds: string[], on: boolean) => Promise<boolean>;
+  /** Followed deals that are still active. Subscriptions to retired events never count. */
+  followedCount: number;
+  /** Short team name from the API's team list ("Dodgers"); falls back to the event's full name. */
+  teamName: (teamId: string, fallback?: string) => string;
   subsLoading: boolean;
 
   // Deals
+  /** Every deal the server returned: unlocked and dismissed. */
+  allDeals: ActiveDeal[];
   undismissedDeals: ActiveDeal[];
   dismissedDeals: ActiveDeal[];
   dismissDeal: (triggeredEventId: string, type: 'got_it' | 'stop_reminding') => Promise<void>;
   undoDismissal: (triggeredEventId: string) => Promise<void>;
+  /** Every deal claimed (GOT IT), newest first, kept after the window closes. */
+  claimedDeals: ClaimedDeal[];
   dealsLoading: boolean;
+  dealsError: string | null;
+  /** True when the deals on screen are the saved copy, not a fresh fetch. */
+  dealsStale: boolean;
+  dealsSavedAt: number | null;
   refetchDeals: () => Promise<void>;
 
-  // Push
+  // Alerts
+  alertsStatus: AlertsStatus;
   expoPushToken: string | null;
+  enableAlerts: () => Promise<AlertsStatus>;
+
+  // Stats (null until loaded, or when the request fails)
+  stats: UserStats | null;
+
+  // Alerts pause
+  /** RFC3339 time alerts are paused until, or null. */
+  alertsPausedUntil: string | null;
+  /** True while paused (the stored time is still in the future). */
+  alertsPaused: boolean;
+  /** Pause until a time, or resume with null. Optimistic; reverts with a toast on failure. */
+  pauseAlerts: (until: string | null) => Promise<boolean>;
 
   // Refresh
   refreshAll: () => Promise<void>;
-
-  // Modal handlers (for deep linking)
-  openDealModal: (eventId: string) => void;
-  setModalHandlers: (handlers: {
-    setSelectedEvent: (event: Event | null) => void;
-    setSelectedDeal: (deal: ActiveDeal | null) => void;
-    setModalVisible: (visible: boolean) => void;
-  }) => void;
+  /** Retry whatever failed: user first, then data. */
+  retry: () => Promise<void>;
 }
 
 const AppDataContext = createContext<AppDataContextType | null>(null);
 
 export function AppDataProvider({ children }: { children: ReactNode }) {
-  const { user, isLoading: userLoading, error: userError } = useUser();
+  const { user, isLoading: userLoading, error: userError, refreshUser } = useUser();
   const { events, isLoading: eventsLoading, error: eventsError, refetch: refetchEvents } = useEvents();
+  const { teams, isLoading: teamsLoading, error: teamsError, refetch: refetchTeams } = useTeams();
   const { config } = useAppConfig();
+  const showToast = useToast();
 
-  // Leagues state
-  const [leagues, setLeagues] = useState<League[]>([]);
-  const [leaguesLoading, setLeaguesLoading] = useState(true);
-
-  // Fetch leagues on mount
-  useEffect(() => {
-    const fetchLeagues = async () => {
-      try {
-        const data = await api.listLeagues();
-        setLeagues(data);
-      } catch (err) {
-        console.error('Failed to fetch leagues:', err);
-      } finally {
-        setLeaguesLoading(false);
-      }
-    };
-    fetchLeagues();
-  }, []);
   const {
     isLoading: subsLoading,
-    toggleSubscription: _toggleSubscription,
+    setMany,
     isSubscribed,
-    subscribedCount,
+    refetch: refetchSubs,
   } = useSubscriptions();
   const {
+    activeDeals,
     undismissedDeals,
     dismissedDeals,
-    dismissDeal,
-    undoDismissal,
+    dismissDeal: dismissActive,
+    undoDismissal: undoActive,
     isLoading: dealsLoading,
+    error: dealsError,
+    isStale: dealsStale,
+    savedAt: dealsSavedAt,
     refetch: refetchDeals,
   } = useActiveDeals();
 
-  // Modal handlers ref for deep linking
-  const modalHandlersRef = useRef<{
-    setSelectedEvent: (event: Event | null) => void;
-    setSelectedDeal: (deal: ActiveDeal | null) => void;
-    setModalVisible: (visible: boolean) => void;
-  } | null>(null);
+  const followedCount = useMemo(() => countActiveFollowed(events, isSubscribed), [events, isSubscribed]);
+  const teamName = useCallback((teamId: string, fallback?: string) => teamNameFrom(teams, teamId, fallback), [teams]);
 
-  const setModalHandlers = useCallback((handlers: typeof modalHandlersRef.current) => {
-    modalHandlersRef.current = handlers;
-  }, []);
+  const { claimed: claimedDeals, refetch: refetchClaimed } = useClaimedDeals();
+  // Claiming or moving a deal back changes the trophy case, so refresh it after each.
+  const dismissDeal = useCallback(
+    async (triggeredEventId: string, type: 'got_it' | 'stop_reminding') => {
+      await dismissActive(triggeredEventId, type);
+      if (type === 'got_it') refetchClaimed();
+    },
+    [dismissActive, refetchClaimed]
+  );
+  const undoDismissal = useCallback(
+    async (triggeredEventId: string) => {
+      await undoActive(triggeredEventId);
+      refetchClaimed();
+    },
+    [undoActive, refetchClaimed]
+  );
 
-  const openDealModal = useCallback((eventId: string) => {
-    if (!modalHandlersRef.current) return;
+  const pushEnabled = config.features.enable_push_notifications !== false;
+  const { alertsStatus, expoPushToken, enableAlerts } = usePushAlerts(pushEnabled ? (user?.id ?? null) : null);
 
-    const deal = undismissedDeals.find(d => d.eventId === eventId);
-    if (deal) {
-      modalHandlersRef.current.setSelectedEvent(deal.event);
-      modalHandlersRef.current.setSelectedDeal(deal);
-      modalHandlersRef.current.setModalVisible(true);
-      return;
+  // Season stats for the HUD and the You screen. A failed request hides the number, never shows 0.
+  const [stats, setStats] = useState<UserStats | null>(null);
+  const userId = user?.id;
+  const refetchStats = useCallback(async () => {
+    if (!userId) return;
+    try {
+      setStats(await api.getUserStats(userId));
+    } catch {
+      setStats(null);
     }
+  }, [userId]);
+  useEffect(() => {
+    refetchStats();
+  }, [refetchStats, dealsSavedAt, claimedDeals.length]);
 
-    const event = events.find(e => e.id === eventId);
-    if (event) {
-      modalHandlersRef.current.setSelectedEvent(event);
-      modalHandlersRef.current.setSelectedDeal(null);
-      modalHandlersRef.current.setModalVisible(true);
-    }
-  }, [events, undismissedDeals]);
+  // Alerts pause, seeded from the user and kept optimistically.
+  const [alertsPausedUntil, setAlertsPausedUntil] = useState<string | null>(null);
+  useEffect(() => {
+    setAlertsPausedUntil(user?.alertsPausedUntil ?? null);
+  }, [user?.alertsPausedUntil, userId]);
+  const alertsPaused = !!alertsPausedUntil && new Date(alertsPausedUntil).getTime() > Date.now();
+  const pauseAlerts = useCallback(
+    async (until: string | null): Promise<boolean> => {
+      if (!userId) return false;
+      const previous = alertsPausedUntil;
+      setAlertsPausedUntil(until);
+      try {
+        const res = await api.setAlertsPause(userId, until);
+        setAlertsPausedUntil(res.pausedUntil ?? null);
+        return true;
+      } catch {
+        setAlertsPausedUntil(previous);
+        showToast(until ? "Couldn't pause alerts. Try again." : "Couldn't resume alerts. Try again.");
+        return false;
+      }
+    },
+    [userId, alertsPausedUntil, showToast]
+  );
 
   const refreshAll = useCallback(async () => {
-    await Promise.all([refetchEvents(), refetchDeals()]);
-  }, [refetchEvents, refetchDeals]);
+    await Promise.all([refetchEvents(), refetchDeals(), refetchStats(), refetchTeams(), refetchClaimed()]);
+  }, [refetchEvents, refetchDeals, refetchStats, refetchTeams, refetchClaimed]);
 
-  // Wrap toggle subscription to refetch deals after (gated by feature flag)
-  const toggleSubscription = useCallback(async (eventId: string) => {
-    if (config.features.enable_subscriptions === false) return;
-    await _toggleSubscription(eventId);
-    refetchDeals();
-  }, [_toggleSubscription, refetchDeals, config.features.enable_subscriptions]);
+  const retry = useCallback(async () => {
+    if (userError || !user) await refreshUser();
+    await Promise.all([refreshAll(), refetchSubs()]);
+  }, [userError, user, refreshUser, refreshAll, refetchSubs]);
+
+  const setSubscribed = useCallback(
+    async (eventIds: string[], on: boolean): Promise<boolean> => {
+      if (config.features.enable_subscriptions === false) return false;
+      const wasEmpty = followedCount === 0;
+      const failed = await setMany(eventIds, on);
+      if (failed.length > 0) {
+        const names = events.filter((e) => failed.includes(e.id));
+        const team = names[0] ? teamName(names[0].teamId, names[0].teamName) : 'that';
+        showToast(`Couldn't ${on ? 'follow' : 'unfollow'} ${team} deals. Try again.`);
+      }
+      // One refetch for the whole batch: newly followed deals may already be unlocked.
+      refetchDeals();
+      // First follow is the value moment: explain alerts before the system prompt.
+      if (on && wasEmpty && failed.length < eventIds.length && navigationRef.isReady()) {
+        if (await shouldPrimeAlerts()) {
+          markAlertsPrimed();
+          navigationRef.navigate('Alerts');
+        }
+      }
+      return failed.length === 0;
+    },
+    [config.features.enable_subscriptions, followedCount, setMany, events, teamName, showToast, refetchDeals]
+  );
 
   // Refresh data when app comes to foreground
   const appState = useRef(AppState.currentState);
@@ -146,56 +215,46 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     return () => subscription.remove();
   }, [refreshAll]);
 
-  // Handle notification tap
-  const handleNotificationTap = useCallback((eventId: string) => {
-    console.log('Opening deal from notification:', eventId);
-    openDealModal(eventId);
-  }, [openDealModal]);
-
-  // Handle notification received in foreground
-  const handleNotificationReceived = useCallback(() => {
-    refreshAll();
-  }, [refreshAll]);
-
-  // Register for push notifications (only if enabled)
-  const pushEnabled = config.features.enable_push_notifications !== false;
-  const { expoPushToken } = usePushNotifications(
-    pushEnabled ? (user?.id ?? null) : null,
-    pushEnabled ? handleNotificationTap : undefined,
-    pushEnabled ? handleNotificationReceived : undefined
-  );
-
   const value: AppDataContextType = {
     user,
     userLoading,
     userError,
-    leagues,
-    leaguesLoading,
     events,
     eventsLoading,
     eventsError,
     refetchEvents,
+    teams,
+    teamsLoading,
+    teamsError,
+    refetchTeams,
     isSubscribed,
-    toggleSubscription,
-    subscribedCount,
+    setSubscribed,
+    followedCount,
+    teamName,
     subsLoading,
+    allDeals: activeDeals,
     undismissedDeals,
     dismissedDeals,
     dismissDeal,
     undoDismissal,
+    claimedDeals,
     dealsLoading,
+    dealsError,
+    dealsStale,
+    dealsSavedAt,
     refetchDeals,
+    alertsStatus,
     expoPushToken,
+    enableAlerts,
+    stats,
+    alertsPausedUntil,
+    alertsPaused,
+    pauseAlerts,
     refreshAll,
-    openDealModal,
-    setModalHandlers,
+    retry,
   };
 
-  return (
-    <AppDataContext.Provider value={value}>
-      {children}
-    </AppDataContext.Provider>
-  );
+  return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
 }
 
 export function useAppData() {

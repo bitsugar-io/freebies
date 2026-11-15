@@ -6,12 +6,23 @@ const API_BASE_URL = __DEV__
   : 'https://freebie-api.bitsugar.io/api/v1';
 
 const AUTH_TOKEN_KEY = 'freebie_auth_token';
+const REQUEST_TIMEOUT_MS = 15_000;
 
 export interface League {
   id: string;
   name: string;
   icon: string;
   displayOrder: number;
+}
+
+/** Pixel-art sprite served by the API: rows of palette keys, '.' = transparent. */
+export interface Sprite {
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+  pixels: string[];
+  palette: Record<string, string>;
 }
 
 export interface Event {
@@ -32,6 +43,8 @@ export interface Event {
   affiliateUrl?: string;
   affiliateTagline?: string;
   isActive: boolean;
+  spriteId?: string;
+  sprite?: Sprite;
 }
 
 export interface User {
@@ -40,6 +53,32 @@ export interface User {
   platform: string;
   pushToken?: string;
   token?: string; // Auth token, only returned on creation
+  /** RFC3339 time alerts are paused until, or absent/null when not paused. */
+  alertsPausedUntil?: string | null;
+}
+
+
+/** One LA team for the season board (GET /teams). Sorted in-season first by the server. */
+export interface Team {
+  id: string;
+  name: string;
+  fullName: string;
+  league: string;
+  /** Open string: a new sport needs no app release. Unknown sports get a generic badge. */
+  sport: string;
+  /** Display name of the sport when the API sends one ("Hockey"). Otherwise derived from `sport`. */
+  sportName?: string;
+  /** Display league, "NHL". */
+  leagueName?: string;
+  badgeSpriteId?: string;
+  /** Two-tone team identity (NES hex) for team tiles only. Optional. */
+  colors?: { primary: string; secondary: string };
+  /** Badge art from the API (same shape as event.sprite). Bundled badges are offline fallback. */
+  badge?: Sprite;
+  inSeason: boolean;
+  /** When an off-season team returns: "MAR", "FEB 11". Null in season. */
+  returnLabel: string | null;
+  activeDeals: number;
 }
 
 export interface Subscription {
@@ -53,10 +92,25 @@ export interface ActiveDeal {
   id: string;
   eventId: string;
   triggeredAt: string;
+  /** RFC3339 time the code unlocks, when it unlocks after the game (Rams: 2 days later). */
+  availableAt?: string;
   expiresAt?: string;
   event: Event;
   isDismissed: boolean;
   dismissalType?: 'got_it' | 'stop_reminding';
+}
+
+/** A deal the user claimed. It stays listed after its window closes (the trophy case). */
+export interface ClaimedDeal {
+  /** Triggered event id. */
+  id: string;
+  eventId: string;
+  /** RFC3339 time the user tapped GOT IT. */
+  claimedAt: string;
+  triggeredAt: string;
+  /** RFC3339 time the code unlocked, when it unlocks after the game. */
+  availableAt?: string;
+  event: Event;
 }
 
 export interface Dismissal {
@@ -129,10 +183,18 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${this.authToken}`;
     }
 
-    const response = await fetch(url, {
-      ...options,
-      headers,
-    });
+    // Time out instead of hanging forever on a bad connection.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(url, { ...options, headers, signal: controller.signal });
+    } catch (err) {
+      if (controller.signal.aborted) throw new Error('Request timed out');
+      throw err;
+    } finally {
+      clearTimeout(timeout);
+    }
 
     if (!response.ok) {
       const error: ApiError = await response.json().catch(() => ({
@@ -163,6 +225,11 @@ class ApiClient {
     return this.request<Event>(`/events/${id}`);
   }
 
+  // Teams
+  async listTeams(): Promise<Team[]> {
+    return this.request<Team[]>('/teams');
+  }
+
   // Users
   async createUser(deviceId: string, platform: string): Promise<User> {
     const user = await this.request<User>('/users', {
@@ -187,6 +254,15 @@ class ApiClient {
         method: 'PUT',
         body: JSON.stringify({ pushToken }),
       },
+      true
+    );
+  }
+
+  /** Pause alerts until a time (RFC3339), or resume with null. Returns the stored value. */
+  async setAlertsPause(userId: string, until: string | null): Promise<{ pausedUntil: string | null }> {
+    return this.request<{ pausedUntil: string | null }>(
+      `/users/${userId}/alerts-pause`,
+      { method: 'PUT', body: JSON.stringify({ until }) },
       true
     );
   }
@@ -221,6 +297,11 @@ class ApiClient {
   // Active Deals
   async listActiveDeals(userId: string): Promise<ActiveDeal[]> {
     return this.request<ActiveDeal[]>(`/users/${userId}/active-deals`, {}, true);
+  }
+
+  async listClaimed(userId: string, limit?: number): Promise<ClaimedDeal[]> {
+    const query = limit ? `?limit=${limit}` : '';
+    return this.request<ClaimedDeal[]>(`/users/${userId}/claimed${query}`, {}, true);
   }
 
   // Dismissals
