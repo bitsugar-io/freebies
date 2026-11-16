@@ -1,5 +1,5 @@
 /**
- * Holds links that arrive while no NavigationContainer can take them (splash, title screen,
+ * Holds links that arrive while no NavigationContainer can take them (splash,
  * maintenance, between mounts), so none is dropped and none is replayed.
  *
  * Why this exists: React Navigation only listens for links while its container is mounted, and it

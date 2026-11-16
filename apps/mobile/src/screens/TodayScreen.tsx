@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { ActiveDeal, TodayGame } from '../api/client';
 import { Screen } from '../components/Screen';
@@ -13,7 +13,8 @@ import { Text } from '../components/pixel/Text';
 import { Blink } from '../hooks/useBlink';
 import { colors } from '../hooks/useTheme';
 import { useNow } from '../hooks/useNow';
-import { useToday } from '../hooks/useToday';
+import { useAppData } from '../context/AppDataContext';
+import { useVictory } from '../hooks/useVictory';
 import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
@@ -25,8 +26,23 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
  */
 export function TodayScreen() {
   const nav = useNavigation<Nav>();
-  const { today, isLoading, error, savedAt, refresh } = useToday();
+  const {
+    today,
+    todayLoading: isLoading,
+    todayError: error,
+    todaySavedAt: savedAt,
+    refreshTodayIfStale,
+    refreshAll: refresh,
+  } = useAppData();
+  // Refetch when the tab gains focus (at most once a minute); foreground, pushes, pull to refresh
+  // and a new Pacific day refetch through the app data context.
+  useFocusEffect(
+    useCallback(() => {
+      refreshTodayIfStale();
+    }, [refreshTodayIfStale])
+  );
   const now = useNow(60_000);
+  const victory = useVictory();
 
   const live: ActiveDeal[] = (today?.live ?? [])
     .filter((d) => (timeLeftMs(d.expiresAt, now) ?? 1) > 0)
@@ -36,10 +52,11 @@ export function TodayScreen() {
     .toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
     .replace(',', '');
   const failedEmpty = !!error && !today;
+  /** A game's deal: the "if X, you get Y" preview, by event id. */
   const open = (eventId: string) => nav.navigate('Deal', { id: eventId });
 
   return (
-    <Screen title="Today" status={status} onRefresh={refresh}>
+    <Screen title="Today" status={victory ? `${victory.team} won!` : status} onRefresh={refresh}>
       {error && today && savedAt ? <StaleBanner savedAt={savedAt} onRetry={refresh} /> : null}
       {failedEmpty ? <ErrorPanel message={error} onRetry={refresh} /> : null}
 
@@ -52,21 +69,21 @@ export function TodayScreen() {
 
       {today && live.length > 0 ? (
         <View style={styles.section}>
-          <Text variant="displayM" color="accent" accessibilityRole="header">
+          <Text variant="displayM" color="info" accessibilityRole="header">
             Live now
           </Text>
           <Text variant="caption" color="textSecondary">
             Anyone can claim these, whoever you follow.
           </Text>
           {live.map((deal) => (
-            <UnlockedDealRow key={deal.id} deal={deal} onPress={() => open(deal.eventId)} />
+            <UnlockedDealRow key={deal.id} deal={deal} onPress={() => nav.navigate('Deal', { id: deal.id })} />
           ))}
         </View>
       ) : null}
 
       {today && games.length > 0 ? (
         <View style={styles.section}>
-          <Text variant="displayM" color="accent" accessibilityRole="header">
+          <Text variant="displayM" color="info" accessibilityRole="header">
             Games today
           </Text>
           {games.map((g) => (

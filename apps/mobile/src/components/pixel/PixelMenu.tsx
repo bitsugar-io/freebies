@@ -87,7 +87,7 @@ export function PixelMenu({ title, children, onLayout }: { title?: string; child
   return (
     <View accessibilityRole="menu" onLayout={onLayout}>
       {title ? (
-        <Text variant="displayM" color="textMuted" accessibilityRole="header" style={styles.title}>
+        <Text variant="displayM" color="info" accessibilityRole="header" style={styles.title}>
           {title}
         </Text>
       ) : null}
@@ -100,5 +100,5 @@ const styles = StyleSheet.create({
   row: { minHeight: 48, flexDirection: 'row', alignItems: 'center', paddingRight: 4 },
   cursor: { width: 24, alignItems: 'flex-start' },
   value: { marginLeft: 8 },
-  title: { marginTop: 8, marginBottom: 4, borderBottomWidth: 2, borderBottomColor: colors.surface, paddingBottom: 4 },
+  title: { marginTop: 8, marginBottom: 4, borderBottomWidth: 2, borderBottomColor: colors.divider, paddingBottom: 4 },
 });

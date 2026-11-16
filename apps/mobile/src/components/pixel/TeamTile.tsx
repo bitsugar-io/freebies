@@ -2,7 +2,6 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Svg, { Defs, Pattern, Rect } from 'react-native-svg';
 import type { Sprite } from '../../api/client';
-import { Blink } from '../../hooks/useBlink';
 import { colors } from '../../hooks/useTheme';
 import { grayHex } from '../PixelSprite';
 import { tilePair } from '../../utils/tileColors';
@@ -115,8 +114,9 @@ export function TeamTile({
             </View>
           )}
           {all || some ? (
-            // The whole badge blinks, background included, so the off phase shows the team color.
-            <Blink priority={8} active={all} style={styles.badge}>
+            // Solid, never blinking: following is a state, and with several followed teams on a page
+            // the blink budget made only some checks flicker, which read as "not followed".
+            <View style={styles.badge}>
               {all ? (
                 <PixelIcon name="check" scale={2} color="accent" />
               ) : (
@@ -124,7 +124,7 @@ export function TeamTile({
                   {followed}/{total}
                 </Text>
               )}
-            </Blink>
+            </View>
           ) : null}
         </PixelBox>
       )}

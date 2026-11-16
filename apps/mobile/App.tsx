@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
@@ -18,13 +18,13 @@ import { AlertsScreen } from './src/screens/AlertsScreen';
 import { MaintenanceScreen } from './src/screens/MaintenanceScreen';
 import { HudTabBar } from './src/components/pixel/HudTabBar';
 import { ScreenWipeProvider } from './src/components/pixel/ScreenWipe';
-import { TitleScreen } from './src/components/pixel/TitleScreen';
 import { PauseScreen } from './src/screens/PauseScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastProvider } from './src/components/pixel/Toast';
 import { UserProvider } from './src/hooks/useUser';
 import { colors, fonts } from './src/hooks/useTheme';
 import { urlFromNotification } from './src/hooks/usePushNotifications';
+import { launchCorrection, launchTab, navSnapshot } from './src/navigation/launch';
+import { serverNow } from './src/utils/serverClock';
 import { AppDataProvider, useAppData } from './src/context/AppDataContext';
 import { AppConfigProvider, useAppConfig } from './src/context/AppConfigContext';
 import { navigationRef } from './src/navigation/ref';
@@ -37,7 +37,6 @@ SplashScreen.preventAutoHideAsync().catch(() => {});
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const TITLE_SEEN_KEY = 'freebie_title_seen';
 
 /** Notification taps become freebie:// links, so cold start, background and foreground all share one path. */
 function notificationUrl(response: Notifications.NotificationResponse | null | undefined) {
@@ -97,8 +96,56 @@ const navTheme = {
 };
 
 function Tabs() {
+  const { followedCount, liveWon, userLoading, dealsLoading, subsLoading, eventsLoading } = useAppData();
+  const dataReady = !userLoading && !dealsLoading && !subsLoading && !eventsLoading;
+  // Where the app opens, decided once at launch: see launchTab.
+  const [launch] = useState(() => ({
+    tab: launchTab(followedCount, liveWon, serverNow()),
+    withData: dataReady,
+  }));
+
+  // If the splash gave up before the data arrived, move once to the right tab when it does, unless
+  // the user already moved or a link opened a screen (see launchCorrection).
+  const start = useRef<string | null>(null);
+  const touched = useRef(false);
+  const settled = useRef(launch.withData);
+  useEffect(() => {
+    if (settled.current) return;
+    const check = () => {
+      const root = navigationRef.getRootState();
+      const snap = navSnapshot(root);
+      if (!snap) return;
+      if (start.current === null) {
+        start.current = snap;
+        // A link or push that opened the app (a deal over the tabs, or another tab) counts as a move.
+        const tabs = root?.routes[0]?.state;
+        const tab = tabs?.routes[tabs.index ?? 0]?.name ?? launch.tab;
+        if ((root?.routes.length ?? 1) > 1 || tab !== launch.tab) touched.current = true;
+      } else if (snap !== start.current) touched.current = true;
+    };
+    check();
+    return navigationRef.addListener('state', check);
+  }, [launch.tab]);
+  useEffect(() => {
+    if (settled.current || !dataReady) return;
+    settled.current = true;
+    const next = launchCorrection({
+      initial: launch.tab,
+      decidedWithData: launch.withData,
+      dataReady,
+      touched:
+        touched.current ||
+        (navigationRef.getRootState()?.routes.length ?? 1) > 1 ||
+        (start.current !== null && navSnapshot(navigationRef.getRootState()) !== start.current),
+      correct: launchTab(followedCount, liveWon, serverNow()),
+    });
+    if (next && navigationRef.isReady()) navigationRef.navigate('Tabs', { screen: next });
+  }, [dataReady, followedCount, liveWon, launch]);
+
+  const initial = launch.tab;
   return (
     <Tab.Navigator
+      initialRouteName={initial}
       tabBar={(props) => <HudTabBar {...props} />}
       screenOptions={{ headerShown: false }}
     >
@@ -110,46 +157,27 @@ function Tabs() {
   );
 }
 
-/** Holds the native splash until fonts and the stored user and deals are ready (2.5s at most). */
+/**
+ * Holds the native splash until fonts and the stored user, deals, events and follows are ready (2.5s
+ * at most), so the first tab is chosen from real follows.
+ */
 function Gate() {
   const [fontsLoaded, fontError] = useFonts({ [fonts.display]: PressStart2P_400Regular });
-  const { userLoading, dealsLoading } = useAppData();
+  const { userLoading, dealsLoading, subsLoading, eventsLoading } = useAppData();
   const { config } = useAppConfig();
   const [timedOut, setTimedOut] = useState(false);
-  // First launch only: 'check' until the stored flag is read, then 'show' or 'done'.
-  const [title, setTitle] = useState<'check' | 'show' | 'done'>('check');
-
-  useEffect(() => {
-    AsyncStorage.getItem(TITLE_SEEN_KEY)
-      .then((v) => setTitle(v ? 'done' : 'show'))
-      .catch(() => setTitle('done'));
-  }, []);
-  // Dev only: exp://.../--/title shows the title screen again.
-  useEffect(() => {
-    if (!__DEV__) return undefined;
-    const sub = Linking.addEventListener('url', ({ url }) => {
-      if (/\/title\/?$/.test(url)) setTitle('show');
-    });
-    return () => sub.remove();
-  }, []);
-  const finishTitle = useCallback(() => {
-    AsyncStorage.setItem(TITLE_SEEN_KEY, '1').catch(() => {});
-    setTitle('done');
-  }, []);
-
   useEffect(() => {
     const t = setTimeout(() => setTimedOut(true), 2500);
     return () => clearTimeout(t);
   }, []);
 
-  const ready = timedOut || ((fontsLoaded || !!fontError) && !userLoading && !dealsLoading && title !== 'check');
+  const ready = timedOut || ((fontsLoaded || !!fontError) && !userLoading && !dealsLoading && !subsLoading && !eventsLoading);
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => {});
   }, [ready]);
 
   if (!ready) return null;
   if (config.features.maintenance_mode === true) return <MaintenanceScreen />;
-  if (title === 'show') return <TitleScreen onDone={finishTitle} />;
 
   return (
     <NavigationContainer ref={navigationRef} linking={linking} theme={navTheme}>
@@ -173,7 +201,7 @@ function Gate() {
   );
 }
 
-/** A push that arrives while the app is open refreshes the deals behind it. */
+/** A push that arrives while the app is open refreshes the deals (and TODAY) behind it. */
 function ForegroundRefresh() {
   const { refreshAll } = useAppData();
   useEffect(() => {

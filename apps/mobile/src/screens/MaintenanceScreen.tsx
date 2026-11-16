@@ -26,7 +26,7 @@ export function MaintenanceScreen() {
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 32, paddingBottom: insets.bottom + 24 }]}
     >
       <View style={{ alignItems: 'center', gap: 16 }}>
-        <AppLogo scale={6} />
+        <AppLogo scale={6} rounded />
         <Text variant="displayL" color="accent" align="center" accessibilityRole="header">
           Paused
         </Text>

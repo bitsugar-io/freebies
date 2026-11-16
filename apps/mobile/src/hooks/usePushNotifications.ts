@@ -3,6 +3,7 @@ import { AppState, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import { urlFromPushData } from '../navigation/launch';
 import Constants from 'expo-constants';
 import { api } from '../api/client';
 
@@ -119,16 +120,9 @@ export function markAlertsPrimed(): void {
   AsyncStorage.setItem(PRIMED_KEY, '1').catch(() => {});
 }
 
-/**
- * Where a notification tap should go. Pushes carry `data.url` ("freebie://deal/<id>"), plus
- * `triggeredEventId` and `eventId`. Older pushes only have the ids, so handle every shape.
- */
+/** Where a notification tap should go (see urlFromPushData for the payload shapes). */
 export function urlFromNotification(notification: Notifications.Notification | null | undefined): string | null {
-  const data = notification?.request?.content?.data as Record<string, unknown> | undefined;
-  if (!data) return null;
-  if (typeof data.url === 'string' && data.url) return data.url;
-  const id = data.triggeredEventId ?? data.eventId;
-  return typeof id === 'string' && id ? `freebie://deal/${encodeURIComponent(id)}` : null;
+  return urlFromPushData(notification?.request?.content?.data as Record<string, unknown> | undefined);
 }
 
 // Utility to send a local notification (for testing)

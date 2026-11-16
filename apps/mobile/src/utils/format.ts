@@ -27,14 +27,29 @@ export function clockTime(iso: number | string | Date): string {
   return `${t} PT`;
 }
 
-/** "03:28:11" */
+/** "03:28:11" under a day; "6D 08H" for longer (multi-day deals), so the clock never shows 152 hours. */
 export function formatCountdown(ms: number): string {
   const total = Math.max(0, Math.floor(ms / 1000));
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
   const p = (n: number) => String(n).padStart(2, '0');
+  if (h >= 24) return `${Math.floor(h / 24)}D ${p(h % 24)}H`;
   return `${p(h)}:${p(m)}:${p(s)}`;
+}
+
+/**
+ * When a deadline lands, in Pacific time: just the time if it's today ("11:59pm PT"), otherwise with
+ * the day ("Sun Nov 22, 11:59pm PT"), so a week-long deal never reads as ending tonight.
+ */
+export function deadlineLabel(iso: number | string | Date, now: number = Date.now()): string {
+  const day = (t: number | string | Date) =>
+    new Date(t).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: 'numeric', day: 'numeric' });
+  if (day(iso) === day(now)) return clockTime(iso);
+  const date = new Date(iso)
+    .toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric' })
+    .replace(',', '');
+  return `${date}, ${clockTime(iso)}`;
 }
 
 const PT = 'America/Los_Angeles';

@@ -86,10 +86,26 @@ export function countdownTone(leftMs: number): 'warning' | 'text' {
   return leftMs > 0 && leftMs <= 6 * 3_600_000 ? 'warning' : 'text';
 }
 
-/** Count of followed events that are still active. Retired events never count. */
-export function countActiveFollowed(
-  events: { id: string; isActive?: boolean }[],
+/**
+ * The teams you follow: a team counts once if you follow at least one of its active deals, however
+ * many it has (the Ducks have two). Retired deals never count. Sorted, distinct team ids.
+ */
+export function followedTeamIds(
+  events: { id: string; teamId: string; isActive?: boolean }[],
   isSubscribed: (eventId: string) => boolean
-): number {
-  return events.filter((e) => e.isActive !== false && isSubscribed(e.id)).length;
+): string[] {
+  const ids = new Set(events.filter((e) => e.isActive !== false && isSubscribed(e.id)).map((e) => e.teamId));
+  return [...ids].sort();
+}
+
+/**
+ * The one definition of "live won deals" (owner rule): won, not claimed or silenced, and not
+ * expired. Locked deals count (they are won; the code unlocks later). The WON badge, the stat line,
+ * the WON list, the victory stripe and the launch tab all use this, so they never disagree.
+ */
+export function liveWonDeals<T extends { expiresAt?: string | null; isDismissed?: boolean }>(
+  deals: readonly T[],
+  now: number
+): T[] {
+  return deals.filter((d) => !d.isDismissed && dealPhase(d, now) !== 'expired');
 }
