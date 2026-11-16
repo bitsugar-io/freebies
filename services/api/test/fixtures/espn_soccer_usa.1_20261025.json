@@ -1,0 +1,214 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "LLDDW",
+       "homeAway": "home",
+       "id": "18966",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "LAFC",
+        "alternateColor": "c7a36f",
+        "color": "000000",
+        "displayName": "LAFC",
+        "id": "18966",
+        "isActive": true,
+        "location": "LAFC",
+        "name": "LAFC",
+        "shortDisplayName": "LAFC"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "DWDDW",
+       "homeAway": "away",
+       "id": "187",
+       "order": 1,
+       "score": "2",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "ffffff",
+        "color": "00235d",
+        "displayName": "LA Galaxy",
+        "id": "187",
+        "isActive": true,
+        "location": "LA Galaxy",
+        "name": "LA Galaxy",
+        "shortDisplayName": "LA Galaxy"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-10-26T01:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "34'",
+        "value": 1985.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "51'",
+        "value": 3030.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "53'",
+        "value": 3165.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "55'",
+        "value": 3265.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "62'",
+        "value": 3717.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "90'+3'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761904",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-26T01:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+10'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-26T01:00Z",
+   "id": "761904",
+   "name": "LA Galaxy at LAFC",
+   "shortName": "LA @ LAFC",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+10'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

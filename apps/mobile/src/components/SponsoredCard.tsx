@@ -1,100 +1,34 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
+import { Linking, Pressable } from 'react-native';
 import { Event } from '../api/client';
-import { useTheme } from '../hooks/useTheme';
 import { useAppConfig } from '../context/AppConfigContext';
+import { PixelBox } from './pixel/PixelBox';
+import { Text } from './pixel/Text';
 
-interface SponsoredCardProps {
-  event: Event;
-}
-
-export function SponsoredCard({ event }: SponsoredCardProps) {
-  const { theme } = useTheme();
-  const { colors } = theme;
+/** Affiliate "team gear" link. Hidden unless the show_affiliate_links flag is on. */
+export function SponsoredCard({ event }: { event: Event }) {
   const { config } = useAppConfig();
-
-  // Only render if affiliate links are enabled and event has affiliate data
-  if (config.features.show_affiliate_links === false || !event.affiliateUrl) {
-    return null;
-  }
-
-  const handlePress = () => {
-    if (event.affiliateUrl) {
-      Linking.openURL(event.affiliateUrl);
-    }
-  };
+  const url = event.affiliateUrl;
+  if (config.features.show_affiliate_links !== true || !url) return null;
 
   return (
-    <TouchableOpacity
-      style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
-      onPress={handlePress}
-      activeOpacity={0.7}
+    <Pressable
+      onPress={() => Linking.openURL(url)}
+      accessibilityRole="link"
+      accessibilityLabel={`Sponsored: ${event.teamName} gear. ${event.affiliateTagline ?? ''}`}
+      style={{ marginTop: 16 }}
     >
-      <View style={styles.header}>
-        <Text style={[styles.sponsoredLabel, { color: colors.textMuted }]}>
-          SPONSORED
+      <PixelBox variant="panel">
+        <Text variant="caption" color="textMuted">
+          Sponsored
         </Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={[styles.icon]}>🛍️</Text>
-        <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: colors.text }]}>
-            {event.teamName} Gear
+        <Text variant="bodyStrong">{`${event.teamName} Gear`}</Text>
+        {event.affiliateTagline ? (
+          <Text variant="caption" color="textSecondary">
+            {event.affiliateTagline}
           </Text>
-          {event.affiliateTagline && (
-            <Text style={[styles.tagline, { color: colors.textMuted }]}>
-              {event.affiliateTagline}
-            </Text>
-          )}
-        </View>
-        <Text style={[styles.arrow, { color: colors.textMuted }]}>→</Text>
-      </View>
-    </TouchableOpacity>
+        ) : null}
+      </PixelBox>
+    </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 16,
-    borderWidth: 1,
-  },
-  header: {
-    marginBottom: 8,
-  },
-  sponsoredLabel: {
-    fontSize: 10,
-    fontWeight: '600',
-    letterSpacing: 1,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    fontSize: 24,
-    marginRight: 12,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  tagline: {
-    fontSize: 13,
-    marginTop: 2,
-  },
-  arrow: {
-    fontSize: 18,
-    marginLeft: 8,
-  },
-});

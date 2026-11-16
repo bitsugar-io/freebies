@@ -16,7 +16,14 @@ import (
 	"github.com/retr0h/freebie/services/api/internal/worker"
 
 	_ "github.com/retr0h/freebie/services/api/internal/sources/mlb"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/mls"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/nba"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/ncaa"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/nfl"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/nhl"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/nwsl"
 	_ "github.com/retr0h/freebie/services/api/internal/sources/test"
+	_ "github.com/retr0h/freebie/services/api/internal/sources/wnba"
 )
 
 var serveCmd = &cobra.Command{

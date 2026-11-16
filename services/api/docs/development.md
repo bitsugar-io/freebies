@@ -3,14 +3,14 @@
 ## Prerequisites
 
 - Go 1.27.3+
-- [Task](https://taskfile.dev/)
+- [just](https://just.systems) (installed via `mise install`)
 - [sqlc](https://sqlc.dev/) (installed via `go tool`)
 
 ## Quick Start
 
 ```bash
 # From repo root
-task api:serve
+just api-serve
 ```
 
 The server will:
@@ -21,7 +21,7 @@ The server will:
 
 ## Project Structure
 
-```
+```text
 services/api/
 ├── cmd/                    # CLI commands (serve, users, deals)
 ├── internal/
@@ -47,11 +47,13 @@ Located in `internal/db/migrations/`. Run automatically on server start.
 
 ```bash
 # Wipe database and start fresh
-task api:clean
-task api:serve
+just api-clean
+just api-serve
 ```
 
 ### Adding New Migrations
+
+For a deal, follow [deals.md](../../../.claude/skills/ops/references/deals.md) in the `ops` skill.
 
 1. Create a new file: `internal/db/migrations/NNN_description.sql`
 2. Use goose format:
@@ -67,7 +69,7 @@ DROP TABLE ...;
 ### Updating Queries
 
 1. Edit `db/queries.sql`
-2. Regenerate: `task api:sqlc`
+2. Regenerate: `just api-generate`
 
 ## CLI Commands
 
@@ -95,10 +97,10 @@ Configuration via flags, environment variables, or config file.
 ## Testing
 
 ```bash
-task api:test
+just api-test
 ```
 
 ## Deployment
 
-Deployed to DigitalOcean Kubernetes (DOKS). See [deployment guide](deployment.md) for full
-instructions.
+Deployed to DigitalOcean Kubernetes (DOKS). See the `ops` skill:
+[deploy-api.md](../../../.claude/skills/ops/references/deploy-api.md).

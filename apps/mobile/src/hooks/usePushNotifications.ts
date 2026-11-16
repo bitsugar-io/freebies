@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { AppState, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { api } from '../api/client';
 
-// Configure how notifications are handled when app is foregrounded
+// Show notifications while the app is in the foreground too.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -16,176 +17,126 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export interface PushNotificationState {
-  expoPushToken: string | null;
-  notification: Notifications.Notification | null;
-  error: string | null;
+const PRIMED_KEY = 'freebie_alerts_primed';
+
+export type AlertsStatus = 'granted' | 'denied' | 'undetermined';
+
+async function readStatus(): Promise<AlertsStatus> {
+  try {
+    const { status, canAskAgain } = await Notifications.getPermissionsAsync();
+    if (status === 'granted') return 'granted';
+    // Never asked (or Android before its first ask) can still prompt; otherwise it's a hard no.
+    return canAskAgain ? 'undetermined' : 'denied';
+  } catch {
+    return 'undetermined';
+  }
 }
 
-export function usePushNotifications(
-  userId: string | null,
-  onNotificationTap?: (eventId: string) => void,
-  onNotificationReceived?: () => void
-) {
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  const [notification, setNotification] = useState<Notifications.Notification | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const notificationListener = useRef<Notifications.Subscription | null>(null);
-  const responseListener = useRef<Notifications.Subscription | null>(null);
-
-  useEffect(() => {
-    // Register for push notifications
-    registerForPushNotificationsAsync()
-      .then((token) => {
-        if (token) {
-          setExpoPushToken(token);
-          // Send token to API if we have a user
-          if (userId) {
-            api.updatePushToken(userId, token).catch(console.error);
-          }
-        }
-      })
-      .catch((err) => {
-        console.log('Push notification setup error:', err.message);
-        setError(err.message);
-      });
-
-    // Listen for incoming notifications (only if supported)
-    try {
-      notificationListener.current = Notifications.addNotificationReceivedListener(
-        (notification) => {
-          setNotification(notification);
-          // Refresh data when notification received in foreground
-          if (onNotificationReceived) {
-            onNotificationReceived();
-          }
-        }
-      );
-
-      // Listen for notification taps - this is the deep link handler
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(
-        (response) => {
-          console.log('Notification tapped:', response);
-          const data = response.notification.request.content.data;
-          if (data?.eventId && onNotificationTap) {
-            onNotificationTap(data.eventId as string);
-          }
-        }
-      );
-    } catch (e) {
-      console.log('Notification listeners not supported in Expo Go');
-    }
-
-    return () => {
-      // Clean up subscriptions safely
-      if (notificationListener.current?.remove) {
-        notificationListener.current.remove();
-      }
-      if (responseListener.current?.remove) {
-        responseListener.current.remove();
-      }
-    };
-  }, [userId, onNotificationTap, onNotificationReceived]);
-
-  // Update token on server when userId becomes available
-  useEffect(() => {
-    if (userId && expoPushToken) {
-      api.updatePushToken(userId, expoPushToken).catch(console.error);
-    }
-  }, [userId, expoPushToken]);
-
-  return {
-    expoPushToken,
-    notification,
-    error,
-  };
-}
-
-async function registerForPushNotificationsAsync(): Promise<string | null> {
-  let token: string | null = null;
-
-  // Set up Android notification channel
+async function fetchExpoToken(): Promise<string | null> {
+  // iOS and Android need a physical device. Web can still get a token for testing.
+  if (!Device.isDevice && Platform.OS !== 'web') {
+    console.log('Push tokens need a physical device on iOS/Android');
+    return null;
+  }
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
     });
   }
+  const tokenData = await Notifications.getExpoPushTokenAsync({
+    projectId: Constants.expoConfig?.extra?.eas?.projectId,
+  });
+  return tokenData.data;
+}
 
-  // Check if running on a device (required for push notifications on iOS)
-  if (!Device.isDevice) {
-    // For web or simulator, we can still get a token for testing
-    if (Platform.OS === 'web') {
-      // Web push - will prompt for permission
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
+/**
+ * Deal alerts state and actions. Nothing here prompts on mount: the system dialog only appears
+ * from `enableAlerts()`, which the app calls after the user follows something and taps TURN ON.
+ * When permission was already granted, the token is re-registered silently.
+ */
+export function usePushAlerts(userId: string | null) {
+  const [status, setStatus] = useState<AlertsStatus>('undetermined');
+  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
 
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
+  const register = useCallback(async () => {
+    try {
+      const token = await fetchExpoToken();
+      if (token) {
+        setExpoPushToken(token);
+        if (userId) await api.updatePushToken(userId, token);
       }
+    } catch (err) {
+      console.log('Push registration error:', err instanceof Error ? err.message : err);
+    }
+  }, [userId]);
 
-      if (finalStatus !== 'granted') {
-        console.log('Push notification permission denied');
-        return null;
+  const refreshStatus = useCallback(async () => {
+    const next = await readStatus();
+    setStatus(next);
+    return next;
+  }, []);
+
+  // Check status on mount and whenever the app returns from system Settings.
+  useEffect(() => {
+    refreshStatus();
+    const sub = AppState.addEventListener('change', (s) => s === 'active' && refreshStatus());
+    return () => sub.remove();
+  }, [refreshStatus]);
+
+  // Already granted: keep the server's token fresh without asking anything.
+  useEffect(() => {
+    if (userId && status === 'granted') register();
+  }, [userId, status, register]);
+
+  /** Ask the system for permission (one-shot dialog) and register the token on a grant. */
+  const enableAlerts = useCallback(async (): Promise<AlertsStatus> => {
+    let next = await readStatus();
+    if (next === 'undetermined') {
+      try {
+        await Notifications.requestPermissionsAsync();
+      } catch (err) {
+        console.log('Permission request failed:', err);
       }
-
-      // Get Expo push token for web
-      const tokenData = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
-      });
-      token = tokenData.data;
-    } else {
-      console.log('Must use physical device for push notifications on iOS/Android');
-      return null;
+      next = await readStatus();
     }
-  } else {
-    // Physical device
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+    setStatus(next);
+    if (next === 'granted') await register();
+    return next;
+  }, [register]);
 
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
+  return { alertsStatus: status, expoPushToken, enableAlerts, refreshAlertsStatus: refreshStatus };
+}
 
-    if (finalStatus !== 'granted') {
-      console.log('Push notification permission denied');
-      return null;
-    }
+/** Whether to show the explainer: permission never asked and we haven't shown it before. */
+export async function shouldPrimeAlerts(): Promise<boolean> {
+  if ((await readStatus()) !== 'undetermined') return false;
+  return (await AsyncStorage.getItem(PRIMED_KEY).catch(() => null)) === null;
+}
 
-    // Get Expo push token
-    const tokenData = await Notifications.getExpoPushTokenAsync({
-      projectId: Constants.expoConfig?.extra?.eas?.projectId,
-    });
-    token = tokenData.data;
-  }
+export function markAlertsPrimed(): void {
+  AsyncStorage.setItem(PRIMED_KEY, '1').catch(() => {});
+}
 
-  return token;
+/**
+ * Where a notification tap should go. Pushes carry `data.url` ("freebie://deal/<id>"), plus
+ * `triggeredEventId` and `eventId`. Older pushes only have the ids, so handle every shape.
+ */
+export function urlFromNotification(notification: Notifications.Notification | null | undefined): string | null {
+  const data = notification?.request?.content?.data as Record<string, unknown> | undefined;
+  if (!data) return null;
+  if (typeof data.url === 'string' && data.url) return data.url;
+  const id = data.triggeredEventId ?? data.eventId;
+  return typeof id === 'string' && id ? `freebie://deal/${encodeURIComponent(id)}` : null;
 }
 
 // Utility to send a local notification (for testing)
 export async function sendLocalNotification(title: string, body: string, data?: Record<string, unknown>) {
   await Notifications.scheduleNotificationAsync({
-    content: {
-      title,
-      body,
-      sound: true,
-      data,
-    },
+    content: { title, body, sound: true, data },
     trigger: null, // Immediately
   });
-}
-
-// Test notification types
-interface TestNotification {
-  title: string;
-  body: string;
-  eventId?: string;
-  triggeredEventId?: string;
 }
 
 // Store for active deals to use in test notifications
@@ -205,76 +156,22 @@ export function setActiveDealsForNotifications(deals: typeof cachedActiveDeals) 
   cachedActiveDeals = deals;
 }
 
-function formatTimeRemaining(expiresAt: string): string {
-  const expires = new Date(expiresAt);
-  const now = new Date();
-  const diff = expires.getTime() - now.getTime();
-
-  if (diff < 0) return 'Expired!';
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (hours > 0) return `${hours}h ${minutes}m left`;
-  return `${minutes}m left`;
-}
-
-export async function sendRandomTestNotification(): Promise<TestNotification> {
-  let notification: TestNotification;
-
-  // Only send test notifications if there are active deals
-  if (cachedActiveDeals.length > 0) {
-    const deal = cachedActiveDeals[Math.floor(Math.random() * cachedActiveDeals.length)];
-    const timeRemaining = deal.expiresAt ? formatTimeRemaining(deal.expiresAt) : '';
-    const isExpiringSoon = deal.expiresAt && new Date(deal.expiresAt).getTime() - Date.now() < 6 * 60 * 60 * 1000;
-
-    if (isExpiringSoon) {
-      // Reminder notification
-      notification = {
-        title: `⏰ Expiring Soon: ${deal.event.offerName}`,
-        body: `Only ${timeRemaining}! Don't miss your free deal from ${deal.event.teamName}.`,
-        eventId: deal.eventId,
-        triggeredEventId: deal.id,
-      };
-    } else {
-      // New deal notification
-      notification = {
-        title: `🎉 ${deal.event.offerName}!`,
-        body: `${deal.event.triggerCondition} just triggered! ${timeRemaining ? `Expires in ${timeRemaining}.` : ''}`,
-        eventId: deal.eventId,
-        triggeredEventId: deal.id,
-      };
-    }
-  } else {
-    // No active deals - show info notification
-    notification = {
-      title: '📱 No Active Deals',
-      body: 'Run "task backend:deals" to create test deals, then try again.',
-    };
-  }
-
-  try {
-    // Check/request permissions first
-    const { status } = await Notifications.getPermissionsAsync();
-    if (status !== 'granted') {
-      const { status: newStatus } = await Notifications.requestPermissionsAsync();
-      if (newStatus !== 'granted') {
-        alert('Please enable notifications in settings');
-        return notification;
+/** Dev helper: fire a local notification shaped like the real ones. */
+export async function sendRandomTestNotification(): Promise<{ title: string; body: string }> {
+  const deal = cachedActiveDeals[Math.floor(Math.random() * cachedActiveDeals.length)];
+  const notification = deal
+    ? {
+        title: `${deal.event.triggerCondition}! ${deal.event.offerName}`,
+        body: `Claim at ${deal.event.teamName} partner`,
+        data: { url: `freebie://deal/${deal.id}`, triggeredEventId: deal.id, eventId: deal.eventId },
       }
-    }
+    : { title: 'No active deals', body: 'Run "task api:deals" to create test deals, then try again.', data: undefined };
 
-    await sendLocalNotification(notification.title, notification.body, {
-      type: 'freebie',
-      eventId: notification.eventId,
-      triggeredEventId: notification.triggeredEventId,
-    });
-    console.log('Notification sent:', notification.title, 'eventId:', notification.eventId);
-  } catch (error) {
-    console.error('Failed to send notification:', error);
-    // Fallback to alert for Expo Go
-    alert(`${notification.title}\n\n${notification.body}`);
+  const { status } = await Notifications.getPermissionsAsync();
+  if (status !== 'granted') {
+    const { status: next } = await Notifications.requestPermissionsAsync();
+    if (next !== 'granted') return notification;
   }
-
+  await sendLocalNotification(notification.title, notification.body, notification.data);
   return notification;
 }

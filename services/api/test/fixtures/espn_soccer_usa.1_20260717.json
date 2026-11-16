@@ -1,0 +1,364 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "DWDDW",
+       "homeAway": "home",
+       "id": "187",
+       "order": 0,
+       "score": "0",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "ffffff",
+        "color": "00235d",
+        "displayName": "LA Galaxy",
+        "id": "187",
+        "isActive": true,
+        "location": "LA Galaxy",
+        "name": "LA Galaxy",
+        "shortDisplayName": "LA Galaxy"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "LLDDW",
+       "homeAway": "away",
+       "id": "18966",
+       "order": 1,
+       "score": "3",
+       "team": {
+        "abbreviation": "LAFC",
+        "alternateColor": "c7a36f",
+        "color": "000000",
+        "displayName": "LAFC",
+        "id": "18966",
+        "isActive": true,
+        "location": "LAFC",
+        "name": "LAFC",
+        "shortDisplayName": "LAFC"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "date": "2026-07-18T02:25Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "26'",
+        "value": 1501.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "34'",
+        "value": 2008.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "45'+1'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": true,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "98",
+        "text": "Penalty - Scored"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "45'+2'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "57'",
+        "value": 3368.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "80'",
+        "value": 4746.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761664",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-07-18T02:25Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+3'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-07-18T02:25Z",
+   "id": "761664",
+   "name": "LAFC at LA Galaxy",
+   "shortName": "LAFC @ LA",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+3'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 11500,
+     "competitors": [
+      {
+       "form": "WWDWD",
+       "homeAway": "home",
+       "id": "18986",
+       "order": 0,
+       "score": "1",
+       "team": {
+        "abbreviation": "NSH",
+        "alternateColor": "1f1646",
+        "color": "ece83a",
+        "displayName": "Nashville SC",
+        "id": "18986",
+        "isActive": true,
+        "location": "Nashville SC",
+        "name": "Nashville SC",
+        "shortDisplayName": "Nashville"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LWLLL",
+       "homeAway": "away",
+       "id": "18418",
+       "order": 1,
+       "score": "0",
+       "team": {
+        "abbreviation": "ATL",
+        "alternateColor": "aa9767",
+        "color": "9d2235",
+        "displayName": "Atlanta United FC",
+        "id": "18418",
+        "isActive": true,
+        "location": "Atlanta United FC",
+        "name": "Atlanta United FC",
+        "shortDisplayName": "Atlanta"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-07-18T00:10Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "79'",
+        "value": 4699.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18986"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "85'",
+        "value": 5044.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "18986"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "90'+10'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "18418"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761663",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-07-18T00:10Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+11'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-07-18T00:10Z",
+   "id": "761663",
+   "name": "Atlanta United FC at Nashville SC",
+   "shortName": "ATL @ NSH",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+11'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

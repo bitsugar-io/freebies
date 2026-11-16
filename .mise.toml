@@ -2,5 +2,7 @@
 go = "1.27.3"
 node = "22"
 bun = "latest"
+just = "latest"
+git-cliff = "latest"
 kubectl = "latest"
 helm = "latest"

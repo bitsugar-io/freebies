@@ -1,0 +1,445 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 70810,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "30",
+       "linescores": [
+        {
+         "displayValue": "14",
+         "period": 1,
+         "value": 14.0
+        },
+        {
+         "displayValue": "6",
+         "period": 2,
+         "value": 6.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "3",
+         "period": 4,
+         "value": 3.0
+        }
+       ],
+       "order": 0,
+       "score": "30",
+       "team": {
+        "abbreviation": "USC",
+        "alternateColor": "ffc72c",
+        "color": "9d2235",
+        "conferenceId": "5",
+        "displayName": "USC Trojans",
+        "id": "30",
+        "isActive": true,
+        "location": "USC",
+        "name": "Trojans",
+        "shortDisplayName": "USC"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 2
+       },
+       "homeAway": "away",
+       "id": "194",
+       "linescores": [
+        {
+         "displayValue": "3",
+         "period": 1,
+         "value": 3.0
+        },
+        {
+         "displayValue": "6",
+         "period": 2,
+         "value": 6.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "9",
+         "period": 4,
+         "value": 9.0
+        }
+       ],
+       "order": 1,
+       "score": "18",
+       "team": {
+        "abbreviation": "OSU",
+        "alternateColor": "a8adb4",
+        "color": "ba0c2f",
+        "conferenceId": "5",
+        "displayName": "Ohio State Buckeyes",
+        "id": "194",
+        "isActive": true,
+        "location": "Ohio State",
+        "name": "Buckeyes",
+        "shortDisplayName": "Ohio State"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": true,
+     "date": "2026-10-31T23:30Z",
+     "dateValid": true,
+     "id": "401858509",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-31T23:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-31T23:30Z",
+   "id": "401858509",
+   "name": "Ohio State Buckeyes at USC Trojans",
+   "shortName": "OSU @ USC",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 9
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 24611,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 7
+       },
+       "homeAway": "home",
+       "id": "26",
+       "linescores": [
+        {
+         "displayValue": "10",
+         "period": 1,
+         "value": 10.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "3",
+         "period": 4,
+         "value": 3.0
+        }
+       ],
+       "order": 0,
+       "score": "27",
+       "team": {
+        "abbreviation": "UCLA",
+        "alternateColor": "f2a900",
+        "color": "2774ae",
+        "conferenceId": "5",
+        "displayName": "UCLA Bruins",
+        "id": "26",
+        "isActive": true,
+        "location": "UCLA",
+        "name": "Bruins",
+        "shortDisplayName": "UCLA"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "2440",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 2,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 1,
+       "score": "0",
+       "team": {
+        "abbreviation": "NEV",
+        "alternateColor": "8a8d8f",
+        "color": "041e42",
+        "conferenceId": "17",
+        "displayName": "Nevada Wolf Pack",
+        "id": "2440",
+        "isActive": true,
+        "location": "Nevada",
+        "name": "Wolf Pack",
+        "shortDisplayName": "Nevada"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-10-31T20:15Z",
+     "dateValid": true,
+     "id": "401858508",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-31T20:15Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-31T20:15Z",
+   "id": "401858508",
+   "name": "Nevada Wolf Pack at UCLA Bruins",
+   "shortName": "NEV @ UCLA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 9
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 44257,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "153",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "14",
+         "period": 2,
+         "value": 14.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "14",
+         "period": 4,
+         "value": 14.0
+        }
+       ],
+       "order": 0,
+       "score": "35",
+       "team": {
+        "abbreviation": "UNC",
+        "alternateColor": "13294b",
+        "color": "7bafd4",
+        "conferenceId": "1",
+        "displayName": "North Carolina Tar Heels",
+        "id": "153",
+        "isActive": true,
+        "location": "North Carolina",
+        "name": "Tar Heels",
+        "shortDisplayName": "North Carolina"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "curatedRank": {
+        "current": 1
+       },
+       "homeAway": "away",
+       "id": "2390",
+       "linescores": [
+        {
+         "displayValue": "7",
+         "period": 1,
+         "value": 7.0
+        },
+        {
+         "displayValue": "10",
+         "period": 2,
+         "value": 10.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "14",
+         "period": 4,
+         "value": 14.0
+        }
+       ],
+       "order": 1,
+       "score": "38",
+       "team": {
+        "abbreviation": "MIA",
+        "alternateColor": "035131",
+        "color": "f47423",
+        "conferenceId": "1",
+        "displayName": "Miami Hurricanes",
+        "id": "2390",
+        "isActive": true,
+        "location": "Miami",
+        "name": "Hurricanes",
+        "shortDisplayName": "Miami"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": true,
+     "date": "2026-10-31T23:30Z",
+     "dateValid": true,
+     "id": "401858282",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-31T23:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-31T23:30Z",
+   "id": "401858282",
+   "name": "Miami Hurricanes at North Carolina Tar Heels",
+   "shortName": "MIA @ UNC",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 9
+   }
+  }
+ ]
+}

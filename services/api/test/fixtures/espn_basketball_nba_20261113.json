@@ -1,0 +1,274 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 17927,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "12",
+       "linescores": [
+        {
+         "displayValue": "33",
+         "period": 1,
+         "value": 33.0
+        },
+        {
+         "displayValue": "24",
+         "period": 2,
+         "value": 24.0
+        },
+        {
+         "displayValue": "25",
+         "period": 3,
+         "value": 25.0
+        },
+        {
+         "displayValue": "31",
+         "period": 4,
+         "value": 31.0
+        }
+       ],
+       "order": 0,
+       "score": "113",
+       "team": {
+        "abbreviation": "LAC",
+        "alternateColor": "c8102e",
+        "color": "12173f",
+        "displayName": "LA Clippers",
+        "id": "12",
+        "isActive": true,
+        "location": "LA",
+        "name": "Clippers",
+        "shortDisplayName": "Clippers"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "25",
+       "linescores": [
+        {
+         "displayValue": "27",
+         "period": 1,
+         "value": 27.0
+        },
+        {
+         "displayValue": "17",
+         "period": 2,
+         "value": 17.0
+        },
+        {
+         "displayValue": "40",
+         "period": 3,
+         "value": 40.0
+        },
+        {
+         "displayValue": "28",
+         "period": 4,
+         "value": 28.0
+        }
+       ],
+       "order": 1,
+       "score": "112",
+       "team": {
+        "abbreviation": "OKC",
+        "alternateColor": "ef3b24",
+        "color": "007ac1",
+        "displayName": "Oklahoma City Thunder",
+        "id": "25",
+        "isActive": true,
+        "location": "Oklahoma City",
+        "name": "Thunder",
+        "shortDisplayName": "Thunder"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-14T03:30Z",
+     "id": "401909304",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-14T03:30Z",
+     "status": {
+      "clock": 720.0,
+      "displayClock": "12:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-14T03:30Z",
+   "id": "401909304",
+   "name": "Oklahoma City Thunder at LA Clippers",
+   "shortName": "OKC @ LAC",
+   "status": {
+    "clock": 720.0,
+    "displayClock": "12:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 17274,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "11",
+       "linescores": [
+        {
+         "displayValue": "26",
+         "period": 1,
+         "value": 26.0
+        },
+        {
+         "displayValue": "32",
+         "period": 2,
+         "value": 32.0
+        },
+        {
+         "displayValue": "27",
+         "period": 3,
+         "value": 27.0
+        },
+        {
+         "displayValue": "21",
+         "period": 4,
+         "value": 21.0
+        }
+       ],
+       "order": 0,
+       "score": "106",
+       "team": {
+        "abbreviation": "IND",
+        "alternateColor": "ffd520",
+        "color": "0c2340",
+        "displayName": "Indiana Pacers",
+        "id": "11",
+        "isActive": true,
+        "location": "Indiana",
+        "name": "Pacers",
+        "shortDisplayName": "Pacers"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "18",
+       "linescores": [
+        {
+         "displayValue": "27",
+         "period": 1,
+         "value": 27.0
+        },
+        {
+         "displayValue": "22",
+         "period": 2,
+         "value": 22.0
+        },
+        {
+         "displayValue": "35",
+         "period": 3,
+         "value": 35.0
+        },
+        {
+         "displayValue": "20",
+         "period": 4,
+         "value": 20.0
+        }
+       ],
+       "order": 1,
+       "score": "104",
+       "team": {
+        "abbreviation": "NY",
+        "alternateColor": "f58426",
+        "color": "1d428a",
+        "displayName": "New York Knicks",
+        "id": "18",
+        "isActive": true,
+        "location": "New York",
+        "name": "Knicks",
+        "shortDisplayName": "Knicks"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-14T00:00Z",
+     "id": "401909296",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-14T00:00Z",
+     "status": {
+      "clock": 720.0,
+      "displayClock": "12:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-14T00:00Z",
+   "id": "401909296",
+   "name": "New York Knicks at Indiana Pacers",
+   "shortName": "NY @ IND",
+   "status": {
+    "clock": 720.0,
+    "displayClock": "12:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

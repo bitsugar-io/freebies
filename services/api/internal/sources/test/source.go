@@ -22,6 +22,11 @@ func (s *Source) League() string {
 	return "test"
 }
 
+// Metrics lists the metrics the test source emits.
+func (s *Source) Metrics() []string {
+	return []string{"score", "strikeouts", "runs", "hits", "home_runs", "win"}
+}
+
 // GetYesterdaysGame fetches stats from yesterday's game
 func (s *Source) GetYesterdaysGame(ctx context.Context, teamID string) (*sources.GameStats, error) {
 	loc, _ := time.LoadLocation("America/Los_Angeles")

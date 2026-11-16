@@ -1,0 +1,373 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 10777,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 22
+       },
+       "homeAway": "home",
+       "id": "26",
+       "linescores": [
+        {
+         "displayValue": "43",
+         "period": 1,
+         "value": 43.0
+        },
+        {
+         "displayValue": "41",
+         "period": 2,
+         "value": 41.0
+        }
+       ],
+       "order": 0,
+       "score": "84",
+       "team": {
+        "abbreviation": "UCLA",
+        "alternateColor": "f2a900",
+        "color": "2774ae",
+        "conferenceId": "7",
+        "displayName": "UCLA Bruins",
+        "id": "26",
+        "isActive": true,
+        "location": "UCLA",
+        "name": "Bruins",
+        "shortDisplayName": "UCLA"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 5
+       },
+       "homeAway": "away",
+       "id": "12",
+       "linescores": [
+        {
+         "displayValue": "29",
+         "period": 1,
+         "value": 29.0
+        },
+        {
+         "displayValue": "46",
+         "period": 2,
+         "value": 46.0
+        }
+       ],
+       "order": 1,
+       "score": "75",
+       "team": {
+        "abbreviation": "ARIZ",
+        "alternateColor": "003366",
+        "color": "cc0033",
+        "conferenceId": "8",
+        "displayName": "Arizona Wildcats",
+        "id": "12",
+        "isActive": true,
+        "location": "Arizona",
+        "name": "Wildcats",
+        "shortDisplayName": "Arizona"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-03T03:00Z",
+     "id": "401909738",
+     "neutralSite": true,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-03T03:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-03T03:00Z",
+   "id": "401909738",
+   "name": "Arizona Wildcats at UCLA Bruins",
+   "shortName": "ARIZ VS UCLA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 4559,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 21
+       },
+       "homeAway": "home",
+       "id": "30",
+       "linescores": [
+        {
+         "displayValue": "46",
+         "period": 1,
+         "value": 46.0
+        },
+        {
+         "displayValue": "49",
+         "period": 2,
+         "value": 49.0
+        }
+       ],
+       "order": 0,
+       "score": "95",
+       "team": {
+        "abbreviation": "USC",
+        "alternateColor": "ffc72c",
+        "color": "9d2235",
+        "conferenceId": "7",
+        "displayName": "USC Trojans",
+        "id": "30",
+        "isActive": true,
+        "location": "USC",
+        "name": "Trojans",
+        "shortDisplayName": "USC"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "270",
+       "linescores": [
+        {
+         "displayValue": "29",
+         "period": 1,
+         "value": 29.0
+        },
+        {
+         "displayValue": "34",
+         "period": 2,
+         "value": 34.0
+        }
+       ],
+       "order": 1,
+       "score": "63",
+       "team": {
+        "abbreviation": "MILW",
+        "alternateColor": "ffc20e",
+        "color": "000000",
+        "conferenceId": "45",
+        "displayName": "Milwaukee Panthers",
+        "id": "270",
+        "isActive": true,
+        "location": "Milwaukee",
+        "name": "Panthers",
+        "shortDisplayName": "Milwaukee"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-03T03:30Z",
+     "id": "401926771",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-03T03:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-03T03:30Z",
+   "id": "401926771",
+   "name": "Milwaukee Panthers at USC Trojans",
+   "shortName": "MILW @ USC",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 15324,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 1
+       },
+       "homeAway": "home",
+       "id": "57",
+       "linescores": [
+        {
+         "displayValue": "46",
+         "period": 1,
+         "value": 46.0
+        },
+        {
+         "displayValue": "31",
+         "period": 2,
+         "value": 31.0
+        }
+       ],
+       "order": 0,
+       "score": "77",
+       "team": {
+        "abbreviation": "FLA",
+        "alternateColor": "fa4616",
+        "color": "0021a5",
+        "conferenceId": "23",
+        "displayName": "Florida Gators",
+        "id": "57",
+        "isActive": true,
+        "location": "Florida",
+        "name": "Gators",
+        "shortDisplayName": "Florida"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 14
+       },
+       "homeAway": "away",
+       "id": "2390",
+       "linescores": [
+        {
+         "displayValue": "36",
+         "period": 1,
+         "value": 36.0
+        },
+        {
+         "displayValue": "31",
+         "period": 2,
+         "value": 31.0
+        }
+       ],
+       "order": 1,
+       "score": "67",
+       "team": {
+        "abbreviation": "MIA",
+        "alternateColor": "035131",
+        "color": "f47423",
+        "conferenceId": "2",
+        "displayName": "Miami Hurricanes",
+        "id": "2390",
+        "isActive": true,
+        "location": "Miami",
+        "name": "Hurricanes",
+        "shortDisplayName": "Miami"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-11-02T23:00Z",
+     "id": "401906769",
+     "neutralSite": true,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-02T23:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-02T23:00Z",
+   "id": "401906769",
+   "name": "Miami Hurricanes at Florida Gators",
+   "shortName": "MIA VS FLA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

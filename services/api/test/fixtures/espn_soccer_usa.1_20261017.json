@@ -1,0 +1,654 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "WDWDD",
+       "homeAway": "home",
+       "id": "17606",
+       "order": 0,
+       "score": "1",
+       "team": {
+        "abbreviation": "NYC",
+        "alternateColor": "000229",
+        "color": "9fd2ff",
+        "displayName": "New York City FC",
+        "id": "17606",
+        "isActive": true,
+        "location": "New York City FC",
+        "name": "New York City FC",
+        "shortDisplayName": "NYCFC"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "LLDDW",
+       "homeAway": "away",
+       "id": "18966",
+       "order": 1,
+       "score": "1",
+       "team": {
+        "abbreviation": "LAFC",
+        "alternateColor": "c7a36f",
+        "color": "000000",
+        "displayName": "LAFC",
+        "id": "18966",
+        "isActive": true,
+        "location": "LAFC",
+        "name": "LAFC",
+        "shortDisplayName": "LAFC"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-10-17T23:30Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "28'",
+        "value": 1649.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "17606"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "44'",
+        "value": 2610.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "17606"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "45'+1'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "138",
+        "text": "Goal - Free-kick"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "54'",
+        "value": 3181.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "17606"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "59'",
+        "value": 3507.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "17606"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "761877",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-17T23:30Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+4'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-17T23:30Z",
+   "id": "761877",
+   "name": "LAFC at New York City FC",
+   "shortName": "LAFC @ NYC",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+4'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "DWDDW",
+       "homeAway": "home",
+       "id": "187",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "ffffff",
+        "color": "00235d",
+        "displayName": "LA Galaxy",
+        "id": "187",
+        "isActive": true,
+        "location": "LA Galaxy",
+        "name": "LA Galaxy",
+        "shortDisplayName": "LA Galaxy"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "LWLDD",
+       "homeAway": "away",
+       "id": "22529",
+       "order": 1,
+       "score": "2",
+       "team": {
+        "abbreviation": "SD",
+        "alternateColor": "F89E1A",
+        "color": "697a7C",
+        "displayName": "San Diego FC",
+        "id": "22529",
+        "isActive": true,
+        "location": "San Diego FC",
+        "name": "San Diego FC",
+        "shortDisplayName": "San Diego"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-10-18T02:30Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "4'",
+        "value": 186.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "10'",
+        "value": 561.0
+       },
+       "ownGoal": false,
+       "penaltyKick": true,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "22529"
+       },
+       "type": {
+        "id": "98",
+        "text": "Penalty - Scored"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "17'",
+        "value": 978.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "35'",
+        "value": 2062.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "22529"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "39'",
+        "value": 2330.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "22529"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "45'+1'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "90'+3'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761887",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-18T02:30Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+6'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-18T02:30Z",
+   "id": "761887",
+   "name": "San Diego FC at LA Galaxy",
+   "shortName": "SD @ LA",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+6'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 18551,
+     "competitors": [
+      {
+       "form": "WLDLD",
+       "homeAway": "home",
+       "id": "10739",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "PHI",
+        "alternateColor": "e0d0a6",
+        "color": "051f31",
+        "displayName": "Philadelphia Union",
+        "id": "10739",
+        "isActive": true,
+        "location": "Philadelphia Union",
+        "name": "Philadelphia Union",
+        "shortDisplayName": "Philadelphia"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "DWWLD",
+       "homeAway": "away",
+       "id": "21300",
+       "order": 1,
+       "score": "2",
+       "team": {
+        "abbreviation": "CLT",
+        "alternateColor": "000000",
+        "color": "0085ca",
+        "displayName": "Charlotte FC",
+        "id": "21300",
+        "isActive": true,
+        "location": "Charlotte FC",
+        "name": "Charlotte FC",
+        "shortDisplayName": "Charlotte"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-10-17T18:30Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "19'",
+        "value": 1107.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21300"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "24'",
+        "value": 1391.0
+       },
+       "ownGoal": false,
+       "penaltyKick": true,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "10739"
+       },
+       "type": {
+        "id": "98",
+        "text": "Penalty - Scored"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "44'",
+        "value": 2618.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21300"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "45'+1'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21300"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "48'",
+        "value": 2824.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21300"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "62'",
+        "value": 3680.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21300"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "73'",
+        "value": 4359.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "10739"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "761875",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-17T18:30Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+13'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-10-17T18:30Z",
+   "id": "761875",
+   "name": "Charlotte FC at Philadelphia Union",
+   "shortName": "CLT @ PHI",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+13'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

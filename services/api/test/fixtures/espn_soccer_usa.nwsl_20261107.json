@@ -1,0 +1,194 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "WWWWW",
+       "homeAway": "home",
+       "id": "20907",
+       "order": 0,
+       "score": "1",
+       "team": {
+        "abbreviation": "KC",
+        "alternateColor": "62cbc9",
+        "color": "cf3339",
+        "displayName": "Kansas City Current",
+        "id": "20907",
+        "isActive": true,
+        "location": "Kansas City Current",
+        "name": "Kansas City Current",
+        "shortDisplayName": "Kansas City"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LWWWD",
+       "homeAway": "away",
+       "id": "21422",
+       "order": 1,
+       "score": "0",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "898c8f",
+        "color": "202121",
+        "displayName": "Angel City FC",
+        "id": "21422",
+        "isActive": true,
+        "location": "Angel City FC",
+        "name": "Angel City FC",
+        "shortDisplayName": "Angel City"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-11-07T17:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "13'",
+        "value": 753.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "58'",
+        "value": 3440.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "90'+12'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "96'",
+        "value": 5731.0
+       },
+       "ownGoal": false,
+       "penaltyKick": true,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "20907"
+       },
+       "type": {
+        "id": "98",
+        "text": "Penalty - Scored"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "114'",
+        "value": 6812.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "20907"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "401932976",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-07T17:00Z",
+     "status": {
+      "clock": 7200.0,
+      "displayClock": "120'+3'",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final Score - After Extra Time",
+       "detail": "AET",
+       "id": "45",
+       "name": "STATUS_FINAL_AET",
+       "shortDetail": "AET",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-11-07T17:00Z",
+   "id": "401932976",
+   "name": "Angel City FC at Kansas City Current",
+   "shortName": "LA @ KC",
+   "status": {
+    "clock": 7200.0,
+    "displayClock": "120'+3'",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final Score - After Extra Time",
+     "detail": "AET",
+     "id": "45",
+     "name": "STATUS_FINAL_AET",
+     "shortDetail": "AET",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+config:
+  MD013: false
+  MD024:
+    siblings_only: true
+  MD033: false
+  MD034: false
+  MD041: false
+ignores:
+  - "**/node_modules/**"
+  - "apps/mobile/ios/**"
+  - "apps/mobile/android/**"
+  - "docs/pivot/**"
+  - "docs/plans/**"

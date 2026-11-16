@@ -1,0 +1,286 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 19067,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "13",
+       "linescores": [
+        {
+         "displayValue": "38",
+         "period": 1,
+         "value": 38.0
+        },
+        {
+         "displayValue": "35",
+         "period": 2,
+         "value": 35.0
+        },
+        {
+         "displayValue": "30",
+         "period": 3,
+         "value": 30.0
+        },
+        {
+         "displayValue": "26",
+         "period": 4,
+         "value": 26.0
+        }
+       ],
+       "order": 0,
+       "score": "129",
+       "team": {
+        "abbreviation": "LAL",
+        "alternateColor": "fdb927",
+        "color": "552583",
+        "displayName": "Los Angeles Lakers",
+        "id": "13",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Lakers",
+        "shortDisplayName": "Lakers"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "homeAway": "away",
+       "id": "22",
+       "linescores": [
+        {
+         "displayValue": "32",
+         "period": 1,
+         "value": 32.0
+        },
+        {
+         "displayValue": "36",
+         "period": 2,
+         "value": 36.0
+        },
+        {
+         "displayValue": "34",
+         "period": 3,
+         "value": 34.0
+        },
+        {
+         "displayValue": "34",
+         "period": 4,
+         "value": 34.0
+        }
+       ],
+       "order": 1,
+       "score": "136",
+       "team": {
+        "abbreviation": "POR",
+        "alternateColor": "000000",
+        "color": "e03a3e",
+        "displayName": "Portland Trail Blazers",
+        "id": "22",
+        "isActive": true,
+        "location": "Portland",
+        "name": "Trail Blazers",
+        "shortDisplayName": "Trail Blazers"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-10-28T03:00Z",
+     "id": "401909880",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-28T03:00Z",
+     "status": {
+      "clock": 720.0,
+      "displayClock": "12:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-28T03:00Z",
+   "id": "401909880",
+   "name": "Portland Trail Blazers at Los Angeles Lakers",
+   "shortName": "POR @ LAL",
+   "status": {
+    "clock": 720.0,
+    "displayClock": "12:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 19156,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "2",
+       "linescores": [
+        {
+         "displayValue": "26",
+         "period": 1,
+         "value": 26.0
+        },
+        {
+         "displayValue": "30",
+         "period": 2,
+         "value": 30.0
+        },
+        {
+         "displayValue": "30",
+         "period": 3,
+         "value": 30.0
+        },
+        {
+         "displayValue": "31",
+         "period": 4,
+         "value": 31.0
+        },
+        {
+         "displayValue": "8",
+         "period": 5,
+         "value": 8.0
+        }
+       ],
+       "order": 0,
+       "score": "125",
+       "team": {
+        "abbreviation": "BOS",
+        "alternateColor": "ffffff",
+        "color": "008348",
+        "displayName": "Boston Celtics",
+        "id": "2",
+        "isActive": true,
+        "location": "Boston",
+        "name": "Celtics",
+        "shortDisplayName": "Celtics"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "17",
+       "linescores": [
+        {
+         "displayValue": "31",
+         "period": 1,
+         "value": 31.0
+        },
+        {
+         "displayValue": "30",
+         "period": 2,
+         "value": 30.0
+        },
+        {
+         "displayValue": "21",
+         "period": 3,
+         "value": 21.0
+        },
+        {
+         "displayValue": "35",
+         "period": 4,
+         "value": 35.0
+        },
+        {
+         "displayValue": "7",
+         "period": 5,
+         "value": 7.0
+        }
+       ],
+       "order": 1,
+       "score": "124",
+       "team": {
+        "abbreviation": "BKN",
+        "alternateColor": "ffffff",
+        "color": "000000",
+        "displayName": "Brooklyn Nets",
+        "id": "17",
+        "isActive": true,
+        "location": "Brooklyn",
+        "name": "Nets",
+        "shortDisplayName": "Nets"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-10-27T23:30Z",
+     "id": "401909877",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-10-27T23:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 5,
+      "type": {
+       "altDetail": "OT",
+       "completed": true,
+       "description": "Final",
+       "detail": "Final/OT",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final/OT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-10-27T23:30Z",
+   "id": "401909877",
+   "name": "Brooklyn Nets at Boston Celtics",
+   "shortName": "BKN @ BOS",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 5,
+    "type": {
+     "altDetail": "OT",
+     "completed": true,
+     "description": "Final",
+     "detail": "Final/OT",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final/OT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

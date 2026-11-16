@@ -37,6 +37,7 @@ type Event struct {
 	IsActive         int64          `json:"is_active"`
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
+	SpriteID         sql.NullString `json:"sprite_id"`
 }
 
 type FeatureFlag struct {
@@ -59,6 +60,7 @@ type Notification struct {
 	TriggeredEventID string    `json:"triggered_event_id"`
 	SentAt           time.Time `json:"sent_at"`
 	Status           string    `json:"status"`
+	Kind             string    `json:"kind"`
 }
 
 type ScreenBlock struct {
@@ -73,11 +75,39 @@ type ScreenBlock struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type Sprite struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Width     int64     `json:"width"`
+	Height    int64     `json:"height"`
+	Pixels    string    `json:"pixels"`
+	Palette   string    `json:"palette"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type Subscription struct {
 	ID        string    `json:"id"`
 	UserID    string    `json:"user_id"`
 	EventID   string    `json:"event_id"`
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type Team struct {
+	ID             string         `json:"id"`
+	Name           string         `json:"name"`
+	FullName       string         `json:"full_name"`
+	League         string         `json:"league"`
+	Sport          string         `json:"sport"`
+	SeasonStart    string         `json:"season_start"`
+	SeasonEnd      string         `json:"season_end"`
+	ReturnLabel    sql.NullString `json:"return_label"`
+	DisplayOrder   int64          `json:"display_order"`
+	CreatedAt      time.Time      `json:"created_at"`
+	UpdatedAt      time.Time      `json:"updated_at"`
+	BadgeSpriteID  sql.NullString `json:"badge_sprite_id"`
+	PrimaryColor   sql.NullString `json:"primary_color"`
+	SecondaryColor sql.NullString `json:"secondary_color"`
 }
 
 type TriggeredEvent struct {
@@ -87,14 +117,16 @@ type TriggeredEvent struct {
 	TriggeredAt time.Time      `json:"triggered_at"`
 	ExpiresAt   sql.NullTime   `json:"expires_at"`
 	Payload     sql.NullString `json:"payload"`
+	AvailableAt sql.NullTime   `json:"available_at"`
 }
 
 type User struct {
-	ID        string         `json:"id"`
-	DeviceID  string         `json:"device_id"`
-	PushToken sql.NullString `json:"push_token"`
-	Platform  string         `json:"platform"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	Token     sql.NullString `json:"token"`
+	ID                string         `json:"id"`
+	DeviceID          string         `json:"device_id"`
+	PushToken         sql.NullString `json:"push_token"`
+	Platform          string         `json:"platform"`
+	CreatedAt         time.Time      `json:"created_at"`
+	UpdatedAt         time.Time      `json:"updated_at"`
+	Token             sql.NullString `json:"token"`
+	AlertsPausedUntil sql.NullTime   `json:"alerts_paused_until"`
 }

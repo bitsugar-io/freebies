@@ -30,10 +30,16 @@ func (wh *WorkerHandler) CheckTriggers(ctx context.Context, request gen.CheckTri
 		return gen.CheckTriggers500JSONResponse{Error: err.Error()}, nil
 	}
 
+	skipped := make([]gen.SkippedEvent, 0, len(result.Skipped))
+	for _, sk := range result.Skipped {
+		skipped = append(skipped, gen.SkippedEvent{EventId: sk.EventID, Status: sk.Status, Reason: sk.Reason})
+	}
 	return gen.CheckTriggers200JSONResponse{
-		Triggered:   result.Triggered,
-		Notified:    result.Notified,
-		TotalEvents: result.TotalEvents,
+		Triggered:     result.Triggered,
+		Notified:      result.Notified,
+		TotalEvents:   result.TotalEvents,
+		SkippedEvents: &result.SkippedEvents,
+		Skipped:       &skipped,
 	}, nil
 }
 

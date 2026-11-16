@@ -1,6 +1,6 @@
 # AI Usage Policy
 
-The OSAPI project has strict rules for AI usage:
+This project has strict rules for AI usage:
 
 - **All AI usage in any form must be disclosed.** You must state the tool you used (e.g. Claude
   Code, Cursor, Amp) along with the extent that the work was AI-assisted.
@@ -23,13 +23,12 @@ The OSAPI project has strict rules for AI usage:
   bad actors. We love to help junior developers learn and grow, but if you're interested in that
   then don't use AI, and we'll help you. I'm sorry that bad AI drivers have ruined this for you.
 
-These rules apply only to outside contributions to OSAPI. Maintainers are exempt from these rules
-and may use AI tools at their discretion; they've proven themselves trustworthy to apply good
-judgment.
+These rules apply only to outside contributions. Maintainers are exempt from these rules and may use
+AI tools at their discretion; they've proven themselves trustworthy to apply good judgment.
 
 ## There are Humans Here
 
-Please remember that OSAPI is maintained by humans.
+Please remember that this project is maintained by humans.
 
 Every discussion, issue, and pull request is read and reviewed by humans (and sometimes machines,
 too). It is a boundary point at which people interact with each other and the work done. It is rude
@@ -43,8 +42,8 @@ maintainers.
 
 ## AI is Welcome Here
 
-OSAPI is written with plenty of AI assistance, and many maintainers embrace AI tools as a productive
-tool in their workflow. As a project, we welcome AI as a tool!
+Freebies: LA Sports Deals is written with plenty of AI assistance, and many maintainers embrace AI
+tools as a productive tool in their workflow. As a project, we welcome AI as a tool!
 
 **Our reason for the strict AI policy is not due to an anti-AI stance**, but instead due to the
 number of highly unqualified people using AI. It's the people, not the tools, that are the problem.

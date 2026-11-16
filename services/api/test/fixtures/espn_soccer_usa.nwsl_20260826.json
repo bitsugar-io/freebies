@@ -1,0 +1,154 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "WLLWL",
+       "homeAway": "home",
+       "id": "15366",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "NC",
+        "alternateColor": "00416b",
+        "color": "ab0033",
+        "displayName": "North Carolina Courage",
+        "id": "15366",
+        "isActive": true,
+        "location": "North Carolina Courage",
+        "name": "North Carolina Courage",
+        "shortDisplayName": "North Carolina"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LWWWD",
+       "homeAway": "away",
+       "id": "21422",
+       "order": 1,
+       "score": "0",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "898c8f",
+        "color": "202121",
+        "displayName": "Angel City FC",
+        "id": "21422",
+        "isActive": true,
+        "location": "Angel City FC",
+        "name": "Angel City FC",
+        "shortDisplayName": "Angel City"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-08-27T00:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "21'",
+        "value": 1240.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "41'",
+        "value": 2403.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "15366"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "78'",
+        "value": 4677.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "15366"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "401853983",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-08-27T00:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+7'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-08-27T00:00Z",
+   "id": "401853983",
+   "name": "Angel City FC at North Carolina Courage",
+   "shortName": "LA @ NC",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+7'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

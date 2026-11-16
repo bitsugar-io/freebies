@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api, Subscription } from '../api/client';
 import { useUser } from './useUser';
 
@@ -8,24 +8,29 @@ export function useSubscriptions() {
   const [subscriptionData, setSubscriptionData] = useState<Subscription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Mirror of state so rapid taps see the latest optimistic value.
+  const current = useRef<Set<string>>(new Set());
 
-  // Load subscriptions from API
+  const commit = useCallback((next: Set<string>) => {
+    current.current = next;
+    setSubscriptions(next);
+  }, []);
+
   const fetchSubscriptions = useCallback(async () => {
     if (!user) return;
 
     try {
-      setIsLoading(true);
       setError(null);
       const data = await api.listSubscriptions(user.id);
       setSubscriptionData(data);
-      setSubscriptions(new Set(data.map((s) => s.eventId)));
+      commit(new Set(data.map((s) => s.eventId)));
     } catch (err) {
       console.error('Failed to load subscriptions:', err);
       setError(err instanceof Error ? err.message : 'Failed to load');
     } finally {
       setIsLoading(false);
     }
-  }, [user]);
+  }, [user, commit]);
 
   useEffect(() => {
     if (user) {
@@ -33,60 +38,46 @@ export function useSubscriptions() {
     }
   }, [user, fetchSubscriptions]);
 
-  const toggleSubscription = useCallback(
-    async (eventId: string) => {
-      if (!user) return;
+  /**
+   * Set many events on or off at once. Updates instantly, sends the requests in parallel and
+   * reverts only the ones that failed. Resolves with the ids that failed.
+   */
+  const setMany = useCallback(
+    async (eventIds: string[], on: boolean): Promise<string[]> => {
+      if (!user) return eventIds;
+      const changing = eventIds.filter((id) => current.current.has(id) !== on);
+      if (changing.length === 0) return [];
 
-      const wasSubscribed = subscriptions.has(eventId);
+      const optimistic = new Set(current.current);
+      changing.forEach((id) => (on ? optimistic.add(id) : optimistic.delete(id)));
+      commit(optimistic);
 
-      // Optimistic update
-      setSubscriptions((prev) => {
-        const next = new Set(prev);
-        if (wasSubscribed) {
-          next.delete(eventId);
-        } else {
-          next.add(eventId);
-        }
-        return next;
-      });
-
-      try {
-        if (wasSubscribed) {
-          await api.deleteSubscription(user.id, eventId);
-        } else {
-          await api.createSubscription(user.id, eventId);
-        }
-      } catch (err) {
-        console.error('Failed to toggle subscription:', err);
-        // Revert on error
-        setSubscriptions((prev) => {
-          const next = new Set(prev);
-          if (wasSubscribed) {
-            next.add(eventId);
-          } else {
-            next.delete(eventId);
-          }
-          return next;
-        });
-        setError(err instanceof Error ? err.message : 'Failed to update');
+      const results = await Promise.allSettled(
+        changing.map((id) =>
+          on ? api.createSubscription(user.id, id) : api.deleteSubscription(user.id, id)
+        )
+      );
+      const failed = changing.filter((_, i) => results[i].status === 'rejected');
+      if (failed.length > 0) {
+        const reverted = new Set(current.current);
+        failed.forEach((id) => (on ? reverted.delete(id) : reverted.add(id)));
+        commit(reverted);
+        setError('Failed to update');
       }
+      return failed;
     },
-    [user, subscriptions]
+    [user, commit]
   );
 
-  const isSubscribed = useCallback(
-    (eventId: string) => subscriptions.has(eventId),
-    [subscriptions]
-  );
+  const isSubscribed = useCallback((eventId: string) => subscriptions.has(eventId), [subscriptions]);
 
   return {
     subscriptions,
     subscriptionData,
     isLoading,
     error,
-    toggleSubscription,
+    setMany,
     isSubscribed,
-    subscribedCount: subscriptions.size,
     refetch: fetchSubscriptions,
   };
 }

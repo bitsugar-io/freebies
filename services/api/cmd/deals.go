@@ -12,6 +12,7 @@ import (
 
 	"github.com/retr0h/freebie/services/api/internal/db"
 	"github.com/retr0h/freebie/services/api/internal/notify"
+	"github.com/retr0h/freebie/services/api/internal/triggers"
 )
 
 var dealsCmd = &cobra.Command{
@@ -47,6 +48,10 @@ func init() {
 
 	dealsCreateCmd.Flags().Int("hours", 24, "Hours until deal expires")
 	dealsTriggerCmd.Flags().Int("hours", 24, "Hours until deal expires")
+	dealsTriggerCmd.Flags().Int("unlock-after-days", 0,
+		"Delay the code: unlocks at midnight Pacific this many days after yesterday's game (rule unlock_after_days)")
+	dealsTriggerCmd.Flags().Int("valid-days", 0,
+		"How many calendar days the deal lasts (rule valid_days); replaces --hours. Use --notify=false to avoid a push")
 	dealsTriggerCmd.Flags().Bool("notify", true, "Send push notifications to subscribers")
 }
 
@@ -191,8 +196,18 @@ func runDealsList(cmd *cobra.Command, args []string) error {
 func runDealsTrigger(cmd *cobra.Command, args []string) error {
 	eventID := args[0]
 	hours, _ := cmd.Flags().GetInt("hours")
+	unlockDays, _ := cmd.Flags().GetInt("unlock-after-days")
+	validDays, _ := cmd.Flags().GetInt("valid-days")
 	shouldNotify, _ := cmd.Flags().GetBool("notify")
-	logger.Info("config", "database", cfg.Database.Path, "eventId", eventID, "hours", hours, "notify", shouldNotify)
+	if unlockDays < 0 || validDays < 0 {
+		return fmt.Errorf("--unlock-after-days and --valid-days must not be negative")
+	}
+	delayed := unlockDays > 0 || validDays > 0
+	if delayed && cmd.Flags().Changed("hours") {
+		return fmt.Errorf("--hours cannot be combined with --unlock-after-days or --valid-days")
+	}
+	logger.Info("config", "database", cfg.Database.Path, "eventId", eventID, "hours", hours,
+		"unlockAfterDays", unlockDays, "validDays", validDays, "notify", shouldNotify)
 
 	database, err := db.Open(string(cfg.Database.Path))
 	if err != nil {
@@ -209,25 +224,42 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("event not found: %w", err)
 	}
 
-	// Create the triggered event
+	// Create the triggered event. With --unlock-after-days / --valid-days the
+	// window comes from the same code the checker uses, as if the game were
+	// yesterday's; otherwise it is --hours from now.
 	expiresAt := time.Now().UTC().Add(time.Duration(hours) * time.Hour)
+	var availableAt sql.NullTime
+	if delayed {
+		pt, err := time.LoadLocation("America/Los_Angeles")
+		if err != nil {
+			return fmt.Errorf("loading timezone: %w", err)
+		}
+		avail, exp := triggers.Window(time.Now().In(pt).AddDate(0, 0, -1),
+			triggers.Rule{UnlockAfterDays: unlockDays, ValidDays: validDays})
+		expiresAt = exp
+		if !avail.IsZero() {
+			availableAt = sql.NullTime{Time: avail, Valid: true}
+		}
+	}
 
 	triggered, err := queries.CreateTriggeredEvent(ctx, db.CreateTriggeredEventParams{
-		ID:        uuid.New().String(),
-		EventID:   event.ID,
-		GameID:    sql.NullString{String: fmt.Sprintf("game-%d", time.Now().Unix()), Valid: true},
-		ExpiresAt: sql.NullTime{Time: expiresAt, Valid: true},
-		Payload:   sql.NullString{String: `{"source": "cli-trigger"}`, Valid: true},
+		ID:          uuid.New().String(),
+		EventID:     event.ID,
+		GameID:      sql.NullString{String: fmt.Sprintf("game-%d", time.Now().Unix()), Valid: true},
+		ExpiresAt:   sql.NullTime{Time: expiresAt, Valid: true},
+		AvailableAt: availableAt,
+		Payload:     sql.NullString{String: `{"source": "cli-trigger"}`, Valid: true},
 	})
 	if err != nil {
 		return fmt.Errorf("creating triggered event: %w", err)
 	}
 
-	logger.Info("deal created",
-		"id", triggered.ID,
-		"event", event.OfferName,
-		"expires", expiresAt.Format("2006-01-02 15:04:05"),
-	)
+	attrs := []any{"id", triggered.ID, "event", event.OfferName,
+		"expires", expiresAt.Format("2006-01-02 15:04:05")}
+	if availableAt.Valid {
+		attrs = append(attrs, "available", availableAt.Time.Format("2006-01-02 15:04:05"))
+	}
+	logger.Info("deal created", attrs...)
 
 	if !shouldNotify {
 		return nil
@@ -250,6 +282,13 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 
 	title := fmt.Sprintf("🎉 %s!", event.OfferName)
 	expiresText := fmt.Sprintf("Expires in %d hours", hours)
+	if delayed {
+		pt, _ := time.LoadLocation("America/Los_Angeles")
+		expiresText = "Expires " + expiresAt.In(pt).Format("Mon Jan 2 3:04pm")
+		if availableAt.Valid {
+			expiresText = "Code unlocks " + availableAt.Time.In(pt).Format("Mon Jan 2") + ". " + expiresText
+		}
+	}
 	body := fmt.Sprintf("%s just triggered! %s. %s", event.TriggerCondition, event.OfferDescription, expiresText)
 
 	for _, sub := range subscribers {

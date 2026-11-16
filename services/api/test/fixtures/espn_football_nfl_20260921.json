@@ -1,0 +1,149 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 73773,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "14",
+       "linescores": [
+        {
+         "displayValue": "7",
+         "period": 1,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 4,
+         "value": 7.0
+        }
+       ],
+       "order": 0,
+       "score": "28",
+       "team": {
+        "abbreviation": "LAR",
+        "alternateColor": "ffd100",
+        "color": "003594",
+        "displayName": "Los Angeles Rams",
+        "id": "14",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Rams",
+        "shortDisplayName": "Rams"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "19",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "3",
+         "period": 2,
+         "value": 3.0
+        },
+        {
+         "displayValue": "3",
+         "period": 3,
+         "value": 3.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 1,
+       "score": "6",
+       "team": {
+        "abbreviation": "NYG",
+        "alternateColor": "c9243f",
+        "color": "003c7f",
+        "displayName": "New York Giants",
+        "id": "19",
+        "isActive": true,
+        "location": "New York",
+        "name": "Giants",
+        "shortDisplayName": "Giants"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-22T00:15Z",
+     "id": "401872947",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-22T00:15Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-22T00:15Z",
+   "id": "401872947",
+   "name": "New York Giants at Los Angeles Rams",
+   "shortName": "NYG @ LAR",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 2
+   }
+  }
+ ]
+}

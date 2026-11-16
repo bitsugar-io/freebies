@@ -48,14 +48,15 @@ func TestGetConfig(t *testing.T) {
 			t.Fatalf("failed to decode response: %v", err)
 		}
 
-		if len(config.Features) != 8 {
-			t.Fatalf("expected 8 feature flags, got %d", len(config.Features))
+		if len(config.Features) != 11 {
+			t.Fatalf("expected 11 feature flags, got %d", len(config.Features))
 		}
 		if config.Features["enable_mlb"] != true {
 			t.Fatal("expected enable_mlb to be true")
 		}
-		if config.Features["enable_nhl"] != false {
-			t.Fatal("expected enable_nhl to be false")
+		// 037 turns NHL on: the 1.x app hides leagues whose flag is false (the Ducks deal).
+		if config.Features["enable_nhl"] != true {
+			t.Fatal("expected enable_nhl to be true")
 		}
 
 		if len(config.Screens) != 3 {

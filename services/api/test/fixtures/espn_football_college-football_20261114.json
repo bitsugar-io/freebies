@@ -1,0 +1,298 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 54336,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 9
+       },
+       "homeAway": "home",
+       "id": "84",
+       "linescores": [
+        {
+         "displayValue": "7",
+         "period": 1,
+         "value": 7.0
+        },
+        {
+         "displayValue": "3",
+         "period": 2,
+         "value": 3.0
+        },
+        {
+         "displayValue": "10",
+         "period": 3,
+         "value": 10.0
+        },
+        {
+         "displayValue": "7",
+         "period": 4,
+         "value": 7.0
+        }
+       ],
+       "order": 0,
+       "score": "27",
+       "team": {
+        "abbreviation": "IU",
+        "alternateColor": "ffffff",
+        "color": "970310",
+        "conferenceId": "5",
+        "displayName": "Indiana Hoosiers",
+        "id": "84",
+        "isActive": true,
+        "location": "Indiana",
+        "name": "Hoosiers",
+        "shortDisplayName": "Indiana"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 18
+       },
+       "homeAway": "away",
+       "id": "30",
+       "linescores": [
+        {
+         "displayValue": "3",
+         "period": 1,
+         "value": 3.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "3",
+         "period": 3,
+         "value": 3.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 1,
+       "score": "13",
+       "team": {
+        "abbreviation": "USC",
+        "alternateColor": "ffc72c",
+        "color": "9d2235",
+        "conferenceId": "5",
+        "displayName": "USC Trojans",
+        "id": "30",
+        "isActive": true,
+        "location": "USC",
+        "name": "Trojans",
+        "shortDisplayName": "USC"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": true,
+     "date": "2026-11-14T20:30Z",
+     "dateValid": true,
+     "id": "401858518",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-14T20:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-14T20:30Z",
+   "id": "401858518",
+   "name": "USC Trojans at Indiana Hoosiers",
+   "shortName": "USC @ IU",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 11
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 93033,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 1
+       },
+       "homeAway": "home",
+       "id": "61",
+       "linescores": [
+        {
+         "displayValue": "21",
+         "period": 1,
+         "value": 21.0
+        },
+        {
+         "displayValue": "10",
+         "period": 2,
+         "value": 10.0
+        },
+        {
+         "displayValue": "10",
+         "period": 3,
+         "value": 10.0
+        },
+        {
+         "displayValue": "7",
+         "period": 4,
+         "value": 7.0
+        }
+       ],
+       "order": 0,
+       "score": "48",
+       "team": {
+        "abbreviation": "UGA",
+        "alternateColor": "2c2a29",
+        "color": "ba0c2f",
+        "conferenceId": "8",
+        "displayName": "Georgia Bulldogs",
+        "id": "61",
+        "isActive": true,
+        "location": "Georgia",
+        "name": "Bulldogs",
+        "shortDisplayName": "Georgia"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "curatedRank": {
+        "current": 22
+       },
+       "homeAway": "away",
+       "id": "142",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 4,
+         "value": 7.0
+        }
+       ],
+       "order": 1,
+       "score": "21",
+       "team": {
+        "abbreviation": "MIZ",
+        "alternateColor": "000000",
+        "color": "f1b82d",
+        "conferenceId": "8",
+        "displayName": "Missouri Tigers",
+        "id": "142",
+        "isActive": true,
+        "location": "Missouri",
+        "name": "Tigers",
+        "shortDisplayName": "Missouri"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": true,
+     "date": "2026-11-14T20:30Z",
+     "dateValid": true,
+     "id": "401856883",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-14T20:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-11-14T20:30Z",
+   "id": "401856883",
+   "name": "Missouri Tigers at Georgia Bulldogs",
+   "shortName": "MIZ @ UGA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 11
+   }
+  }
+ ]
+}

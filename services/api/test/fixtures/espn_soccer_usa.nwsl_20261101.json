@@ -1,0 +1,324 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 17860,
+     "competitors": [
+      {
+       "form": "LWWWD",
+       "homeAway": "home",
+       "id": "21422",
+       "order": 0,
+       "score": "4",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "898c8f",
+        "color": "202121",
+        "displayName": "Angel City FC",
+        "id": "21422",
+        "isActive": true,
+        "location": "Angel City FC",
+        "name": "Angel City FC",
+        "shortDisplayName": "Angel City"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LDWWL",
+       "homeAway": "away",
+       "id": "131562",
+       "order": 1,
+       "score": "1",
+       "team": {
+        "abbreviation": "BOS",
+        "alternateColor": "000000",
+        "color": "00FF00",
+        "displayName": "Boston Legacy FC",
+        "id": "131562",
+        "isActive": true,
+        "location": "Boston Legacy FC",
+        "name": "Boston Legacy FC",
+        "shortDisplayName": "Boston"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-11-01T22:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "17'",
+        "value": 970.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "19'",
+        "value": 1097.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "37'",
+        "value": 2207.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "131562"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "53'",
+        "value": 3122.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "72'",
+        "value": 4290.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "84'",
+        "value": 5026.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21422"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "401854095",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-01T22:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+4'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-11-01T22:00Z",
+   "id": "401854095",
+   "name": "Boston Legacy FC at Angel City FC",
+   "shortName": "BOS @ LA",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+4'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 15927,
+     "competitors": [
+      {
+       "form": "LLDLL",
+       "homeAway": "home",
+       "id": "22187",
+       "order": 0,
+       "score": "0",
+       "team": {
+        "abbreviation": "BAY",
+        "alternateColor": "0d2032",
+        "color": "ff5049",
+        "displayName": "Bay FC",
+        "id": "22187",
+        "isActive": true,
+        "location": "Bay FC",
+        "name": "Bay FC",
+        "shortDisplayName": "Bay"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "LWDWW",
+       "homeAway": "away",
+       "id": "21423",
+       "order": 1,
+       "score": "1",
+       "team": {
+        "abbreviation": "SD",
+        "alternateColor": "21c6d9",
+        "color": "032e62",
+        "displayName": "San Diego Wave FC",
+        "id": "21423",
+        "isActive": true,
+        "location": "San Diego Wave FC",
+        "name": "San Diego Wave FC",
+        "shortDisplayName": "San Diego"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "date": "2026-11-01T22:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "9'",
+        "value": 535.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "21423"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "401854033",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-01T22:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+4'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-11-01T22:00Z",
+   "id": "401854033",
+   "name": "San Diego Wave FC at Bay FC",
+   "shortName": "SD @ BAY",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+4'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

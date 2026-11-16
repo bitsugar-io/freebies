@@ -73,9 +73,12 @@ func (s *Server) setupRoutes() {
 			// Public routes (no auth required)
 			r.Get("/config", h.GetConfig)
 			r.Get("/leagues", h.ListLeagues)
+			r.Get("/teams", h.ListTeams)
 			r.Get("/events", h.ListEvents)
 			r.Get("/events/{id}", h.GetEvent)
-			r.Post("/users", h.CreateUser) // Returns token on creation
+			r.Get("/sprites", h.ListSprites)
+			r.Get("/sprites/{file}", h.GetSprite) // {id} for JSON, {id}.png for an image
+			r.Post("/users", h.CreateUser)        // Returns token on creation
 
 			// Protected routes (require auth + user must match)
 			r.Group(func(r chi.Router) {
@@ -86,6 +89,7 @@ func (s *Server) setupRoutes() {
 				r.Get("/users/{id}", h.GetUser)
 				r.Get("/users/{id}/stats", h.GetUserStats)
 				r.Put("/users/{id}/push-token", h.UpdatePushToken)
+				r.Put("/users/{id}/alerts-pause", h.UpdateAlertsPause)
 
 				// Subscriptions
 				r.Get("/users/{userId}/subscriptions", h.ListSubscriptions)
@@ -94,6 +98,7 @@ func (s *Server) setupRoutes() {
 
 				// Active Deals
 				r.Get("/users/{userId}/active-deals", h.ListActiveDeals)
+				r.Get("/users/{userId}/claimed", h.ListClaimedDeals)
 
 				// Dismissals
 				r.Post("/users/{userId}/dismissals", h.CreateDismissal)

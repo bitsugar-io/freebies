@@ -1,0 +1,714 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 20738,
+     "competitors": [
+      {
+       "form": "DLWWW",
+       "homeAway": "home",
+       "id": "4771",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "RSL",
+        "alternateColor": "daa900",
+        "color": "a32035",
+        "displayName": "Real Salt Lake",
+        "id": "4771",
+        "isActive": true,
+        "location": "Real Salt Lake",
+        "name": "Real Salt Lake",
+        "shortDisplayName": "Salt Lake"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "DWDDW",
+       "homeAway": "away",
+       "id": "187",
+       "order": 1,
+       "score": "1",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "ffffff",
+        "color": "00235d",
+        "displayName": "LA Galaxy",
+        "id": "187",
+        "isActive": true,
+        "location": "LA Galaxy",
+        "name": "LA Galaxy",
+        "shortDisplayName": "LA Galaxy"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-11-08T00:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "10'",
+        "value": 566.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "4771"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "13'",
+        "value": 735.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "4771"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "16'",
+        "value": 910.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "4771"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "40'",
+        "value": 2364.0
+       },
+       "ownGoal": true,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "97",
+        "text": "Own Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "45'+3'",
+        "value": 2700.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "4771"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "55'",
+        "value": 3260.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "4771"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "77'",
+        "value": 4619.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "4771"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "87'",
+        "value": 5161.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "187"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761946",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-08T00:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+5'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-11-08T00:00Z",
+   "id": "761946",
+   "name": "LA Galaxy at Real Salt Lake",
+   "shortName": "LA @ RSL",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+5'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 40171,
+     "competitors": [
+      {
+       "form": "WLLDD",
+       "homeAway": "home",
+       "id": "9726",
+       "order": 0,
+       "score": "2",
+       "team": {
+        "abbreviation": "SEA",
+        "alternateColor": "0033a0",
+        "color": "2dc84d",
+        "displayName": "Seattle Sounders FC",
+        "id": "9726",
+        "isActive": true,
+        "location": "Seattle Sounders FC",
+        "name": "Seattle Sounders FC",
+        "shortDisplayName": "Seattle"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "form": "LLDDW",
+       "homeAway": "away",
+       "id": "18966",
+       "order": 1,
+       "score": "1",
+       "team": {
+        "abbreviation": "LAFC",
+        "alternateColor": "c7a36f",
+        "color": "000000",
+        "displayName": "LAFC",
+        "id": "18966",
+        "isActive": true,
+        "location": "LAFC",
+        "name": "LAFC",
+        "shortDisplayName": "LAFC"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "date": "2026-11-08T00:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "1'",
+        "value": 51.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "9726"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "31'",
+        "value": 1840.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "9726"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "73'",
+        "value": 4322.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "76'",
+        "value": 4527.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9726"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "81'",
+        "value": 4859.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "18966"
+       },
+       "type": {
+        "id": "137",
+        "text": "Goal - Header"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "90'",
+        "value": 5360.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9726"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "90'+3'",
+        "value": 5400.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9726"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      }
+     ],
+     "id": "761948",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-08T00:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+6'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-11-08T00:00Z",
+   "id": "761948",
+   "name": "LAFC at Seattle Sounders FC",
+   "shortName": "LAFC @ SEA",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+6'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 0,
+     "competitors": [
+      {
+       "form": "LDLLD",
+       "homeAway": "home",
+       "id": "9720",
+       "order": 0,
+       "score": "0",
+       "team": {
+        "abbreviation": "MTL",
+        "alternateColor": "c1c5c8",
+        "color": "003da6",
+        "displayName": "CF Montr\u00e9al",
+        "id": "9720",
+        "isActive": true,
+        "location": "CF Montr\u00e9al",
+        "name": "CF Montr\u00e9al",
+        "shortDisplayName": "CF Montr\u00e9al"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "form": "WWWLW",
+       "homeAway": "away",
+       "id": "9727",
+       "order": 1,
+       "score": "2",
+       "team": {
+        "abbreviation": "VAN",
+        "alternateColor": "12284c",
+        "color": "ffffff",
+        "displayName": "Vancouver Whitecaps",
+        "id": "9727",
+        "isActive": true,
+        "location": "Vancouver Whitecaps",
+        "name": "Vancouver Whitecaps",
+        "shortDisplayName": "Vancouver"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "date": "2026-11-07T21:00Z",
+     "details": [
+      {
+       "clock": {
+        "displayValue": "25'",
+        "value": 1464.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9727"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "42'",
+        "value": 2468.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9727"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "45'",
+        "value": 2647.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9720"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "50'",
+        "value": 2970.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "9727"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      },
+      {
+       "clock": {
+        "displayValue": "62'",
+        "value": 3719.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9727"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "74'",
+        "value": 4392.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 0,
+       "scoringPlay": false,
+       "shootout": false,
+       "team": {
+        "id": "9720"
+       },
+       "type": {
+        "id": "94",
+        "text": "Yellow Card"
+       },
+       "yellowCard": true
+      },
+      {
+       "clock": {
+        "displayValue": "83'",
+        "value": 4951.0
+       },
+       "ownGoal": false,
+       "penaltyKick": false,
+       "redCard": false,
+       "scoreValue": 1,
+       "scoringPlay": true,
+       "shootout": false,
+       "team": {
+        "id": "9727"
+       },
+       "type": {
+        "id": "70",
+        "text": "Goal"
+       },
+       "yellowCard": false
+      }
+     ],
+     "id": "761934",
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-11-07T21:00Z",
+     "status": {
+      "clock": 5400.0,
+      "displayClock": "90'+1'",
+      "period": 2,
+      "type": {
+       "completed": true,
+       "description": "Full Time",
+       "detail": "FT",
+       "id": "28",
+       "name": "STATUS_FULL_TIME",
+       "shortDetail": "FT",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "wasSuspended": false
+    }
+   ],
+   "date": "2026-11-07T21:00Z",
+   "id": "761934",
+   "name": "Vancouver Whitecaps at CF Montr\u00e9al",
+   "shortName": "VAN @ MTL",
+   "status": {
+    "clock": 5400.0,
+    "displayClock": "90'+1'",
+    "period": 2,
+    "type": {
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "shortDetail": "FT",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

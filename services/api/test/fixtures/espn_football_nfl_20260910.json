@@ -1,0 +1,149 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 100021,
+     "competitors": [
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "home",
+       "id": "14",
+       "linescores": [
+        {
+         "displayValue": "0",
+         "period": 1,
+         "value": 0.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "0",
+         "period": 3,
+         "value": 0.0
+        },
+        {
+         "displayValue": "0",
+         "period": 4,
+         "value": 0.0
+        }
+       ],
+       "order": 0,
+       "score": "7",
+       "team": {
+        "abbreviation": "LAR",
+        "alternateColor": "ffd100",
+        "color": "003594",
+        "displayName": "Los Angeles Rams",
+        "id": "14",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Rams",
+        "shortDisplayName": "Rams"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "curatedRank": {
+        "current": 99
+       },
+       "homeAway": "away",
+       "id": "25",
+       "linescores": [
+        {
+         "displayValue": "3",
+         "period": 1,
+         "value": 3.0
+        },
+        {
+         "displayValue": "7",
+         "period": 2,
+         "value": 7.0
+        },
+        {
+         "displayValue": "7",
+         "period": 3,
+         "value": 7.0
+        },
+        {
+         "displayValue": "10",
+         "period": 4,
+         "value": 10.0
+        }
+       ],
+       "order": 1,
+       "score": "27",
+       "team": {
+        "abbreviation": "SF",
+        "alternateColor": "b3995d",
+        "color": "aa0000",
+        "displayName": "San Francisco 49ers",
+        "id": "25",
+        "isActive": true,
+        "location": "San Francisco",
+        "name": "49ers",
+        "shortDisplayName": "49ers"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-11T00:35Z",
+     "id": "401872657",
+     "neutralSite": true,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-11T00:35Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "isTBDFlex": false,
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-11T00:35Z",
+   "id": "401872657",
+   "name": "San Francisco 49ers at Los Angeles Rams",
+   "shortName": "SF VS LAR",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   },
+   "week": {
+    "number": 1
+   }
+  }
+ ]
+}

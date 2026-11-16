@@ -1,0 +1,274 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 6251,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "3",
+       "linescores": [
+        {
+         "displayValue": "25",
+         "period": 1,
+         "value": 25.0
+        },
+        {
+         "displayValue": "19",
+         "period": 2,
+         "value": 19.0
+        },
+        {
+         "displayValue": "25",
+         "period": 3,
+         "value": 25.0
+        },
+        {
+         "displayValue": "28",
+         "period": 4,
+         "value": 28.0
+        }
+       ],
+       "order": 0,
+       "score": "97",
+       "team": {
+        "abbreviation": "DAL",
+        "alternateColor": "c4d600",
+        "color": "002b5c",
+        "displayName": "Dallas Wings",
+        "id": "3",
+        "isActive": true,
+        "location": "Dallas",
+        "name": "Wings",
+        "shortDisplayName": "Wings"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "6",
+       "linescores": [
+        {
+         "displayValue": "25",
+         "period": 1,
+         "value": 25.0
+        },
+        {
+         "displayValue": "19",
+         "period": 2,
+         "value": 19.0
+        },
+        {
+         "displayValue": "14",
+         "period": 3,
+         "value": 14.0
+        },
+        {
+         "displayValue": "19",
+         "period": 4,
+         "value": 19.0
+        }
+       ],
+       "order": 1,
+       "score": "77",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "fdb927",
+        "color": "552583",
+        "displayName": "Los Angeles Sparks",
+        "id": "6",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Sparks",
+        "shortDisplayName": "Sparks"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-18T00:00Z",
+     "id": "401857192",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-18T00:00Z",
+     "status": {
+      "clock": 600.0,
+      "displayClock": "10:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-18T00:00Z",
+   "id": "401857192",
+   "name": "Los Angeles Sparks at Dallas Wings",
+   "shortName": "LA @ DAL",
+   "status": {
+    "clock": 600.0,
+    "displayClock": "10:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 3575,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "20",
+       "linescores": [
+        {
+         "displayValue": "22",
+         "period": 1,
+         "value": 22.0
+        },
+        {
+         "displayValue": "23",
+         "period": 2,
+         "value": 23.0
+        },
+        {
+         "displayValue": "31",
+         "period": 3,
+         "value": 31.0
+        },
+        {
+         "displayValue": "27",
+         "period": 4,
+         "value": 27.0
+        }
+       ],
+       "order": 0,
+       "score": "103",
+       "team": {
+        "abbreviation": "ATL",
+        "alternateColor": "5091cc",
+        "color": "e31837",
+        "displayName": "Atlanta Dream",
+        "id": "20",
+        "isActive": true,
+        "location": "Atlanta",
+        "name": "Dream",
+        "shortDisplayName": "Dream"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "18",
+       "linescores": [
+        {
+         "displayValue": "17",
+         "period": 1,
+         "value": 17.0
+        },
+        {
+         "displayValue": "18",
+         "period": 2,
+         "value": 18.0
+        },
+        {
+         "displayValue": "11",
+         "period": 3,
+         "value": 11.0
+        },
+        {
+         "displayValue": "13",
+         "period": 4,
+         "value": 13.0
+        }
+       ],
+       "order": 1,
+       "score": "59",
+       "team": {
+        "abbreviation": "CON",
+        "alternateColor": "0a2240",
+        "color": "f05023",
+        "displayName": "Connecticut Sun",
+        "id": "18",
+        "isActive": true,
+        "location": "Connecticut",
+        "name": "Sun",
+        "shortDisplayName": "Sun"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-17T23:30Z",
+     "id": "401857190",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-17T23:30Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-17T23:30Z",
+   "id": "401857190",
+   "name": "Connecticut Sun at Atlanta Dream",
+   "shortName": "CON @ ATL",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

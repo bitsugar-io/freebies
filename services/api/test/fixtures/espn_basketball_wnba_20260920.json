@@ -1,0 +1,274 @@
+{
+ "events": [
+  {
+   "competitions": [
+    {
+     "attendance": 17703,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "6",
+       "linescores": [
+        {
+         "displayValue": "28",
+         "period": 1,
+         "value": 28.0
+        },
+        {
+         "displayValue": "32",
+         "period": 2,
+         "value": 32.0
+        },
+        {
+         "displayValue": "25",
+         "period": 3,
+         "value": 25.0
+        },
+        {
+         "displayValue": "20",
+         "period": 4,
+         "value": 20.0
+        }
+       ],
+       "order": 0,
+       "score": "105",
+       "team": {
+        "abbreviation": "LA",
+        "alternateColor": "fdb927",
+        "color": "552583",
+        "displayName": "Los Angeles Sparks",
+        "id": "6",
+        "isActive": true,
+        "location": "Los Angeles",
+        "name": "Sparks",
+        "shortDisplayName": "Sparks"
+       },
+       "type": "team",
+       "winner": true
+      },
+      {
+       "homeAway": "away",
+       "id": "132052",
+       "linescores": [
+        {
+         "displayValue": "26",
+         "period": 1,
+         "value": 26.0
+        },
+        {
+         "displayValue": "15",
+         "period": 2,
+         "value": 15.0
+        },
+        {
+         "displayValue": "24",
+         "period": 3,
+         "value": 24.0
+        },
+        {
+         "displayValue": "19",
+         "period": 4,
+         "value": 19.0
+        }
+       ],
+       "order": 1,
+       "score": "84",
+       "team": {
+        "abbreviation": "POR",
+        "alternateColor": "000000",
+        "color": "cee5eb",
+        "displayName": "Portland Fire",
+        "id": "132052",
+        "isActive": true,
+        "location": "Portland",
+        "name": "Fire",
+        "shortDisplayName": "Fire"
+       },
+       "type": "team",
+       "winner": false
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-20T23:00Z",
+     "id": "401857204",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-20T23:00Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0.0",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-20T23:00Z",
+   "id": "401857204",
+   "name": "Portland Fire at Los Angeles Sparks",
+   "shortName": "POR @ LA",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0.0",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  },
+  {
+   "competitions": [
+    {
+     "attendance": 8911,
+     "competitors": [
+      {
+       "homeAway": "home",
+       "id": "18",
+       "linescores": [
+        {
+         "displayValue": "12",
+         "period": 1,
+         "value": 12.0
+        },
+        {
+         "displayValue": "31",
+         "period": 2,
+         "value": 31.0
+        },
+        {
+         "displayValue": "24",
+         "period": 3,
+         "value": 24.0
+        },
+        {
+         "displayValue": "22",
+         "period": 4,
+         "value": 22.0
+        }
+       ],
+       "order": 0,
+       "score": "89",
+       "team": {
+        "abbreviation": "CON",
+        "alternateColor": "0a2240",
+        "color": "f05023",
+        "displayName": "Connecticut Sun",
+        "id": "18",
+        "isActive": true,
+        "location": "Connecticut",
+        "name": "Sun",
+        "shortDisplayName": "Sun"
+       },
+       "type": "team",
+       "winner": false
+      },
+      {
+       "homeAway": "away",
+       "id": "8",
+       "linescores": [
+        {
+         "displayValue": "27",
+         "period": 1,
+         "value": 27.0
+        },
+        {
+         "displayValue": "28",
+         "period": 2,
+         "value": 28.0
+        },
+        {
+         "displayValue": "21",
+         "period": 3,
+         "value": 21.0
+        },
+        {
+         "displayValue": "25",
+         "period": 4,
+         "value": 25.0
+        }
+       ],
+       "order": 1,
+       "score": "101",
+       "team": {
+        "abbreviation": "MIN",
+        "alternateColor": "79bc43",
+        "color": "266092",
+        "displayName": "Minnesota Lynx",
+        "id": "8",
+        "isActive": true,
+        "location": "Minnesota",
+        "name": "Lynx",
+        "shortDisplayName": "Lynx"
+       },
+       "type": "team",
+       "winner": true
+      }
+     ],
+     "conferenceCompetition": false,
+     "date": "2026-09-20T17:00Z",
+     "id": "401857201",
+     "neutralSite": false,
+     "playByPlayAvailable": true,
+     "recent": false,
+     "startDate": "2026-09-20T17:00Z",
+     "status": {
+      "clock": 600.0,
+      "displayClock": "10:00",
+      "period": 4,
+      "type": {
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "shortDetail": "Final",
+       "state": "post"
+      }
+     },
+     "timeValid": true,
+     "type": {
+      "abbreviation": "STD",
+      "id": "1"
+     }
+    }
+   ],
+   "date": "2026-09-20T17:00Z",
+   "id": "401857201",
+   "name": "Minnesota Lynx at Connecticut Sun",
+   "shortName": "MIN @ CON",
+   "status": {
+    "clock": 600.0,
+    "displayClock": "10:00",
+    "period": 4,
+    "type": {
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "shortDetail": "Final",
+     "state": "post"
+    }
+   }
+  }
+ ]
+}

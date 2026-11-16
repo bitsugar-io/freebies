@@ -79,7 +79,20 @@ func runCheckTriggers(cmd *cobra.Command, _ []string) error {
 		"triggered", result.Triggered,
 		"notified", result.Notified,
 		"totalEvents", result.TotalEvents,
+		"skippedEvents", ptrInt(result.SkippedEvents),
 	)
+	if result.Skipped != nil {
+		for _, sk := range *result.Skipped {
+			logger.Warn("deal skipped", "event_id", sk.EventId, "status", sk.Status, "reason", sk.Reason)
+		}
+	}
 
 	return nil
+}
+
+func ptrInt(p *int) int {
+	if p == nil {
+		return 0
+	}
+	return *p
 }

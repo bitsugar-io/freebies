@@ -1,0 +1,108 @@
+{
+  "games": [
+    {
+      "id": 2026020066,
+      "gameDate": "2026-10-09",
+      "gameState": "OFF",
+      "gameScheduleState": "OK",
+      "awayTeam": {
+        "abbrev": "SEA",
+        "score": 6,
+        "name": {
+          "default": "Kraken"
+        }
+      },
+      "homeTeam": {
+        "abbrev": "DET",
+        "score": 3,
+        "name": {
+          "default": "Red Wings"
+        }
+      },
+      "periodDescriptor": {
+        "periodType": "REG"
+      },
+      "gameOutcome": {
+        "lastPeriodType": "REG"
+      }
+    },
+    {
+      "id": 2026020067,
+      "gameDate": "2026-10-09",
+      "gameState": "OFF",
+      "gameScheduleState": "OK",
+      "awayTeam": {
+        "abbrev": "NYR",
+        "score": 1,
+        "name": {
+          "default": "Rangers"
+        }
+      },
+      "homeTeam": {
+        "abbrev": "WSH",
+        "score": 3,
+        "name": {
+          "default": "Capitals"
+        }
+      },
+      "periodDescriptor": {
+        "periodType": "REG"
+      },
+      "gameOutcome": {
+        "lastPeriodType": "REG"
+      }
+    },
+    {
+      "id": 2026020068,
+      "gameDate": "2026-10-09",
+      "gameState": "OFF",
+      "gameScheduleState": "OK",
+      "awayTeam": {
+        "abbrev": "PIT",
+        "score": 2,
+        "name": {
+          "default": "Penguins"
+        }
+      },
+      "homeTeam": {
+        "abbrev": "CBJ",
+        "score": 3,
+        "name": {
+          "default": "Blue Jackets"
+        }
+      },
+      "periodDescriptor": {
+        "periodType": "SO"
+      },
+      "gameOutcome": {
+        "lastPeriodType": "SO"
+      }
+    },
+    {
+      "id": 2026020069,
+      "gameDate": "2026-10-09",
+      "gameState": "OFF",
+      "gameScheduleState": "OK",
+      "awayTeam": {
+        "abbrev": "ANA",
+        "score": 5,
+        "name": {
+          "default": "Ducks"
+        }
+      },
+      "homeTeam": {
+        "abbrev": "WPG",
+        "score": 1,
+        "name": {
+          "default": "Jets"
+        }
+      },
+      "periodDescriptor": {
+        "periodType": "REG"
+      },
+      "gameOutcome": {
+        "lastPeriodType": "REG"
+      }
+    }
+  ]
+}

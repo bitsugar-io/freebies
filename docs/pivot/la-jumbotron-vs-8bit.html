@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jumbotron vs 8-bit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800;900&family=Doto:wght@600;900&family=Barlow+Semi+Condensed:wght@500;600;700&family=Press+Start+2P&family=Pixelify+Sans:wght@400;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#eceeea; --panel:#fff; --ink:#1a1d1b; --muted:#59605b; --rule:#d2d7d1; --amber:#ffb000; --pxy:#fbf236; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#121413; --panel:#1b1e1c; --ink:#e7ebe8; --muted:#a1aaa4; --rule:#2e3631; } }
+:root[data-theme="dark"] { --bg:#121413; --panel:#1b1e1c; --ink:#e7ebe8; --muted:#a1aaa4; --rule:#2e3631; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 "Overpass",system-ui,sans-serif; }
+:focus-visible { outline:3px solid var(--amber); outline-offset:2px; }
+.wrap { max-width:1180px; margin:0 auto; padding:0 16px; }
+p, li { max-width:70ch; }
+.muted { color:var(--muted); }
+header.top { padding:34px 0 10px; }
+header.top h1 { margin:0 0 8px; font-size:clamp(2rem,5.5vw,3.3rem); line-height:1; font-weight:900; letter-spacing:-.01em; }
+section { padding:34px 0; border-top:2px solid var(--rule); }
+section > h2 { font-size:1.75rem; line-height:1.15; margin:0 0 6px; font-weight:900; }
+.two { display:grid; grid-template-columns:1fr; gap:22px; }
+@media (min-width:980px) { .two { grid-template-columns:1fr 1fr; } }
+.col { min-width:0; }
+.colhead { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.colhead .chip { width:44px; height:44px; border-radius:10px; overflow:hidden; flex:none; }
+.colhead h3 { margin:0; font-size:1.3rem; font-weight:900; line-height:1.1; }
+.colhead small { color:var(--muted); display:block; font-weight:600; }
+.panel { background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:16px 18px; }
+table { width:100%; border-collapse:collapse; font-size:.93rem; }
+th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { font-weight:800; }
+.tw { overflow-x:auto; }
+
+/* logos */
+.logos { display:grid; grid-template-columns:1fr; gap:12px; }
+.lg { display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:12px; }
+.lg .ic { width:120px; height:120px; border-radius:27px; overflow:hidden; box-shadow:0 8px 20px -10px rgba(0,0,0,.5); }
+.lg .ic svg, .colhead .chip svg, .mini svg { width:100%; height:100%; display:block; }
+.lg h4 { margin:0; font-size:1.05rem; font-weight:800; }
+.lg p { margin:2px 0 6px; font-size:.92rem; }
+.lg .sizes { display:flex; align-items:end; gap:10px; font-size:.75rem; color:var(--muted); }
+.mini { border-radius:22.5%; overflow:hidden; }
+.lg .pickme { font-size:.8rem; font-weight:800; color:var(--muted); }
+.lg.top { border:2px solid var(--amber); }
+
+/* screen rows */
+.rowlabel { font-weight:800; font-size:1.1rem; margin:26px 0 4px; }
+.rowlabel + p { margin:0 0 12px; color:var(--muted); }
+.pair { display:grid; grid-template-columns:1fr; gap:18px; }
+@media (min-width:720px) { .pair { grid-template-columns:1fr 1fr; } }
+.pair figure { margin:0; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.pair figcaption { font-size:.88rem; color:var(--muted); max-width:300px; text-align:center; }
+
+/* phone */
+.phone { width:272px; height:574px; border-radius:42px; border:10px solid #0c0c0e; background:#0c0c0e; position:relative; box-shadow:0 18px 40px -18px rgba(0,0,0,.5); flex:none; }
+.phone::before { content:""; position:absolute; top:7px; left:50%; transform:translateX(-50%); width:84px; height:24px; border-radius:20px; background:#0c0c0e; z-index:4; }
+.scr { position:absolute; inset:0; border-radius:32px; overflow:hidden; display:flex; flex-direction:column; }
+.sb { display:flex; justify-content:space-between; padding:11px 22px 0; height:38px; font:700 11.5px -apple-system,system-ui,sans-serif; flex:none; }
+.bd { flex:1; overflow:hidden; padding:2px 14px 0; position:relative; }
+.tb { flex:none; display:grid; grid-template-columns:repeat(4,1fr); padding:8px 4px 18px; text-align:center; font-size:9.5px; }
+.tb span { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.tb svg { width:18px; height:18px; }
+
+/* ===== JUMBOTRON ===== */
+.jb .scr { background:#050505; color:#fff3cc; font-family:"Barlow Semi Condensed",sans-serif; }
+.jb .sb { color:#ffb000; }
+.jb .led { font-family:"Doto",monospace; font-weight:900; color:#ffb000; text-shadow:0 0 7px rgba(255,176,0,.55); }
+.jb .wm { margin:4px 0 8px; }
+.jb .wm svg { width:100%; height:auto; display:block; }
+.jb .board { border:1px solid #262018; border-radius:6px; padding:10px; background:radial-gradient(#1c1400 1px,transparent 1.6px) 0 0/4px 4px,#0a0a0a; }
+.jb .live { font-family:"Doto"; font-weight:900; color:#ff3b30; font-size:11.5px; display:flex; justify-content:space-between; }
+.jb .live i { font-style:normal; color:#9a6a00; }
+.jb .score { display:grid; grid-template-columns:1fr auto 1fr; text-align:center; align-items:center; margin:4px 0; }
+.jb .score .n { font-family:"Doto"; font-weight:900; font-size:50px; line-height:1; color:#ffb000; text-shadow:0 0 9px rgba(255,176,0,.6); }
+.jb .score .t { font-family:"Doto"; font-weight:900; font-size:13px; }
+.jb .score .v { font-family:"Doto"; font-size:11px; color:#9a6a00; }
+.jb .meter { display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin-top:6px; }
+.jb .meter i { height:9px; background:#241a00; border-radius:1px; }
+.jb .meter i.on { background:#3dff7a; box-shadow:0 0 5px rgba(61,255,122,.6); }
+.jb .meter i.am { background:#ffb000; box-shadow:0 0 5px rgba(255,176,0,.6); }
+.jb .cap { display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-top:6px; }
+.jb .cap b { color:#3dff7a; font-weight:700; }
+.jb .ticker { margin:10px -14px 0; border-top:1px solid #262018; border-bottom:1px solid #262018; overflow:hidden; white-space:nowrap; padding:5px 0; background:#0a0a0a; }
+.jb .ticker div { display:inline-block; font-family:"Doto"; font-weight:900; font-size:12.5px; color:#ffb000; animation:crawl 16s linear infinite; padding-left:100%; }
+.jb .ticker b { color:#3dff7a; }
+@keyframes crawl { to { transform:translateX(-100%); } }
+.jb h5 { font-family:"Doto"; font-weight:900; font-size:11.5px; color:#9a6a00; margin:12px 0 4px; letter-spacing:.04em; }
+.jb .row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px dashed #262018; font-size:13px; }
+.jb .row b { display:block; font-weight:700; font-size:13.5px; color:#fff3cc; }
+.jb .row small { color:#9a6a00; font-size:11px; }
+.jb .row .tm { font-family:"Doto"; font-weight:900; color:#ffb000; }
+.jb .tb { background:#0a0a0a; border-top:1px solid #262018; color:#6b4b00; font-family:"Doto"; font-weight:900; }
+.jb .tb .on { color:#ffb000; }
+/* claim */
+.jb .unl { text-align:center; padding:12px 0 6px; }
+.jb .unl .big { font-family:"Doto"; font-weight:900; font-size:34px; line-height:1; color:#3dff7a; text-shadow:0 0 10px rgba(61,255,122,.55); animation:blink3 1.2s steps(1) 1; }
+@keyframes blink3 { 0%,33%,66% { opacity:1 } 16%,50%,83% { opacity:.15 } }
+.jb .unl .item { font-family:"Doto"; font-weight:900; font-size:22px; color:#ffb000; margin-top:8px; line-height:1.1; }
+.jb .unl small { display:block; color:#cbb98a; font-size:12px; margin-top:4px; }
+.jb .cd { display:flex; justify-content:center; gap:6px; margin:12px 0 4px; }
+.jb .cd div { background:#0a0a0a; border:1px solid #262018; border-radius:4px; padding:5px 8px 3px; text-align:center; }
+.jb .cd b { display:block; font-family:"Doto"; font-weight:900; font-size:24px; color:#ffb000; line-height:1; }
+.jb .cd span { font-size:9.5px; color:#9a6a00; }
+.jb .steps { font-size:12.5px; margin:10px 0 0; padding-left:18px; color:#e8dcb8; }
+.jb .steps li { margin-bottom:3px; }
+.jb .btn { display:block; text-align:center; background:#ffb000; color:#050505; font-weight:700; font-size:14px; padding:10px; border-radius:8px; margin-top:12px; }
+.jb .btn2 { display:block; text-align:center; border:1px solid #3a2e10; color:#ffb000; font-weight:600; font-size:12.5px; padding:8px; border-radius:8px; margin-top:7px; }
+/* teams */
+.jb .tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.jb .tile { background:#0a0a0a; border:1px solid #262018; border-radius:5px; padding:7px 6px 5px; text-align:center; }
+.jb .tile b { display:block; font-family:"Doto"; font-weight:900; font-size:17px; color:#4a3500; line-height:1.05; }
+.jb .tile small { font-size:10px; color:#6b4b00; }
+.jb .tile.f { border-color:#ffb000; }
+.jb .tile.f b { color:#ffb000; text-shadow:0 0 6px rgba(255,176,0,.5); }
+.jb .tile.f small { color:#cbb98a; }
+.jb .tile.off b { color:#2a2a2a; }
+/* lock */
+.lock .scr { background:radial-gradient(120% 70% at 50% 0%, #1d2a44 0%, #0b0f1a 60%, #050608 100%); color:#fff; font-family:-apple-system,system-ui,sans-serif; }
+.lock .clk { text-align:center; margin-top:20px; }
+.lock .clk small { font-size:13px; font-weight:600; opacity:.85; }
+.lock .clk div { font-size:66px; font-weight:700; line-height:1; letter-spacing:-.02em; }
+.lock .la { position:absolute; left:10px; right:10px; bottom:120px; border-radius:20px; padding:12px 14px; }
+.lock .n2 { position:absolute; left:10px; right:10px; bottom:58px; border-radius:16px; padding:9px 12px; font-size:12px; background:rgba(40,44,52,.75); backdrop-filter:blur(8px); }
+.lock .n2 b { display:block; font-size:12.5px; }
+.lock .n2 small { float:right; opacity:.7; }
+.jb.lock .la { background:#050505; border:1px solid #262018; }
+.jb.lock .la .top { display:flex; justify-content:space-between; font-family:"Doto"; font-weight:900; font-size:11px; color:#ff3b30; }
+.jb.lock .la .sc { display:flex; justify-content:space-between; align-items:center; margin:4px 0; font-family:"Doto"; font-weight:900; color:#ffb000; }
+.jb.lock .la .sc b { font-size:34px; line-height:1; text-shadow:0 0 8px rgba(255,176,0,.55); }
+.jb.lock .la .sc span { font-size:13px; }
+.jb.lock .la .ft { font-family:"Barlow Semi Condensed"; font-size:12px; color:#cbb98a; margin-top:5px; }
+
+/* ===== 8-BIT ===== */
+.px .scr { background:#222034; color:#ffffff; font-family:"Pixelify Sans",sans-serif; }
+.px .sb { color:#cbdbfc; }
+.px .h { font-family:"Press Start 2P",monospace; font-weight:400; line-height:1.35; }
+.px svg { shape-rendering:crispEdges; }
+.px .hdr { display:flex; align-items:center; gap:8px; margin:4px 0 10px; }
+.px .hdr .spr { width:30px; height:30px; flex:none; }
+.px .hdr .h { font-size:11px; color:#fbf236; text-shadow:2px 2px 0 #ac3232; }
+.px .hdr small { display:block; font-size:11px; color:#9badb7; margin-top:3px; }
+.px .box { background:#3f3f74; margin:4px 4px 10px; padding:9px 10px; position:relative;
+  box-shadow:0 -4px 0 0 #fff, 0 4px 0 0 #fff, -4px 0 0 0 #fff, 4px 0 0 0 #fff, 0 -4px 0 4px #222034; }
+.px .vs { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; text-align:center; }
+.px .vs .tm { font-family:"Press Start 2P"; font-size:10px; }
+.px .vs .n { font-family:"Press Start 2P"; font-size:24px; color:#fbf236; margin-top:6px; }
+.px .vs .x { font-family:"Press Start 2P"; font-size:9px; color:#d95763; }
+.px .per { font-family:"Press Start 2P"; font-size:7.5px; color:#9badb7; text-align:center; margin-top:6px; }
+.px .hp { display:flex; align-items:center; gap:6px; margin-top:8px; font-family:"Press Start 2P"; font-size:7.5px; }
+.px .hp .bar { flex:1; height:12px; background:#222034; border:2px solid #fff; display:grid; grid-template-columns:repeat(12,1fr); gap:1px; padding:1px; }
+.px .hp .bar i { background:#45283c; }
+.px .hp .bar i.on { background:#6abe30; }
+.px .hp .bar i.ye { background:#fbf236; }
+.px .note { font-size:12.5px; margin-top:6px; color:#cbdbfc; }
+.px .note b { color:#fbf236; font-weight:600; }
+.px h5 { font-family:"Press Start 2P"; font-weight:400; font-size:8px; color:#9badb7; margin:6px 0 6px; }
+.px .li { display:flex; justify-content:space-between; align-items:center; padding:6px 2px; border-bottom:2px dotted #3f3f74; font-size:13px; }
+.px .li b { font-weight:600; display:block; }
+.px .li small { color:#9badb7; font-size:11.5px; }
+.px .li .t { font-family:"Press Start 2P"; font-size:8px; color:#5fcde4; }
+.px .li .ok { font-family:"Press Start 2P"; font-size:8px; color:#6abe30; }
+.px .tb { background:#141021; color:#696a6a; font-family:"Press Start 2P"; font-size:6.5px; border-top:3px solid #3f3f74; }
+.px .tb .on { color:#fbf236; }
+/* claim */
+.px .clear { text-align:center; margin:8px 0 6px; }
+.px .clear .h { font-size:15px; color:#6abe30; text-shadow:3px 3px 0 #222034, 3px 3px 0 #000; line-height:1.4; }
+.px .item { width:84px; height:84px; margin:6px auto 0; }
+.px .dlg { background:#141021; margin:6px 4px 8px; padding:10px 11px; font-size:13.5px; line-height:1.4;
+  box-shadow:0 -4px 0 0 #fff, 0 4px 0 0 #fff, -4px 0 0 0 #fff, 4px 0 0 0 #fff; }
+.px .dlg b { color:#fbf236; font-weight:600; }
+.px .dlg .cur { display:block; text-align:right; color:#fbf236; animation:bob 1s steps(2) infinite; }
+@keyframes bob { 50% { transform:translateY(2px); } }
+.px .timer { display:flex; justify-content:center; gap:8px; font-family:"Press Start 2P"; font-size:13px; color:#df7126; margin:6px 0; }
+.px .menu { margin:8px 6px 0; font-family:"Press Start 2P"; font-size:9.5px; line-height:2.1; }
+.px .menu div::before { content:"  "; white-space:pre; }
+.px .menu .sel { color:#fbf236; }
+.px .menu .sel::before { content:"▶ "; animation:blinkc 1s steps(1) infinite; }
+@keyframes blinkc { 50% { opacity:0; } }
+/* teams select */
+.px .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:4px; }
+.px .cell { background:#3f3f74; text-align:center; padding:8px 2px 6px; font-family:"Press Start 2P"; font-size:7.5px; color:#cbdbfc; position:relative; }
+.px .cell.f { background:#fbf236; color:#222034; box-shadow:0 0 0 2px #fff; }
+.px .cell.off { background:#2b2a40; color:#595652; }
+.px .cell em { display:block; font-style:normal; font-family:"Pixelify Sans"; font-size:9.5px; margin-top:3px; }
+.px .p1 { position:absolute; top:-7px; left:-4px; background:#d95763; color:#fff; font-size:6px; padding:2px 3px; }
+.px.lock .la { background:#222034; box-shadow:0 -3px 0 0 #fff, 0 3px 0 0 #fff, -3px 0 0 0 #fff, 3px 0 0 0 #fff; border-radius:0; left:16px; right:16px; }
+.px.lock .la .top { display:flex; justify-content:space-between; font-family:"Press Start 2P"; font-size:7px; color:#d95763; }
+.px.lock .la .sc { display:flex; justify-content:space-between; align-items:center; margin:8px 0 6px; font-family:"Press Start 2P"; }
+.px.lock .la .sc b { font-size:20px; color:#fbf236; }
+.px.lock .la .sc span { font-size:8px; }
+.px.lock .la .ft { font-family:"Pixelify Sans"; font-size:12px; color:#cbdbfc; margin-top:6px; }
+
+
+/* ===== NES (chosen) ===== */
+.nes-banner { background:#000; color:#fcfcfc; border-radius:10px; padding:20px 22px; margin-top:20px; box-shadow:inset 0 0 0 3px #fcfcfc, inset 0 0 0 6px #000, inset 0 0 0 9px #0000bc; }
+.nes-banner h2 { font-family:"Press Start 2P"; font-weight:400; text-transform:uppercase; letter-spacing:1px; font-size:1.15rem; margin:0 0 10px; color:#f8b800; line-height:1.4; }
+.nes-banner p { margin:0 0 8px; color:#bcbcbc; }
+.nes-banner b { color:#fcfcfc; }
+.chg { display:grid; grid-template-columns:1fr; gap:10px; margin-top:12px; }
+@media (min-width:760px){ .chg { grid-template-columns:repeat(3,1fr); } }
+.chg div { background:#004058; padding:10px 12px; font-size:.92rem; color:#fcfcfc; }
+.chg div b { display:block; color:#f8b800; font-family:"Press Start 2P"; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
+.sheet { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px; }
+.sheet figure { margin:0; background:#000; border-radius:8px; padding:12px 8px 8px; text-align:center; color:#fcfcfc; }
+.sheet figure div { display:flex; justify-content:center; }
+.sheet figcaption { font-size:.8rem; margin-top:6px; color:#bcbcbc; line-height:1.3; }
+.sheet figcaption b { color:#fcfcfc; display:block; font-weight:700; }
+.nesp .scr { background:#000; color:#fcfcfc; font-family:-apple-system,system-ui,sans-serif; }
+.nesp .sb { color:#fcfcfc; }
+.nesp .d { font-family:"Press Start 2P"; font-weight:400; text-transform:uppercase; letter-spacing:1px; }
+.nesp .hud { display:flex; align-items:center; gap:8px; background:#0000bc; margin:2px -14px 10px; padding:8px 14px; }
+.nesp .hud .d { font-size:15px; color:#f8b800; }
+.nesp .hud small { margin-left:auto; font-family:"Press Start 2P"; font-size:7px; color:#a4e4fc; }
+.nesp .tb2 { background:#000; border-top:3px solid #fcfcfc; color:#7c7c7c; font-family:"Press Start 2P"; font-weight:400; font-size:7px; text-transform:uppercase; }
+.nesp .tb2 .on { color:#f8b800; }
+.nbox { background:#004058; padding:10px; margin:4px 3px 12px; box-shadow:0 -3px 0 0 #fcfcfc,0 3px 0 0 #fcfcfc,-3px 0 0 0 #fcfcfc,3px 0 0 0 #fcfcfc; }
+.nbox .row1 { display:flex; justify-content:space-between; align-items:center; font-family:"Press Start 2P"; font-size:7px; color:#a4e4fc; }
+.nbox .row1 .live { color:#f83800; }
+.nbox .sc { display:grid; grid-template-columns:1fr auto 1fr; text-align:center; align-items:center; margin:6px 0; }
+.nbox .sc .d { font-size:13px; }
+.nbox .sc .n { font-family:"Press Start 2P"; font-weight:400; font-size:18.6px; color:#f8b800; line-height:1; }
+.nbox .sc .vs { font-family:"Press Start 2P"; font-size:7px; color:#bcbcbc; }
+.ls { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin-top:4px; }
+.ls i { height:10px; background:#000; box-shadow:inset 0 0 0 1px #7c7c7c; }
+.ls i.on { background:#58d854; box-shadow:none; }
+.nbox .rw { display:flex; align-items:center; gap:8px; margin-top:8px; font-size:12.5px; }
+.nbox .rw b { color:#f8b800; }
+.nh { font-family:"Press Start 2P"; font-size:7px; color:#bcbcbc; margin:8px 0 6px; }
+.it { display:flex; align-items:center; gap:10px; padding:7px 4px; border-bottom:2px dotted #004058; font-size:13px; }
+.it b { display:block; font-weight:600; }
+.it small { color:#bcbcbc; font-size:11.5px; }
+.it .tag { margin-left:auto; font-family:"Press Start 2P"; font-weight:400; font-size:7px; color:#58d854; }
+.it .tag.t { color:#3cbcfc; }
+.cutin { text-align:center; margin:14px 0 4px; }
+.cutin .d { font-size:26px; color:#f8b800; text-shadow:3px 3px 0 #a81000; line-height:1.1; }
+.held { display:flex; justify-content:center; margin:10px 0 0; animation:rise 1.6s steps(4) 1; }
+@keyframes rise { from { transform:translateY(12px); } to { transform:none; } }
+.nesp .tbx { background:#000; margin:10px 3px; padding:10px; font-size:13.5px; line-height:1.4; box-shadow:0 -3px 0 0 #fcfcfc,0 3px 0 0 #fcfcfc,-3px 0 0 0 #fcfcfc,3px 0 0 0 #fcfcfc; }
+.nesp .tbx b { color:#f8b800; }
+.nesp .cnt { text-align:center; font-family:"Press Start 2P"; font-weight:400; font-size:13.6px; color:#fca044; margin-top:8px; }
+.nesp .cnt small { display:block; font-family:-apple-system,system-ui,sans-serif; font-weight:400; font-size:11px; color:#bcbcbc; }
+.nmenu { margin:10px 3px 0; }
+.nmenu div { padding:9px 6px 9px 22px; font-family:"Press Start 2P"; font-weight:400; text-transform:uppercase; font-size:8.1px; position:relative; }
+.nmenu .on { color:#f8b800; }
+.nmenu .on::before { content:"▶"; position:absolute; left:4px; animation:blinkc 1s steps(1) infinite; }
+.tgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+.tgrid > div { background:#004058; padding:6px 3px 5px; text-align:center; position:relative; }
+.tgrid span.nm { display:block; font-family:"Press Start 2P"; font-weight:400; text-transform:uppercase; font-size:7px; margin-top:2px; }
+.tgrid small { display:block; font-family:"Press Start 2P"; font-size:7px; color:#a4e4fc; }
+.tgrid > div.f { background:#0000bc; box-shadow:0 0 0 2px #f8b800; }
+.tgrid > div.f::after { content:"✓"; position:absolute; top:2px; right:4px; color:#f8b800; font-weight:700; font-size:11px; }
+.tgrid > div.off { background:#202020; }
+.tgrid > div.off span.nm, .tgrid > div.off small { color:#7c7c7c; }
+.tgrid .bd2 { display:flex; justify-content:center; }
+.sport { display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:760px){ .sport { grid-template-columns:repeat(5,1fr); } }
+.sport > div { background:var(--panel); border:1px solid var(--rule); border-radius:8px; padding:12px; font-size:.88rem; }
+.sport h4 { margin:6px 0 4px; font-size:1rem; }
+.sport .bdg { background:#000; border-radius:6px; padding:8px; display:flex; justify-content:center; }
+.nes-sw { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
+.nes-sw div { border:1px solid var(--rule); border-radius:8px; overflow:hidden; background:var(--panel); font-size:.78rem; }
+.nes-sw i { display:block; height:40px; }
+.nes-sw span { display:block; padding:5px 8px; line-height:1.3; }
+.nes-sw span b { display:block; font-size:.82rem; }
+.oldnote { background:var(--panel); border:1px dashed var(--rule); border-radius:8px; padding:12px 16px; margin-top:20px; color:var(--muted); }
+
+/* design system */
+.sw { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; }
+.sw div { border:1px solid var(--rule); border-radius:8px; overflow:hidden; background:var(--panel); font-size:.78rem; }
+.sw i { display:block; height:44px; }
+.sw span { display:block; padding:5px 8px; line-height:1.3; }
+.sw span b { display:block; font-size:.82rem; }
+.type { margin-top:12px; }
+.type div { display:flex; gap:12px; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--rule); }
+.type div span:first-child { width:86px; flex:none; font-size:.78rem; color:var(--muted); }
+.spec h4 { margin:16px 0 4px; font-size:1rem; font-weight:800; }
+.spec ul { margin:0; padding-left:1.1rem; font-size:.94rem; }
+.spec li { margin-bottom:3px; }
+code { font-size:.85em; background:color-mix(in srgb,var(--rule) 55%,transparent); padding:1px 5px; border-radius:4px; word-break:break-word; }
+ol.plan li { margin-bottom:.5rem; }
+footer { padding:28px 0 70px; color:var(--muted); font-size:.9rem; border-top:2px solid var(--rule); }
+.ctrl { position:fixed; right:16px; bottom:16px; display:flex; gap:8px; z-index:5; }
+.ctrl button { font:inherit; font-weight:800; font-size:.85rem; border:0; background:#1a1d1b; color:#ffb000; border-radius:6px; padding:8px 12px; cursor:pointer; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; } .jb .ticker div { padding-left:0; } html { scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-live" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="currentColor"/><path d="M6.3 6.3a8 8 0 0 0 0 11.4M17.7 6.3a8 8 0 0 1 0 11.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-deal" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="8" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-team" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" fill="currentColor"/></symbol>
+  <symbol id="i-you" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <!-- pixel icons for 8-bit tab bar -->
+  <symbol id="p-live" viewBox="0 0 8 8"><path d="M3 2h2v1h1v2H5v1H3V5H2V3h1z" fill="currentColor"/><path d="M0 2h1v4H0zM7 2h1v4H7z" fill="currentColor"/></symbol>
+  <symbol id="p-deal" viewBox="0 0 8 8"><path d="M1 1h3v1h1v1h1v1h1v1H6v1H5v1H4V6H3V5H2V4H1z" fill="currentColor"/><path d="M2 2h1v1H2z" fill="#141021"/></symbol>
+  <symbol id="p-team" viewBox="0 0 8 8"><path d="M0 0h3v3H0zM5 0h3v3H5zM0 5h3v3H0zM5 5h3v3H5z" fill="currentColor"/></symbol>
+  <symbol id="p-you" viewBox="0 0 8 8"><path d="M3 0h2v1h1v2H5v1H3V3H2V1h1zM1 5h6v1h1v2H0V6h1z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="wrap top">
+  <h1>LA Freebies: the NES look</h1>
+  <p>Two directions for the LA redesign, side by side: five logo options each, the same four screens in both styles, and a full design system so either one can go straight into the app. Same sample LA deals throughout (Ducks/McDonald's confirmed for 2026-27; Kings/El Pollo Loco unverified).</p>
+</header>
+
+<main class="wrap">
+
+<!-- ===== NES: the chosen direction ===== -->
+<section id="nes" style="border-top:0;padding-top:10px">
+  <div class="nes-banner">
+    <h2>Chosen: NES-style 8-bit</h2>
+    <p>You picked the <b>8-bit direction with the B3 pixel-palm icon</b>. I then researched how NES-era sports games looked (full notes: <a href="nes-style-research.md" style="color:#3cbcfc">nes-style-research.md</a>) and tightened the style to real NES rules. This section is the new look. The older Jumbotron and 8-bit comparison is still below for reference.</p>
+    <div class="chg">
+      <div><b>Real NES colors</b>Every color now comes from the NES's own 55-color palette, and each sprite uses at most two 3-color palettes plus a black outline. The earlier pastel palette is gone.</div>
+      <div><b>Fonts</b>Press Start 2P (open license, your pick) for titles, scores, tab labels and cut-ins: short, uppercase, at least 12pt in the app. Body text is the phone's own font so it stays readable and scales with the text-size setting.</div>
+      <div><b>NES feel, nothing copied</b>No Nintendo name, controller or cartridge shapes, game characters or ripped fonts. Teams appear as plain text, never logos or team colors, the same way Tecmo Bowl named teams by city.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px">Deal sprites, now live in the API</h3>
+  <p class="muted">Drawn to the NES rules (16×16, black outline, light from the upper left, generic food only) and served by <code>GET /api/v1/sprites</code>. Your running app already shows them. These are rendered from the same data.</p>
+  <div class="sheet" id="foodsheet"></div>
+
+  <h3 style="margin-top:28px">The new screens (first pass)</h3>
+  <p class="muted">Real sprites and NES colors, with your two favorite parts kept: picking teams, and seeing the deals you picked. The full screen-by-screen redesign comes from the design review, which is still running.</p>
+  <div class="pair" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <figure>
+      <div class="phone nesp"><div class="scr">
+        <div class="sb"><span>8:47</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span data-logo="b3" style="width:24px;height:24px;display:block"></span><span class="d">LA Freebies</span><small>SUN NOV 15</small></div>
+          <div class="nbox">
+            <div class="row1"><span class="live">● LIVE</span><span>3RD · 8:14</span></div>
+            <div class="sc"><div><div class="n">2</div><div class="d">Kings</div></div><div class="vs">VS</div><div><div class="n" style="color:#fcfcfc">1</div><div class="d">Sharks</div></div></div>
+            <div class="ls"><i class="on"></i><i class="on"></i><i></i></div>
+            <div class="rw"><span data-sprite="burrito" data-size="32"></span><span>Win at home = <b>free burrito</b></span></div>
+          </div>
+          <div class="nh">YOUR DEALS</div>
+          <div class="it"><span data-sprite="griddle-sandwich" data-size="32"></span><div><b>$2 McGriddles</b><small>Ducks won · until 10:30am</small></div><span class="tag">GOT IT!</span></div>
+          <div class="it"><span data-sprite="plate-lunch" data-size="32"></span><div><b>$5.99 plate lunch</b><small>LAFC · first-half goal</small></div><span class="tag t">7:00</span></div>
+          <div class="it"><span data-sprite="burger" data-size="32"></span><div><b>Free Jumbo Jack</b><small>Dodgers · back in March</small></div><span class="tag t" style="color:#7c7c7c">OFF</span></div>
+        </div>
+        <nav class="tb tb2"><span class="on"><svg><use href="#i-live"/></svg>Tonight</span><span><svg><use href="#i-deal"/></svg>Deals</span><span><svg><use href="#i-team"/></svg>Teams</span><span><svg><use href="#i-you"/></svg>You</span></nav>
+      </div></div>
+      <figcaption>Tonight: a scoreboard box, period lights filling up, and the deals you follow, each with its sprite.</figcaption>
+    </figure>
+    <figure>
+      <div class="phone nesp"><div class="scr">
+        <div class="sb"><span>7:02</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="cutin"><div class="d">Ducks win!</div></div>
+          <div class="held"><span data-sprite="griddle-sandwich" data-size="96"></span></div>
+          <div class="tbx">You got <b>$2 McGriddles</b>! The Ducks beat Seattle 4–2 at Honda Center.</div>
+          <div class="cnt">03:28:11<small>left · breakfast ends 10:30am</small></div>
+          <div class="nmenu"><div class="on">Open McDonald's</div><div>Remind me at 9:00</div><div>How to claim</div></div>
+        </div>
+        <nav class="tb tb2"><span><svg><use href="#i-live"/></svg>Tonight</span><span class="on"><svg><use href="#i-deal"/></svg>Deals</span><span><svg><use href="#i-team"/></svg>Teams</span><span><svg><use href="#i-you"/></svg>You</span></nav>
+      </div></div>
+      <figcaption>Deal unlocked: a "DUCKS WIN!" cut-in, then the food rises into view (the NES "item get" moment) with a countdown and a ▶ menu.</figcaption>
+    </figure>
+    <figure>
+      <div class="phone nesp"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hud"><span class="d">Select teams</span><small>4 PICKED</small></div>
+          <div class="tgrid">
+            <div class="f"><div class="bd2" data-badge="hockey"></div><span class="nm">Kings</span><small>NHL</small></div>
+            <div class="f"><div class="bd2" data-badge="hockey"></div><span class="nm">Ducks</span><small>NHL</small></div>
+            <div class="f"><div class="bd2" data-badge="soccer"></div><span class="nm">LAFC</span><small>MLS</small></div>
+            <div class="f"><div class="bd2" data-badge="baseball"></div><span class="nm">Dodgers</span><small>MAR 25</small></div>
+            <div><div class="bd2" data-badge="basketball"></div><span class="nm">Lakers</span><small>NBA</small></div>
+            <div><div class="bd2" data-badge="basketball"></div><span class="nm">Clippers</span><small>NBA</small></div>
+            <div><div class="bd2" data-badge="football"></div><span class="nm">Rams</span><small>NFL</small></div>
+            <div><div class="bd2" data-badge="football"></div><span class="nm">Chargers</span><small>NFL</small></div>
+            <div class="off"><div class="bd2" data-badge="baseball"></div><span class="nm">Angels</span><small>MAR</small></div>
+            <div class="off"><div class="bd2" data-badge="soccer"></div><span class="nm">Galaxy</span><small>FEB</small></div>
+            <div class="off"><div class="bd2" data-badge="soccer"></div><span class="nm">Angel City</span><small>FEB 11</small></div>
+            <div class="off"><div class="bd2" data-badge="basketball"></div><span class="nm">Sparks</span><small>MAY</small></div>
+          </div>
+        </div>
+        <nav class="tb tb2"><span><svg><use href="#i-live"/></svg>Tonight</span><span><svg><use href="#i-deal"/></svg>Deals</span><span class="on"><svg><use href="#i-team"/></svg>Teams</span><span><svg><use href="#i-you"/></svg>You</span></nav>
+      </div></div>
+      <figcaption>Team select: your favorite flow, now a game-style picker. A sport badge on each team instead of a logo; off-season teams go grey.</figcaption>
+    </figure>
+  </div>
+
+  <h3 style="margin-top:28px">Each sport in NES style</h3>
+  <p class="muted">How classic NES sports games showed each sport (as references only), and what we take from it. The badges are original 16×16 sprites used in the team picker.</p>
+  <div class="sport">
+    <div><div class="bdg" data-badge="hockey" data-bs="48"></div><h4>Hockey · Kings, Ducks</h4>White ice with red and blue lines, a scoreboard strip on top. <b>Ours:</b> a "GOAL!" flash on a win, and period lights that fill up.</div>
+    <div><div class="bdg" data-badge="basketball" data-bs="48"></div><h4>Basketball · Lakers, Clippers, Sparks</h4>Side-on wood court, taller players, a full-screen dunk cut-in. <b>Ours:</b> a dunk cut-in on a win, and a quarter tracker.</div>
+    <div><div class="bdg" data-badge="football" data-bs="48"></div><h4>Football · Rams, Chargers, USC, UCLA</h4>Green field with white yard lines, "TOUCHDOWN!" cut-ins, and teams named by city with no marks. <b>Ours:</b> yard-line backgrounds and a touchdown banner.</div>
+    <div><div class="bdg" data-badge="baseball" data-bs="48"></div><h4>Baseball · Dodgers, Angels</h4>A view from behind the plate, an inning-by-inning line score, "HOME RUN" fireworks. <b>Ours:</b> the line score shows progress toward the deal (e.g. 5 of 7 strikeouts).</div>
+    <div><div class="bdg" data-badge="soccer" data-bs="48"></div><h4>Soccer · LAFC, Galaxy, Angel City</h4>Striped green pitch, a "GOAL!" flash with the net rippling. <b>Ours:</b> a striped pitch background, and women's teams get their own player sprites, not recolors.</div>
+  </div>
+
+  <h3 style="margin-top:28px">Palette: 16 NES colors with jobs</h3>
+  <div class="nes-sw">
+    <div><i style="background:#000000"></i><span><b>bg.night · $0F</b>#000000 · app background</span></div>
+    <div><i style="background:#004058"></i><span><b>bg.panel · $0C</b>#004058 · boxes, cards</span></div>
+    <div><i style="background:#0000BC"></i><span><b>bg.panelAlt · $02</b>#0000BC · header bar, picked</span></div>
+    <div><i style="background:#FCFCFC"></i><span><b>text.primary · $30</b>#FCFCFC · text, borders</span></div>
+    <div><i style="background:#BCBCBC"></i><span><b>text.secondary · $10</b>#BCBCBC</span></div>
+    <div><i style="background:#7C7C7C"></i><span><b>text.muted · $00</b>#7C7C7C · on black only</span></div>
+    <div><i style="background:#F8B800"></i><span><b>accent · $28</b>#F8B800 · actions, ▶</span></div>
+    <div><i style="background:#F8D878"></i><span><b>accent.light · $38</b>#F8D878 · shine</span></div>
+    <div><i style="background:#58D854"></i><span><b>success · $2A</b>#58D854 · deal won</span></div>
+    <div><i style="background:#007800"></i><span><b>success.deep · $09</b>#007800 · turf</span></div>
+    <div><i style="background:#F83800"></i><span><b>alert · $16</b>#F83800 · live dot</span></div>
+    <div><i style="background:#A81000"></i><span><b>alert.deep · $06</b>#A81000</span></div>
+    <div><i style="background:#3CBCFC"></i><span><b>info · $21</b>#3CBCFC · times, links</span></div>
+    <div><i style="background:#FCA044"></i><span><b>timer · $27</b>#FCA044 · countdowns</span></div>
+    <div><i style="background:#A4E4FC"></i><span><b>ice · $31</b>#A4E4FC · labels, ice</span></div>
+    <div><i style="background:#F0D0B0"></i><span><b>skin · $36</b>#F0D0B0 · sprites only</span></div>
+  </div>
+  <div class="oldnote">Everything below this line is the earlier exploration (Jumbotron vs the first 8-bit pass). The NES section above replaces the 8-bit half of it.</div>
+</section>
+
+<!-- ===== At a glance ===== -->
+<section>
+  <h2>At a glance</h2>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Jumbotron</th><th>8-bit</th></tr></thead>
+    <tbody>
+      <tr><td><b>Feeling</b></td><td>Being in the arena: the scoreboard after a goal, crowd lit amber</td><td>Arcade nostalgia: winning food is a power-up, a game day is a level</td></tr>
+      <tr><td><b>Built from</b></td><td>LED dot-matrix: round dots, glow, unlit dots visible</td><td>Square pixels: hard edges, 4px borders, a fixed 16-color palette</td></tr>
+      <tr><td><b>Signature component</b></td><td>Deal meter: a 10-segment LED bar showing how close the game is to your free food</td><td>HP-style deal bar plus an RPG dialog box: "You got $2 McGriddles!"</td></tr>
+      <tr><td><b>Motion</b></td><td>One ticker crawl of unlocked deals; "UNLOCKED" blinks 3 times, once</td><td>Blinking menu cursor, bobbing dialog arrow, "STAGE CLEAR" on unlock</td></tr>
+      <tr><td><b>Readable body text</b></td><td>Barlow Semi Condensed (broadcast graphics)</td><td>Pixelify Sans; Press Start 2P only for short headings</td></tr>
+      <tr><td><b>Best for</b></td><td>Fans watching the game, live alerts, Live Activities</td><td>Younger fans, social sharing, collecting deals over a season</td></tr>
+      <tr><td><b>Risk</b></td><td>Needs live data to keep its promise; dark-only</td><td>Readability; must stay original and not look like any specific game</td></tr>
+      <tr><td><b>Effort (UI only)</b></td><td>M: 6 new components, 2 fonts</td><td>M: 7 new components, 2 fonts, sprite set</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ===== Logos ===== -->
+<section id="logos">
+  <h2>Logos, five each</h2>
+  <p class="muted">Each is shown as an App Store icon (120px) and at home-screen size (58px and 40px) to check it still reads small. All are generated on a real LED or pixel grid, so they can be exported at 1024px with no redrawing.</p>
+  <div class="two">
+    <div class="col">
+      <div class="colhead"><div class="chip" data-logo="j1"></div><div><h3>Jumbotron</h3><small>32 × 32 LED grid</small></div></div>
+      <div class="logos">
+        <div class="lg top"><div class="ic" data-logo="j1"></div><div><h4>J1 · LA on the board</h4><p>Two big lit letters, every unlit LED still visible. The simplest and the most "scoreboard". Strongest at small sizes.</p><div class="sizes"><div class="mini" data-logo="j1" style="width:58px;height:58px"></div><div class="mini" data-logo="j1" style="width:40px;height:40px"></div></div><div class="pickme">My pick for Jumbotron</div></div></div>
+        <div class="lg"><div class="ic" data-logo="j2"></div><div><h4>J2 · W for win</h4><p>A huge W with FREE in green underneath. Says the whole product: win, get free. "W" alone could be any app, though.</p><div class="sizes"><div class="mini" data-logo="j2" style="width:58px;height:58px"></div><div class="mini" data-logo="j2" style="width:40px;height:40px"></div></div></div></div>
+        <div class="lg"><div class="ic" data-logo="j3"></div><div><h4>J3 · $0 with live meter</h4><p>Price is zero, the deal meter is nearly full, the red live dot is on. Uses the app's signature component in the icon itself.</p><div class="sizes"><div class="mini" data-logo="j3" style="width:58px;height:58px"></div><div class="mini" data-logo="j3" style="width:40px;height:40px"></div></div></div></div>
+        <div class="lg"><div class="ic" data-logo="j4"></div><div><h4>J4 · Taco on the board</h4><p>Food drawn in LEDs, like a jumbotron graphic between periods. Most food-forward; the FREE label gets tiny at 40px.</p><div class="sizes"><div class="mini" data-logo="j4" style="width:58px;height:58px"></div><div class="mini" data-logo="j4" style="width:40px;height:40px"></div></div></div></div>
+        <div class="lg"><div class="ic" data-logo="j5"></div><div><h4>J5 · F with power meter</h4><p>A big F (Freebies) with a vertical meter filling green to red, like a crowd-noise meter. Most ownable shape, least obvious meaning.</p><div class="sizes"><div class="mini" data-logo="j5" style="width:58px;height:58px"></div><div class="mini" data-logo="j5" style="width:40px;height:40px"></div></div></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="colhead"><div class="chip" data-logo="b4"></div><div><h3>8-bit</h3><small>24 × 24 and 32 × 32 pixel grids</small></div></div>
+      <div class="logos">
+        <div class="lg"><div class="ic" data-logo="b1"></div><div><h4>B1 · Night taco</h4><p>A pixel taco under LA night stars. Warm, funny, instantly food. The obvious pick for social posts.</p><div class="sizes"><div class="mini" data-logo="b1" style="width:58px;height:58px"></div><div class="mini" data-logo="b1" style="width:40px;height:40px"></div></div></div></div>
+        <div class="lg"><div class="ic" data-logo="b2"></div><div><h4>B2 · $0 price tag</h4><p>A chunky pixel price tag that says $0. Clear meaning, and it works with any food the deals cover.</p><div class="sizes"><div class="mini" data-logo="b2" style="width:58px;height:58px"></div><div class="mini" data-logo="b2" style="width:40px;height:40px"></div></div></div></div>
+        <div class="lg top"><div class="ic" data-logo="b3"></div><div><h4>B3 · Pixel sunset palm</h4><p>A palm against an 8-bit sunset over the Pacific. The most "LA" of all ten; says nothing about food on its own, so the name must.</p><div class="sizes"><div class="mini" data-logo="b3" style="width:58px;height:58px"></div><div class="mini" data-logo="b3" style="width:40px;height:40px"></div></div><div class="pickme">My pick for 8-bit</div></div></div>
+        <div class="lg"><div class="ic" data-logo="b4"></div><div><h4>B4 · Cartridge label</h4><p>LA in chunky yellow pixels with a red drop shadow and FREE below, like a cartridge label. Bold wordmark, reads at every size.</p><div class="sizes"><div class="mini" data-logo="b4" style="width:58px;height:58px"></div><div class="mini" data-logo="b4" style="width:40px;height:40px"></div></div></div></div>
+        <div class="lg"><div class="ic" data-logo="b5"></div><div><h4>B5 · Power-up burger</h4><p>A pixel burger as the collectible item. Friendly, but burgers are generic and lean toward one sponsor type.</p><div class="sizes"><div class="mini" data-logo="b5" style="width:58px;height:58px"></div><div class="mini" data-logo="b5" style="width:40px;height:40px"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Screens ===== -->
+<section id="screens">
+  <h2>The same four screens</h2>
+  <p class="muted">Tabs in both: Live (or Tonight) · Deals · Teams · You. The left phone is Jumbotron, the right is 8-bit.</p>
+
+  <!-- Row 1 -->
+  <div class="rowlabel">1 · Tonight, with a game live</div>
+  <p>The home screen during a Kings game. The question it answers: how close am I to free food?</p>
+  <div class="pair">
+    <figure>
+      <div class="phone jb"><div class="scr">
+        <div class="sb"><span>8:47</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="wm" data-led="LA FREEBIES"></div>
+          <div class="board">
+            <div class="live"><span>● LIVE</span><i>3RD 8:14</i></div>
+            <div class="score"><div><div class="n">2</div><div class="t">KINGS</div></div><div class="v">VS</div><div><div class="n">1</div><div class="t">SHARKS</div></div></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="am"></i><i></i><i></i></div>
+            <div class="cap"><span>Win = free BRC burrito</span><b>8:14 to go</b></div>
+          </div>
+          <div class="ticker"><div>UNLOCKED: <b>$2 MCGRIDDLES</b> · DUCKS W 4–2 ·· NEXT: LAFC PLAYOFF 7:00 · 1ST-HALF GOAL = $5.99 ··</div></div>
+          <h5>UNLOCKED</h5>
+          <div class="row"><div><b>$2 McGriddles</b><small>Ducks won 4–2 · until 10:30am</small></div><span class="tm" style="color:#3dff7a">CLAIM</span></div>
+          <h5>TONIGHT</h5>
+          <div class="row"><div><b>LAFC playoff</b><small>1st-half goal → $5.99 Ono plate</small></div><span class="tm">FINAL 2-0</span></div>
+          <div class="row"><div><b>Lakers vs Suns</b><small>No deal tonight</small></div><span class="tm">7:30</span></div>
+        </div>
+        <nav class="tb"><span class="on"><svg><use href="#i-live"/></svg>LIVE</span><span><svg><use href="#i-deal"/></svg>DEALS</span><span><svg><use href="#i-team"/></svg>TEAMS</span><span><svg><use href="#i-you"/></svg>YOU</span></nav>
+      </div></div>
+      <figcaption>The meter is the hero: 7 of 10 segments lit, the amber one is "now".</figcaption>
+    </figure>
+    <figure>
+      <div class="phone px"><div class="scr">
+        <div class="sb"><span>8:47</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="hdr"><div class="spr" data-logo="b1"></div><div><div class="h">LA FREEBIES</div><small>Tonight's matches</small></div></div>
+          <div class="box">
+            <div class="vs"><div><div class="tm">KINGS</div><div class="n">2</div></div><div class="x">VS</div><div><div class="tm">SHARKS</div><div class="n" style="color:#cbdbfc">1</div></div></div>
+            <div class="per">3RD PERIOD · 8:14</div>
+            <div class="hp"><span>WIN</span><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="ye"></i><i></i><i></i><i></i></div></div>
+            <div class="note">Reward: <b>free BRC burrito</b></div>
+          </div>
+          <h5>INVENTORY</h5>
+          <div class="li"><div><b>$2 McGriddles</b><small>Ducks won · use by 10:30am</small></div><span class="ok">NEW!</span></div>
+          <h5>UP NEXT</h5>
+          <div class="li"><div><b>LAFC playoff</b><small>1st-half goal → $5.99 plate</small></div><span class="t">CLEAR</span></div>
+          <div class="li"><div><b>Lakers vs Suns</b><small>No reward this level</small></div><span class="t">7:30</span></div>
+        </div>
+        <nav class="tb"><span class="on"><svg viewBox="0 0 8 8"><use href="#p-live"/></svg>LIVE</span><span><svg viewBox="0 0 8 8"><use href="#p-deal"/></svg>ITEMS</span><span><svg viewBox="0 0 8 8"><use href="#p-team"/></svg>TEAMS</span><span><svg viewBox="0 0 8 8"><use href="#p-you"/></svg>YOU</span></nav>
+      </div></div>
+      <figcaption>The game as a boss fight: a health-style bar fills toward the reward.</figcaption>
+    </figure>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="rowlabel">2 · A deal unlocks</div>
+  <p>Opened from the morning push. It has one job: get them to claim before it expires.</p>
+  <div class="pair">
+    <figure>
+      <div class="phone jb"><div class="scr">
+        <div class="sb"><span>7:02</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="unl"><div class="big">UNLOCKED</div><div class="item">$2 MCGRIDDLES</div><small>Ducks beat Seattle 4–2 at Honda Center</small></div>
+          <div class="cd"><div><b>03</b><span>HRS</span></div><div><b>28</b><span>MIN</span></div><div><b>11</b><span>SEC</span></div></div>
+          <div style="text-align:center;font-size:11px;color:#9a6a00">Left to claim · breakfast ends 10:30am</div>
+          <ol class="steps"><li>Open the McDonald's app</li><li>Rewards &amp; Deals → Ducks deal</li><li>Order at the counter or drive-thru</li></ol>
+          <span class="btn">Open McDonald's</span>
+          <span class="btn2">Remind me at 9:00</span>
+        </div>
+        <nav class="tb"><span><svg><use href="#i-live"/></svg>LIVE</span><span class="on"><svg><use href="#i-deal"/></svg>DEALS</span><span><svg><use href="#i-team"/></svg>TEAMS</span><span><svg><use href="#i-you"/></svg>YOU</span></nav>
+      </div></div>
+      <figcaption>"UNLOCKED" blinks three times on open, then holds. The countdown is LED digits.</figcaption>
+    </figure>
+    <figure>
+      <div class="phone px"><div class="scr">
+        <div class="sb"><span>7:02</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="clear"><div class="h">STAGE<br>CLEAR!</div></div>
+          <div class="item" data-logo="b5"></div>
+          <div class="dlg">You got <b>$2 McGriddles</b>! The Ducks beat Seattle 4–2 at home.<span class="cur">▼</span></div>
+          <div class="timer"><span>03:28:11</span></div>
+          <div style="text-align:center;font-size:11.5px;color:#9badb7">Breakfast ends 10:30am</div>
+          <div class="menu"><div class="sel">OPEN MCDONALD'S</div><div>REMIND ME AT 9:00</div><div>HOW TO CLAIM</div></div>
+        </div>
+        <nav class="tb"><span><svg viewBox="0 0 8 8"><use href="#p-live"/></svg>LIVE</span><span class="on"><svg viewBox="0 0 8 8"><use href="#p-deal"/></svg>ITEMS</span><span><svg viewBox="0 0 8 8"><use href="#p-team"/></svg>TEAMS</span><span><svg viewBox="0 0 8 8"><use href="#p-you"/></svg>YOU</span></nav>
+      </div></div>
+      <figcaption>An RPG text box and a pause-menu list. The menu rows are full-width tap targets.</figcaption>
+    </figure>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="rowlabel">3 · Pick your LA teams</div>
+  <p>Replaces today's Discover screen. All 14 LA teams, with who's in season shown at a glance.</p>
+  <div class="pair">
+    <figure>
+      <div class="phone jb"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <h5 style="margin-top:6px">YOUR TEAMS · 4 FOLLOWED</h5>
+          <div class="tiles">
+            <div class="tile f"><b>KINGS</b><small>NHL · on</small></div>
+            <div class="tile f"><b>DUCKS</b><small>NHL · on</small></div>
+            <div class="tile f"><b>LAFC</b><small>MLS · playoffs</small></div>
+            <div class="tile f"><b>DODGERS</b><small>MLB · Mar 25</small></div>
+            <div class="tile"><b>LAKERS</b><small>NBA · on</small></div>
+            <div class="tile"><b>CLIPPERS</b><small>NBA · on</small></div>
+            <div class="tile"><b>RAMS</b><small>NFL · on</small></div>
+            <div class="tile"><b>BOLTS</b><small>NFL · on</small></div>
+            <div class="tile off"><b>ANGELS</b><small>MLB · Mar</small></div>
+            <div class="tile off"><b>GALAXY</b><small>MLS · Feb</small></div>
+            <div class="tile off"><b>ANGEL CITY</b><small>NWSL · Feb 11</small></div>
+            <div class="tile off"><b>SPARKS</b><small>WNBA · May</small></div>
+            <div class="tile off"><b>USC</b><small>NCAA</small></div>
+            <div class="tile off"><b>UCLA</b><small>NCAA</small></div>
+            <div class="tile"><b>+</b><small>Suggest</small></div>
+          </div>
+          <div style="font-size:11.5px;color:#9a6a00;margin-top:10px">Lit = following · dim = off-season</div>
+        </div>
+        <nav class="tb"><span><svg><use href="#i-live"/></svg>LIVE</span><span><svg><use href="#i-deal"/></svg>DEALS</span><span class="on"><svg><use href="#i-team"/></svg>TEAMS</span><span><svg><use href="#i-you"/></svg>YOU</span></nav>
+      </div></div>
+      <figcaption>Followed teams light up; off-season teams go dark. Team names in text only, never logos.</figcaption>
+    </figure>
+    <figure>
+      <div class="phone px"><div class="scr">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="bd">
+          <div class="h" style="font-size:10px;margin:8px 0 2px;color:#fbf236">SELECT YOUR TEAMS</div>
+          <div style="font-size:11.5px;color:#9badb7;margin-bottom:8px">4 selected · tap to add</div>
+          <div class="grid">
+            <div class="cell f"><span class="p1">P1</span>LAK<em>Kings</em></div>
+            <div class="cell f">ANA<em>Ducks</em></div>
+            <div class="cell f">LAFC<em>LAFC</em></div>
+            <div class="cell f">LAD<em>Dodgers</em></div>
+            <div class="cell">LAL<em>Lakers</em></div>
+            <div class="cell">LAC<em>Clippers</em></div>
+            <div class="cell">LAR<em>Rams</em></div>
+            <div class="cell">LAC<em>Chargers</em></div>
+            <div class="cell off">LAA<em>Angels</em></div>
+            <div class="cell off">LAG<em>Galaxy</em></div>
+            <div class="cell off">ACFC<em>Angel City</em></div>
+            <div class="cell off">LAS<em>Sparks</em></div>
+            <div class="cell off">USC<em>Trojans</em></div>
+            <div class="cell off">UCLA<em>Bruins</em></div>
+          </div>
+          <div class="dlg" style="margin-top:12px;font-size:12px">Dim teams are between seasons. We'll ping you when they're back.</div>
+        </div>
+        <nav class="tb"><span><svg viewBox="0 0 8 8"><use href="#p-live"/></svg>LIVE</span><span><svg viewBox="0 0 8 8"><use href="#p-deal"/></svg>ITEMS</span><span class="on"><svg viewBox="0 0 8 8"><use href="#p-team"/></svg>TEAMS</span><span><svg viewBox="0 0 8 8"><use href="#p-you"/></svg>YOU</span></nav>
+      </div></div>
+      <figcaption>A character-select grid. "P1" marks your first team, which gets top billing on Tonight.</figcaption>
+    </figure>
+  </div>
+
+  <!-- Row 4 -->
+  <div class="rowlabel">4 · Lock screen</div>
+  <p>A Live Activity during the game, plus the morning push. Where the brand is seen most.</p>
+  <div class="pair">
+    <figure>
+      <div class="phone jb lock"><div class="scr">
+        <div class="sb"><span></span><span>●●● ▮</span></div>
+        <div class="clk"><small>Sunday, November 15</small><div>8:47</div></div>
+        <div class="la">
+          <div class="top"><span>● LIVE · 3RD 8:14</span><span style="color:#9a6a00">LA FREEBIES</span></div>
+          <div class="sc"><span>KINGS</span><b>2 – 1</b><span>SJ</span></div>
+          <div class="meter" style="display:grid;grid-template-columns:repeat(10,1fr);gap:3px"><i class="on" style="height:7px"></i><i class="on" style="height:7px"></i><i class="on" style="height:7px"></i><i class="on" style="height:7px"></i><i class="on" style="height:7px"></i><i class="on" style="height:7px"></i><i class="on" style="height:7px"></i><i class="am" style="height:7px"></i><i style="height:7px"></i><i style="height:7px"></i></div>
+          <div class="ft">Hold the lead: a win means a free burrito</div>
+        </div>
+        <div class="n2"><small>7:00 AM</small><b>Ducks won 4–2</b>$2 McGriddles until 10:30am</div>
+      </div></div>
+      <figcaption>The Live Activity is a miniature scoreboard. Needs live data (options page, Exit 4).</figcaption>
+    </figure>
+    <figure>
+      <div class="phone px lock"><div class="scr">
+        <div class="sb"><span></span><span>●●● ▮</span></div>
+        <div class="clk"><small>Sunday, November 15</small><div>8:47</div></div>
+        <div class="la">
+          <div class="top"><span>● LIVE 3RD 8:14</span><span style="color:#9badb7">LA FREEBIES</span></div>
+          <div class="sc"><span>KINGS</span><b>2-1</b><span>SJ</span></div>
+          <div class="hp" style="margin-top:0"><span style="color:#fff">WIN</span><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="ye"></i><i></i><i></i><i></i></div></div>
+          <div class="ft">Reward: free BRC burrito</div>
+        </div>
+        <div class="n2"><small>7:00 AM</small><b>STAGE CLEAR: Ducks won</b>You got $2 McGriddles. Use by 10:30am.</div>
+      </div></div>
+      <figcaption>Pixel border and bar survive Apple's Live Activity size limits well.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== Design systems ===== -->
+<section id="system">
+  <h2>Design systems</h2>
+  <p class="muted">The tokens and rules that go into <code>src/hooks/useTheme.tsx</code> and the new components. Generated with the mobile-design-system skill's structure: semantic tokens first, raw colors second.</p>
+  <div class="two">
+    <div class="col spec">
+      <div class="colhead"><div class="chip" data-logo="j1"></div><div><h3>Jumbotron</h3><small>Dark only</small></div></div>
+      <div class="sw">
+        <div><i style="background:#050505"></i><span><b>board</b>#050505 · background</span></div>
+        <div><i style="background:#0a0a0a"></i><span><b>panel</b>#0A0A0A · cards</span></div>
+        <div><i style="background:#ffb000"></i><span><b>led</b>#FFB000 · primary</span></div>
+        <div><i style="background:#241a00"></i><span><b>ledOff</b>#241A00 · unlit</span></div>
+        <div><i style="background:#3dff7a"></i><span><b>unlocked</b>#3DFF7A · success</span></div>
+        <div><i style="background:#ff3b30"></i><span><b>live</b>#FF3B30 · live only</span></div>
+        <div><i style="background:#fff3cc"></i><span><b>ink</b>#FFF3CC · body</span></div>
+        <div><i style="background:#9a6a00"></i><span><b>dim</b>#9A6A00 · secondary</span></div>
+      </div>
+      <div class="type">
+        <div><span>Score 50</span><span style="font-family:Doto;font-weight:900;font-size:40px;color:#c98a00;line-height:1">2 – 1</span></div>
+        <div><span>Display 22</span><span style="font-family:Doto;font-weight:900;font-size:22px;color:#c98a00">UNLOCKED</span></div>
+        <div><span>Label 11.5</span><span style="font-family:Doto;font-weight:900;font-size:12px">TONIGHT · 3RD 8:14</span></div>
+        <div><span>Body 13.5</span><span style="font-family:'Barlow Semi Condensed';font-weight:600;font-size:15px">Win = free BRC burrito. Claim in the Loco Rewards app.</span></div>
+      </div>
+      <h4>Rules</h4>
+      <ul>
+        <li>Doto is for numbers, labels and short headlines only (≤ 3 words). Everything a person reads as a sentence is Barlow.</li>
+        <li>Red means live, nothing else. Green means unlocked, nothing else.</li>
+        <li>Glow only on lit LED elements (score, meter, unlocked). Never on body text or buttons.</li>
+        <li>Unlit dots show the grid; keep them at ≤ 15% contrast so they read as texture.</li>
+        <li>Contrast: amber #FFB000 on #050505 is 11.5:1; dim #9A6A00 is 4.6:1, so only use it for text ≥ 11px.</li>
+      </ul>
+      <h4>Components</h4>
+      <ul>
+        <li><code>LedText</code>: renders text on a dot grid (SVG), used for the wordmark and icon</li>
+        <li><code>Scoreboard</code>: teams, score, period/clock, live dot</li>
+        <li><code>DealMeter</code>: 10 segments; progress from the rule (goals ÷ target, or lead + time for "win")</li>
+        <li><code>Ticker</code>: one crawl, paused when reduced motion is on</li>
+        <li><code>UnlockedHero</code> + <code>LedCountdown</code></li>
+        <li><code>TeamTile</code>: lit/dim states</li>
+      </ul>
+      <h4>Motion and feel</h4>
+      <ul>
+        <li>Unlock: 3 blinks over 1.2s + <code>Haptics.notificationAsync(Success)</code>, once.</li>
+        <li>Meter segments light one at a time (60ms stagger) when the score changes.</li>
+        <li>Optional crowd-roar sound on unlock, off by default.</li>
+      </ul>
+    </div>
+    <div class="col spec">
+      <div class="colhead"><div class="chip" data-logo="b3"></div><div><h3>8-bit</h3><small>Dark first; light "day level" possible</small></div></div>
+      <div class="sw">
+        <div><i style="background:#222034"></i><span><b>night</b>#222034 · background</span></div>
+        <div><i style="background:#3f3f74"></i><span><b>panel</b>#3F3F74 · boxes</span></div>
+        <div><i style="background:#141021"></i><span><b>deep</b>#141021 · dialog, tab bar</span></div>
+        <div><i style="background:#fbf236"></i><span><b>coin</b>#FBF236 · primary</span></div>
+        <div><i style="background:#6abe30"></i><span><b>clear</b>#6ABE30 · success</span></div>
+        <div><i style="background:#d95763"></i><span><b>hit</b>#D95763 · live/alert</span></div>
+        <div><i style="background:#5fcde4"></i><span><b>sky</b>#5FCDE4 · info, times</span></div>
+        <div><i style="background:#df7126"></i><span><b>timer</b>#DF7126 · expiry</span></div>
+      </div>
+      <div class="type">
+        <div><span>Display 15</span><span style="font-family:'Press Start 2P';font-size:14px;color:#3a8a1c">STAGE CLEAR!</span></div>
+        <div><span>Heading 10</span><span style="font-family:'Press Start 2P';font-size:10px">SELECT YOUR TEAMS</span></div>
+        <div><span>Label 8</span><span style="font-family:'Press Start 2P';font-size:8px">INVENTORY</span></div>
+        <div><span>Body 13.5</span><span style="font-family:'Pixelify Sans';font-size:15px">You got $2 McGriddles! The Ducks beat Seattle 4–2.</span></div>
+      </div>
+      <h4>Rules</h4>
+      <ul>
+        <li>Colors only from the 16-color palette (a subset of DawnBringer 32, a free palette widely used for pixel art). No gradients, no blur, no rounded corners.</li>
+        <li>Press Start 2P max 3 words, never for body or numbers people must compare. Pixelify Sans for everything else.</li>
+        <li>Pixel art on an 8px grid, always scaled by whole numbers (2×, 3×, 4×) with <code>crispEdges</code>, never smoothed.</li>
+        <li>All sprites drawn for this app. No coins, blocks, mushrooms or ghosts that recall specific games.</li>
+        <li>Game words in moderation: "Items", "Stage clear", "Select". The deal copy stays plain English.</li>
+      </ul>
+      <h4>Components</h4>
+      <ul>
+        <li><code>PixelBox</code>: 4px stepped-corner border via box-shadow (no images)</li>
+        <li><code>DealBar</code>: 12-cell HP-style bar</li>
+        <li><code>DialogBox</code>: text box with bobbing ▼; tap to advance</li>
+        <li><code>PixelMenu</code>: blinking ▶ cursor rows, 44pt tall each</li>
+        <li><code>Sprite</code>: renders bitmap strings to SVG (food items, icons)</li>
+        <li><code>TeamSelectGrid</code> and <code>StageClear</code></li>
+      </ul>
+      <h4>Motion and feel</h4>
+      <ul>
+        <li>All animation in <code>steps()</code>: 2-frame bobs, 1s cursor blink. No easing.</li>
+        <li>Unlock: STAGE CLEAR drops in over 4 frames + a short chiptune blip (opt-in) + haptic.</li>
+        <li>Season collection: a badge sprite per team per season ("collected 12 deals").</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Plan ===== -->
+<section id="plan">
+  <h2>Getting either one into the app</h2>
+  <p class="muted">The same steps for both directions; only the tokens, fonts and component skins differ. Branch: <code>feat/la-redesign</code>.</p>
+  <ol class="plan">
+    <li><b>Audit.</b> Run mobile-design-review on the current app to get a baseline (emoji tabs, ~15 hardcoded hex values, no font loading, card-stack screens).</li>
+    <li><b>Tokens.</b> Rewrite <code>useTheme.tsx</code> with the semantic tokens above. Jumbotron forces dark (<code>userInterfaceStyle: "dark"</code>); 8-bit can keep a light "day level" later.</li>
+    <li><b>Fonts.</b> <code>expo-font</code> with Doto + Barlow Semi Condensed, or Press Start 2P + Pixelify Sans (all Open Font License). Add a type scale token; replace ~48 inline font sizes.</li>
+    <li><b>Drawing primitive.</b> One <code>GridArt</code> component (<code>react-native-svg</code>) that renders bitmap strings as dots (Jumbotron) or squares (8-bit). It draws the wordmark, logo, sprites and icons, which is how this page draws them.</li>
+    <li><b>Navigation.</b> Tabs become Live/Tonight, Deals, Teams, You with the new icon set (mobile-nav-plan for the route changes; deep link <code>freebie://today</code> kept).</li>
+    <li><b>Components.</b> Build the six or seven components listed above as server-driven blocks so <code>/config</code> can arrange them.</li>
+    <li><b>Icon and splash.</b> Export the chosen logo at 1024px from the same bitmap; splash uses the wordmark on the background color; add the missing <code>notification-icon.png</code> (white silhouette).</li>
+    <li><b>Store.</b> New screenshots from these four screens (apple-skills screenshot-planner), name and subtitle (keyword-optimizer).</li>
+    <li><b>Check.</b> mobile-design-review again to compare against the baseline, VoiceOver pass, Dynamic Type at the largest size.</li>
+  </ol>
+  <h3 style="margin-top:22px">My recommendation</h3>
+  <p><b>Jumbotron, with J1 as the logo.</b> It's tied to watching the game, which is the moment this product matters, and it leads directly into live alerts and Live Activities. It also works without live data on day one: before live data exists, the meter shows the final score's progress from last night's game.</p>
+  <p>If you want 8-bit's charm without giving up the arena, a hybrid works: Jumbotron as the app, with 8-bit sprites for the food items (the taco and burger drawn as LED dots, as in J4).</p>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>Every logo and sprite on this page is drawn in code from bitmap strings, so whichever you pick can be exported at any size and reused in the app. Fonts: Doto, Barlow Semi Condensed, Press Start 2P and Pixelify Sans, all from Google Fonts under the Open Font License.</p>
+</footer>
+<div class="ctrl"><button type="button" id="theme" aria-label="Toggle page theme">Theme</button></div>
+
+<script>
+(function () {
+  // ---- 5x7 bitmap font ----
+  var F = {
+    A:"01110,10001,10001,11111,10001,10001,10001", B:"11110,10001,10001,11110,10001,10001,11110",
+    C:"01110,10001,10000,10000,10000,10001,01110", D:"11110,10001,10001,10001,10001,10001,11110",
+    E:"11111,10000,10000,11110,10000,10000,11111", F:"11111,10000,10000,11110,10000,10000,10000",
+    G:"01110,10001,10000,10111,10001,10001,01111", H:"10001,10001,10001,11111,10001,10001,10001",
+    I:"01110,00100,00100,00100,00100,00100,01110", K:"10001,10010,10100,11000,10100,10010,10001",
+    L:"10000,10000,10000,10000,10000,10000,11111", M:"10001,11011,10101,10101,10001,10001,10001",
+    N:"10001,10001,11001,10101,10011,10001,10001", O:"01110,10001,10001,10001,10001,10001,01110",
+    P:"11110,10001,10001,11110,10000,10000,10000", R:"11110,10001,10001,11110,10100,10010,10001",
+    S:"01111,10000,10000,01110,00001,00001,11110", T:"11111,00100,00100,00100,00100,00100,00100",
+    U:"10001,10001,10001,10001,10001,10001,01110", V:"10001,10001,10001,10001,10001,01010,00100",
+    W:"10001,10001,10001,10101,10101,10101,01010", Y:"10001,10001,01010,00100,00100,00100,00100",
+    "0":"01110,10001,10011,10101,11001,10001,01110", "1":"00100,01100,00100,00100,00100,00100,01110",
+    "2":"01110,10001,00001,00010,00100,01000,11111", "$":"00100,01111,10100,01110,00101,11110,00100",
+    "-":"00000,00000,00000,11111,00000,00000,00000", " ":"000,000,000,000,000,000,000"
+  };
+  function text(str) {
+    var rows = ["","","","","","",""];
+    str.split("").forEach(function (ch, i) {
+      var g = (F[ch] || F[" "]).split(",");
+      for (var r = 0; r < 7; r++) rows[r] += (i ? "0" : "") + g[r];
+    });
+    return rows;
+  }
+  function scale(bm, s) {
+    var out = [];
+    bm.forEach(function (row) {
+      var line = row.split("").map(function (c) { return c.repeat(s); }).join("");
+      for (var k = 0; k < s; k++) out.push(line);
+    });
+    return out;
+  }
+  function canvas(w, h) { var c = []; for (var y = 0; y < h; y++) { c.push(new Array(w).fill(null)); } c.w = w; c.h = h; return c; }
+  // stamp a bitmap; map is a color string (for '1') or an object char->color
+  function stamp(c, bm, x0, y0, map) {
+    bm.forEach(function (row, y) {
+      row.split("").forEach(function (ch, x) {
+        var col = typeof map === "string" ? (ch === "1" ? map : null) : map[ch];
+        var X = x0 + x, Y = y0 + y;
+        if (col && X >= 0 && Y >= 0 && X < c.w && Y < c.h) c[Y][X] = col;
+      });
+    });
+  }
+  function fill(c, fn) { for (var y = 0; y < c.h; y++) for (var x = 0; x < c.w; x++) { var v = fn(x, y); if (v) c[y][x] = v; } }
+  function svgDots(c, bg, off) {
+    var s = '<svg viewBox="0 0 ' + c.w + ' ' + c.h + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="' + c.w + '" height="' + c.h + '" fill="' + bg + '"/>';
+    var glow = "", core = "";
+    for (var y = 0; y < c.h; y++) for (var x = 0; x < c.w; x++) {
+      var col = c[y][x], cx = x + 0.5, cy = y + 0.5;
+      if (col) {
+        glow += '<circle cx="' + cx + '" cy="' + cy + '" r="0.62" fill="' + col + '" opacity="0.28"/>';
+        core += '<circle cx="' + cx + '" cy="' + cy + '" r="0.4" fill="' + col + '"/>';
+      } else if (off) core += '<circle cx="' + cx + '" cy="' + cy + '" r="0.36" fill="' + off + '"/>';
+    }
+    return s + glow + core + "</svg>";
+  }
+  function svgPx(c, bg) {
+    var s = '<svg viewBox="0 0 ' + c.w + ' ' + c.h + '" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true"><rect width="' + c.w + '" height="' + c.h + '" fill="' + bg + '"/>';
+    for (var y = 0; y < c.h; y++) for (var x = 0; x < c.w; x++) if (c[y][x]) s += '<rect x="' + x + '" y="' + y + '" width="1.02" height="1.02" fill="' + c[y][x] + '"/>';
+    return s + "</svg>";
+  }
+
+  var AMB = "#ffb000", GRN = "#3dff7a", RED = "#ff3b30", OFF = "#241a00", BG = "#050505";
+  var TACO = [
+    "....g.r.g..r.g.r.g....",
+    "...gggrgggrrgggrggg...",
+    "..yggggggggggggggggy..",
+    ".yyyyyyyyyyyyyyyyyyyy.",
+    "yyyyyyyyyyyyyyyyyyyyyy",
+    "yyyyyyyyyyyyyyyyyyyyyy",
+    ".yyyyyyyyyyyyyyyyyyyy.",
+    "..yyyyyyyyyyyyyyyyyy..",
+    "....yyyyyyyyyyyyyy....",
+    ".......yyyyyyyy......."
+  ];
+  var BURGER = [
+    "....oooooooo....",
+    "..oowooooooowo..",
+    ".oooooooowooooo.",
+    "oooooooooooooooo",
+    "gggggggggggggggg",
+    "rrrrrrrrrrrrrrrr",
+    "tttttttttttttttt",
+    "tttttttttttttttt",
+    "yyyyyyyyyyyyyyyy",
+    "..y..........y..",
+    "oooooooooooooooo",
+    ".oooooooooooooo."
+  ];
+  var PALM = [
+    "...kk.kk...",
+    ".kk..kk..kk",
+    "k...kkkk..k",
+    "...k.kk.k..",
+    "..k..k...k."
+  ];
+
+  var logos = {
+    j1: function () { var c = canvas(32, 32); stamp(c, scale(text("LA"), 2), 5, 9, AMB); return svgDots(c, BG, OFF); },
+    j2: function () { var c = canvas(32, 32); stamp(c, scale(text("W"), 3), 8, 3, AMB); stamp(c, text("FREE"), 4, 25, GRN); return svgDots(c, BG, OFF); },
+    j3: function () {
+      var c = canvas(32, 32); stamp(c, scale(text("$0"), 2), 5, 5, AMB);
+      for (var k = 0; k < 8; k++) { var col = k < 6 ? GRN : (k === 6 ? AMB : null); if (!col) continue; for (var x = 0; x < 3; x++) for (var y = 0; y < 3; y++) c[23 + y][1 + k * 4 + x] = col; }
+      c[1][28] = c[1][29] = c[2][28] = c[2][29] = RED;
+      return svgDots(c, BG, OFF);
+    },
+    j4: function () { var c = canvas(32, 32); stamp(c, TACO, 5, 6, { y: AMB, g: GRN, r: RED }); stamp(c, text("FREE"), 4, 20, AMB); return svgDots(c, BG, OFF); },
+    j5: function () {
+      var c = canvas(32, 32); stamp(c, scale(text("F"), 3), 4, 5, AMB);
+      for (var k = 0; k < 7; k++) { var col = k < 3 ? GRN : k === 3 ? AMB : k === 4 ? RED : null; if (!col) continue; for (var x = 23; x <= 27; x++) { c[24 - 3 * k][x] = col; c[25 - 3 * k][x] = col; } }
+      return svgDots(c, BG, OFF);
+    },
+    b1: function () {
+      var c = canvas(24, 24);
+      [[3,3],[19,2],[12,5],[6,15],[21,12],[2,10]].forEach(function (p) { c[p[1]][p[0]] = "#cbdbfc"; });
+      stamp(c, TACO, 1, 9, { y: "#d9a066", g: "#6abe30", r: "#d95763" });
+      fill(c, function (x, y) { return y === 20 ? "#3f3f74" : null; });
+      return svgPx(c, "#222034");
+    },
+    b2: function () {
+      var c = canvas(24, 24);
+      function tag(dx, dy, col) { fill(c, function (x, y) { x -= dx; y -= dy; if (y < 4 || y > 19) return null; var edge = 2 + Math.floor(Math.abs(y - 11.5) * 0.5); return (x >= edge && x <= 21) ? col : null; }); }
+      tag(1, 1, "#45283c"); tag(0, 0, "#fbf236");
+      c[11][6] = c[12][6] = c[11][7] = c[12][7] = "#76428a";
+      stamp(c, text("$0"), 10, 8, "#222034");
+      return svgPx(c, "#76428a");
+    },
+    b3: function () {
+      var c = canvas(24, 24);
+      fill(c, function (x, y) {
+        if (y <= 17) { var d = Math.hypot(x - 11.5, y - 16); if (d <= 6.2) return (y % 3 === 0 && y > 12) ? "#df7126" : "#fbf236"; }
+        if (y <= 5) return "#3f3f74"; if (y <= 9) return "#76428a"; if (y <= 13) return "#d95763"; if (y <= 17) return "#df7126";
+        return ((x + y) % 5 === 0 && y % 2 === 0) ? "#5fcde4" : "#306082";
+      });
+      stamp(c, PALM, 11, 4, { k: "#141021" });
+      [[16,9],[16,10],[16,11],[15,12],[15,13],[15,14],[14,15],[14,16],[14,17]].forEach(function (p) { c[p[1]][p[0]] = "#141021"; });
+      return svgPx(c, "#222034");
+    },
+    b4: function () {
+      var c = canvas(32, 32);
+      var la = scale(text("LA"), 2);
+      stamp(c, la, 6, 5, "#ac3232"); stamp(c, la, 5, 4, "#fbf236");
+      stamp(c, text("FREE"), 4, 22, "#5fcde4");
+      return svgPx(c, "#3f3f74");
+    },
+    b5: function () {
+      var c = canvas(24, 24);
+      stamp(c, BURGER, 4, 6, { o: "#d9a066", w: "#ffffff", g: "#6abe30", r: "#ac3232", t: "#663931", y: "#fbf236" });
+      [[2,3],[21,4],[20,20],[3,19]].forEach(function (p) { c[p[1]][p[0]] = "#fbf236"; });
+      return svgPx(c, "#5b6ee1");
+    }
+  };
+  var cache = {};
+  document.querySelectorAll("[data-logo]").forEach(function (el) {
+    var id = el.getAttribute("data-logo");
+    el.innerHTML = cache[id] || (cache[id] = logos[id]());
+  });
+  document.querySelectorAll("[data-led]").forEach(function (el) {
+    var bm = text(el.getAttribute("data-led"));
+    var c = canvas(bm[0].length + 2, 9); stamp(c, bm, 1, 1, AMB);
+    el.innerHTML = svgDots(c, "transparent", "#1a1300");
+  });
+
+  var root = document.documentElement, key = "la-jb8-theme";
+  try { var s = localStorage.getItem(key); if (s) root.setAttribute("data-theme", s); } catch (e) {}
+  document.getElementById("theme").addEventListener("click", function () {
+    var dark = root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark"; root.setAttribute("data-theme", next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var SPRITES = [{"id":"burger","name":"Burger","width":16,"height":16,"pixels":["................","....KKKKKKKK....","..KKbbhbbbhbKK..",".KbhhbbbhbbbbbK.",".KbhbbbbbbbhbbK.","KbbbbbbbbbbbbbbK","KKKKKKKKKKKKKKKK","KggggggggggggggK","KppppppppppppppK","KppppppppppppppK","KKKKKKKKKKKKKKKK","KbbbbbbbbbbbbbbK",".KbbbbbbbbbbbbK.","..KKKKKKKKKKKK..","................","................"],"palette":{"K":"#000000","b":"#E45C10","g":"#00A800","h":"#FCA044","p":"#881400"}},{"id":"burrito","name":"Burrito","width":16,"height":16,"pixels":["................","................","................","................","...KKKKKKKKKK...","..KfFFfKlwwwwwK.",".KfFfffKwwwwwwwK","KfffffffKwwwwwwK","KffffffKwwwwwwwK","KffffffKwwwwwwK.",".KffffKwwwwwwK..","..KKKKKKKKKKK...","................","................","................","................"],"palette":{"F":"#FCFCFC","K":"#000000","f":"#BCBCBC","l":"#FCFCFC","w":"#F0D0B0"}},{"id":"chicken-sandwich","name":"Chicken sandwich","width":16,"height":16,"pixels":["................","....KKKKKKKK....","..KKbhhbbbbbKK..",".KbhbbbbbbbbbbK.","KbbbbbbbbbbbbbbK","KKKKKKKKKKKKKKKK","KppKppKppKppKppK","KccccccccccccccK","KccKcccKcccKcccK","KccccccccccccccK","KKKKKKKKKKKKKKKK","KbbbbbbbbbbbbbbK",".KbbbbbbbbbbbbK.","..KKKKKKKKKKKK..","................","................"],"palette":{"K":"#000000","b":"#E45C10","c":"#F8B800","h":"#FCA044","p":"#00A800"}},{"id":"drink","name":"Drink","width":16,"height":16,"pixels":["................","................","..........KK....",".........KwK....","........KwK.....","..KKKKKKKwKKKK..","..KllllllllllK..","...KrwrrrrrrK...","...KrwrrrrrrK...","...KrrwwwwrrK...","....KrrrrrrK....","....KrrrrrrK....","....KKKKKKKK....","................","................","................"],"palette":{"K":"#000000","l":"#BCBCBC","r":"#F83800","w":"#FCFCFC"}},{"id":"fries","name":"Fries","width":16,"height":16,"pixels":["................","................","....KK.KK.KK....","...KhfKhfKhfK...","..KhfKhfKhfKhK..","..KffKffKffKfK..",".KKKKKKKKKKKKKK.",".KrrrrrrrrrrrrK.","..KrrrrrrrrrrK..","..KrrRRRRRRrrK..","..KrrrrrrrrrrK..","...KrrrrrrrrK...","...KRRRRRRRRK...","....KKKKKKKK....","................","................"],"palette":{"K":"#000000","R":"#A81000","f":"#F8B800","h":"#F8D878","r":"#F83800"}},{"id":"gift","name":"Gift","width":16,"height":16,"pixels":["................","...KK.....KK....","..KyYK...KYyK...","...KyYK.KYyK....","....KKyKyKK.....","KKKKKKKyKKKKKKKK","KXxxxxxKyxxxxxxK","KxxxxxxKyxxxxxxK","KKKKKKKKyKKKKKKK",".KXxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KxxxxxKyxxxxxK.",".KKKKKKKKKKKKKK.","................"],"palette":{"K":"#000000","X":"#A4E4FC","Y":"#F87858","x":"#3CBCFC","y":"#F83800"}},{"id":"griddle-sandwich","name":"Griddle cake sandwich","width":16,"height":16,"pixels":["................","................","....KKKKKKKK....","..KKccdccdccKK..",".KccdccccccdccK.","KccccccdcccccccK","KKKKKKKKKKKKKKKK","KeeeeeeeeeeeeeeK","KssssssssssssssK","KssssssssssssssK","KKKKKKKKKKKKKKKK","KccccdcccccdcccK",".KccccccccccccK.","..KKKKKKKKKKKK..","................","................"],"palette":{"K":"#000000","c":"#F8B800","d":"#AC7C00","e":"#FCFCFC","s":"#881400"}},{"id":"hot-dog","name":"Hot dog","width":16,"height":16,"pixels":["................","................","................","................","..KKKKKKKKKKKK..",".KssmsssmsssmsK.","KbsmsssmsssmssbK","KbhbbbbbbbbbbbbK","KbbbbbbbbbbbbbbK",".KbbbbbbbbbbbbK.","..KKKKKKKKKKKK..","................","................","................","................","................"],"palette":{"K":"#000000","b":"#E45C10","h":"#FCA044","m":"#F8B800","s":"#A81000"}},{"id":"nuggets","name":"Nuggets","width":16,"height":16,"pixels":["................","................","................","..KKKK..........",".KhnnnK...KKKK..",".KnnnnK..KhnnnK.","..KKKK...KnnnnK.","....KKKKK.KKKK..","...KhnnnnK......","...KnnnnnK......","....KKKKK.......","................","................","................","................","................"],"palette":{"K":"#000000","h":"#F8D878","n":"#FCA044"}},{"id":"pizza","name":"Pizza slice","width":16,"height":16,"pixels":["................","KKKKKKKKKKKKKKKK","KccccccccccccccK","KccccccccccccccK",".KyhyyyypyyyyyK.",".KyppyyyyyyppyK.","..KyyyyypyyyyK..","..KyyyyppyyyyK..","...KyyyyyyyyK...","...KyypyyyyyK...","....KyyyyyyK....",".....KyyyyK.....","......KyyK......",".......KK.......","................","................"],"palette":{"K":"#000000","c":"#E45C10","h":"#F8D878","p":"#F83800","y":"#F8B800"}},{"id":"plate-lunch","name":"Plate lunch","width":16,"height":16,"pixels":["................","................","................","................","..KKKK...KKKKK..",".KwwwwK.KmmmmmK.",".KwwwwwKmmmvmmK.","KwwwwwwwwwwwwwwK","KgwwwwwwwwwwwwgK",".KggggggggggggK.","..KKKKKKKKKKKK..","................","................","................","................","................"],"palette":{"K":"#000000","g":"#BCBCBC","m":"#881400","v":"#00A800","w":"#FCFCFC"}},{"id":"street-tacos","name":"Street tacos","width":16,"height":16,"pixels":["................","................","................",".gmgm.gmgm.gmgm.","KwmmwKwmmwKwmmwK","KwwwwKwwwwKwwwwK","KwwwwKwwwwKwwwwK","KwwwdKwwwdKwwwdK",".KwdK.KwdK.KwdK.","KKKKKKKKKKKKKKKK","KooooooooooooooK",".KllllllllllllK.","..KKKKKKKKKKKK..","................","................","................"],"palette":{"K":"#000000","d":"#FCA044","g":"#00A800","l":"#BCBCBC","m":"#881400","o":"#FCFCFC","w":"#F0D0B0"}},{"id":"taco","name":"Taco","width":16,"height":16,"pixels":["................","................","....g.t..g.t....","..ggtggggtgggg..",".KggggggggggggK.","KhhhsssssssssssK","KhsssssssssssssK","KssssssssssssssK",".KssssssssssssK.","..KssssssssssK..","...KKssssssKK...",".....KKKKKK.....","................","................","................","................"],"palette":{"K":"#000000","g":"#00A800","h":"#F8D878","s":"#F8B800","t":"#F83800"}}];
+  var by = {}; SPRITES.forEach(function(s){ by[s.id] = s; });
+  function svgOf(s, size){
+    var sc = Math.max(1, Math.floor(size / Math.max(s.width, s.height)));
+    var out = '<svg width="' + s.width*sc + '" height="' + s.height*sc + '" viewBox="0 0 ' + s.width + ' ' + s.height + '" shape-rendering="crispEdges" role="img" aria-label="' + s.name + '">';
+    s.pixels.forEach(function(row, y){
+      var x = 0;
+      while (x < row.length) {
+        var k = row[x], e = x + 1;
+        while (e < row.length && row[e] === k) e++;
+        if (k !== '.' && s.palette[k]) out += '<rect x="' + x + '" y="' + y + '" width="' + (e - x) + '" height="1" fill="' + s.palette[k] + '"/>';
+        x = e;
+      }
+    });
+    return out + '</svg>';
+  }
+  var uses = {
+    "burger": "Jumbo Jack, Double Char (Dodgers)", "taco": "Del Taco (Angels)", "street-tacos": "LA taco deals (new)", "burrito": "El Pollo Loco (Kings)",
+    "griddle-sandwich": "McGriddles (Ducks, Angels)", "chicken-sandwich": "Chick-fil-A (in-venue)",
+    "plate-lunch": "Panda (Dodgers), Ono (LAFC)", "fries": "Fries (Angels)", "nuggets": "McNuggets (Dodgers)",
+    "pizza": "Mountain Mike's (Angels)", "hot-dog": "Dodger Dog (ampm)", "drink": "Drink add-ons", "gift": "Fallback for anything else"
+  };
+  var sheet = document.getElementById('foodsheet');
+  if (sheet) SPRITES.forEach(function(s){
+    sheet.insertAdjacentHTML('beforeend', '<figure><div>' + svgOf(s, 64) + '</div><figcaption><b>' + s.name + '</b>' + (uses[s.id] || '') + '</figcaption></figure>');
+  });
+  document.querySelectorAll('[data-sprite]').forEach(function(el){
+    var s = by[el.getAttribute('data-sprite')];
+    if (s) el.innerHTML = svgOf(s, +el.getAttribute('data-size') || 32);
+  });
+
+  // Original 16x16 sport badges on NES palette entries.
+  function grid(fn){ var px = []; for (var y = 0; y < 16; y++) { var r = ''; for (var x = 0; x < 16; x++) r += fn(x, y); px.push(r); } return px; }
+  function ball(mark){
+    return grid(function(x, y){
+      var d = Math.hypot(x - 7.5, y - 7.5);
+      if (d > 7.4) return '.';
+      if (d > 6.4) return 'K';
+      if (Math.hypot(x - 5, y - 5) <= 1.4) return 'h';
+      return mark(x, y) || 'f';
+    });
+  }
+  var B = {};
+  B.basketball = { name: 'Basketball', width: 16, height: 16, palette: { K: '#000000', f: '#E45C10', h: '#FCA044', s: '#000000' },
+    pixels: ball(function(x, y){ return (x === 7 || y === 7 || Math.abs(Math.hypot(x + 1, y - 7.5) - 6) < 0.6 || Math.abs(Math.hypot(x - 16, y - 7.5) - 6) < 0.6) ? 's' : null; }) };
+  B.baseball = { name: 'Baseball', width: 16, height: 16, palette: { K: '#000000', f: '#FCFCFC', h: '#FCFCFC', r: '#F83800' },
+    pixels: ball(function(x, y){ return (Math.abs(Math.hypot(x + 3, y - 7.5) - 7.5) < 0.6 || Math.abs(Math.hypot(x - 18, y - 7.5) - 7.5) < 0.6) ? 'r' : null; }) };
+  B.soccer = { name: 'Soccer ball', width: 16, height: 16, palette: { K: '#000000', f: '#FCFCFC', h: '#FCFCFC', s: '#000000' },
+    pixels: ball(function(x, y){ var sp = [[7.5, 7.5], [2.5, 4], [12.5, 4], [2.5, 11.5], [12.5, 11.5], [7.5, 14]]; for (var i = 0; i < sp.length; i++) if (Math.hypot(x - sp[i][0], y - sp[i][1]) <= 1.6) return 's'; return null; }) };
+  B.football = { name: 'Football', width: 16, height: 16, palette: { K: '#000000', f: '#881400', h: '#E45C10', w: '#FCFCFC' },
+    pixels: grid(function(x, y){
+      var d = Math.pow((x - 7.5) / 7.6, 2) + Math.pow((y - 7.5) / 5.2, 2);
+      if (d > 1) return '.';
+      if (d > 0.62) return 'K';
+      if (y === 7 && x >= 5 && x <= 10) return 'w';
+      if ((x === 6 || x === 8 || x === 10) && y >= 6 && y <= 8) return 'w';
+      if (Math.pow((x - 5) / 2.2, 2) + Math.pow((y - 5) / 1.1, 2) <= 1) return 'h';
+      return 'f';
+    }) };
+  B.hockey = { name: 'Hockey stick and puck', width: 16, height: 16, palette: { K: '#000000', b: '#AC7C00', t: '#FCFCFC', g: '#7C7C7C' }, pixels: [
+    "............KK..",
+    "...........KbK..",
+    "...........KbK..",
+    "..........KbK...",
+    "..........KbK...",
+    ".........KbK....",
+    ".........KbK....",
+    "........KbK.....",
+    "........KtK.....",
+    ".......KtK......",
+    "..KKKKKKtK......",
+    ".KbbbbbbbK......",
+    ".KKKKKKKK.......",
+    "..........KKKK..",
+    ".........KggggK.",
+    "..........KKKK.."] };
+  document.querySelectorAll('[data-badge]').forEach(function(el){
+    var b = B[el.getAttribute('data-badge')];
+    if (b) el.innerHTML = svgOf(b, +(el.getAttribute('data-bs') || 16));
+  });
+})();
+</script>
+</body>
+</html>

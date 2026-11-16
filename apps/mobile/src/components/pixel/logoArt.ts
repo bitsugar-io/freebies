@@ -1,0 +1,53 @@
+// Logo art only. These purple, violet, magenta and blue entries are NES master-palette values used
+// by the palm sunset logo and nowhere else; they are NOT UI tokens (see docs/ui.md "Logo art").
+// Generated from .claude/skills/design/scripts/icons.py scene() so the in-app logo matches the app icon.
+import type { Bitmap } from './art';
+
+export const LOGO_PALM: Bitmap = {
+  width: 32,
+  height: 32,
+  pixels: [
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppppppppppppppp",
+    "pppppppppppppppppppkkpkkpppppppp",
+    "pppppppppppppppppkkkkkkkpkkppppp",
+    "vvvvvvvvvvvvvvvvkkkvkkkkvkkvvvvv",
+    "vvvvvvvvvvvvvvvvkvvkkkkkkvkvvvvv",
+    "vvvvvvvvvvvvvvvvvvkkvkkvkkvvvvvv",
+    "vvvvvvvvvvvvvvvvvvkvvkvvvkvvvvvv",
+    "vvvvvvvvvvvvggggggvvvkvvvvvvvvvv",
+    "vvvvvvvvvvggggggggggvkvvvvvvvvvv",
+    "vvvvvvvvvgggggggggggkkvvvvvvvvvv",
+    "mmmmmmmmggggggggggggkgmmmmmmmmmm",
+    "mmmmmmmmggggggggggggkgmmmmmmmmmm",
+    "mmmmmmmllllllllllllkkllmmmmmmmmm",
+    "mmmmmmmggggggggggggkgggmmmmmmmmm",
+    "mmmmmmmggggggggggggkgggmmmmmmmmm",
+    "mmmmmmmllllllllllllklllmmmmmmmmm",
+    "bbwbbbbbwbbbbbwbbbbbwbbbbbwbbbbb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "wbbbbbwbbbbbwbbbbbwbbbbbwbbbbbwb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "bbbbwbbbbbwbbbbbwbbbbbwbbbbbwbbb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "bbwbbbbbwbbbbbwbbbbbwbbbbbwbbbbb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "wbbbbbwbbbbbwbbbbbwbbbbbwbbbbbwb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  ],
+  palette: {
+    k: '#000000',
+    w: '#FCFCFC',
+    p: '#4428BC',
+    v: '#6844FC',
+    m: '#940084',
+    g: '#F8B800',
+    l: '#F8D878',
+    b: '#0058F8',
+  },
+};

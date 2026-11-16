@@ -2,31 +2,28 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 import { AppState, AppStateStatus } from 'react-native';
 import { api, AppConfig } from '../api/client';
 
+// Fallback when /config can't be reached. The app renders Won, Teams and You itself;
+// the server only adds banner and promo_card blocks (see ServerBlocks), keyed by screen name.
+// The older keys (deals, discover, profile, deal_detail) are still served for builds that
+// predate the redesign and are read here only for banners.
 const DEFAULT_CONFIG: AppConfig = {
   features: {
     enable_mlb: true,
     enable_nba: true,
     enable_nfl: true,
-    enable_nhl: false,
+    enable_nhl: true,
+    enable_mls: true,
     show_affiliate_links: false,
     enable_push_notifications: true,
     enable_subscriptions: true,
     maintenance_mode: false,
   },
   screens: {
-    deals: [
-      { type: 'active_deals', key: 'active-deals-list', config: { layout: 'list', emptyTitle: 'No Active Deals', emptySubtitle: 'Deals appear here when your teams trigger offers' } },
-    ],
-    discover: [
-      { type: 'league_filter', key: 'league-filter-bar', config: {} },
-      { type: 'event_list', key: 'event-list', config: { groupBy: 'team' } },
-    ],
-    deal_detail: [],
-    profile: [
-      { type: 'user_stats', key: 'user-stats', config: {} },
-      { type: 'subscription_list', key: 'subscriptions', config: {} },
-      { type: 'settings', key: 'settings', config: { showThemeToggle: true } },
-    ],
+    tonight: [],
+    deals_v2: [],
+    teams: [],
+    you: [],
+    deal_v2: [],
   },
 };
 
