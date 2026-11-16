@@ -9,7 +9,7 @@ import { PixelIcon } from './PixelIcon';
 import { useScreenWipe } from './ScreenWipe';
 import { Text } from './Text';
 
-const LABELS: Record<string, string> = { Won: 'Won', Teams: 'Teams', You: 'You' };
+const LABELS: Record<string, string> = { Won: 'Won', Today: 'Today', Teams: 'Teams', You: 'You' };
 
 /** A thin pixel bar between stat-line items. */
 function Sep() {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   bar: { backgroundColor: colors.background, borderTopWidth: 3, borderTopColor: colors.border },
   stats: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingTop: 8, paddingBottom: 2 },
   sep: { width: 2, height: 12, marginHorizontal: 4, backgroundColor: colors.textMuted },
-  // Three equal columns, so the tabs sit evenly and YOU lines up with the 16pt gutter's mirror.
+  // Equal columns, so the tabs sit evenly.
   tabs: { flexDirection: 'row', paddingHorizontal: 4 },
   tab: { flex: 1, minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
   cursor: { width: 12, alignItems: 'flex-start' },

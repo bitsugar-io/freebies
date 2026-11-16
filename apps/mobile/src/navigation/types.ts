@@ -10,6 +10,8 @@ export type TeamsStackParamList = {
 export type TabParamList = {
   /** Home: deals to claim, on the line, and coming up. */
   Won: undefined;
+  /** Deals anyone can claim now and today's LA games with deals on the line. */
+  Today: undefined;
   Teams: NavigatorScreenParams<TeamsStackParamList> | undefined;
   /** `anchor: 'about'` scrolls to the About section; `at` makes a repeat request count. */
   You: { anchor?: 'about'; at?: number } | undefined;

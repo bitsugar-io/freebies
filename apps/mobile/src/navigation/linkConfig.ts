@@ -14,6 +14,7 @@ export const LINK_CONFIG: NonNullable<LinkingOptions<RootStackParamList>['config
       screens: {
         // Old /tonight and /deals links still land on the home tab.
         Won: { path: 'won', alias: ['tonight', 'deals'] },
+        Today: 'today',
         // /teams is SELECT SPORT; /teams/<sport> opens that sport's page.
         Teams: { path: 'teams', screens: { Sports: '', Sport: ':sport' } },
         You: 'you',

@@ -45,6 +45,10 @@ export interface Event {
   isActive: boolean;
   spriteId?: string;
   sprite?: Sprite;
+  /** Only fans at the game can claim it; the app tags it AT THE GAME. */
+  inVenue?: boolean;
+  /** Where, for an at-the-game deal ("Intuit Dome"). */
+  venue?: string;
 }
 
 export interface User {
@@ -79,6 +83,35 @@ export interface Team {
   /** When an off-season team returns: "MAR", "FEB 11". Null in season. */
   returnLabel: string | null;
   activeDeals: number;
+}
+
+/** A deal anyone can claim right now (any LA team), from GET /today. */
+export interface TodayDeal {
+  id: string;
+  eventId: string;
+  triggeredAt: string;
+  availableAt?: string;
+  expiresAt?: string;
+  event: Event;
+}
+
+/** One of today's LA games with deals on the line. */
+export interface TodayGame {
+  teamId: string;
+  teamName: string;
+  league: string;
+  opponent: string;
+  startsAt: string;
+  home: boolean;
+  state: 'pre' | 'in' | 'post';
+  deals: Event[];
+}
+
+export interface Today {
+  /** Pacific date, YYYY-MM-DD. */
+  date: string;
+  live: TodayDeal[];
+  games: TodayGame[];
 }
 
 export interface Subscription {
@@ -223,6 +256,11 @@ class ApiClient {
 
   async getEvent(id: string): Promise<Event> {
     return this.request<Event>(`/events/${id}`);
+  }
+
+  // Today: claimable deals from every LA team and today's games
+  async getToday(): Promise<Today> {
+    return this.request<Today>('/today');
   }
 
   // Teams

@@ -22,6 +22,7 @@ describe('link paths', () => {
     ['won', ['Tabs', 'Won'], undefined],
     ['tonight', ['Tabs', 'Won'], undefined],
     ['deals', ['Tabs', 'Won'], undefined],
+    ['today', ['Tabs', 'Today'], undefined],
     ['teams', ['Tabs', 'Teams', 'Sports'], undefined],
     ['teams/football', ['Tabs', 'Teams', 'Sport'], { sport: 'football' }],
     ['teams/hockey', ['Tabs', 'Teams', 'Sport'], { sport: 'hockey' }],

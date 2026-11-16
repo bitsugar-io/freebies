@@ -8,6 +8,7 @@ import { ActiveDeal, api, Event } from '../api/client';
 import { useAppData } from '../context/AppDataContext';
 import { ServerBlocks } from '../components/ServerBlocks';
 import { SponsoredCard } from '../components/SponsoredCard';
+import { AtTheGameTag, venueLine } from '../components/DealRows';
 import PixelSprite from '../components/PixelSprite';
 import { CutIn } from '../components/pixel/CutIn';
 import { ExpiryBar, spokenTimeLeft, timeLeftMs } from '../components/pixel/DealBar';
@@ -279,6 +280,7 @@ export function DealScreen() {
               </View>
             ) : null}
 
+            <VenueNote event={event} />
             <Text variant="displayM" color="textMuted" accessibilityRole="header" style={styles.label}>
               How to claim
             </Text>
@@ -355,6 +357,7 @@ export function DealScreen() {
             >
               {ifCondition(event.triggerCondition)}, you get {key(event.offerName)} from {event.partnerName}.
             </DialogBox>
+            <VenueNote event={event} />
             <Text variant="body" color="textSecondary" style={{ marginTop: 12 }}>
               {event.offerDescription}
             </Text>
@@ -392,3 +395,16 @@ const styles = StyleSheet.create({
   label: { marginTop: 20, marginBottom: 8 },
   offerName: { fontSize: 24, lineHeight: 30, marginBottom: 16 },
 });
+
+/** At-the-game deals: the tag plus where, in plain words, so nobody expects to claim it from home. */
+function VenueNote({ event }: { event: Event }) {
+  if (!event.inVenue) return null;
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginTop: 12 }}>
+      <AtTheGameTag event={event} />
+      <Text variant="caption" color="textSecondary">
+        {venueLine(event)}
+      </Text>
+    </View>
+  );
+}
