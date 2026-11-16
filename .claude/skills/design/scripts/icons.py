@@ -15,9 +15,11 @@ import zlib
 
 N = 32
 K, W = "#000000", "#FCFCFC"
-# Victory rays, "LA Triple": Lakers purple, gold and Dodger blue cycling.
-PURPLE, GOLD, BLUE = "#6844FC", "#F8B800", "#0058F8"
-RAYS = (PURPLE, GOLD, BLUE)
+GOLD = "#F8B800"  # NES gold: the trophy and cheese
+# Victory rays, "LA Triple": the teams' official Pantone colors, cycling (owner decision,
+# 2026-11-15). Lakers purple PMS 268 C, Lakers gold PMS 123 C, Dodger blue PMS 294 C.
+LAKERS_PURPLE, LAKERS_GOLD, DODGER_BLUE = "#552583", "#FDB927", "#005A9C"
+RAYS = (LAKERS_PURPLE, LAKERS_GOLD, DODGER_BLUE)
 RAY_COUNT, RAY_CX, RAY_CY = 18, 16, 17
 
 # Sprite keys -> NES colors. Trophy golds; burger bun, lettuce, cheese, patty.

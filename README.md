@@ -9,12 +9,12 @@
 <p align="center">When LA wins, you win.</p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-F8B800?style=for-the-badge"></a>
-  <a href="https://go.dev"><img alt="Go" src="https://img.shields.io/badge/Go-1.27-0000BC?style=for-the-badge&amp;logo=go&amp;logoColor=white"></a>
-  <a href="https://expo.dev"><img alt="Expo and React Native" src="https://img.shields.io/badge/Expo-React_Native-F8B800?style=for-the-badge&amp;logo=expo&amp;logoColor=black"></a>
-  <img alt="iOS" src="https://img.shields.io/badge/iOS-App_Store-0000BC?style=for-the-badge&amp;logo=apple&amp;logoColor=white">
-  <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/Conventional_Commits-1.0.0-F8B800?style=for-the-badge"></a>
-  <a href="https://just.systems"><img alt="built with just" src="https://img.shields.io/badge/Built_with-Just-0000BC?style=for-the-badge&amp;logo=just&amp;logoColor=white"></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-FDB927?style=for-the-badge&amp;labelColor=552583&amp;color=FDB927"></a>
+  <a href="https://go.dev"><img alt="Go" src="https://img.shields.io/badge/Go-1.27-FCFCFC?style=for-the-badge&amp;labelColor=005A9C&amp;color=FCFCFC&amp;logo=go&amp;logoColor=white"></a>
+  <a href="https://expo.dev"><img alt="Expo and React Native" src="https://img.shields.io/badge/Expo-React_Native-FDB927?style=for-the-badge&amp;labelColor=552583&amp;color=FDB927&amp;logo=expo&amp;logoColor=white"></a>
+  <img alt="iOS" src="https://img.shields.io/badge/iOS-App_Store-FCFCFC?style=for-the-badge&amp;labelColor=005A9C&amp;color=FCFCFC&amp;logo=apple&amp;logoColor=white">
+  <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/Conventional_Commits-1.0.0-FDB927?style=for-the-badge&amp;labelColor=552583&amp;color=FDB927"></a>
+  <a href="https://just.systems"><img alt="built with just" src="https://img.shields.io/badge/Built_with-Just-FCFCFC?style=for-the-badge&amp;labelColor=005A9C&amp;color=FCFCFC&amp;logo=just&amp;logoColor=white"></a>
   <a href="https://github.com/tekk/hovnokod-badge"><img alt="hovnokod" src="https://raw.githubusercontent.com/tekk/hovnokod-badge/main/assets/badges/hovnokod-for-the-badge.svg"></a>
 </p>
 

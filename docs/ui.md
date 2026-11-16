@@ -209,13 +209,22 @@ bottom safe-area inset.
 ### Logo art
 
 The app icon and in-app logo are the **Trophy Burger**: a burger in a gold winner's cup over "LA
-Triple" victory rays (Lakers purple `#6844FC`, gold `#F8B800` and Dodger blue `#0058F8` cycling, 18
-rays), with a 1px black edge around the cup and burger. It says "you win food when LA wins"; the
-colors nod to LA without being any team's scheme. `scripts/icons.py` in the `design` skill is the
-source: `assets` writes the Expo icon files (square and opaque; iOS rounds the corners), `logoart`
-writes `pixel/logoArt.ts`, and `logo.py` draws the README logo with the mark clipped to iOS's
-rounded corners. The logo's extra NES colors (`#6844FC`, `#0058F8`, `#AC7C00`, `#E45C10`, `#00A800`,
-`#881400`) are logo-only art, not UI tokens; `audit-colors.sh` allows them in `logoArt.ts` only.
+Triple" victory rays with a 1px black edge around the cup and burger. It says "you win food when LA
+wins". The rays cycle the teams' official Pantone colors, an owner decision (2026-11-15) and the one
+exception to "no team color schemes" below: Lakers purple `#552583` (PMS 268 C), Lakers gold
+`#FDB927` (PMS 123 C) and Dodger blue `#005A9C` (PMS 294 C).
+
+The README logo pairs the colors the way the teams wear them, and never puts Lakers purple on Dodger
+blue: "FREEBIES" in Press Start 2P is Lakers purple with a Lakers gold drop shadow, and "LA SPORTS
+DEALS" is Dodger blue with a white drop shadow (Dodger silver `#A5ACAF` on GitHub's light theme,
+where white vanishes). The README badges alternate the same pairs: purple label with gold,
+Dodger-blue label with white.
+
+`scripts/icons.py` in the `design` skill is the source: `assets` writes the Expo icon files (square
+and opaque; iOS rounds the corners) and `logoart` writes `pixel/logoArt.ts`. `scripts/logo.py` draws
+the README logo, with the mark clipped to iOS's rounded corners. The logo's extra colors (`#552583`,
+`#FDB927`, `#005A9C`, `#AC7C00`, `#E45C10`, `#00A800`, `#881400`) are logo-only art, not UI tokens;
+`audit-colors.sh` allows them in `logoArt.ts` only.
 
 ### Team tiles and team colors
 
@@ -335,8 +344,9 @@ Not legal advice. When in doubt, leave it out and ask the owner.
    cartridge icon.
 3. No characters, sprites, tiles, fonts, music or sounds from any real game, traced or close enough
    to recognize.
-4. No team or league logos, wordmarks, mascots, uniforms or color schemes, and no school marks.
-   Teams are named in plain text, as a fact about which games we track.
+4. No team or league logos, wordmarks, mascots, uniforms or color schemes, and no school marks. The
+   one exception is the app icon and README logo colors (see [Logo art](#logo-art)). Teams are named
+   in plain text, as a fact about which games we track.
 5. No restaurant logos, packaging or wrapper art. Deals are described in plain text.
 6. The App Store description and the in-app About screen carry this disclaimer: "Freebies: LA Sports
    Deals is not affiliated with, endorsed by or sponsored by any team, league, school or restaurant.
