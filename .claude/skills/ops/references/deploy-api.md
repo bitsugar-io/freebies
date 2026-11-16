@@ -5,12 +5,17 @@ initiative.
 
 ## Steps
 
-1. Run `scripts/deploy-preflight.sh`. It lints and renders the charts and checks the deploy
-   variables.
-2. Get the owner's go-ahead.
-3. Build and push the image, then roll out the changed charts ("Deploy" below).
-4. Run `scripts/deploy-status.sh` and read the API logs until the new pod is ready and `/healthz`
-   answers.
+1. Run `scripts/deploy-preflight.sh` (add `--helm` for a chart or value change). It's read-only and
+   checks the charts, docker, the DigitalOcean login, the registry (and that it has room for a
+   push), the cluster, the kubectl context and the pull secret.
+2. If the deploy adds migrations, back up Turso first (they run on start and can't be rolled back):
+   `turso db shell freebie .dump > freebie-$(date +%F).sql`, kept outside the repo.
+3. Get the owner's go-ahead.
+4. Code-only change: `scripts/deploy.sh --yes`. It narrates six numbered steps (checks, registry
+   login, build, push, restart, verify) and ends with a summary of the migrations applied and the
+   health check; the docker output goes to a log printed only on failure. Relay each step to the
+   owner as it runs, then report the summary. Chart or value change: build and push, then Helm
+   upgrade ("Deploy" below, step 2b).
 5. If it's broken, follow [deploy-api-troubleshooting.md](deploy-api-troubleshooting.md) or roll
    back.
 
@@ -100,8 +105,8 @@ kubectl rollout restart deployment/freebie-api -n freebies
 kubectl rollout status deployment/freebie-api -n freebies
 ```
 
-`just deploy` runs steps 1 and 2a together. CronJob pods pull `latest` on every run, so the
-scheduler needs nothing more.
+`scripts/deploy.sh --yes` runs steps 1 and 2a with the checks around them; `just deploy` runs the
+bare commands. CronJob pods pull `latest` on every run, so the scheduler needs nothing more.
 
 ### 2b. Chart or value change: Helm upgrade
 

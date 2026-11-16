@@ -68,3 +68,14 @@ Upgrade both with the same `FREEBIE_WORKER_SECRET`.
 
 **No pushes after a game.** Check the `check-triggers` job log first, then the deal's `trigger_rule`
 ([deals.md](deals.md)).
+
+**Push fails, or preflight says the registry is nearly full.** The Starter registry holds 500 MB and
+every push of `latest` leaves the old layers behind. With the owner's go-ahead, run garbage
+collection (the registry is read-only while it runs, so don't push meanwhile):
+
+```bash
+doctl registry garbage-collection start freebie --include-untagged-manifests --force
+doctl registry garbage-collection get-active freebie   # wait until it's gone
+```
+
+The alternative is the Basic tier ($5/mo, 5 GB).
