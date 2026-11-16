@@ -45,9 +45,11 @@ through `mise exec --` (AGENTS.md explains why).
 
 1. Pick the job from the Route table and read its reference file.
 2. Use the job's scripts below rather than retyping the commands.
-3. Deploys, EAS builds and submits change production or spend money: get the owner's go-ahead first,
-   then tell the owner what each step is doing as it runs.
-4. Finish with `scripts/check.sh` and fix every failure.
+3. Deploys, EAS builds and submits change production or spend money: get the owner's go-ahead first.
+4. Walk the owner through any multi-step job as it runs: before each step, one plain line on what it
+   does and why; after it, what happened. Keep raw tool output out unless something fails, and end
+   with a short summary of what changed and what is left.
+5. Finish with `scripts/check.sh` and fix every failure.
 
 ## Scripts
 

@@ -12,6 +12,10 @@ this file covers the mechanics. If the two conflict, APP-STORE.md wins.
 4. Build with the `preview` profile, install from TestFlight, and test on a phone, push included.
 5. Build `production`, submit, and fill in App Store Connect from APP-STORE.md.
 
+Narrate each step to the owner as it runs (EAS builds take 10–20 minutes): say which profile is
+building and why, relay the build URL EAS prints, and report the build number and the TestFlight or
+submit status when it finishes.
+
 ## EAS CLI
 
 Run it as `mise exec -- eas` (installed globally with `npm i -g eas-cli`) or
