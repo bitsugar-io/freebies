@@ -18,16 +18,16 @@ How a deal decides it has unlocked and when it expires. The rest of the deal wor
 }
 ```
 
-| Field               | Values                                                            | Effect                                                                                        |
-| ------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `metric`            | a key the league's source emits (below)                           | The number compared                                                                           |
-| `operator`          | `>=` `>` `<=` `<` `==` `=` `!=`                                   | Anything else never triggers                                                                  |
-| `value`             | integer                                                           | Compared with the metric                                                                      |
-| `redemption_window` | `same_day`, `next_day`, `week`, `next_business_day`, `game_night` | When the deal expires (below)                                                                 |
-| `expires_at_local`  | `"HH:MM"`, 24h Pacific, optional                                  | Clock time on the last day instead of 23:59:59                                                |
-| `unlock_after_days` | integer, default 0                                                | Code unlocks at midnight Pacific that many days after the game date; stored as `available_at` |
-| `valid_days`        | integer, default 0                                                | Length of the window (below); replaces `redemption_window` when set                           |
-| `scope`             | `team`, `team_batters`, `team_pitchers`, `team_fielders`          | Descriptive only; the checker ignores it. Set it anyway                                       |
+| Field               | Values                                                                                         | Effect                                                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `metric`            | a key the league's source emits (below)                                                        | The number compared                                                                           |
+| `operator`          | `>=` `>` `<=` `<` `==` `=` `!=`                                                                | Anything else never triggers                                                                  |
+| `value`             | integer                                                                                        | Compared with the metric                                                                      |
+| `redemption_window` | `same_day`, `next_day`, `week`, `next_business_day`, `through_next_business_day`, `game_night` | When the deal expires (below)                                                                 |
+| `expires_at_local`  | `"HH:MM"`, 24h Pacific, optional                                                               | Clock time on the last day instead of 23:59:59                                                |
+| `unlock_after_days` | integer, default 0                                                                             | Code unlocks at midnight Pacific that many days after the game date; stored as `available_at` |
+| `valid_days`        | integer, default 0                                                                             | Length of the window (below); replaces `redemption_window` when set                           |
+| `scope`             | `team`, `team_batters`, `team_pitchers`, `team_fielders`                                       | Descriptive only; the checker ignores it. Set it anyway                                       |
 
 ### When it's checked
 
@@ -40,12 +40,14 @@ Every window is computed from the **game's date** in `America/Los_Angeles`, neve
 check happens to run, and ends at 23:59:59 Pacific on its last valid day (or at `expires_at_local`
 on that day where it applies). Day 1 is the day after the game, when the morning check runs:
 
-| Window                          | Expires                                              |
-| ------------------------------- | ---------------------------------------------------- |
-| `same_day`                      | Day 1 at 23:59:59, or at `expires_at_local` on day 1 |
-| `next_day` (and unknown values) | Day 2 at 23:59:59, or at `expires_at_local` on day 2 |
-| `week`                          | Day 7 at 23:59:59; `expires_at_local` is ignored     |
-| `game_night`                    | The game date itself, at 23:59:59                    |
+| Window                          | Expires                                                         |
+| ------------------------------- | --------------------------------------------------------------- |
+| `same_day`                      | Day 1 at 23:59:59, or at `expires_at_local` on day 1            |
+| `next_day` (and unknown values) | Day 2 at 23:59:59, or at `expires_at_local` on day 2            |
+| `week`                          | Day 7 at 23:59:59; `expires_at_local` is ignored                |
+| `game_night`                    | The game date itself, at 23:59:59                               |
+| `next_business_day`             | Only the first weekday after the game (locked until then)       |
+| `through_next_business_day`     | Usable now, through the end of the first weekday after the game |
 
 "The morning after the game, breakfast hours only" is `same_day` with `"expires_at_local": "10:30"`.
 
@@ -72,10 +74,42 @@ unlocks Tue".
 
 ### Reminders
 
-`send-reminders` runs three times a day, but a user gets at most one reminder per deal per Pacific
-day, and only on the day the deal first becomes claimable (it unlocks) and on its last day. The
-`notifications` table records what was sent (`kind` is `trigger` or `reminder`); failed sends do not
-count and are retried on the next run.
+`send-reminders` runs three times a day (11am, 3pm and 5pm Pacific), but a user gets at most one
+reminder per deal per Pacific day, and only on the day the deal first becomes claimable (it unlocks)
+and on its last day.
+
+A deal with `available_from_local` gets its unlock-day reminder even when it starts after the last
+run: on the unlock day a run before the start time sends it, worded with the start ("Your Free Taco
+code starts at 6pm"). A run after the start says the code works now. The same rule words the "you
+won" push: a code that starts later the same Pacific day reads "Code starts at 10am.", one that
+starts on a later day reads "Code unlocks Mon." (or "tomorrow").
+
+### Push delivery
+
+The `notifications` table has one row per push (`kind` is `trigger` or `reminder`). The worker
+writes it as `pending` just before the send and then sets the outcome from that user's own Expo
+ticket:
+
+| Status    | Meaning                                                                          | Retried? |
+| --------- | -------------------------------------------------------------------------------- | -------- |
+| `sent`    | Expo returned an ok ticket                                                       | No       |
+| `failed`  | Expo rejected it, or never got it (connection refused, 429 or 503 after retries) | Yes      |
+| `unknown` | Expo may have it: timeout or reset after the request was sent, other 5xx         | No       |
+| `pending` | The process died during the send                                                 | No       |
+
+The rule is that a missed push is better than a duplicate one, so only `failed` is retried. The Expo
+client retries a request only when Expo cannot have processed it (connection refused, 429, 503),
+never after a timeout or reset once the request was written. A `DeviceNotRegistered` ticket clears
+that push token.
+
+The "you won" push is owed to everyone who followed the deal's event before it triggered and has no
+`sent`, `unknown` or `pending` trigger row for it. Every `check-triggers` run (7am and 9am) sends
+what is owed for every live deal, so a push that failed at 7am (Expo down, or the process died after
+recording the deal) goes out at 9am or on a later run before the deal expires. Paused users are
+skipped and get it on a later run if they resume while it is live. A user never gets two trigger
+pushes for one deal. Deals made by `deals create` or `deals trigger --notify=false` are never
+pushed; `deals trigger` (with `--notify`, the default) sends through the same code as
+`check-triggers`.
 
 To make a delayed deal locally,
 `go run . deals trigger <event-id> --unlock-after-days 3 --valid-days 7 --notify=false` builds the
@@ -190,3 +224,35 @@ can never fire. Add a NOTE comment saying what is missing.
 | Rams interception, code unlocks in 2 days             | `{"metric": "interceptions", "scope": "team", "operator": ">=", "value": 1, "redemption_window": "week", "unlock_after_days": 2, "valid_days": 7}` |
 | LAFC score first in the first half, next business day | `{"metric": "home_scored_first_in_first_half", "scope": "team", "operator": "==", "value": 1, "redemption_window": "next_business_day"}`           |
 | Ducks home win, breakfast                             | `{"metric": "home_win", "scope": "team", "operator": "==", "value": 1, "redemption_window": "same_day", "expires_at_local": "10:30"}`              |
+
+## Two more fields
+
+| Field                  | Values               | Meaning                                                                                                        |
+| ---------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `available_from_local` | `"HH:MM"` Pacific    | The deal starts at that time on its first usable day ("valid 10am-11:59pm", "not during breakfast": `"10:30"`) |
+| `season`               | `"regular"` or empty | `"regular"`: playoff games never fire it ("during the regular season"). Empty: any game                        |
+
+`deals audit` (and the seeded-deals test) rejects a misspelled window, a time that isn't `HH:MM` and
+any other `season` value. An empty window still means `next_day`.
+
+## Read the terms against the rule
+
+Before a deal goes active, map every timing phrase in its terms to a field, and say so in the
+migration comment:
+
+| The terms say                                                      | The rule needs                            |
+| ------------------------------------------------------------------ | ----------------------------------------- |
+| "the day after", "valid until midnight"                            | `same_day`                                |
+| "breakfast hours", "until 10:30am"                                 | `same_day` + `expires_at_local`           |
+| "from 10am", "not during breakfast"                                | `available_from_local`                    |
+| "within 3 days", "valid 3 consecutive days"                        | `valid_days: 3`                           |
+| "code unlocks 2 days after the game", "expires 1 week from unlock" | `unlock_after_days: 2`, `valid_days: 7`   |
+| "the next business day"                                            | `next_business_day`                       |
+| "through the following business day"                               | `through_next_business_day`               |
+| "claim at the arena that night"                                    | `game_night`, plus `in_venue` and `venue` |
+| "regular season"                                                   | `season: "regular"`                       |
+| "home games", "at home"                                            | a `home_*` metric                         |
+
+Then trigger it locally with `deals trigger <event-id> --notify=false`: without `--hours` it uses
+the deal's own rule as if the game were last night, so the app shows what a real win would (a locked
+code, a breakfast deadline, a start time).

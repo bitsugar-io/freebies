@@ -50,6 +50,19 @@ them to PNG. The source of truth for sprites is `scripts/sprites.py`.
 6. Walk the owner through it as you go: one plain line per step on what it does and why, then a
    short summary of what changed, what you looked at and what is left.
 
+## When the app icon changes
+
+Every place shows the same icon, so a new icon is not done until all of these are updated:
+
+1. `scripts/icons.py assets apps/mobile/assets` (the Expo icon, splash and favicon files) and
+   `scripts/icons.py logoart apps/mobile/src/components/pixel/logoArt.ts` (the in-app logo).
+2. `scripts/logo.py .` (the README logo, mark clipped to rounded corners).
+3. `docs/ui.md` "Logo art" and the color audit's logo-only allowlist, if the colors changed.
+4. Installed builds: an installed app keeps the icon it was built with. Rebuild and reinstall the
+   development build on the simulator (`ops` skill, local-dev-mobile), delete any stale build with
+   an old bundle id, and reload Expo Go so its project card picks up the new icon.
+5. Store: the next EAS build carries it to TestFlight and the App Store.
+
 ## Scripts
 
 - `scripts/audit-colors.sh [path]`: lists hex colors in app source that aren't NES tokens.
