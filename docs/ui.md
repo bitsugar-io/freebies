@@ -208,9 +208,14 @@ bottom safe-area inset.
 
 ### Logo art
 
-The palm sunset logo (`pixel/logoArt.ts`, generated from the icon script's `scene()`) uses four
-extra NES master-palette entries: `#4428BC`, `#6844FC`, `#940084`, `#0058F8`. They are logo-only art
-colors, not UI tokens. `audit-colors.sh` allows them in that one file.
+The app icon and in-app logo are the **Trophy Burger**: a burger in a gold winner's cup over "LA
+Triple" victory rays (Lakers purple `#6844FC`, gold `#F8B800` and Dodger blue `#0058F8` cycling, 18
+rays), with a 1px black edge around the cup and burger. It says "you win food when LA wins"; the
+colors nod to LA without being any team's scheme. `scripts/icons.py` in the `design` skill is the
+source: `assets` writes the Expo icon files (square and opaque; iOS rounds the corners), `logoart`
+writes `pixel/logoArt.ts`, and `logo.py` draws the README logo with the mark clipped to iOS's
+rounded corners. The logo's extra NES colors (`#6844FC`, `#0058F8`, `#AC7C00`, `#E45C10`, `#00A800`,
+`#881400`) are logo-only art, not UI tokens; `audit-colors.sh` allows them in `logoArt.ts` only.
 
 ### Team tiles and team colors
 

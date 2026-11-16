@@ -60,3 +60,6 @@ them to PNG. The source of truth for sprites is `scripts/sprites.py`.
   tests.
 - `scripts/fetch.sh <id> [scale] [out.png]`: downloads a sprite PNG from the local API.
 - `scripts/sprites.py`: sprite source of truth (`sql` and `sheet` subcommands).
+- `scripts/icons.py`: the app icon (Trophy Burger over victory rays). `assets <dir>` writes the Expo
+  icon files, `logoart <file>` the in-app logo, `preview <png>` a 16x preview.
+- `scripts/logo.py <repo root>`: the README logo, with the icon mark clipped to rounded corners.

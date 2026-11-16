@@ -3,7 +3,7 @@ import { AccessibilityInfo, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../../hooks/useTheme';
 import { Blink } from '../../hooks/useBlink';
-import { PalmLogo } from './PalmLogo';
+import { AppLogo } from './AppLogo';
 import { Text } from './Text';
 
 const AUTO_CONTINUE_MS = 4000;
@@ -48,7 +48,7 @@ export function TitleScreen({ onDone }: { onDone: () => void }) {
           LA Sports Deals
         </Text>
       </View>
-      <PalmLogo scale={6} />
+      <AppLogo scale={6} />
       <View style={{ gap: 20, alignItems: 'center' }}>
         <Blink priority={0}>
           <Text variant="displayL" color="text" align="center">

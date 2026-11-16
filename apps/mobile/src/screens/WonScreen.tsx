@@ -8,7 +8,7 @@ import { Screen } from '../components/Screen';
 import { ServerBlocks } from '../components/ServerBlocks';
 import { ErrorPanel, StaleBanner } from '../components/StatusPanels';
 import { UnlockedDealRow } from '../components/DealRows';
-import { PalmLogo } from '../components/pixel/PalmLogo';
+import { AppLogo } from '../components/pixel/AppLogo';
 import { SkeletonBox } from '../components/pixel/Skeleton';
 import { PixelBox } from '../components/pixel/PixelBox';
 import { PixelButton } from '../components/pixel/PixelButton';
@@ -41,7 +41,7 @@ export function WonScreen() {
   const loading = (eventsLoading || dealsLoading) && !failedEmpty;
 
   return (
-    <Screen title="Freebies" status={today} left={<PalmLogo scale={1} />} onRefresh={refreshAll}>
+    <Screen title="Freebies" status={today} left={<AppLogo scale={1} />} onRefresh={refreshAll}>
       <ServerBlocks keys={['tonight', 'won']} />
       {dealsError && dealsSavedAt ? <StaleBanner savedAt={dealsSavedAt} onRetry={retry} /> : null}
       {failedEmpty ? <ErrorPanel message={userError ?? dealsError} onRetry={retry} /> : null}

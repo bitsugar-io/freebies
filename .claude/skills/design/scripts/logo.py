@@ -1,7 +1,8 @@
-"""Render the README logo (palm mark + block-letter FREEBIES) as SVG, sibling-repo style.
+"""Render the README logo (app-icon mark + block-letter FREEBIES) as SVG, sibling-repo style.
 
 Writes asset/logo-dark.svg, asset/logo-light.svg and asset/mark.svg at the repo root.
-The mark is the app icon scene from icons.py; the wordmark is a 5x7 pixel font drawn
+The mark is the app icon scene from icons.py, clipped to iOS-style rounded corners so it reads as
+an app icon on GitHub (the uploaded icon file itself stays square); the wordmark is a 5x7 pixel font drawn
 as square blocks, like opensesame and hocusfocus. Pure standard library.
 
 Usage: python3 -I logo.py <repo root>
@@ -50,9 +51,15 @@ def runs(rows, color, x0, y0, size):
     return out
 
 
+RADIUS = 0.2237  # iOS app-icon corner radius as a fraction of the side
+
+
 def mark_rects(x0, y0, scale):
+    """The icon's pixels as merged rects inside a rounded-corner clip."""
     grid = icons.scene()
-    out = []
+    side = icons.N * scale
+    out = [f'<clipPath id="icon-{x0}-{y0}"><rect x="{x0}" y="{y0}" width="{side}" height="{side}" rx="{side * RADIUS:.1f}"/></clipPath>',
+           f'<g clip-path="url(#icon-{x0}-{y0})">']
     for y, row in enumerate(grid):
         x = 0
         while x < len(row):
@@ -61,6 +68,7 @@ def mark_rects(x0, y0, scale):
                 e += 1
             out.append(f'<rect x="{x0 + x * scale}" y="{y0 + y * scale}" width="{(e - x) * scale}" height="{scale}" fill="{c}"/>')
             x = e
+    out.append("</g>")
     return out
 
 
