@@ -5,7 +5,7 @@ import { useAppConfig } from '../context/AppConfigContext';
 import { useAppData } from '../context/AppDataContext';
 import { UnlockedDealRow } from '../components/DealRows';
 import { DialogBox } from '../components/pixel/DialogBox';
-import { PalmLogo } from '../components/pixel/PalmLogo';
+import { AppLogo } from '../components/pixel/AppLogo';
 import { Text } from '../components/pixel/Text';
 import { colors } from '../hooks/useTheme';
 
@@ -26,7 +26,7 @@ export function MaintenanceScreen() {
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 32, paddingBottom: insets.bottom + 24 }]}
     >
       <View style={{ alignItems: 'center', gap: 16 }}>
-        <PalmLogo scale={6} />
+        <AppLogo scale={6} />
         <Text variant="displayL" color="accent" align="center" accessibilityRole="header">
           Paused
         </Text>
