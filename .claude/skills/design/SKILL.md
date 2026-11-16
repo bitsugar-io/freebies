@@ -47,6 +47,8 @@ them to PNG. The source of truth for sprites is `scripts/sprites.py`.
    `references/ui-review.md`.
 5. Verify on screen: typecheck `apps/mobile`, then look at it in the simulator (the `ops` skill
    starts the API and the app). For sprites, `scripts/fetch.sh <id>`.
+6. Walk the owner through it as you go: one plain line per step on what it does and why, then a
+   short summary of what changed, what you looked at and what is left.
 
 ## Scripts
 
