@@ -20,6 +20,7 @@ func TestGetGameByDate(t *testing.T) {
 			Opponent: "New York Giants", Home: true, Won: true,
 			Metrics: map[string]int{
 				"win": 1, "home_win": 1, "points": 28, "home_points": 28, "interceptions": 1,
+				"long_field_goal": 0,
 			},
 		},
 		{
@@ -27,6 +28,7 @@ func TestGetGameByDate(t *testing.T) {
 			Opponent: "Los Angeles Chargers", Home: true, Won: true,
 			Metrics: map[string]int{
 				"win": 1, "home_win": 1, "points": 24, "home_points": 24, "interceptions": 2,
+				"long_field_goal": 30,
 			},
 		},
 		{
@@ -34,6 +36,7 @@ func TestGetGameByDate(t *testing.T) {
 			Opponent: "Washington Commanders", Home: false, Won: true,
 			Metrics: map[string]int{
 				"win": 1, "home_win": 0, "points": 20, "home_points": 0, "interceptions": 0,
+				"long_field_goal": 33,
 			},
 		},
 		{
@@ -41,6 +44,7 @@ func TestGetGameByDate(t *testing.T) {
 			Opponent: "Los Angeles Rams", Home: false, Won: false,
 			Metrics: map[string]int{
 				"win": 0, "home_win": 0, "points": 9, "home_points": 0, "interceptions": 1,
+				"long_field_goal": 46,
 			},
 		},
 		{
@@ -48,6 +52,7 @@ func TestGetGameByDate(t *testing.T) {
 			Opponent: "Buffalo Bills", Home: true, Won: false,
 			Metrics: map[string]int{
 				"win": 0, "home_win": 0, "points": 34, "home_points": 34, "interceptions": 1,
+				"long_field_goal": 0,
 			},
 		},
 		{
@@ -55,6 +60,7 @@ func TestGetGameByDate(t *testing.T) {
 			Opponent: "San Francisco 49ers", Home: false, Won: false,
 			Metrics: map[string]int{
 				"win": 0, "home_win": 0, "points": 7, "home_points": 0, "interceptions": 1,
+				"long_field_goal": 0,
 			},
 		},
 		{Name: "no game that day (bye week)", Team: "LAR", Date: "2026-11-15", Nil: true},

@@ -62,7 +62,7 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Penguins", home: true, won: true,
 			metrics: map[string]int{
 				"win": 1, "home_win": 1, "goals": 5, "home_goals_scored": 5,
-				"shutout": 0, "overtime": 0, "shootout": 0,
+				"shutout": 0, "overtime": 0, "shootout": 0, "p2_last_minute_goals": 0,
 			},
 		},
 		{
@@ -70,7 +70,7 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Jets", home: false, won: true,
 			metrics: map[string]int{
 				"win": 1, "home_win": 0, "goals": 5, "home_goals_scored": 0,
-				"shutout": 0, "overtime": 0, "shootout": 0,
+				"shutout": 0, "overtime": 0, "shootout": 0, "p2_last_minute_goals": 0,
 			},
 		},
 		{
@@ -78,7 +78,7 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Panthers", home: true, won: true,
 			metrics: map[string]int{
 				"win": 1, "home_win": 1, "goals": 3, "home_goals_scored": 3,
-				"shutout": 0, "overtime": 1, "shootout": 0,
+				"shutout": 0, "overtime": 1, "shootout": 0, "p2_last_minute_goals": 0,
 			},
 		},
 		{
@@ -86,7 +86,7 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Golden Knights", home: false, won: false,
 			metrics: map[string]int{
 				"win": 0, "home_win": 0, "goals": 1, "home_goals_scored": 0,
-				"shutout": 0, "overtime": 1, "shootout": 0,
+				"shutout": 0, "overtime": 1, "shootout": 0, "p2_last_minute_goals": 0,
 			},
 		},
 		{
@@ -94,7 +94,7 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Canadiens", home: false, won: false,
 			metrics: map[string]int{
 				"win": 0, "home_win": 0, "goals": 0, "home_goals_scored": 0,
-				"shutout": 0, "overtime": 0, "shootout": 1,
+				"shutout": 0, "overtime": 0, "shootout": 1, "p2_last_minute_goals": 0,
 			},
 		},
 		{
@@ -102,7 +102,7 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Red Wings", home: true, won: true,
 			metrics: map[string]int{
 				"win": 1, "home_win": 1, "goals": 1, "home_goals_scored": 1,
-				"shutout": 0, "overtime": 0, "shootout": 1,
+				"shutout": 0, "overtime": 0, "shootout": 1, "p2_last_minute_goals": 0,
 			},
 		},
 		{
@@ -110,7 +110,15 @@ func TestGetGameByDate(t *testing.T) {
 			opponent: "Islanders", home: true, won: false,
 			metrics: map[string]int{
 				"win": 0, "home_win": 0, "goals": 2, "home_goals_scored": 2,
-				"shutout": 0, "overtime": 0, "shootout": 0,
+				"shutout": 0, "overtime": 0, "shootout": 0, "p2_last_minute_goals": 0,
+			},
+		},
+		{
+			name: "goal in the last minute of the 2nd (19:53)", team: "NYI", date: "2026-10-10",
+			opponent: "Lightning", home: true, won: false,
+			metrics: map[string]int{
+				"win": 0, "home_win": 0, "goals": 3, "home_goals_scored": 3,
+				"shutout": 0, "overtime": 0, "shootout": 0, "p2_last_minute_goals": 1,
 			},
 		},
 		{name: "game not final", team: "ANA", date: "2026-11-15", wantNil: true},

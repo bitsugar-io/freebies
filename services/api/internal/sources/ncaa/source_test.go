@@ -49,6 +49,7 @@ func TestGetGameByDate(t *testing.T) {
 			Metrics: map[string]int{
 				"win": 1, "home_win": 1, "points": 95, "home_points": 95,
 				"basketball_win": 1, "basketball_home_win": 1, "basketball_points": 95, "basketball_home_points": 95,
+				"basketball_home_h2_opponent_ft_miss_streak": 1,
 			},
 		},
 		{
@@ -57,6 +58,7 @@ func TestGetGameByDate(t *testing.T) {
 			Metrics: map[string]int{
 				"win": 1, "home_win": 0, "points": 84, "home_points": 0,
 				"basketball_win": 1, "basketball_home_win": 0, "basketball_points": 84, "basketball_home_points": 0,
+				"basketball_home_h2_opponent_ft_miss_streak": 0,
 			},
 		},
 		{
@@ -65,6 +67,7 @@ func TestGetGameByDate(t *testing.T) {
 			Metrics: map[string]int{
 				"win": 1, "home_win": 1, "points": 106, "home_points": 106,
 				"basketball_win": 1, "basketball_home_win": 1, "basketball_points": 106, "basketball_home_points": 106,
+				"basketball_home_h2_opponent_ft_miss_streak": 2,
 			},
 		},
 		{
@@ -73,6 +76,7 @@ func TestGetGameByDate(t *testing.T) {
 			Metrics: map[string]int{
 				"win": 1, "home_win": 0, "points": 77, "home_points": 0,
 				"basketball_win": 1, "basketball_home_win": 0, "basketball_points": 77, "basketball_home_points": 0,
+				"basketball_home_h2_opponent_ft_miss_streak": 0,
 			},
 		},
 		{Name: "no game that day", Team: "USC", Date: "2026-11-15", Nil: true},

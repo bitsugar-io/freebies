@@ -1,56 +1,148 @@
 {
-  "games": [
+ "games": [
+  {
+   "id": 2026020310,
+   "gameDate": "2026-11-13",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "NYR",
+    "score": 5,
+    "name": {
+     "default": "Rangers"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "VAN",
+    "score": 1,
+    "name": {
+     "default": "Canucks"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
     {
-      "id": 2026020310,
-      "gameDate": "2026-11-13",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "NYR",
-        "score": 5,
-        "name": {
-          "default": "Rangers"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "VAN",
-        "score": 1,
-        "name": {
-          "default": "Canucks"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "12:13",
+     "teamAbbrev": "VAN"
     },
     {
-      "id": 2026020311,
-      "gameDate": "2026-11-13",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "NSH",
-        "score": 3,
-        "name": {
-          "default": "Predators"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "VGK",
-        "score": 2,
-        "name": {
-          "default": "Golden Knights"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "SO"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "SO"
-      }
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:47",
+     "teamAbbrev": "NYR"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:21",
+     "teamAbbrev": "NYR"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "13:00",
+     "teamAbbrev": "NYR"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "15:14",
+     "teamAbbrev": "NYR"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:10",
+     "teamAbbrev": "NYR"
     }
-  ]
+   ]
+  },
+  {
+   "id": 2026020311,
+   "gameDate": "2026-11-13",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "NSH",
+    "score": 3,
+    "name": {
+     "default": "Predators"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "VGK",
+    "score": 2,
+    "name": {
+     "default": "Golden Knights"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "SO"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "SO"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "07:56",
+     "teamAbbrev": "NSH"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:19",
+     "teamAbbrev": "VGK"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "10:48",
+     "teamAbbrev": "VGK"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "09:44",
+     "teamAbbrev": "NSH"
+    },
+    {
+     "period": 5,
+     "periodDescriptor": {
+      "periodType": "SO"
+     },
+     "timeInPeriod": "00:00",
+     "teamAbbrev": "NSH"
+    }
+   ]
+  }
+ ]
 }

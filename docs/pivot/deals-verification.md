@@ -357,14 +357,14 @@ were seen as leads only. Neither was verified, and neither is an LA team deal.
 
 ## 4. Leads not confirmed on any primary page (do not ship)
 
-| Lead (from)                                                                              | What we checked                                                                       | Result                                                                                                    |
-| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Lakers / Jack in the Box, 2 tacos after a win (lahomewin, Meal Steals)                   | nba.com/lakers/promotions, Jack in the Box releases                                   | UNVERIFIED                                                                                                |
-| Kings / McDonald's, McFlurry for a goal in the last minute of the 2nd period (lahomewin) | Kings site and 2026-27 promo schedule                                                 | UNVERIFIED. The same mechanic exists for the Bakersfield Condors (AHL), so it may be confused with theirs |
-| Chargers / Firehouse Subs, 40+ yd Dicker field goal (lahomewin)                          | chargers.com/promotions; Firehouse's offer-terms page is a JS app we could not render | UNVERIFIED. The same mechanic exists for the Jaguars                                                      |
-| LAFC / DoorDash, $10 off after a win (lahomewin cites Instagram Stories)                 | lafc.com promotions page does not list it                                             | UNVERIFIED                                                                                                |
-| Dodgers / Mr. Ramen (Meal Steals)                                                        | Not checked                                                                           | UNVERIFIED                                                                                                |
-| Angels / Chick-fil-A, 7+ runs (old Angels page)                                          | Angels CFA page 404. cfasocal.com now lists only "unannounced giveaway dates"         | DISCONTINUED as a trigger deal                                                                            |
+| Lead (from)                                                              | What we checked                                                                       | Result                                                                                                                                                                                |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Lakers / Jack in the Box, 2 tacos after a win (lahomewin, Meal Steals)   | nba.com/lakers/promotions, Jack in the Box releases                                   | UNVERIFIED                                                                                                                                                                            |
+| Kings                                                                    | McDonald's "McFlurry Minute", goal in the last minute of P2                           | LIKELY+: nhl.com/kings/fans/redeem (indexed text: "all games this season, home and away"); Kings on X 27 Mar 2026; lahomewin.com tracks it for 2026-27. Metric `p2_last_minute_goals` | Active |
+| Chargers / Firehouse Subs, 40+ yd Dicker field goal (lahomewin)          | chargers.com/promotions; Firehouse's offer-terms page is a JS app we could not render | UNVERIFIED. The same mechanic exists for the Jaguars                                                                                                                                  |
+| LAFC / DoorDash, $10 off after a win (lahomewin cites Instagram Stories) | lafc.com promotions page does not list it                                             | UNVERIFIED                                                                                                                                                                            |
+| Dodgers / Mr. Ramen (Meal Steals)                                        | Not checked                                                                           | UNVERIFIED                                                                                                                                                                            |
+| Angels / Chick-fil-A, 7+ runs (old Angels page)                          | Angels CFA page 404. cfasocal.com now lists only "unannounced giveaway dates"         | DISCONTINUED as a trigger deal                                                                                                                                                        |
 
 ---
 
@@ -426,3 +426,31 @@ were seen as leads only. Neither was verified, and neither is an LA team deal.
 - The Clippers claim window (check the Chick-fil-A app after a trigger).
 - Lakers, Chargers, Kings McDonald's and LAFC DoorDash leads (check the sponsor apps and team social
   accounts).
+
+---
+
+## 8. Second pass (15 Nov 2026, evening): in-season teams without a deal
+
+Leads came from lahomewin.com and mealsteals.co (including their per-team pages), which the owner
+pointed at. Every status below rests on a team, school or sponsor page or post, never on those
+sites. Migration `038_in_venue_deals.sql` seeds the result.
+
+| Team     | Deal                                                                        | Status                                                                                                                                                                                     | In 038              |
+| -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| Chargers | Firehouse Subs, free medium sub on a 40+ yd Dicker field goal               | VERIFIED: firehousesubs.com/offer-terms names the 2026-27 regular season (read from the indexed text; the page is a JS app, so a person should open it once)                               | Active              |
+| Clippers | Chick-fil-A "Fowl Shot", visitors miss 2 FTs in a row in Q4                 | VERIFIED (undated): cfasocal.com/promotion-details/fowl-shot. At the game; claim by 11:59 PM that night                                                                                    | Active, at the game |
+| Ducks    | Chick-fil-A, 5+ goals at home                                               | VERIFIED (section 2). At the game; claim that night                                                                                                                                        | Active, at the game |
+| UCLA     | Fat Sal's "Lucky 21", free fries when football scores 21+                   | VERIFIED (undated): uclabruins.com/jmi-promotions. Ticket is the proof, valid the next business day                                                                                        | Active, at the game |
+| Lakers   | Jack in the Box, 2 free tacos after any win, LETSGOLAKERS                   | LIKELY+: Jack in the Box on X (12 Nov 2024); mealsteals.co and lahomewin.com both log it firing after 2026-27 games (22 Oct 2026; a 131-123 win, so no 111-point cap)                      | Active              |
+| Kings    | McDonald's "McFlurry Minute", goal in the last minute of P2                 | LIKELY+: nhl.com/kings/fans/redeem (indexed text: "all games this season, home and away"); Kings on X 27 Mar 2026; lahomewin.com tracks it for 2026-27. Metric `p2_last_minute_goals`      | Active              |
+| UCLA     | Fat Sal's "Missed Fry Throws", visitors miss 2 FTs in a row in the 2nd half | Confirmed for 2025-26; Fat Sal's runs UCLA promos in 2026. Metric `basketball_home_h2_opponent_ft_miss_streak`                                                                             | Active, at the game |
+| Rams     | El Torito "Rampage Nachos", 4th-down stop                                   | DISCONTINUED: eltorito.com/rampagenachos returns 404; therams.com lists only Carl's Jr.                                                                                                    | Not seeded          |
+| USC      | none                                                                        | Third pass too: usctrojans.com promotions (giveaways and theme nights only), sponsors (Fatburger, Rex, Chipotle NIL, DoorDash), USC Village, Daily Trojan. No result-triggered deal exists | n/a                 |
+
+Chick-fil-A's arena deals use the `game_night` window: they never alert (the claim closes before the
+morning check) and appear in the app's TODAY tab on game days with an AT THE GAME tag.
+
+The owner asked for a deal on every in-season team. Lakers, Kings and UCLA basketball went active on
+LIKELY+ evidence: the business's or team's own post from last season, plus two independent trackers
+logging the deal firing this season. Recheck each in the sponsor's app when possible. USC has no
+deal anywhere; it stays empty rather than carry an invented one.

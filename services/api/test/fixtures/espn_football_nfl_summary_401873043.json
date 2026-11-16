@@ -217,6 +217,70 @@
      "id": "28"
     }
    }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "14"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Brandon McManus"
+        },
+        "stats": [
+         "2/2",
+         "100.0",
+         "33",
+         "2/2",
+         "8"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "28"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Drew Stevens"
+        },
+        "stats": [
+         "2/2",
+         "100.0",
+         "41",
+         "1/1",
+         "7"
+        ]
+       }
+      ]
+     }
+    ]
+   }
   ]
  }
 }

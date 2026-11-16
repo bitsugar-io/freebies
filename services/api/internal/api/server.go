@@ -74,6 +74,7 @@ func (s *Server) setupRoutes() {
 			r.Get("/config", h.GetConfig)
 			r.Get("/leagues", h.ListLeagues)
 			r.Get("/teams", h.ListTeams)
+			r.Get("/today", h.GetToday)
 			r.Get("/events", h.ListEvents)
 			r.Get("/events/{id}", h.GetEvent)
 			r.Get("/sprites", h.ListSprites)

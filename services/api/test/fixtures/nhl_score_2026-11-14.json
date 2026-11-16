@@ -1,369 +1,1077 @@
 {
-  "games": [
-    {
-      "id": 2026020321,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "SEA",
-        "score": 1,
-        "name": {
-          "default": "Kraken"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "CAR",
-        "score": 5,
-        "name": {
-          "default": "Hurricanes"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020312,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "WPG",
-        "score": 5,
-        "name": {
-          "default": "Jets"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "CHI",
-        "score": 4,
-        "name": {
-          "default": "Blackhawks"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "SO"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "SO"
-      }
-    },
-    {
-      "id": 2026020313,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "MIN",
-        "score": 6,
-        "name": {
-          "default": "Wild"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "BOS",
-        "score": 2,
-        "name": {
-          "default": "Bruins"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020314,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "EDM",
-        "score": 1,
-        "name": {
-          "default": "Oilers"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "TOR",
-        "score": 0,
-        "name": {
-          "default": "Maple Leafs"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020315,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "COL",
-        "score": 4,
-        "name": {
-          "default": "Avalanche"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "MTL",
-        "score": 1,
-        "name": {
-          "default": "Canadiens"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020316,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "DET",
-        "score": 2,
-        "name": {
-          "default": "Red Wings"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "TBL",
-        "score": 0,
-        "name": {
-          "default": "Lightning"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020317,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "OTT",
-        "score": 4,
-        "name": {
-          "default": "Senators",
-          "fr": "Sénateurs"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "PIT",
-        "score": 1,
-        "name": {
-          "default": "Penguins"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020318,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "NJD",
-        "score": 7,
-        "name": {
-          "default": "Devils"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "WSH",
-        "score": 4,
-        "name": {
-          "default": "Capitals"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020319,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "PHI",
-        "score": 4,
-        "name": {
-          "default": "Flyers"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "CBJ",
-        "score": 3,
-        "name": {
-          "default": "Blue Jackets"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020320,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "FLA",
-        "score": 4,
-        "name": {
-          "default": "Panthers"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "STL",
-        "score": 1,
-        "name": {
-          "default": "Blues"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020322,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "BUF",
-        "score": 0,
-        "name": {
-          "default": "Sabres"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "DAL",
-        "score": 2,
-        "name": {
-          "default": "Stars"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020323,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "SJS",
-        "score": 6,
-        "name": {
-          "default": "Sharks"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "UTA",
-        "score": 5,
-        "name": {
-          "default": "Mammoth"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "SO"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "SO"
-      }
-    },
-    {
-      "id": 2026020324,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "NYI",
-        "score": 6,
-        "name": {
-          "default": "Islanders"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "ANA",
-        "score": 2,
-        "name": {
-          "default": "Ducks"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
-    },
-    {
-      "id": 2026020325,
-      "gameDate": "2026-11-14",
-      "gameState": "OFF",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "CGY",
-        "score": 3,
-        "name": {
-          "default": "Flames"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "LAK",
-        "score": 2,
-        "name": {
-          "default": "Kings"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": "REG"
-      },
-      "gameOutcome": {
-        "lastPeriodType": "REG"
-      }
+ "games": [
+  {
+   "id": 2026020321,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "SEA",
+    "score": 1,
+    "name": {
+     "default": "Kraken"
     }
-  ]
+   },
+   "homeTeam": {
+    "abbrev": "CAR",
+    "score": 5,
+    "name": {
+     "default": "Hurricanes"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:12",
+     "teamAbbrev": "CAR"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:30",
+     "teamAbbrev": "CAR"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:03",
+     "teamAbbrev": "CAR"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "06:06",
+     "teamAbbrev": "SEA"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "10:05",
+     "teamAbbrev": "CAR"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:06",
+     "teamAbbrev": "CAR"
+    }
+   ]
+  },
+  {
+   "id": 2026020312,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "WPG",
+    "score": 5,
+    "name": {
+     "default": "Jets"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "CHI",
+    "score": 4,
+    "name": {
+     "default": "Blackhawks"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "SO"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "SO"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:48",
+     "teamAbbrev": "CHI"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "09:07",
+     "teamAbbrev": "CHI"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:56",
+     "teamAbbrev": "CHI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "14:44",
+     "teamAbbrev": "CHI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:05",
+     "teamAbbrev": "WPG"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:01",
+     "teamAbbrev": "WPG"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "00:55",
+     "teamAbbrev": "WPG"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:47",
+     "teamAbbrev": "WPG"
+    },
+    {
+     "period": 5,
+     "periodDescriptor": {
+      "periodType": "SO"
+     },
+     "timeInPeriod": "00:00",
+     "teamAbbrev": "WPG"
+    }
+   ]
+  },
+  {
+   "id": 2026020313,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "MIN",
+    "score": 6,
+    "name": {
+     "default": "Wild"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "BOS",
+    "score": 2,
+    "name": {
+     "default": "Bruins"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "06:54",
+     "teamAbbrev": "MIN"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "00:53",
+     "teamAbbrev": "MIN"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:00",
+     "teamAbbrev": "MIN"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:45",
+     "teamAbbrev": "BOS"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "10:00",
+     "teamAbbrev": "MIN"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:45",
+     "teamAbbrev": "BOS"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "06:15",
+     "teamAbbrev": "MIN"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "15:21",
+     "teamAbbrev": "MIN"
+    }
+   ]
+  },
+  {
+   "id": 2026020314,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "EDM",
+    "score": 1,
+    "name": {
+     "default": "Oilers"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "TOR",
+    "score": 0,
+    "name": {
+     "default": "Maple Leafs"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "15:34",
+     "teamAbbrev": "EDM"
+    }
+   ]
+  },
+  {
+   "id": 2026020315,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "COL",
+    "score": 4,
+    "name": {
+     "default": "Avalanche"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "MTL",
+    "score": 1,
+    "name": {
+     "default": "Canadiens"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:57",
+     "teamAbbrev": "COL"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "15:55",
+     "teamAbbrev": "COL"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "10:25",
+     "teamAbbrev": "MTL"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:14",
+     "teamAbbrev": "COL"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:47",
+     "teamAbbrev": "COL"
+    }
+   ]
+  },
+  {
+   "id": 2026020316,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "DET",
+    "score": 2,
+    "name": {
+     "default": "Red Wings"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "TBL",
+    "score": 0,
+    "name": {
+     "default": "Lightning"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "13:12",
+     "teamAbbrev": "DET"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:17",
+     "teamAbbrev": "DET"
+    }
+   ]
+  },
+  {
+   "id": 2026020317,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "OTT",
+    "score": 4,
+    "name": {
+     "default": "Senators",
+     "fr": "S\u00e9nateurs"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "PIT",
+    "score": 1,
+    "name": {
+     "default": "Penguins"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:52",
+     "teamAbbrev": "PIT"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:41",
+     "teamAbbrev": "OTT"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:12",
+     "teamAbbrev": "OTT"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "14:18",
+     "teamAbbrev": "OTT"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:28",
+     "teamAbbrev": "OTT"
+    }
+   ]
+  },
+  {
+   "id": 2026020318,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "NJD",
+    "score": 7,
+    "name": {
+     "default": "Devils"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "WSH",
+    "score": 4,
+    "name": {
+     "default": "Capitals"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "05:13",
+     "teamAbbrev": "WSH"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:15",
+     "teamAbbrev": "NJD"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "14:34",
+     "teamAbbrev": "WSH"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:08",
+     "teamAbbrev": "NJD"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:40",
+     "teamAbbrev": "WSH"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "10:33",
+     "teamAbbrev": "NJD"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:18",
+     "teamAbbrev": "NJD"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "00:56",
+     "teamAbbrev": "NJD"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:22",
+     "teamAbbrev": "WSH"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:18",
+     "teamAbbrev": "NJD"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:45",
+     "teamAbbrev": "NJD"
+    }
+   ]
+  },
+  {
+   "id": 2026020319,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "PHI",
+    "score": 4,
+    "name": {
+     "default": "Flyers"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "CBJ",
+    "score": 3,
+    "name": {
+     "default": "Blue Jackets"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:19",
+     "teamAbbrev": "CBJ"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:19",
+     "teamAbbrev": "CBJ"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:06",
+     "teamAbbrev": "PHI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:19",
+     "teamAbbrev": "PHI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:21",
+     "teamAbbrev": "PHI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "05:44",
+     "teamAbbrev": "CBJ"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:54",
+     "teamAbbrev": "PHI"
+    }
+   ]
+  },
+  {
+   "id": 2026020320,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "FLA",
+    "score": 4,
+    "name": {
+     "default": "Panthers"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "STL",
+    "score": 1,
+    "name": {
+     "default": "Blues"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "05:12",
+     "teamAbbrev": "FLA"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "06:29",
+     "teamAbbrev": "FLA"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:28",
+     "teamAbbrev": "FLA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "07:38",
+     "teamAbbrev": "FLA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:54",
+     "teamAbbrev": "STL"
+    }
+   ]
+  },
+  {
+   "id": 2026020322,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "BUF",
+    "score": 0,
+    "name": {
+     "default": "Sabres"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "DAL",
+    "score": 2,
+    "name": {
+     "default": "Stars"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:23",
+     "teamAbbrev": "DAL"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:18",
+     "teamAbbrev": "DAL"
+    }
+   ]
+  },
+  {
+   "id": 2026020323,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "SJS",
+    "score": 6,
+    "name": {
+     "default": "Sharks"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "UTA",
+    "score": 5,
+    "name": {
+     "default": "Mammoth"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "SO"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "SO"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:15",
+     "teamAbbrev": "UTA"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:53",
+     "teamAbbrev": "UTA"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:35",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "12:40",
+     "teamAbbrev": "UTA"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:07",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:13",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:59",
+     "teamAbbrev": "UTA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "05:23",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "14:17",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:22",
+     "teamAbbrev": "UTA"
+    },
+    {
+     "period": 5,
+     "periodDescriptor": {
+      "periodType": "SO"
+     },
+     "timeInPeriod": "00:00",
+     "teamAbbrev": "SJS"
+    }
+   ]
+  },
+  {
+   "id": 2026020324,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "NYI",
+    "score": 6,
+    "name": {
+     "default": "Islanders"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "ANA",
+    "score": 2,
+    "name": {
+     "default": "Ducks"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:55",
+     "teamAbbrev": "NYI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:33",
+     "teamAbbrev": "NYI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:35",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "03:01",
+     "teamAbbrev": "NYI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:28",
+     "teamAbbrev": "NYI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "10:28",
+     "teamAbbrev": "NYI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:37",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:41",
+     "teamAbbrev": "NYI"
+    }
+   ]
+  },
+  {
+   "id": 2026020325,
+   "gameDate": "2026-11-14",
+   "gameState": "OFF",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "CGY",
+    "score": 3,
+    "name": {
+     "default": "Flames"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "LAK",
+    "score": 2,
+    "name": {
+     "default": "Kings"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:13",
+     "teamAbbrev": "CGY"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "06:21",
+     "teamAbbrev": "LAK"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:21",
+     "teamAbbrev": "CGY"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:46",
+     "teamAbbrev": "CGY"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "19:04",
+     "teamAbbrev": "LAK"
+    }
+   ]
+  }
+ ]
 }

@@ -113,11 +113,13 @@ func TestCachesPerDate(t *testing.T) {
 		_, err := src.GetGameByDate(context.Background(), team, day(t, "2026-11-06"))
 		require.NoError(t, err)
 	}
-	assert.Equal(t, int32(2), hits.Load(), "one date = the ESPN day and the next, fetched once")
+	// Two scoreboards (the ESPN day and the next) plus the Lakers' home-game
+	// summary (play-by-play), each fetched once.
+	assert.Equal(t, int32(3), hits.Load(), "one date's pages are fetched once")
 
 	_, err := src.GetGameByDate(context.Background(), "LAL", day(t, "2026-11-09"))
 	require.NoError(t, err)
-	assert.Equal(t, int32(4), hits.Load())
+	assert.Equal(t, int32(5), hits.Load(), "an away game adds only its two scoreboards")
 }
 
 func TestRetriesTransientErrors(t *testing.T) {

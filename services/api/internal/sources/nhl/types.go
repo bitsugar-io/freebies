@@ -47,6 +47,7 @@ type scoreResponse struct {
 type game struct {
 	ID                int64  `json:"id"`
 	GameDate          string `json:"gameDate"`
+	StartTimeUTC      string `json:"startTimeUTC"`
 	GameState         string `json:"gameState"`
 	GameScheduleState string `json:"gameScheduleState"`
 	AwayTeam          team   `json:"awayTeam"`
@@ -57,6 +58,8 @@ type game struct {
 	PeriodDescriptor struct {
 		PeriodType string `json:"periodType"`
 	} `json:"periodDescriptor"`
+	// Goals lists every goal with its period and clock (shootout goals too).
+	Goals []goal `json:"goals"`
 }
 
 type team struct {
@@ -65,4 +68,14 @@ type team struct {
 	Name   struct {
 		Default string `json:"default"`
 	} `json:"name"`
+}
+
+type goal struct {
+	Period           int `json:"period"`
+	PeriodDescriptor struct {
+		PeriodType string `json:"periodType"`
+	} `json:"periodDescriptor"`
+	// TimeInPeriod is elapsed time, "MM:SS".
+	TimeInPeriod string `json:"timeInPeriod"`
+	TeamAbbrev   string `json:"teamAbbrev"`
 }
