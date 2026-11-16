@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { WonScreen } from './src/screens/WonScreen';
+import { TodayScreen } from './src/screens/TodayScreen';
 import { TeamsNavigator } from './src/screens/TeamsNavigator';
 import { YouScreen } from './src/screens/YouScreen';
 import { DealScreen } from './src/screens/DealScreen';
@@ -102,6 +103,7 @@ function Tabs() {
       screenOptions={{ headerShown: false }}
     >
       <Tab.Screen name="Won" component={WonScreen} />
+      <Tab.Screen name="Today" component={TodayScreen} />
       <Tab.Screen name="Teams" component={TeamsNavigator} options={{ popToTopOnBlur: true }} />
       <Tab.Screen name="You" component={YouScreen} />
     </Tab.Navigator>

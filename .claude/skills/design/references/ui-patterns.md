@@ -13,7 +13,7 @@ accessibility adaptation it needs. Source: `docs/pivot/nes-style-research.md` se
 | Title screen, "TAP TO START" | First run                                                                                           | Blinks at 2 Hz or slower, and not at all under Reduce Motion. A real button sits underneath.                                         |
 | Team select grid             | Teams tab: SELECT SPORT, then a sport's teams                                                       | Team names as text, a sport badge on each, multi-select with ✓. Off-season teams in grey. Fixed font size, names wrap, never shrink. |
 | Blinking selection           | ▶ on the active tab and focused menu row, `NEW!`, `ENDS SOON`, `PAUSED`, unlocked count, followed ✓ | One shared 1 Hz `useBlink()`. Solid under Reduce Motion. Never body text, never more than 3 blinking at once.                        |
-| Game HUD tab bar             | WON, TEAMS, YOU                                                                                     | Black bar, 3pt white top border, stat line, text tabs with a blinking ▶. Stepped wipe between tabs.                                  |
+| Game HUD tab bar             | WON, TODAY, TEAMS, YOU                                                                              | Black bar, 3pt white top border, stat line, text tabs with a blinking ▶. Stepped wipe between tabs.                                  |
 | START / pause menu           | START button on every HUD bar                                                                       | PAUSE overlay: pause alerts, alert settings, about, resume. Transparent modal route, no animation.                                   |
 
 ## Game moments
