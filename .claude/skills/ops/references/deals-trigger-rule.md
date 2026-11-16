@@ -18,16 +18,16 @@ How a deal decides it has unlocked and when it expires. The rest of the deal wor
 }
 ```
 
-| Field               | Values                                                   | Effect                                                                                        |
-| ------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `metric`            | a key the league's source emits (below)                  | The number compared                                                                           |
-| `operator`          | `>=` `>` `<=` `<` `==` `=` `!=`                          | Anything else never triggers                                                                  |
-| `value`             | integer                                                  | Compared with the metric                                                                      |
-| `redemption_window` | `same_day`, `next_day`, `week`, `next_business_day`      | When the deal expires (below)                                                                 |
-| `expires_at_local`  | `"HH:MM"`, 24h Pacific, optional                         | Clock time on the last day instead of 23:59:59                                                |
-| `unlock_after_days` | integer, default 0                                       | Code unlocks at midnight Pacific that many days after the game date; stored as `available_at` |
-| `valid_days`        | integer, default 0                                       | Length of the window (below); replaces `redemption_window` when set                           |
-| `scope`             | `team`, `team_batters`, `team_pitchers`, `team_fielders` | Descriptive only; the checker ignores it. Set it anyway                                       |
+| Field               | Values                                                            | Effect                                                                                        |
+| ------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `metric`            | a key the league's source emits (below)                           | The number compared                                                                           |
+| `operator`          | `>=` `>` `<=` `<` `==` `=` `!=`                                   | Anything else never triggers                                                                  |
+| `value`             | integer                                                           | Compared with the metric                                                                      |
+| `redemption_window` | `same_day`, `next_day`, `week`, `next_business_day`, `game_night` | When the deal expires (below)                                                                 |
+| `expires_at_local`  | `"HH:MM"`, 24h Pacific, optional                                  | Clock time on the last day instead of 23:59:59                                                |
+| `unlock_after_days` | integer, default 0                                                | Code unlocks at midnight Pacific that many days after the game date; stored as `available_at` |
+| `valid_days`        | integer, default 0                                                | Length of the window (below); replaces `redemption_window` when set                           |
+| `scope`             | `team`, `team_batters`, `team_pitchers`, `team_fielders`          | Descriptive only; the checker ignores it. Set it anyway                                       |
 
 ### When it's checked
 
@@ -45,8 +45,13 @@ on that day where it applies). Day 1 is the day after the game, when the morning
 | `same_day`                      | Day 1 at 23:59:59, or at `expires_at_local` on day 1 |
 | `next_day` (and unknown values) | Day 2 at 23:59:59, or at `expires_at_local` on day 2 |
 | `week`                          | Day 7 at 23:59:59; `expires_at_local` is ignored     |
+| `game_night`                    | The game date itself, at 23:59:59                    |
 
 "The morning after the game, breakfast hours only" is `same_day` with `"expires_at_local": "10:30"`.
+
+`game_night` is for at-the-game deals claimed in the venue that night (Chick-fil-A's arena deals).
+The morning check is always too late for them, so they never record a win or send a push; the app
+shows them in Today on game days. Set `in_venue = 1` and `venue` on the event as well.
 
 A deal is never recorded, and never pushed, if its deadline has already passed when the run reaches
 it (a late run or a backfill after 10:30am for the breakfast deal). The run logs it at WARN with
@@ -72,9 +77,9 @@ day, and only on the day the deal first becomes claimable (it unlocks) and on it
 `notifications` table records what was sent (`kind` is `trigger` or `reminder`); failed sends do not
 count and are retried on the next run.
 
-To make a delayed deal locally, `go run . deals trigger <event-id> --unlock-after-days 3
---valid-days 7 --notify=false` builds the window from yesterday's game with the same code the
-checker uses.
+To make a delayed deal locally,
+`go run . deals trigger <event-id> --unlock-after-days 3 --valid-days 7 --notify=false` builds the
+window from yesterday's game with the same code the checker uses.
 
 ### Metrics by league
 
@@ -104,13 +109,14 @@ cd services/api && mise exec -- go run . verify-mlb --team LAD --date 2026-09-01
 future and postponed games are ignored). An NHL game cannot end tied, so OT and shootout wins count
 as wins:
 
-| Metric                 | Meaning                                                         |
-| ---------------------- | --------------------------------------------------------------- |
-| `win`, `home_win`      | 1 if won (at home), else 0                                      |
-| `goals`                | Goals scored                                                    |
-| `home_goals_scored`    | Same, but 0 for away games                                      |
-| `shutout`              | 1 if the opponent scored 0 (never in a shootout)                |
-| `overtime`, `shootout` | 1 if the game was decided in overtime / a shootout, win or lose |
+| Metric                 | Meaning                                                            |
+| ---------------------- | ------------------------------------------------------------------ |
+| `win`, `home_win`      | 1 if won (at home), else 0                                         |
+| `goals`                | Goals scored                                                       |
+| `home_goals_scored`    | Same, but 0 for away games                                         |
+| `shutout`              | 1 if the opponent scored 0 (never in a shootout)                   |
+| `overtime`, `shootout` | 1 if the game was decided in overtime / a shootout, win or lose    |
+| `p2_last_minute_goals` | Goals scored at 19:00 or later in the 2nd period (McFlurry Minute) |
 
 The data is the NHL's unofficial public web API (`api-web.nhle.com`), whose terms restrict
 commercial automated use; budget a licensed feed before monetizing. Check a real game:
@@ -128,6 +134,9 @@ included, on the game's Pacific date:
 | `points`          | Points scored              |
 | `home_points`     | Same, but 0 for away games |
 
+The NBA source also emits `home_q4_opponent_ft_miss_streak`: at home, the most free throws the
+visitors missed in a row in the 4th quarter (overtime excluded), from the play-by-play; 0 away.
+
 **NFL** (`sources/nfl`, ESPN; teams LAR, LACH). Same as basketball, plus a box-score metric. A tie
 is neither a win nor a loss; a neutral-site game (international games, the Super Bowl) is never a
 home game:
@@ -137,6 +146,7 @@ home game:
 | `win`, `home_win`       | 1 if won (at home), else 0                                          |
 | `points`, `home_points` | Points scored, and the same but 0 for away games                    |
 | `interceptions`         | Passes the team's defense intercepted, any venue (pick-sixes count) |
+| `long_field_goal`       | The team's longest made field goal in yards, 0 if none              |
 
 **MLS, NWSL** (`sources/mls`, `sources/nwsl`, ESPN; teams LAFC, LAG, ACFC). Goals come from the
 scoreboard's goal events; `first_half` counts goals up to the 45th minute plus first-half stoppage
@@ -155,6 +165,9 @@ decided on penalties after a level score is a draw (`draw` 1, `win` 0):
 `win`, `home_win`, `points`, `home_points` and the same four prefixed with its sport
 (`football_win`, `basketball_home_points`, ...); use a prefixed metric so a deal can never fire on
 the other sport. Neutral-site games (tournaments, bowls) are never home games.
+
+Men's basketball also emits `basketball_home_h2_opponent_ft_miss_streak`: at a home game, the most
+free throws the visitors missed in a row in the 2nd half (play-by-play), else 0.
 
 The ESPN sources use an unofficial, undocumented API with no commercial license; see
 [data-sources.md](data-sources.md). Check a real game for any league:

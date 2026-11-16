@@ -45,7 +45,8 @@ through `mise exec --` (AGENTS.md explains why).
 
 1. Pick the job from the Route table and read its reference file.
 2. Use the job's scripts below rather than retyping the commands.
-3. Deploys, EAS builds and submits change production or spend money: get the owner's go-ahead first.
+3. Deploys, EAS builds and submits change production or spend money: get the owner's go-ahead first,
+   then tell the owner what each step is doing as it runs.
 4. Finish with `scripts/check.sh` and fix every failure.
 
 ## Scripts
@@ -56,8 +57,10 @@ through `mise exec --` (AGENTS.md explains why).
 - `scripts/check.sh [api|scheduler|mobile ...]`: Go vet and tests plus the mobile typecheck.
 - `scripts/new-migration.sh <slug> [--print]`: next numbered migration with an `events` INSERT
   template.
-- `scripts/deploy-preflight.sh`: read-only; lints and renders the Helm charts, checks docker and the
-  deploy variables.
+- `scripts/deploy-preflight.sh [--helm]`: read-only; charts, docker, DigitalOcean login, registry
+  space, cluster, kubectl context and pull secret; `--helm` also checks the deploy variables.
+- `scripts/deploy.sh --yes`: code-only production deploy: preflight, build, push, restart, wait for
+  the rollout, `/healthz`. Owner's go-ahead first.
 - `scripts/deploy-status.sh [--health]`: read-only; pods, CronJobs, Jobs, Helm releases and the
   public `/healthz`.
 - `scripts/release-preflight.sh [--no-typecheck]`: read-only; checks `app.json`, `eas.json`, the

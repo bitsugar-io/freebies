@@ -82,8 +82,6 @@ APP-STORE.md lists the six shots, their order and captions. To capture:
 3. `xcrun simctl io booted screenshot apps/mobile/assets/screenshots/01-unlocked.png`, and so on.
 4. Check every shot against `docs/ui.md`: no team logos, and no "NES" or "Nintendo".
 
-`apps/mobile/assets/screenshots/README.md` still describes the 1.x shots; follow APP-STORE.md.
-
 ## EAS Update (over-the-air)
 
 `app.json` has an `updates.url` and a runtime version policy, but OTA updates aren't usable yet:

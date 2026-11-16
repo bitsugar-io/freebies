@@ -1,124 +1,390 @@
 {
-  "games": [
-    {
-      "id": 2026020326,
-      "gameDate": "2026-11-15",
-      "gameState": "FUT",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "EDM",
-        "score": null,
-        "name": {
-          "default": "Oilers"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "PHI",
-        "score": null,
-        "name": {
-          "default": "Flyers"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": null
-      },
-      "gameOutcome": null
-    },
-    {
-      "id": 2026020327,
-      "gameDate": "2026-11-15",
-      "gameState": "FUT",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "FLA",
-        "score": null,
-        "name": {
-          "default": "Panthers"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "DAL",
-        "score": null,
-        "name": {
-          "default": "Stars"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": null
-      },
-      "gameOutcome": null
-    },
-    {
-      "id": 2026020328,
-      "gameDate": "2026-11-15",
-      "gameState": "FUT",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "CGY",
-        "score": null,
-        "name": {
-          "default": "Flames"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "ANA",
-        "score": null,
-        "name": {
-          "default": "Ducks"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": null
-      },
-      "gameOutcome": null
-    },
-    {
-      "id": 2026020329,
-      "gameDate": "2026-11-15",
-      "gameState": "FUT",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "VAN",
-        "score": null,
-        "name": {
-          "default": "Canucks"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "VGK",
-        "score": null,
-        "name": {
-          "default": "Golden Knights"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": null
-      },
-      "gameOutcome": null
-    },
-    {
-      "id": 2026020330,
-      "gameDate": "2026-11-15",
-      "gameState": "FUT",
-      "gameScheduleState": "OK",
-      "awayTeam": {
-        "abbrev": "NSH",
-        "score": null,
-        "name": {
-          "default": "Predators"
-        }
-      },
-      "homeTeam": {
-        "abbrev": "SJS",
-        "score": null,
-        "name": {
-          "default": "Sharks"
-        }
-      },
-      "periodDescriptor": {
-        "periodType": null
-      },
-      "gameOutcome": null
+ "games": [
+  {
+   "id": 2026020326,
+   "gameDate": "2026-11-15",
+   "gameState": "FUT",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "EDM",
+    "score": null,
+    "name": {
+     "default": "Oilers"
     }
-  ]
+   },
+   "homeTeam": {
+    "abbrev": "PHI",
+    "score": null,
+    "name": {
+     "default": "Flyers"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": null
+   },
+   "gameOutcome": null,
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "08:08",
+     "teamAbbrev": "EDM"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "13:22",
+     "teamAbbrev": "EDM"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:32",
+     "teamAbbrev": "EDM"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "12:13",
+     "teamAbbrev": "PHI"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:12",
+     "teamAbbrev": "PHI"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:07",
+     "teamAbbrev": "EDM"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "18:52",
+     "teamAbbrev": "EDM"
+    }
+   ]
+  },
+  {
+   "id": 2026020327,
+   "gameDate": "2026-11-15",
+   "gameState": "FUT",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "FLA",
+    "score": null,
+    "name": {
+     "default": "Panthers"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "DAL",
+    "score": null,
+    "name": {
+     "default": "Stars"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": null
+   },
+   "gameOutcome": null,
+   "goals": [
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:27",
+     "teamAbbrev": "FLA"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "09:19",
+     "teamAbbrev": "DAL"
+    },
+    {
+     "period": 4,
+     "periodDescriptor": {
+      "periodType": "OT"
+     },
+     "timeInPeriod": "02:56",
+     "teamAbbrev": "DAL"
+    }
+   ]
+  },
+  {
+   "id": 2026020328,
+   "gameDate": "2026-11-15",
+   "gameState": "FUT",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "CGY",
+    "score": null,
+    "name": {
+     "default": "Flames"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "ANA",
+    "score": null,
+    "name": {
+     "default": "Ducks"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": null
+   },
+   "gameOutcome": null,
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:16",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "13:24",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:16",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:04",
+     "teamAbbrev": "CGY"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:29",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:14",
+     "teamAbbrev": "ANA"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:06",
+     "teamAbbrev": "ANA"
+    }
+   ]
+  },
+  {
+   "id": 2026020329,
+   "gameDate": "2026-11-15",
+   "gameState": "FUT",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "VAN",
+    "score": null,
+    "name": {
+     "default": "Canucks"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "VGK",
+    "score": null,
+    "name": {
+     "default": "Golden Knights"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": null
+   },
+   "gameOutcome": null,
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "05:20",
+     "teamAbbrev": "VAN"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "09:49",
+     "teamAbbrev": "VAN"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "13:30",
+     "teamAbbrev": "VGK"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:36",
+     "teamAbbrev": "VAN"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "02:14",
+     "teamAbbrev": "VAN"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "11:57",
+     "teamAbbrev": "VGK"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:24",
+     "teamAbbrev": "VGK"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "01:48",
+     "teamAbbrev": "VAN"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:49",
+     "teamAbbrev": "VAN"
+    }
+   ]
+  },
+  {
+   "id": 2026020330,
+   "gameDate": "2026-11-15",
+   "gameState": "FUT",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "NSH",
+    "score": null,
+    "name": {
+     "default": "Predators"
+    }
+   },
+   "homeTeam": {
+    "abbrev": "SJS",
+    "score": null,
+    "name": {
+     "default": "Sharks"
+    }
+   },
+   "periodDescriptor": {
+    "periodType": null
+   },
+   "gameOutcome": null,
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "12:25",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:10",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "04:45",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "17:43",
+     "teamAbbrev": "NSH"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "07:40",
+     "teamAbbrev": "SJS"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "timeInPeriod": "16:35",
+     "teamAbbrev": "NSH"
+    }
+   ]
+  }
+ ]
 }

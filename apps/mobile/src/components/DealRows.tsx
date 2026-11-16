@@ -58,6 +58,27 @@ export function NewTag({ triggeredAt }: { triggeredAt: string }) {
   );
 }
 
+/**
+ * AT THE GAME: only fans at the venue can claim it. Black on ice, like the NEW! tag but solid (it is
+ * a fact about the deal, not news). Screen readers get it from the row's label instead.
+ */
+export function AtTheGameTag({ event }: { event: Event }) {
+  if (!event.inVenue) return null;
+  return (
+    <View style={styles.venueTag} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <Text variant="displayM" color="onAccent">
+        At the game
+      </Text>
+    </View>
+  );
+}
+
+/** "Only for fans at Intuit Dome", or "" for a deal anyone can claim. */
+export function venueLine(event: Event): string {
+  if (!event.inVenue) return '';
+  return event.venue ? `Only for fans at ${event.venue}` : 'Only for fans at the game';
+}
+
 function isNew(triggeredAt: string) {
   return Date.now() - new Date(triggeredAt).getTime() < DAY_MS;
 }
@@ -72,6 +93,7 @@ export function UnlockedDealRow({ deal, onPress }: { deal: ActiveDeal; onPress: 
   const label = [
     !locked && isNew(deal.triggeredAt) ? 'New' : '',
     `${event.offerName} from ${event.partnerName}`,
+    venueLine(event),
     `Because ${event.triggerCondition}`,
     locked ? spokenUnlock(deal.availableAt!, now) : left !== null ? spokenTimeLeft(left) : '',
   ]
@@ -93,6 +115,7 @@ export function UnlockedDealRow({ deal, onPress }: { deal: ActiveDeal; onPress: 
                 <NewTag triggeredAt={deal.triggeredAt} />
               </>
             )}
+            <AtTheGameTag event={event} />
           </View>
           <View style={styles.main}>
             <PixelSprite sprite={event.sprite} scale={3} />
@@ -141,6 +164,11 @@ export function WatchRow({
         <Text variant="caption" color={muted ? 'textMuted' : 'textSecondary'}>
           {detail ?? `${event.partnerName} · ${ifCondition(event.triggerCondition)}`}
         </Text>
+        {event.inVenue && !muted ? (
+          <View style={styles.venueRow}>
+            <AtTheGameTag event={event} />
+          </View>
+        ) : null}
       </View>
       {right}
     </View>
@@ -150,7 +178,9 @@ export function WatchRow({
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={`${event.offerName} from ${event.partnerName}. ${detail ?? ifCondition(event.triggerCondition)}`}
+      accessibilityLabel={[`${event.offerName} from ${event.partnerName}`, venueLine(event), detail ?? ifCondition(event.triggerCondition)]
+        .filter(Boolean)
+        .join('. ')}
     >
       {body}
     </Pressable>
@@ -161,6 +191,8 @@ const styles = StyleSheet.create({
   timeRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 8 },
   topRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
   newTag: { backgroundColor: colors.accent, paddingHorizontal: 6, paddingVertical: 2 },
+  venueTag: { backgroundColor: colors.ice, paddingHorizontal: 6, paddingVertical: 2 },
+  venueRow: { flexDirection: 'row', marginTop: 6 },
   pressed: { transform: [{ translateX: 2 }, { translateY: 2 }] },
   main: { flexDirection: 'row', alignItems: 'center', gap: 12, marginVertical: 10 },
   headline: { fontSize: 20, lineHeight: 26 },

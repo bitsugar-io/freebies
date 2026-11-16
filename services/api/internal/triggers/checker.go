@@ -37,6 +37,11 @@ type Rule struct {
 	ValidDays int `json:"valid_days,omitempty"`
 }
 
+// GameNight is the redemption window of an at-the-game deal claimed in the
+// venue the night of the game (Chick-fil-A's arena deals). It ends at 23:59:59
+// Pacific on the game date, so the next-morning check never alerts on it.
+const GameNight = "game_night"
+
 // Checker orchestrates trigger checking for events
 type Checker struct {
 	queries *db.Queries
@@ -228,6 +233,14 @@ func (c *Checker) createTriggeredEvent(
 
 	availableAt, expiresAt := windowFor(gameDate, *result.Rule, c.loc)
 	result.AvailableAt, result.ExpiresAt = availableAt, expiresAt
+	if result.Rule.RedemptionWindow == GameNight {
+		// Claimed at the venue that night; the morning check is always too
+		// late, so it is never recorded or pushed. The app lists it on game days.
+		result.Expired = true
+		c.logger.Info("at-the-game deal triggered; claimed at the venue, no alert",
+			"event_id", event.ID, "game", result.Stats.GameID)
+		return nil
+	}
 	if !expiresAt.After(c.now()) {
 		result.Expired = true
 		c.logger.Warn("deal window already closed; not recording it",
@@ -280,7 +293,7 @@ func Window(gameDate time.Time, r Rule) (availableAt, expiresAt time.Time) {
 //
 // Day 1 is the day after the game, when the morning check normally runs:
 // same_day lasts through day 1, next_day through day 2, week through day 7,
-// valid_days N through day N.
+// valid_days N through day N. game_night ends on the game date itself.
 func windowFor(gameDate time.Time, r Rule, loc *time.Location) (availableAt, expiresAt time.Time) {
 	// day(n) is midnight Pacific n days after the game date.
 	day := func(n int) time.Time {
@@ -317,6 +330,8 @@ func windowFor(gameDate time.Time, r Rule, loc *time.Location) (availableAt, exp
 			availableAt = day(n).UTC()
 		}
 		return availableAt, lastMoment(day(n), r.ExpiresAtLocal)
+	case r.RedemptionWindow == GameNight:
+		return time.Time{}, lastMoment(day(0), r.ExpiresAtLocal)
 	case r.RedemptionWindow == "same_day":
 		return time.Time{}, lastMoment(day(1), r.ExpiresAtLocal)
 	case r.RedemptionWindow == "week":

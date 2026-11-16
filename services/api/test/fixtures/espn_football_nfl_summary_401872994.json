@@ -217,6 +217,70 @@
      "id": "14"
     }
    }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "2"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Tyler Bass"
+        },
+        "stats": [
+         "3/3",
+         "100.0",
+         "49",
+         "2/3",
+         "11"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "14"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Harrison Mevis"
+        },
+        "stats": [
+         "0/2",
+         "0.0",
+         "0",
+         "4/4",
+         "4"
+        ]
+       }
+      ]
+     }
+    ]
+   }
   ]
  }
 }

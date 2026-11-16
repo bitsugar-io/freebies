@@ -9,6 +9,8 @@
 //	home_points          points if the team was home, else 0
 //	interceptions        passes the team's defense intercepted (any venue),
 //	                     read from the box score; pick-sixes count
+//	long_field_goal      the team's longest made field goal in yards, 0 if none
+//	                     (box score kicking; any kicker on the team)
 //
 // A neutral-site game (international games, the Super Bowl) is never a home
 // game for the home_* metrics, whichever side ESPN labels "home".
@@ -33,7 +35,7 @@ func config() espn.Config {
 	return espn.Config{
 		League:  "nfl",
 		Teams:   TeamIDs,
-		Metrics: []string{"win", "home_win", "points", "home_points", "interceptions"},
+		Metrics: []string{"win", "home_win", "points", "home_points", "interceptions", "long_field_goal"},
 		Feeds: []espn.FeedConfig{{
 			Feed:  espn.Feed{Name: "football", Path: "football/nfl"},
 			Build: buildMetrics,
@@ -65,5 +67,11 @@ func buildMetrics(ctx context.Context, c *espn.Client, g *espn.Game) (map[string
 		return nil, err
 	}
 	m["interceptions"] = n
+	// Longest field goal our kicker made, in yards (Chargers / Firehouse Subs: 40+).
+	long, err := c.LongFieldGoal(ctx, g.Feed.Path, g.Event.ID, g.Us.Team.ID)
+	if err != nil {
+		return nil, err
+	}
+	m["long_field_goal"] = long
 	return m, nil
 }

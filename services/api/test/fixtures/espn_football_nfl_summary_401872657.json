@@ -217,6 +217,70 @@
      "id": "14"
     }
    }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "25"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Eddy Pineiro"
+        },
+        "stats": [
+         "2/3",
+         "66.7",
+         "56",
+         "3/3",
+         "9"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "14"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Harrison Mevis"
+        },
+        "stats": [
+         "0/0",
+         "0.0",
+         "0",
+         "1/1",
+         "1"
+        ]
+       }
+      ]
+     }
+    ]
+   }
   ]
  }
 }

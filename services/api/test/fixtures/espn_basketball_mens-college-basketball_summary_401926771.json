@@ -1,0 +1,511 @@
+{
+ "plays": [
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Darius Ratliff misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Darius Ratliff makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Darius Ratliff makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Alijah Arenas makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Alijah Arenas makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Amare Hereford makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Amare Hereford makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Jake Hansen makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Jake Hansen makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Rodney Rice makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Rodney Rice makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Rodney Rice makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Rodney Rice makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Isaiah Dorceus makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Isaiah Dorceus makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Darius Ratliff makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Tre Norman makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Tre Norman makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Adonis Ratliff makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Isaac Bruns misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Isaac Bruns makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Jadis Jones misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Jadis Jones misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "270"
+   },
+   "text": "Amare Hereford misses free throw 1 of 3"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Amare Hereford makes free throw 2 of 3"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "270"
+   },
+   "text": "Amare Hereford misses free throw 3 of 3"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Tre Norman makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "270"
+   },
+   "text": "Tre Norman misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "270"
+   },
+   "text": "Dylan Omweno makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "270"
+   },
+   "text": "Dylan Omweno misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "30"
+   },
+   "text": "Isaac Bruns misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "30"
+   },
+   "text": "Isaac Bruns makes free throw 2 of 2"
+  }
+ ]
+}

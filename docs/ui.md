@@ -181,12 +181,14 @@ or sprite list.
 
 ### Navigation
 
-Three tabs in a custom HUD tab bar (React Navigation `tabBar` prop): **WON**, **TEAMS**, **YOU**.
-The bar is black with a 3pt white top border, a stat line (`WON n`, `FOLLOWING n`, separated by thin
-pixel bars, and a blinking `PAUSED` when alerts are paused), then the tabs in Press Start 2P. The
-active tab is accent with a blinking ▶. The won count is a blinking badge on WON. `FOLLOWING n`
-counts only followed deals that are still active. Targets are at least 44pt, tabs have role `tab`
-with `selected` state, and the bar sits above the bottom safe-area inset.
+Four tabs in a custom HUD tab bar (React Navigation `tabBar` prop): **WON**, **TODAY**, **TEAMS**,
+**YOU**. TODAY lists deals anyone can claim right now (any LA team) and today's LA games with the
+deals riding on each; it comes from `GET /today`. The bar is black with a 3pt white top border, a
+stat line (`WON n`, `FOLLOWING n`, separated by thin pixel bars, and a blinking `PAUSED` when alerts
+are paused), then the tabs in Press Start 2P. The active tab is accent with a blinking ▶. The won
+count is a blinking badge on WON. `FOLLOWING n` counts only followed deals that are still active.
+Targets are at least 44pt, tabs have role `tab` with `selected` state, and the bar sits above the
+bottom safe-area inset.
 
 - **WON** (home) shows only deals the user has won and can still claim. Nothing grey, no not-yet-won
   deals. Empty state: "NOTHING WON YET" and a PICK TEAMS button.
@@ -243,12 +245,13 @@ color"); see the note under [Legal guardrails](#legal-guardrails).
   Reduce Motion.
 - **Blinking** runs on ONE shared clock (`useBlink()` and `<Blink>` in `hooks/useBlink.tsx`): 1 Hz,
   stepped, a single interval for the whole app, solid under Reduce Motion. Rules: blink only
-  selection cursors (▶), tags (`NEW!` on deals unlocked in the last 24 hours), status words
-  (`ENDS SOON`, `PAUSED`, `TAP TO START`), the unlocked count badge, the followed ✓, and the
-  countdown colons. Never blink body text. Never flash content faster than 1 Hz. Never more than 3
-  blinking things on screen at once: each blinker has a priority and only the top 3 on the focused
-  screen blink, the rest stay solid (priorities are listed in `useBlink.tsx`). Loading skeleton
-  tones and the ▼ bob run on the raw clock and are not counted.
+  selection cursors (▶), tags (`NEW!` on deals unlocked in the last 24 hours, `LIVE` on a game in
+  progress; `AT THE GAME` is a fact and never blinks), status words (`ENDS SOON`, `PAUSED`,
+  `TAP TO START`), the unlocked count badge, the followed ✓, and the countdown colons. Never blink
+  body text. Never flash content faster than 1 Hz. Never more than 3 blinking things on screen at
+  once: each blinker has a priority and only the top 3 on the focused screen blink, the rest stay
+  solid (priorities are listed in `useBlink.tsx`). Loading skeleton tones and the ▼ bob run on the
+  raw clock and are not counted.
 - Prefer palette swaps (two colors alternating) to moving pixels.
 - Reduce Motion: every animation has a static fallback. No blinking, typewriter, cut-in, bob or
   count-up. Haptics stay.
@@ -288,12 +291,14 @@ come, get their own cut-in word and use the `gift` sprite until they have art.
 
 One idea, one word:
 
-| Idea                              | Word        | Where                                                                                         |
-| --------------------------------- | ----------- | --------------------------------------------------------------------------------------------- |
-| Teams or deals you subscribed to  | `FOLLOWING` | Stat line `FOLLOWING n`, team screens `n FOLLOWING` or `1/2 FOLLOWING`, YOU "Following Ducks" |
-| Deals you won and can still claim | `WON`       | Tab, stat line `WON n`, "back in Won"                                                         |
-| Deals you tapped GOT IT on        | `CLAIMED`   | Trophy case, "DEALS CLAIMED"                                                                  |
-| A won deal whose code works later | `LOCKED`    | Row: `CODE UNLOCKS TUE` (Pacific day name, or `NOV 24` past 6 days)                           |
+| Idea                              | Word          | Where                                                                                         |
+| --------------------------------- | ------------- | --------------------------------------------------------------------------------------------- |
+| Teams or deals you subscribed to  | `FOLLOWING`   | Stat line `FOLLOWING n`, team screens `n FOLLOWING` or `1/2 FOLLOWING`, YOU "Following Ducks" |
+| Deals you won and can still claim | `WON`         | Tab, stat line `WON n`, "back in Won"                                                         |
+| Deals you tapped GOT IT on        | `CLAIMED`     | Trophy case, "DEALS CLAIMED"                                                                  |
+| A won deal whose code works later | `LOCKED`      | Row: `CODE UNLOCKS TUE` (Pacific day name, or `NOV 24` past 6 days)                           |
+| Only fans at the venue can claim  | `AT THE GAME` | Black-on-ice tag on rows and the deal screen, plus "Only for fans at Intuit Dome" in words    |
+| A game in progress                | `LIVE`        | White on deep red tag in TODAY, blinking                                                      |
 
 Never "Watching", "Picked", "Unlocked" (as a place) or "Claim n". "Unlock" only describes a code
 becoming usable.

@@ -1,0 +1,966 @@
+{
+ "plays": [
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Scoot Henderson misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Scoot Henderson makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Scoot Henderson misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Scoot Henderson makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Sidy Cissoko misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Sidy Cissoko makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - Technical"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Jrue Holiday makes technical free throw"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Robert Williams III makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Jake LaRavia misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Jake LaRavia makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - Technical"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic misses technical free throw"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Sandro Mamukelashvili makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Sandro Mamukelashvili makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Yang Hansen makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Yang Hansen makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - Technical"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes technical free throw"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Matisse Thybulle makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Matisse Thybulle makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Donovan Clingan makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Donovan Clingan makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Jake LaRavia misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Jake LaRavia misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Chris Youngblood misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Chris Youngblood makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "22"
+   },
+   "text": "Donovan Clingan misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Deni Avdija makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "22"
+   },
+   "text": "Damian Lillard makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Austin Reaves makes free throw 2 of 2"
+  }
+ ]
+}

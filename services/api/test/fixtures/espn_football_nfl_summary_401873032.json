@@ -217,6 +217,70 @@
      "id": "14"
     }
    }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "24"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Cameron Dicker"
+        },
+        "stats": [
+         "3/3",
+         "100.0",
+         "46",
+         "0/0",
+         "9"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "14"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Brandon McManus"
+        },
+        "stats": [
+         "1/1",
+         "100.0",
+         "30",
+         "3/3",
+         "6"
+        ]
+       }
+      ]
+     }
+    ]
+   }
   ]
  }
 }
