@@ -2,10 +2,14 @@ package espn
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"log/slog"
 	"maps"
 	"slices"
+	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/retr0h/freebie/services/api/internal/sources"
@@ -51,6 +55,8 @@ type Config struct {
 	Feeds   []FeedConfig
 }
 
+var _ sources.MultiGameSource = (*Source)(nil)
+
 // Source implements sources.Source for one league on top of a Client.
 type Source struct {
 	cfg    Config
@@ -64,6 +70,9 @@ func NewSource(cfg Config, client *Client) *Source {
 
 // Client exposes the underlying client (tests tune its transport).
 func (s *Source) Client() *Client { return s.client }
+
+// KnowsPostseason: ESPN events carry season.type and slug (see seasonPhase).
+func (s *Source) KnowsPostseason() bool { return true }
 
 // League returns the league id.
 func (s *Source) League() string { return s.cfg.League }
@@ -82,53 +91,166 @@ func (s *Source) GetYesterdaysGame(ctx context.Context, teamID string) (*sources
 	return s.GetGameByDate(ctx, teamID, time.Now().In(s.client.loc).AddDate(0, 0, -1))
 }
 
-// GetGameByDate returns the team's finished game that started on the given
-// Pacific date, or (nil, nil) when it has none (not scheduled, not final,
-// postponed or canceled).
+// GetGameByDate returns the team's first finished game that started on the
+// given Pacific date, or (nil, nil) when it has none (not scheduled, not
+// final, postponed, canceled, preseason or All-Star). GetGamesByDate returns
+// every game of the day.
 func (s *Source) GetGameByDate(
 	ctx context.Context,
 	teamID string,
 	date time.Time,
 ) (*sources.GameStats, error) {
+	games, err := s.GetGamesByDate(ctx, teamID, date)
+	if err != nil || len(games) == 0 {
+		return nil, err
+	}
+	return games[0], nil
+}
+
+// GetGamesByDate returns every finished game the team started on the given
+// Pacific date, earliest first, from every feed (NCAA reads football and
+// basketball, and both can have a game the same day). A feed that fails is
+// logged and skipped so it cannot hide another feed's game; the error is
+// returned only when every feed failed.
+func (s *Source) GetGamesByDate(
+	ctx context.Context,
+	teamID string,
+	date time.Time,
+) ([]*sources.GameStats, error) {
 	espnID, ok := s.cfg.Teams[teamID]
 	if !ok {
 		return nil, fmt.Errorf("unknown team ID: %s", teamID)
 	}
 
+	type found struct {
+		start time.Time
+		stats *sources.GameStats
+	}
+	var all []found
+	var errs []error
 	for _, fc := range s.cfg.Feeds {
-		events, err := s.client.Games(ctx, fc.Feed, date)
-		if err != nil {
-			return nil, err
-		}
-		for i := range events {
-			g := finalGame(&events[i], espnID)
-			if g == nil {
-				continue
-			}
-			g.Feed = fc.Feed
-			if g.OurScore < 0 {
-				return nil, fmt.Errorf("ESPN game %s has an unreadable score", g.Event.ID)
-			}
-			metrics, err := fc.Build(ctx, s.client, g)
+		var feed []found
+		err := func() error {
+			events, err := s.client.Games(ctx, fc.Feed, date)
 			if err != nil {
-				return nil, fmt.Errorf("ESPN game %s: %w", g.Event.ID, err)
+				return err
 			}
-			id := "espn-" + s.cfg.League + "-" + g.Event.ID
-			if fc.Name != "" && len(s.cfg.Feeds) > 1 {
-				id = "espn-" + s.cfg.League + "-" + fc.Name + "-" + g.Event.ID
+			for i := range events {
+				st, err := s.gameStats(ctx, fc, &events[i], espnID, teamID, date)
+				if err != nil {
+					return err
+				}
+				if st != nil {
+					feed = append(feed, found{events[i].Date.Time, st})
+				}
 			}
-			return &sources.GameStats{
-				GameID:   id,
-				GameDate: date,
-				TeamID:   teamID,
-				Opponent: g.Them.Team.DisplayName,
-				HomeGame: g.Home,
-				Won:      g.Won(),
-				Metrics:  metrics,
-			}, nil
+			return nil
+		}()
+		if err != nil {
+			errs = append(errs, err)
+			continue
+		}
+		all = append(all, feed...)
+	}
+	if len(errs) == len(s.cfg.Feeds) {
+		return nil, errors.Join(errs...)
+	}
+	for _, err := range errs {
+		slog.Warn("ESPN feed failed; using the other feeds' games",
+			"league", s.cfg.League, "team", teamID, "date", date.Format("2006-01-02"), "error", err)
+	}
+
+	sort.SliceStable(all, func(a, b int) bool { return all[a].start.Before(all[b].start) })
+	out := make([]*sources.GameStats, len(all))
+	for i, f := range all {
+		out[i] = f.stats
+	}
+	return out, nil
+}
+
+// gameStats builds the stats for e from espnID's side, or returns nil when the
+// team did not play in it or it does not count (not final, preseason).
+func (s *Source) gameStats(
+	ctx context.Context,
+	fc FeedConfig,
+	e *Event,
+	espnID, teamID string,
+	date time.Time,
+) (*sources.GameStats, error) {
+	counts, post := seasonPhase(e)
+	if !counts {
+		return nil, nil
+	}
+	g := finalGame(e, espnID)
+	if g == nil {
+		return nil, nil
+	}
+	g.Feed = fc.Feed
+	if g.OurScore < 0 {
+		return nil, fmt.Errorf("ESPN game %s has an unreadable score", g.Event.ID)
+	}
+	metrics, err := fc.Build(ctx, s.client, g)
+	if err != nil {
+		return nil, fmt.Errorf("ESPN game %s: %w", g.Event.ID, err)
+	}
+	id := "espn-" + s.cfg.League + "-" + g.Event.ID
+	if fc.Name != "" && len(s.cfg.Feeds) > 1 {
+		id = "espn-" + s.cfg.League + "-" + fc.Name + "-" + g.Event.ID
+	}
+	return &sources.GameStats{
+		GameID:     id,
+		GameDate:   date,
+		TeamID:     teamID,
+		Opponent:   g.Them.Team.DisplayName,
+		HomeGame:   g.Home,
+		Won:        g.Won(),
+		Postseason: post,
+		Metrics:    metrics,
+	}, nil
+}
+
+// seasonPhase reports whether e counts for deals at all and, if so, whether it
+// is a postseason game. ESPN's season.type, as seen in the feeds:
+//
+//	1  preseason                  does not count
+//	2  regular season             counts
+//	3  postseason                 counts, postseason
+//	4  off-season                 does not count
+//	5  NBA play-in                counts, postseason (it is not regular season)
+//	0  missing                    counts, regular season (trimmed fixtures)
+//
+// Soccer feeds use league-specific ids instead (MLS 13846 "regular-season",
+// 13836 "western-conference-playoffs---round-one", NWSL 14023
+// "playoffs---quarterfinals"), so any other type is read from season.slug: a
+// slug naming playoffs, the post-season or a play-in is postseason, one naming
+// the preseason does not count, anything else is regular season.
+//
+// An All-Star game ("ALLSTAR", filed as regular season) or an exhibition
+// ("EXH") competition never counts, whatever its season type.
+func seasonPhase(e *Event) (counts, postseason bool) {
+	if len(e.Competitions) > 0 {
+		switch e.Competitions[0].Type.Abbreviation {
+		case "ALLSTAR", "EXH":
+			return false, false
 		}
 	}
-	return nil, nil
+	switch e.Season.Type {
+	case 0, 2:
+		return true, false
+	case 1, 4:
+		return false, false
+	case 3, 5:
+		return true, true
+	}
+	slug := strings.ToLower(e.Season.Slug)
+	switch {
+	case strings.Contains(slug, "preseason") || strings.Contains(slug, "pre-season"):
+		return false, false
+	case strings.Contains(slug, "playoff") || strings.Contains(slug, "post-season") ||
+		strings.Contains(slug, "postseason") || strings.Contains(slug, "play-in"):
+		return true, true
+	}
+	return true, false
 }
 
 // finalGame returns the event from teamID's side if the team played in it and

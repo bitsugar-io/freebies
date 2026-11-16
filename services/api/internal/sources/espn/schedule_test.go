@@ -81,14 +81,14 @@ func TestGamesOnNCAAReadsBothFeeds(t *testing.T) {
 	got, err := src.GamesOn(context.Background(), day(t, "2026-11-02"))
 	require.NoError(t, err)
 	assert.Equal(t, []sources.ScheduledGame{
-		{TeamID: "UCLA", Opponent: "Arizona", StartsAt: utc(t, "2026-11-03T03:00:00Z"), Home: false, State: "post"},
-		{TeamID: "USC", Opponent: "Milwaukee", StartsAt: utc(t, "2026-11-03T03:30:00Z"), Home: true, State: "post"},
+		{TeamID: "UCLA", Opponent: "Arizona", StartsAt: utc(t, "2026-11-03T03:00:00Z"), Home: false, State: "post", Sport: "basketball"},
+		{TeamID: "USC", Opponent: "Milwaukee", StartsAt: utc(t, "2026-11-03T03:30:00Z"), Home: true, State: "post", Sport: "basketball"},
 	}, got)
 
 	// Football.
 	got, err = src.GamesOn(context.Background(), day(t, "2026-11-13"))
 	require.NoError(t, err)
 	assert.Equal(t, []sources.ScheduledGame{
-		{TeamID: "UCLA", Opponent: "Illinois", StartsAt: utc(t, "2026-11-14T02:00:00Z"), Home: true, State: "post"},
+		{TeamID: "UCLA", Opponent: "Illinois", StartsAt: utc(t, "2026-11-14T02:00:00Z"), Home: true, State: "post", Sport: "football"},
 	}, got)
 }

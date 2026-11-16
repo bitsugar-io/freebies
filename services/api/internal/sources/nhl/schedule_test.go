@@ -36,10 +36,10 @@ func TestGamesOnFixture(t *testing.T) {
 	// The trimmed fixture has no startTimeUTC: midnight Pacific.
 	assert.Equal(t, "2026-11-15T08:00:00Z", ducks.StartsAt.Format(time.RFC3339))
 
-	// Shares GetGameByDate's per-date cache.
+	// Shares GetGameByDate's per-date cache: only the next date is fetched.
 	_, err = src.GetGameByDate(context.Background(), "ANA", day(t, "2026-11-15"))
 	require.NoError(t, err)
-	assert.Equal(t, int32(1), hits.Load())
+	assert.Equal(t, int32(2), hits.Load())
 }
 
 func TestGamesOnStates(t *testing.T) {

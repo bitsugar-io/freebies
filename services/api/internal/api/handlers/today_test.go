@@ -107,7 +107,7 @@ func TestGetToday(t *testing.T) {
 		t.Fatalf("games = %+v", resp.Games)
 	}
 	g := resp.Games[0]
-	if g.TeamID != "ANA" || g.TeamName != "Anaheim Ducks" || g.League != "nhl" || g.Opponent != "Flames" ||
+	if g.TeamID != "ANA" || g.TeamName != "Ducks" || g.League != "nhl" || g.Opponent != "Flames" ||
 		g.StartsAt != "2026-11-16T03:00:00Z" || !g.Home || g.State != "pre" {
 		t.Errorf("game = %+v", g)
 	}
@@ -172,4 +172,34 @@ func mustLA(t *testing.T) *time.Location {
 		t.Fatal(err)
 	}
 	return loc
+}
+
+// On a basketball night, UCLA's football-only deal (football_home_points)
+// must not ride on the game; the basketball deal does.
+func TestTodayDealsMatchTheGamesSport(t *testing.T) {
+	f := newClaimedFixture(t)
+	ncaa := &fakeScheduler{games: []sources.ScheduledGame{
+		{TeamID: "UCLA", Opponent: "Long Beach St", StartsAt: mustTime(t, "2026-11-17T03:00:00Z"), Home: true, State: "pre", Sport: "basketball"},
+	}}
+	f.h.SetSchedulerLookup(func(league string) (sources.Scheduler, bool) {
+		if league == "ncaa" {
+			return ncaa, true
+		}
+		return nil, false
+	})
+	resp, _ := getToday(t, f.h, "?at=2026-11-16")
+	if len(resp.Games) != 1 {
+		t.Fatalf("games = %+v", resp.Games)
+	}
+	g := resp.Games[0]
+	if g.TeamName != "UCLA" {
+		t.Errorf("teamName = %q, want the short name UCLA", g.TeamName)
+	}
+	if len(g.Deals) != 1 || g.Deals[0].ID != "event-ncaa-ucla-fatsals-hoops" {
+		ids := []string{}
+		for _, d := range g.Deals {
+			ids = append(ids, d.ID)
+		}
+		t.Errorf("deals = %v, want only the basketball deal", ids)
+	}
 }

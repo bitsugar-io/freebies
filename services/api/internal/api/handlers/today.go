@@ -1,13 +1,18 @@
 package handlers
 
 import (
+	"cmp"
 	"context"
+	"database/sql"
+	"encoding/json"
 	"net/http"
 	"slices"
 	"sort"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/retr0h/freebie/services/api/internal/db"
 	"github.com/retr0h/freebie/services/api/internal/sources"
@@ -160,47 +165,70 @@ func (h *Handler) liveDeals(ctx context.Context) ([]LiveDealResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	const layout = "2006-01-02T15:04:05Z07:00"
 	out := make([]LiveDealResponse, len(rows))
 	for i, row := range rows {
-		var expiresAt *string
-		if row.ExpiresAt.Valid {
-			t := row.ExpiresAt.Time.Format(layout)
-			expiresAt = &t
-		}
-		out[i] = LiveDealResponse{
-			ID:          row.ID,
-			EventID:     row.EventID,
-			TriggeredAt: row.TriggeredAt.Format(layout),
-			ExpiresAt:   expiresAt,
-			AvailableAt: nullTimePtr(row.AvailableAt),
-			Event: eventToResponse(db.Event{
-				ID:               row.ID_2,
-				OfferID:          row.OfferID,
-				TeamID:           row.TeamID,
-				TeamName:         row.TeamName,
-				League:           row.League,
-				TeamColor:        row.TeamColor,
-				Icon:             row.Icon,
-				PartnerName:      row.PartnerName,
-				OfferName:        row.OfferName,
-				OfferDescription: row.OfferDescription,
-				TriggerCondition: row.TriggerCondition,
-				TriggerRule:      row.TriggerRule,
-				RegionCode:       row.RegionCode,
-				OfferUrl:         row.OfferUrl,
-				AffiliateUrl:     row.AffiliateUrl,
-				AffiliateTagline: row.AffiliateTagline,
-				IsActive:         row.IsActive,
-				CreatedAt:        row.CreatedAt,
-				UpdatedAt:        row.UpdatedAt,
-				SpriteID:         row.SpriteID,
-				InVenue:          row.InVenue,
-				Venue:            row.Venue,
-			}),
-		}
+		out[i] = liveDealFromRow(row)
 	}
 	return out, nil
+}
+
+// GetTriggered returns one triggered deal by id, in the shape of a /today live item, expired or
+// not (the app shows an expired one as ended). Public: what triggered is public, like /today. A push
+// tap or a TODAY row opens it even for a team the user doesn't follow.
+func (h *Handler) GetTriggered(w http.ResponseWriter, r *http.Request) {
+	row, err := h.queries.GetTriggeredEvent(r.Context(), chi.URLParam(r, "id"))
+	if err == sql.ErrNoRows {
+		respondError(w, http.StatusNotFound, "triggered deal not found")
+		return
+	}
+	if err != nil {
+		h.logger.Error("failed to get triggered deal", "error", err)
+		respondError(w, http.StatusInternalServerError, "failed to get triggered deal")
+		return
+	}
+	resp := liveDealFromRow(db.ListActiveTriggeredEventsRow(row))
+	h.attachSprites(r.Context(), &resp.Event)
+	respondJSON(w, http.StatusOK, resp)
+}
+
+func liveDealFromRow(row db.ListActiveTriggeredEventsRow) LiveDealResponse {
+	const layout = "2006-01-02T15:04:05Z07:00"
+	var expiresAt *string
+	if row.ExpiresAt.Valid {
+		t := row.ExpiresAt.Time.Format(layout)
+		expiresAt = &t
+	}
+	return LiveDealResponse{
+		ID:          row.ID,
+		EventID:     row.EventID,
+		TriggeredAt: row.TriggeredAt.Format(layout),
+		ExpiresAt:   expiresAt,
+		AvailableAt: nullTimePtr(row.AvailableAt),
+		Event: eventToResponse(db.Event{
+			ID:               row.ID_2,
+			OfferID:          row.OfferID,
+			TeamID:           row.TeamID,
+			TeamName:         row.TeamName,
+			League:           row.League,
+			TeamColor:        row.TeamColor,
+			Icon:             row.Icon,
+			PartnerName:      row.PartnerName,
+			OfferName:        row.OfferName,
+			OfferDescription: row.OfferDescription,
+			TriggerCondition: row.TriggerCondition,
+			TriggerRule:      row.TriggerRule,
+			RegionCode:       row.RegionCode,
+			OfferUrl:         row.OfferUrl,
+			AffiliateUrl:     row.AffiliateUrl,
+			AffiliateTagline: row.AffiliateTagline,
+			IsActive:         row.IsActive,
+			CreatedAt:        row.CreatedAt,
+			UpdatedAt:        row.UpdatedAt,
+			SpriteID:         row.SpriteID,
+			InVenue:          row.InVenue,
+			Venue:            row.Venue,
+		}),
+	}
 }
 
 // teamKey identifies a team within its league (team codes repeat across
@@ -218,6 +246,15 @@ func (h *Handler) todayGames(ctx context.Context, day time.Time, date string, ev
 			leagues = append(leagues, k.league)
 		}
 		deals[k] = append(deals[k], e)
+	}
+
+	// Short team names ("Chargers") so a matchup reads like the opponent's
+	// ("Chargers at Ravens"), not "Los Angeles Chargers at Ravens".
+	short := map[string]string{}
+	if teams, err := h.queries.ListTeams(ctx); err == nil {
+		for _, t := range teams {
+			short[t.ID] = t.Name
+		}
 	}
 
 	state := h.today()
@@ -250,13 +287,13 @@ func (h *Handler) todayGames(ctx context.Context, day time.Time, date string, ev
 	out := []TodayGameResponse{}
 	for i, league := range leagues {
 		for _, g := range results[i] {
-			evs := deals[teamKey{league, g.TeamID}]
+			evs := dealsForSport(deals[teamKey{league, g.TeamID}], g.Sport)
 			if len(evs) == 0 {
 				continue
 			}
 			resp := TodayGameResponse{
 				TeamID:   g.TeamID,
-				TeamName: evs[0].TeamName,
+				TeamName: cmp.Or(short[g.TeamID], evs[0].TeamName),
 				League:   evs[0].League,
 				Opponent: g.Opponent,
 				StartsAt: g.StartsAt.UTC().Format(time.RFC3339),
@@ -276,5 +313,33 @@ func (h *Handler) todayGames(ctx context.Context, day time.Time, date string, ev
 		}
 		return out[a].TeamID < out[b].TeamID
 	})
+	return out
+}
+
+// dealsForSport keeps the deals that can ride on a game of this sport. A deal
+// whose metric names a sport ("football_home_points",
+// "basketball_home_h2_opponent_ft_miss_streak") applies only to that sport's
+// games, so UCLA's football deal never shows on a basketball night. Deals with
+// a plain metric, and any game whose sport is unknown, keep everything.
+func dealsForSport(evs []db.Event, sport string) []db.Event {
+	if sport == "" {
+		return evs
+	}
+	out := evs[:0:0]
+	for _, e := range evs {
+		var r struct {
+			Metric string `json:"metric"`
+		}
+		_ = json.Unmarshal([]byte(e.TriggerRule.String), &r)
+		named := ""
+		for _, sp := range []string{"football", "basketball"} {
+			if strings.HasPrefix(r.Metric, sp+"_") {
+				named = sp
+			}
+		}
+		if named == "" || named == sport {
+			out = append(out, e)
+		}
+	}
 	return out
 }

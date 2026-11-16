@@ -1,0 +1,58 @@
+{
+  "events": [
+    {
+      "id": "401902645",
+      "date": "2026-10-10T22:30Z",
+      "name": "LA Clippers at Toronto Raptors",
+      "season": {
+        "year": 2027,
+        "type": 1,
+        "slug": "preseason"
+      },
+      "competitions": [
+        {
+          "neutralSite": false,
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          },
+          "status": {
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "114",
+              "winner": true,
+              "team": {
+                "id": "28",
+                "displayName": "Toronto Raptors",
+                "shortDisplayName": "Raptors",
+                "abbreviation": "TOR"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "106",
+              "winner": false,
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers",
+                "shortDisplayName": "Clippers",
+                "abbreviation": "LAC"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

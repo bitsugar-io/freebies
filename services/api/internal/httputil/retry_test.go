@@ -2,8 +2,11 @@ package httputil
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
+	"net/http/httptrace"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -130,4 +133,58 @@ func TestDo_RespectsContextCancellation(t *testing.T) {
 	}, opts)
 
 	require.Error(t, err)
+}
+
+// roundTripFunc lets a test stand in for the network.
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
+
+// A non-idempotent request that failed before it was written (connection
+// refused) is retried; one that failed after it was written is not, and the
+// error says it may have been delivered.
+func TestDo_NonIdempotentRetriesOnlyUnsentRequests(t *testing.T) {
+	newReq := func() (*http.Request, error) {
+		return http.NewRequest(http.MethodPost, "http://expo.invalid/push", strings.NewReader("{}"))
+	}
+	opts := &RetryOptions{MaxRetries: 3, BaseDelay: time.Millisecond, NonIdempotent: true}
+
+	var refused atomic.Int32
+	client := &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
+		refused.Add(1)
+		return nil, errors.New("dial tcp: connection refused")
+	})}
+	_, err := Do(context.Background(), client, newReq, opts)
+	require.Error(t, err)
+	assert.NotErrorIs(t, err, ErrMaybeDelivered)
+	assert.Equal(t, int32(4), refused.Load(), "connection refused before sending is retried")
+
+	var lost atomic.Int32
+	client = &http.Client{Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
+		lost.Add(1)
+		if tr := httptrace.ContextClientTrace(r.Context()); tr != nil && tr.WroteRequest != nil {
+			tr.WroteRequest(httptrace.WroteRequestInfo{})
+		}
+		return nil, errors.New("read tcp: i/o timeout")
+	})}
+	_, err = Do(context.Background(), client, newReq, opts)
+	require.ErrorIs(t, err, ErrMaybeDelivered)
+	assert.Equal(t, int32(1), lost.Load(), "a request that was written is not re-sent")
+}
+
+func TestDo_NonIdempotentStatuses(t *testing.T) {
+	for status, want := range map[int]int32{500: 1, 502: 1, 504: 1, 503: 4, 429: 4} {
+		var attempts atomic.Int32
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			attempts.Add(1)
+			w.WriteHeader(status)
+		}))
+		resp, err := Do(context.Background(), srv.Client(), func() (*http.Request, error) {
+			return http.NewRequest(http.MethodPost, srv.URL, strings.NewReader("{}"))
+		}, &RetryOptions{MaxRetries: 3, BaseDelay: time.Millisecond, NonIdempotent: true})
+		require.NoError(t, err)
+		_ = resp.Body.Close()
+		srv.Close()
+		assert.Equal(t, want, attempts.Load(), "status %d", status)
+	}
 }

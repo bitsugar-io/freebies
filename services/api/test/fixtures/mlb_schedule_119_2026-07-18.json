@@ -1,0 +1,37 @@
+{
+ "dates": [
+  {
+   "date": "2026-07-18",
+   "games": [
+    {
+     "gamePk": 823523,
+     "gameType": "R",
+     "gameDate": "2026-07-19T00:08:00Z",
+     "officialDate": "2026-07-19",
+     "doubleHeader": "N",
+     "gameNumber": 1,
+     "status": {
+      "abstractGameState": "Final",
+      "detailedState": "Postponed"
+     },
+     "teams": {
+      "away": {
+       "team": {
+        "id": 119,
+        "name": "Los Angeles Dodgers"
+       },
+       "score": null
+      },
+      "home": {
+       "team": {
+        "id": 147,
+        "name": "New York Yankees"
+       },
+       "score": null
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

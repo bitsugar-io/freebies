@@ -7,8 +7,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	mlbsdk "github.com/retr0h/mlb-sdk/pkg/mlb"
 )
 
 // fakeMLB wires a single httptest server to serve both /schedule and
@@ -183,7 +181,7 @@ func TestSource_GetGameByDate(t *testing.T) {
 			if c.fake != (fakeMLB{}) {
 				srv := c.fake.server()
 				defer srv.Close()
-				src = NewSourceWithClient(mlbsdk.New(mlbsdk.WithBaseURL(srv.URL)))
+				src = NewSourceWithClient(srv.URL, srv.Client())
 			} else {
 				src = NewSource() // unknown-team path never reaches HTTP
 			}

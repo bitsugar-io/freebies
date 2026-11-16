@@ -1,0 +1,58 @@
+{
+  "events": [
+    {
+      "id": "401873283",
+      "date": "2026-08-15T20:00Z",
+      "name": "Los Angeles Rams at Kansas City Chiefs",
+      "season": {
+        "year": 2026,
+        "type": 1,
+        "slug": "preseason"
+      },
+      "competitions": [
+        {
+          "neutralSite": false,
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          },
+          "status": {
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "12",
+              "winner": false,
+              "team": {
+                "id": "12",
+                "displayName": "Kansas City Chiefs",
+                "shortDisplayName": "Chiefs",
+                "abbreviation": "KC"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "20",
+              "winner": true,
+              "team": {
+                "id": "14",
+                "displayName": "Los Angeles Rams",
+                "shortDisplayName": "Rams",
+                "abbreviation": "LAR"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

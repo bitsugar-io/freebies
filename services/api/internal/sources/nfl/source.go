@@ -68,7 +68,7 @@ func buildMetrics(ctx context.Context, c *espn.Client, g *espn.Game) (map[string
 	}
 	m["interceptions"] = n
 	// Longest field goal our kicker made, in yards (Chargers / Firehouse Subs: 40+).
-	long, err := c.LongFieldGoal(ctx, g.Feed.Path, g.Event.ID, g.Us.Team.ID)
+	long, err := c.LongFieldGoal(ctx, g.Feed.Path, g.Event.ID, g.Us.Team.ID, g.OurScore)
 	if err != nil {
 		return nil, err
 	}

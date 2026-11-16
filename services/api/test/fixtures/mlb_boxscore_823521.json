@@ -1,0 +1,60 @@
+{
+ "teams": {
+  "away": {
+   "team": {
+    "id": 119,
+    "name": "Los Angeles Dodgers"
+   },
+   "teamStats": {
+    "pitching": {
+     "strikeOuts": 9,
+     "hits": 8,
+     "runs": 2,
+     "homeRuns": 1,
+     "baseOnBalls": 5
+    },
+    "batting": {
+     "runs": 1,
+     "hits": 4,
+     "homeRuns": 1,
+     "rbi": 1,
+     "stolenBases": 0
+    }
+   },
+   "info": []
+  },
+  "home": {
+   "team": {
+    "id": 147,
+    "name": "New York Yankees"
+   },
+   "teamStats": {
+    "pitching": {
+     "strikeOuts": 8,
+     "hits": 4,
+     "runs": 1,
+     "homeRuns": 1,
+     "baseOnBalls": 4
+    },
+    "batting": {
+     "runs": 2,
+     "hits": 8,
+     "homeRuns": 1,
+     "rbi": 2,
+     "stolenBases": 1
+    }
+   },
+   "info": [
+    {
+     "title": "FIELDING",
+     "fieldList": [
+      {
+       "label": "DP",
+       "value": "2 (Chisholm Jr.-Volpe-Goldschmidt; Volpe-Chisholm Jr.-Goldschmidt)."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -12,16 +12,27 @@ type scoreboardResponse struct {
 
 // Event is one game on the scoreboard.
 type Event struct {
-	ID           string        `json:"id"`
-	Date         espnTime      `json:"date"`
-	Name         string        `json:"name"`
+	ID   string   `json:"id"`
+	Date espnTime `json:"date"`
+	Name string   `json:"name"`
+	// Season is the part of the season the game belongs to; see seasonPhase
+	// for how Type and Slug are read.
+	Season struct {
+		Type int    `json:"type"`
+		Slug string `json:"slug"`
+	} `json:"season"`
 	Competitions []Competition `json:"competitions"`
 }
 
 // Competition is the game itself (ESPN lists exactly one per event for the
 // leagues we use).
 type Competition struct {
-	NeutralSite bool         `json:"neutralSite"`
+	NeutralSite bool `json:"neutralSite"`
+	// Type.Abbreviation is "STD" for a normal game, "ALLSTAR" for an All-Star
+	// game and "EXH" for an exhibition.
+	Type struct {
+		Abbreviation string `json:"abbreviation"`
+	} `json:"type"`
 	Status      Status       `json:"status"`
 	Competitors []Competitor `json:"competitors"`
 	Details     []Detail     `json:"details"`

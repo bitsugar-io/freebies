@@ -104,12 +104,61 @@ RETURNING *;
 
 -- name: ListUsersRemindedSince :many
 -- Users who already got a reminder for this deal at or after :since (a UTC
--- "YYYY-MM-DD HH:MM:SS" string). Failed sends do not count, so they retry.
+-- "YYYY-MM-DD HH:MM:SS" string). 'pending' (written just before the send) and
+-- 'unknown' (Expo may have it) count as sent, so a push is never doubled;
+-- only 'failed' sends retry.
 SELECT DISTINCT user_id FROM notifications
 WHERE triggered_event_id = sqlc.arg(triggered_event_id)
   AND kind = 'reminder'
-  AND status = 'sent'
+  AND status IN ('sent', 'pending', 'unknown')
   AND datetime(sent_at) >= datetime(sqlc.arg(since));
+
+-- name: ListTriggerPushDeals :many
+-- Live deals whose "you won" push the worker still owes followers: unexpired
+-- at :now, and recorded by the checker (no payload) or by
+-- `deals trigger --notify` (payload "notify": true). Test deals from
+-- `deals create` and `deals trigger --notify=false` are never pushed.
+SELECT te.id, te.event_id, te.available_at, te.expires_at,
+    e.partner_name, e.offer_name, e.trigger_condition
+FROM triggered_events te
+JOIN events e ON te.event_id = e.id
+WHERE datetime(te.expires_at) > datetime(sqlc.arg(now))
+  AND (te.payload IS NULL
+    OR (json_valid(te.payload) AND json_extract(te.payload, '$.notify') = 1))
+ORDER BY te.triggered_at ASC;
+
+-- name: GetTriggerPushDeal :one
+-- One deal in the shape ListTriggerPushDeals returns.
+SELECT te.id, te.event_id, te.available_at, te.expires_at,
+    e.partner_name, e.offer_name, e.trigger_condition
+FROM triggered_events te
+JOIN events e ON te.event_id = e.id
+WHERE te.id = ?;
+
+-- name: ListUsersOwedTriggerPush :many
+-- Followers of a deal's event who should get its "you won" push and have not:
+-- they followed before it triggered (a later follower sees it in the app but
+-- is not told they won), have a push token, have not claimed or silenced it,
+-- and have no trigger notification that is 'sent', 'pending' (written just
+-- before a send) or 'unknown' (Expo may have it). So a user gets the push at
+-- most once per deal, and a failed send is retried by the next run.
+SELECT u.id, u.push_token, u.alerts_paused_until
+FROM subscriptions s
+JOIN users u ON u.id = s.user_id
+JOIN triggered_events te ON te.event_id = s.event_id
+LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = u.id
+WHERE te.id = sqlc.arg(triggered_event_id)
+  AND u.push_token IS NOT NULL
+  AND u.push_token != ''
+  AND d.id IS NULL
+  AND datetime(s.created_at) <= datetime(te.triggered_at)
+  AND NOT EXISTS (
+    SELECT 1 FROM notifications n
+    WHERE n.triggered_event_id = te.id
+      AND n.user_id = u.id
+      AND n.kind = 'trigger'
+      AND n.status IN ('sent', 'pending', 'unknown')
+  );
 
 -- name: UpdateNotificationStatus :exec
 UPDATE notifications SET status = ? WHERE id = ?;
@@ -128,15 +177,38 @@ WHERE datetime(te.expires_at) > datetime('now')
 ORDER BY te.expires_at ASC;
 
 -- name: ListActiveTriggeredEventsForUser :many
+-- A user's unexpired won deals. A deal is the user's when any of these holds:
+--   1. they follow its event now (subscriptions);
+--   2. they were pushed about it (a notifications row, any kind or status);
+--   3. it was live in their list when they unfollowed (kept_deals, written by
+--      KeepWonDeals just before the subscription is deleted);
+--   4. they claimed or silenced it (dismissals).
+-- So unfollowing a team never takes away a deal already won.
 SELECT te.*, e.*,
     CASE WHEN d.id IS NOT NULL THEN 1 ELSE 0 END as is_dismissed,
     d.type as dismissal_type
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
-JOIN subscriptions s ON s.event_id = e.id AND s.user_id = ?
-LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = ?
+LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = sqlc.arg(user_id)
 WHERE datetime(te.expires_at) > datetime('now')
+  AND (
+    d.id IS NOT NULL
+    OR EXISTS (SELECT 1 FROM subscriptions s WHERE s.event_id = te.event_id AND s.user_id = sqlc.arg(user_id))
+    OR EXISTS (SELECT 1 FROM notifications n WHERE n.triggered_event_id = te.id AND n.user_id = sqlc.arg(user_id))
+    OR EXISTS (SELECT 1 FROM kept_deals k WHERE k.triggered_event_id = te.id AND k.user_id = sqlc.arg(user_id))
+  )
 ORDER BY te.expires_at ASC;
+
+-- name: KeepWonDeals :exec
+-- Before an unfollow deletes the subscription: keep the event's live deals the
+-- user can see now, so they stay in WON (see ListActiveTriggeredEventsForUser).
+INSERT OR IGNORE INTO kept_deals (user_id, triggered_event_id)
+SELECT s.user_id, te.id
+FROM subscriptions s
+JOIN triggered_events te ON te.event_id = s.event_id
+WHERE s.user_id = sqlc.arg(user_id)
+  AND s.event_id = sqlc.arg(event_id)
+  AND datetime(te.expires_at) > datetime('now');
 
 -- name: GetTriggeredEvent :one
 SELECT te.*, e.*
@@ -151,6 +223,12 @@ RETURNING *;
 
 -- name: GetDismissal :one
 SELECT * FROM dismissals WHERE user_id = ? AND triggered_event_id = ? LIMIT 1;
+
+-- name: UpdateDismissalType :one
+-- Upgrades a silenced deal (stop_reminding) to claimed (got_it).
+UPDATE dismissals SET type = ?, dismissed_at = CURRENT_TIMESTAMP
+WHERE user_id = ? AND triggered_event_id = ?
+RETURNING *;
 
 -- name: DeleteDismissal :exec
 DELETE FROM dismissals WHERE user_id = ? AND triggered_event_id = ?;
@@ -186,7 +264,9 @@ LEFT JOIN notifications n ON n.user_id = u.id AND n.triggered_event_id = te.id
 WHERE te.id = ?
   AND u.push_token IS NOT NULL
   AND u.push_token != ''
-  AND (d.id IS NULL OR d.type != 'stop_reminding');
+  -- Anyone who dismissed it, by claiming it (got_it) or silencing it
+  -- (stop_reminding), gets no more reminders for it.
+  AND d.id IS NULL;
 
 -- name: GetTriggeredEventByGameID :one
 SELECT * FROM triggered_events

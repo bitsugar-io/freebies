@@ -41,14 +41,18 @@ var TeamIDs = map[string]string{
 
 // scoreResponse is the subset of GET /v1/score/{date} we read.
 type scoreResponse struct {
-	Games []game `json:"games"`
+	// Games is nil when the key is missing or null, which is not a score page.
+	Games *[]game `json:"games"`
 }
 
 type game struct {
-	ID                int64  `json:"id"`
-	GameDate          string `json:"gameDate"`
-	StartTimeUTC      string `json:"startTimeUTC"`
-	GameState         string `json:"gameState"`
+	ID           int64  `json:"id"`
+	GameDate     string `json:"gameDate"`
+	StartTimeUTC string `json:"startTimeUTC"`
+	GameState    string `json:"gameState"`
+	// GameType: 1 preseason, 2 regular season, 3 playoffs, 4 All-Star,
+	// 19 international events (see counts).
+	GameType          int    `json:"gameType"`
 	GameScheduleState string `json:"gameScheduleState"`
 	AwayTeam          team   `json:"awayTeam"`
 	HomeTeam          team   `json:"homeTeam"`

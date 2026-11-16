@@ -105,3 +105,32 @@ func TestAuditStatuses(t *testing.T) {
 		}
 	}
 }
+
+// A rule's own fields are checked too: a misspelled window, a malformed clock
+// time, an unknown season, or season "regular" on a source that can't tell
+// playoff games apart (auditSource here) all fail; an empty window is fine.
+func TestAuditRuleFields(t *testing.T) {
+	sources.Register(auditSource{metrics: []string{"win"}, teams: []string{"AAA"}})
+	ev := func(id, ruleJSON string) db.Event {
+		return db.Event{ID: id, League: "auditleague", TeamID: "AAA", IsActive: 1,
+			TriggerRule: sql.NullString{Valid: true, String: ruleJSON}}
+	}
+	cases := map[string]struct {
+		rule string
+		want triggers.AuditStatus
+	}{
+		"empty window":   {`{"metric":"win","operator":"==","value":1}`, triggers.AuditOK},
+		"through":        {`{"metric":"win","operator":"==","value":1,"redemption_window":"through_next_business_day"}`, triggers.AuditOK},
+		"start time":     {`{"metric":"win","operator":"==","value":1,"available_from_local":"10:00"}`, triggers.AuditOK},
+		"typo window":    {`{"metric":"win","operator":"==","value":1,"redemption_window":"sameday"}`, triggers.AuditBadRule},
+		"bad time":       {`{"metric":"win","operator":"==","value":1,"expires_at_local":"10am"}`, triggers.AuditBadRule},
+		"bad season":     {`{"metric":"win","operator":"==","value":1,"season":"playoffs"}`, triggers.AuditBadRule},
+		"season unknown": {`{"metric":"win","operator":"==","value":1,"season":"regular"}`, triggers.AuditBadRule},
+	}
+	for name, tc := range cases {
+		rows := triggers.Audit([]db.Event{ev(name, tc.rule)})
+		if rows[0].Status != tc.want {
+			t.Errorf("%s: status %s (%s), want %s", name, rows[0].Status, rows[0].Detail, tc.want)
+		}
+	}
+}

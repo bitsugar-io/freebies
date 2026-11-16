@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
@@ -86,6 +87,30 @@ func TestReminderMessage(t *testing.T) {
 				t.Fatalf("got %q want %q", title, tc.wantTitle)
 			}
 		})
+	}
+}
+
+// Item 6: a code that unlocks later the same Pacific day gives the clock time,
+// not the day name; a later day keeps the day name.
+func TestUnlockWordingSameDay(t *testing.T) {
+	mon7am := time.Date(2026, 11, 16, 7, 0, 0, 0, pacific)
+	c := dealCopy{Partner: "P", Offer: "O", Condition: "C",
+		AvailableAt: time.Date(2026, 11, 16, 10, 0, 0, 0, pacific),
+		ExpiresAt:   time.Date(2026, 11, 16, 23, 59, 59, 0, pacific), HasExpiry: true}
+	if _, body := unlockedMessage(c, mon7am); body != "Code starts at 10am. Claim at P by 11:59pm." {
+		t.Errorf("same-day unlock push body = %q", body)
+	}
+	if title, body := reminderMessage(c, mon7am); !strings.Contains(title+" "+body, "starts at 10am") ||
+		strings.Contains(title+" "+body, "Mon") {
+		t.Errorf("same-day reminder = %q / %q, want \"starts at 10am\" and no day name", title, body)
+	}
+	sat := time.Date(2026, 11, 14, 7, 0, 0, 0, pacific)
+	if _, body := unlockedMessage(c, sat); !strings.HasPrefix(body, "Code unlocks Mon.") {
+		t.Errorf("later-day unlock push body = %q, want the day name", body)
+	}
+	sun := time.Date(2026, 11, 15, 7, 0, 0, 0, pacific)
+	if _, body := unlockedMessage(c, sun); !strings.HasPrefix(body, "Code unlocks tomorrow.") {
+		t.Errorf("next-day unlock push body = %q, want tomorrow", body)
 	}
 }
 

@@ -16,9 +16,10 @@ var _ sources.Scheduler = (*Source)(nil)
 
 // GamesOn returns the mapped teams' games on date (MLB's official date, the
 // local date of the game), in any state, from one league-wide schedule call.
-// Postponed and canceled games are left out.
+// Postponed, canceled and suspended games, spring training and exhibitions
+// are left out.
 func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.ScheduledGame, error) {
-	games, err := s.client.Schedule(ctx, mlbsdk.ScheduleQuery{On: date})
+	games, err := s.schedule(ctx, 0, date)
 	if err != nil {
 		return nil, fmt.Errorf("fetching schedule: %w", err)
 	}
@@ -29,25 +30,25 @@ func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.Schedul
 
 	var out []sources.ScheduledGame
 	for _, g := range games {
-		if skippedStatus(g.DetailedStatus) {
+		if skippedStatus(g.Status.DetailedState) || !g.counts() {
 			continue
 		}
-		state, ok := scheduleState(g.Status)
+		state, ok := scheduleState(mlbsdk.GameStatus(g.Status.AbstractGameState))
 		if !ok {
 			continue
 		}
 		for _, side := range []struct {
-			us, them mlbsdk.TeamScore
+			us, them scheduleSide
 			home     bool
-		}{{g.Home, g.Away, true}, {g.Away, g.Home, false}} {
-			code, ok := byID[side.us.ID]
+		}{{g.Teams.Home, g.Teams.Away, true}, {g.Teams.Away, g.Teams.Home, false}} {
+			code, ok := byID[mlbsdk.TeamID(side.us.Team.ID)]
 			if !ok {
 				continue
 			}
 			out = append(out, sources.ScheduledGame{
 				TeamID:   code,
-				Opponent: side.them.Name,
-				StartsAt: g.Date.UTC(),
+				Opponent: side.them.Team.Name,
+				StartsAt: g.GameDate.UTC(),
 				Home:     side.home,
 				State:    state,
 			})
@@ -57,12 +58,13 @@ func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.Schedul
 	return out, nil
 }
 
-// skippedStatus reports a game that will not be played that day. MLB marks a
-// postponed game's coarse state Final, so the detailed state decides.
+// skippedStatus reports a game that was not played (to the end) that day:
+// postponed, canceled or suspended ("Suspended: Rain"). MLB marks such a
+// game's coarse state Final, so the detailed state decides.
 func skippedStatus(detailed string) bool {
 	d := strings.ToLower(detailed)
 	return strings.HasPrefix(d, "postponed") || strings.HasPrefix(d, "cancelled") ||
-		strings.HasPrefix(d, "canceled")
+		strings.HasPrefix(d, "canceled") || strings.HasPrefix(d, "suspended")
 }
 
 func scheduleState(s mlbsdk.GameStatus) (string, bool) {
