@@ -9,8 +9,12 @@ api:
 
 workerSecret: ""
 
+# Schedules are Pacific wall-clock times all year (CronJob timeZone, Kubernetes
+# 1.27+), so they no longer shift an hour when daylight saving time ends.
+timeZone: "America/Los_Angeles"
+
 checkTriggers:
-  schedule: "0 14,16 * * *"   # 7am + 9am PT retry (UTC-7 DST); dedupes per game
+  schedule: "0 7,9 * * *"   # 7am + 9am retry; dedupes per game
 
 sendReminders:
-  schedule: "0 18,22,0 * * *"  # 11am, 3pm, 5pm PT (UTC-7 DST)
+  schedule: "0 11,15,17 * * *"  # 11am, 3pm, 5pm
