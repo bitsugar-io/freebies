@@ -104,7 +104,7 @@ func (q *Queries) CreateDismissal(ctx context.Context, arg CreateDismissalParams
 const createEvent = `-- name: CreateEvent :one
 INSERT INTO events (id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-RETURNING id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id
+RETURNING id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id, in_venue, venue
 `
 
 type CreateEventParams struct {
@@ -169,6 +169,8 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.SpriteID,
+		&i.InVenue,
+		&i.Venue,
 	)
 	return i, err
 }
@@ -397,7 +399,7 @@ func (q *Queries) GetDismissal(ctx context.Context, arg GetDismissalParams) (Dis
 }
 
 const getEvent = `-- name: GetEvent :one
-SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id FROM events WHERE id = ? LIMIT 1
+SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id, in_venue, venue FROM events WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetEvent(ctx context.Context, id string) (Event, error) {
@@ -424,6 +426,8 @@ func (q *Queries) GetEvent(ctx context.Context, id string) (Event, error) {
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.SpriteID,
+		&i.InVenue,
+		&i.Venue,
 	)
 	return i, err
 }
@@ -487,7 +491,7 @@ func (q *Queries) GetSubscription(ctx context.Context, arg GetSubscriptionParams
 }
 
 const getTriggeredEvent = `-- name: GetTriggeredEvent :one
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 WHERE te.id = ?
@@ -521,6 +525,8 @@ type GetTriggeredEventRow struct {
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 }
 
 func (q *Queries) GetTriggeredEvent(ctx context.Context, id string) (GetTriggeredEventRow, error) {
@@ -554,6 +560,8 @@ func (q *Queries) GetTriggeredEvent(ctx context.Context, id string) (GetTriggere
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.SpriteID,
+		&i.InVenue,
+		&i.Venue,
 	)
 	return i, err
 }
@@ -645,7 +653,7 @@ func (q *Queries) GetUserByToken(ctx context.Context, token sql.NullString) (Use
 }
 
 const listActiveEvents = `-- name: ListActiveEvents :many
-SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id FROM events WHERE is_active = 1 ORDER BY created_at DESC
+SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id, in_venue, venue FROM events WHERE is_active = 1 ORDER BY created_at DESC
 `
 
 func (q *Queries) ListActiveEvents(ctx context.Context) ([]Event, error) {
@@ -678,6 +686,8 @@ func (q *Queries) ListActiveEvents(ctx context.Context) ([]Event, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 		); err != nil {
 			return nil, err
 		}
@@ -693,7 +703,7 @@ func (q *Queries) ListActiveEvents(ctx context.Context) ([]Event, error) {
 }
 
 const listActiveTriggeredEvents = `-- name: ListActiveTriggeredEvents :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 WHERE datetime(te.expires_at) > datetime('now')
@@ -728,6 +738,8 @@ type ListActiveTriggeredEventsRow struct {
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 }
 
 func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTriggeredEventsRow, error) {
@@ -767,6 +779,8 @@ func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTr
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 		); err != nil {
 			return nil, err
 		}
@@ -782,7 +796,7 @@ func (q *Queries) ListActiveTriggeredEvents(ctx context.Context) ([]ListActiveTr
 }
 
 const listActiveTriggeredEventsForUser = `-- name: ListActiveTriggeredEventsForUser :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id,
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue,
     CASE WHEN d.id IS NOT NULL THEN 1 ELSE 0 END as is_dismissed,
     d.type as dismissal_type
 FROM triggered_events te
@@ -826,6 +840,8 @@ type ListActiveTriggeredEventsForUserRow struct {
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 	IsDismissed      int64          `json:"is_dismissed"`
 	DismissalType    sql.NullString `json:"dismissal_type"`
 }
@@ -867,6 +883,8 @@ func (q *Queries) ListActiveTriggeredEventsForUser(ctx context.Context, arg List
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 			&i.IsDismissed,
 			&i.DismissalType,
 		); err != nil {
@@ -959,7 +977,7 @@ func (q *Queries) ListAllUsers(ctx context.Context) ([]User, error) {
 }
 
 const listClaimedDealsForUser = `-- name: ListClaimedDealsForUser :many
-SELECT te.id AS triggered_event_id, te.triggered_at, te.available_at, d.dismissed_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+SELECT te.id AS triggered_event_id, te.triggered_at, te.available_at, d.dismissed_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM dismissals d
 JOIN triggered_events te ON te.id = d.triggered_event_id
 JOIN events e ON e.id = te.event_id
@@ -1016,6 +1034,8 @@ func (q *Queries) ListClaimedDealsForUser(ctx context.Context, arg ListClaimedDe
 			&i.Event.CreatedAt,
 			&i.Event.UpdatedAt,
 			&i.Event.SpriteID,
+			&i.Event.InVenue,
+			&i.Event.Venue,
 		); err != nil {
 			return nil, err
 		}
@@ -1089,7 +1109,7 @@ func (q *Queries) ListEventSubscribers(ctx context.Context, eventID string) ([]L
 }
 
 const listEvents = `-- name: ListEvents :many
-SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id FROM events ORDER BY created_at DESC
+SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id, in_venue, venue FROM events ORDER BY created_at DESC
 `
 
 func (q *Queries) ListEvents(ctx context.Context) ([]Event, error) {
@@ -1122,6 +1142,8 @@ func (q *Queries) ListEvents(ctx context.Context) ([]Event, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 		); err != nil {
 			return nil, err
 		}
@@ -1137,7 +1159,7 @@ func (q *Queries) ListEvents(ctx context.Context) ([]Event, error) {
 }
 
 const listExpiringTriggeredEvents = `-- name: ListExpiringTriggeredEvents :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 WHERE datetime(te.expires_at) > datetime('now')
@@ -1173,6 +1195,8 @@ type ListExpiringTriggeredEventsRow struct {
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 }
 
 func (q *Queries) ListExpiringTriggeredEvents(ctx context.Context, dollar_1 sql.NullString) ([]ListExpiringTriggeredEventsRow, error) {
@@ -1212,6 +1236,8 @@ func (q *Queries) ListExpiringTriggeredEvents(ctx context.Context, dollar_1 sql.
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 		); err != nil {
 			return nil, err
 		}
@@ -1438,7 +1464,7 @@ func (q *Queries) ListTeams(ctx context.Context) ([]ListTeamsRow, error) {
 }
 
 const listTriggeredEvents = `-- name: ListTriggeredEvents :many
-SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
 ORDER BY te.triggered_at DESC
@@ -1473,6 +1499,8 @@ type ListTriggeredEventsRow struct {
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 }
 
 func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListTriggeredEventsRow, error) {
@@ -1512,6 +1540,8 @@ func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListT
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 		); err != nil {
 			return nil, err
 		}
@@ -1527,7 +1557,7 @@ func (q *Queries) ListTriggeredEvents(ctx context.Context, limit int64) ([]ListT
 }
 
 const listUserSubscriptions = `-- name: ListUserSubscriptions :many
-SELECT s.id, s.user_id, s.event_id, s.created_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id
+SELECT s.id, s.user_id, s.event_id, s.created_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM subscriptions s
 JOIN events e ON s.event_id = e.id
 WHERE s.user_id = ?
@@ -1559,6 +1589,8 @@ type ListUserSubscriptionsRow struct {
 	CreatedAt_2      time.Time      `json:"created_at_2"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 }
 
 func (q *Queries) ListUserSubscriptions(ctx context.Context, userID string) ([]ListUserSubscriptionsRow, error) {
@@ -1595,6 +1627,8 @@ func (q *Queries) ListUserSubscriptions(ctx context.Context, userID string) ([]L
 			&i.CreatedAt_2,
 			&i.UpdatedAt,
 			&i.SpriteID,
+			&i.InVenue,
+			&i.Venue,
 		); err != nil {
 			return nil, err
 		}

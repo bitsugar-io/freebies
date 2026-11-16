@@ -38,6 +38,8 @@ type Event struct {
 	CreatedAt        time.Time      `json:"created_at"`
 	UpdatedAt        time.Time      `json:"updated_at"`
 	SpriteID         sql.NullString `json:"sprite_id"`
+	InVenue          int64          `json:"in_venue"`
+	Venue            sql.NullString `json:"venue"`
 }
 
 type FeatureFlag struct {

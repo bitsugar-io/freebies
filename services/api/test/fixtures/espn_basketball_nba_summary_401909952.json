@@ -1,0 +1,602 @@
+{
+ "plays": [
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "1"
+   },
+   "text": "Onyeka Okongwu misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Onyeka Okongwu makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Nickeil Alexander-Walker makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Nickeil Alexander-Walker makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Kingston Flemings makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Kingston Flemings makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Sandro Mamukelashvili makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Sandro Mamukelashvili makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "1"
+   },
+   "text": "Jalen Johnson misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Jalen Johnson makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Collin Sexton makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Collin Sexton makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Jalen Johnson makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Jalen Johnson makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Nickeil Alexander-Walker makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Nickeil Alexander-Walker makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 3"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 3"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 3 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 3 of 3"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Onyeka Okongwu makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "1"
+   },
+   "text": "Dyson Daniels misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Dyson Daniels makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Collin Sexton misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Collin Sexton misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "1"
+   },
+   "text": "Onyeka Okongwu misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Luka Doncic makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "CJ McCollum makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "CJ McCollum makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "1"
+   },
+   "text": "Luguentz Dort misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Luguentz Dort makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Walker Kessler misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Kingston Flemings makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "1"
+   },
+   "text": "Kingston Flemings misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Collin Sexton makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "13"
+   },
+   "text": "Collin Sexton misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - Technical"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "1"
+   },
+   "text": "Aaron Wiggins makes technical free throw"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Sandro Mamukelashvili makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "13"
+   },
+   "text": "Sandro Mamukelashvili makes free throw 2 of 2"
+  }
+ ]
+}

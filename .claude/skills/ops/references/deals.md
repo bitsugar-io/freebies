@@ -29,7 +29,12 @@ inactive event, the detail says what would be wrong if you turned it on. It exit
 migration, so a deal migration that ships an unfireable active deal fails the tests. At run time the
 checker logs `WARN deal <id> can never fire` for such a deal and skips it, without failing the run.
 
-A deal you cannot compute yet (an in-venue deal, a metric no source has) ships with `is_active = 0`.
+A deal you cannot compute yet (a metric no source has) ships with `is_active = 0`.
+
+An at-the-game deal (only fans at the venue can claim it) sets `in_venue = 1` and `venue` (for
+example `Intuit Dome`); the app tags it AT THE GAME and names the venue. If it is claimed in the
+venue that night, use the `game_night` window; if the ticket is the proof and you redeem later (UCLA
+Fat Sal's), use a normal window and it alerts like any other deal.
 
 ## Verifying a deal
 

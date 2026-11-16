@@ -14,6 +14,9 @@
 //	                     winner is credited one goal on the scoreboard)
 //	overtime             1 if the game was decided in overtime
 //	shootout             1 if the game was decided in a shootout
+//	p2_last_minute_goals goals the team scored in the last minute of the 2nd
+//	                     period (19:00 or later on the period clock); the Kings
+//	                     "McFlurry Minute"
 //
 // An NHL game cannot end tied, so a win is a win however it was decided: OT
 // and shootout wins count as wins. The Ducks McGriddles promotion page
@@ -77,6 +80,7 @@ func (s *Source) League() string { return "nhl" }
 func (s *Source) Metrics() []string {
 	return []string{
 		"win", "home_win", "goals", "home_goals_scored", "shutout", "overtime", "shootout",
+		"p2_last_minute_goals",
 	}
 }
 
@@ -154,6 +158,19 @@ func buildStats(g *game, teamID, abbrev string, date time.Time) (*sources.GameSt
 		lastPeriod = g.PeriodDescriptor.PeriodType
 	}
 
+	// The goal list is the only record of when goals came; a scoring game
+	// without one is an error, never a silent 0.
+	if ours > 0 && len(g.Goals) == 0 {
+		return nil, fmt.Errorf("NHL game %d has a score but no goal list", g.ID)
+	}
+	lateP2 := 0
+	for _, gl := range g.Goals {
+		if gl.TeamAbbrev == abbrev && gl.Period == 2 && gl.PeriodDescriptor.PeriodType == "REG" &&
+			gl.TimeInPeriod >= "19:00" {
+			lateP2++
+		}
+	}
+
 	return &sources.GameStats{
 		GameID:   fmt.Sprintf("nhl-%d", g.ID),
 		GameDate: date,
@@ -162,13 +179,14 @@ func buildStats(g *game, teamID, abbrev string, date time.Time) (*sources.GameSt
 		HomeGame: isHome,
 		Won:      won,
 		Metrics: map[string]int{
-			"win":               boolToInt(won),
-			"home_win":          boolToInt(won && isHome),
-			"goals":             ours,
-			"home_goals_scored": conditionalInt(isHome, ours),
-			"shutout":           boolToInt(theirs == 0 && lastPeriod != "SO"),
-			"overtime":          boolToInt(lastPeriod == "OT"),
-			"shootout":          boolToInt(lastPeriod == "SO"),
+			"win":                  boolToInt(won),
+			"home_win":             boolToInt(won && isHome),
+			"goals":                ours,
+			"home_goals_scored":    conditionalInt(isHome, ours),
+			"shutout":              boolToInt(theirs == 0 && lastPeriod != "SO"),
+			"overtime":             boolToInt(lastPeriod == "OT"),
+			"shootout":             boolToInt(lastPeriod == "SO"),
+			"p2_last_minute_goals": lateP2,
 		},
 	}, nil
 }

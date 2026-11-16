@@ -217,6 +217,70 @@
      "id": "14"
     }
    }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "19"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Dominic Zvada"
+        },
+        "stats": [
+         "2/2",
+         "100.0",
+         "52",
+         "0/0",
+         "6"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "14"
+    },
+    "statistics": [
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "displayName": "Harrison Mevis"
+        },
+        "stats": [
+         "0/1",
+         "0.0",
+         "0",
+         "4/4",
+         "4"
+        ]
+       }
+      ]
+     }
+    ]
+   }
   ]
  }
 }

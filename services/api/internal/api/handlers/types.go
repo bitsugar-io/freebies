@@ -31,6 +31,10 @@ type EventResponse struct {
 	AffiliateTagline *string `json:"affiliateTagline,omitempty"`
 	IsActive         bool    `json:"isActive"`
 	SpriteID         *string `json:"spriteId,omitempty"`
+	// InVenue: only fans at the game can claim it (the app labels it AT THE
+	// GAME); Venue names where ("Intuit Dome").
+	InVenue bool    `json:"inVenue"`
+	Venue   *string `json:"venue,omitempty"`
 	// Sprite is the pixel art for the deal; the "gift" fallback when unset.
 	Sprite *sprites.Sprite `json:"sprite,omitempty"`
 }

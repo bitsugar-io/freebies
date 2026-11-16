@@ -1,0 +1,407 @@
+{
+ "plays": [
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Eric Dailey Jr. makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Eric Dailey Jr. misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Nikola Kusturica makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Eric Dailey Jr. makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Eric Dailey Jr. makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Brandon Williams makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Brandon Williams makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Jaylen Petty misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Jaylen Petty makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Joe Philon III makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Sergej Macura misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Sergej Macura misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Trent Perry makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Trent Perry makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Trent Perry makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Trent Perry misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jai'chaunn Hayes misses free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Trent Perry makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Trent Perry misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Macaleab Rich makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "CJ Smith makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "CJ Smith makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "2029"
+   },
+   "text": "Jalen Tatum misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "26"
+   },
+   "text": "Joe Philon III misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "MadeFreeThrow"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "26"
+   },
+   "text": "Joe Philon III makes free throw 2 of 2"
+  }
+ ]
+}

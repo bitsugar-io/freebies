@@ -1,0 +1,524 @@
+{
+ "plays": [
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Darius Garland makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Darius Garland makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Max Strus makes free throw 1 of 3"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Max Strus makes free throw 2 of 3"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 3 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Max Strus makes free throw 3 of 3"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Keaton Wagler makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Keaton Wagler makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "12"
+   },
+   "text": "Isaiah Jackson misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Isaiah Jackson makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Keaton Wagler makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Keaton Wagler makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 1
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "25"
+   },
+   "text": "Nique Clifford misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "25"
+   },
+   "text": "Nique Clifford misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Rui Hachimura makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 2
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Rui Hachimura makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "12"
+   },
+   "text": "Brook Lopez misses free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Brook Lopez makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Shai Gilgeous-Alexander makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Isaiah Hartenstein makes free throw 1 of 1"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Darius Garland makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 3
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Darius Garland makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Isaiah Hartenstein makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "25"
+   },
+   "text": "Isaiah Hartenstein misses free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 3"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Gradey Dick makes free throw 1 of 3"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 3"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "12"
+   },
+   "text": "Gradey Dick misses free throw 2 of 3"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 3 of 3"
+   },
+   "scoringPlay": false,
+   "team": {
+    "id": "12"
+   },
+   "text": "Gradey Dick misses free throw 3 of 3"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - Flagrant 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Isaiah Hartenstein makes free throw flagrant 1 of 1"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Alex Caruso makes free throw 1 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 2 of 2"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "25"
+   },
+   "text": "Alex Caruso makes free throw 2 of 2"
+  },
+  {
+   "period": {
+    "number": 4
+   },
+   "type": {
+    "text": "Free Throw - 1 of 1"
+   },
+   "scoringPlay": true,
+   "team": {
+    "id": "12"
+   },
+   "text": "Darius Garland makes free throw 1 of 1"
+  }
+ ]
+}

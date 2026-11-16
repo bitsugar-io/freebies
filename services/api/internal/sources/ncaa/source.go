@@ -38,7 +38,8 @@ func config() espn.Config {
 		Teams:  TeamIDs,
 		Metrics: []string{"win", "home_win", "points", "home_points",
 			"football_win", "football_home_win", "football_points", "football_home_points",
-			"basketball_win", "basketball_home_win", "basketball_points", "basketball_home_points"},
+			"basketball_win", "basketball_home_win", "basketball_points", "basketball_home_points",
+			h2FTStreak},
 		Feeds: []espn.FeedConfig{
 			{
 				// groups=80 is FBS; limit keeps a full Saturday on one page.
@@ -62,6 +63,10 @@ func config() espn.Config {
 }
 
 // NewSource creates the ncaa source on ESPN's public site API, with retry.
+// h2FTStreak is, at a home basketball game, the most free throws the visitors
+// missed in a row in the 2nd half (play-by-play), else 0.
+const h2FTStreak = "basketball_home_h2_opponent_ft_miss_streak"
+
 func NewSource() *espn.Source { return espn.NewSource(config(), espn.NewClient()) }
 
 // NewSourceWithClient builds the source against baseURL using hc. Tests point
@@ -79,10 +84,22 @@ func sportMetrics(sport string) func(context.Context, *espn.Client, *espn.Game) 
 		if err != nil {
 			return nil, err
 		}
-		out := make(map[string]int, 2*len(m))
+		out := make(map[string]int, 2*len(m)+1)
 		for k, v := range m {
 			out[k] = v
 			out[sport+"_"+k] = v
+		}
+		if sport == "basketball" {
+			// UCLA / Fat Sal's "Missed Fry Throws": visitors miss 2 free
+			// throws in a row in the 2nd half of a home game.
+			out[h2FTStreak] = 0
+			if g.Home {
+				n, err := c.FreeThrowMissStreak(ctx, g.Feed.Path, g.Event.ID, g.Them.Team.ID, 2)
+				if err != nil {
+					return nil, err
+				}
+				out[h2FTStreak] = n
+			}
 		}
 		return out, nil
 	}

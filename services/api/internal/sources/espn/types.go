@@ -96,5 +96,34 @@ type summaryResponse struct {
 				DisplayValue string `json:"displayValue"`
 			} `json:"statistics"`
 		} `json:"teams"`
+		// Players holds per-player categories ("kicking", ...) per team.
+		Players []struct {
+			Team struct {
+				ID string `json:"id"`
+			} `json:"team"`
+			Statistics []struct {
+				Name     string   `json:"name"`
+				Keys     []string `json:"keys"`
+				Athletes []struct {
+					Stats []string `json:"stats"`
+				} `json:"athletes"`
+			} `json:"statistics"`
+		} `json:"players"`
 	} `json:"boxscore"`
+	// Plays is the play-by-play (basketball; football uses drives).
+	Plays []Play `json:"plays"`
+}
+
+// Play is one play-by-play entry.
+type Play struct {
+	Period struct {
+		Number int `json:"number"`
+	} `json:"period"`
+	Type struct {
+		Text string `json:"text"`
+	} `json:"type"`
+	ScoringPlay bool `json:"scoringPlay"`
+	Team        struct {
+		ID string `json:"id"`
+	} `json:"team"`
 }

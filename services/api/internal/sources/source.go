@@ -46,6 +46,36 @@ type TeamLister interface {
 	Teams() []string
 }
 
+// ScheduledGame is one game on a team's schedule, in any state.
+type ScheduledGame struct {
+	// TeamID is the Freebies team code (events.team_id).
+	TeamID   string
+	Opponent string
+	// StartsAt is the scheduled start.
+	StartsAt time.Time
+	// Home is true only for a real home game (not a neutral site).
+	Home bool
+	// State is "pre" (not started), "in" (live) or "post" (over).
+	State string
+}
+
+// Game states for ScheduledGame.State.
+const (
+	StatePre  = "pre"
+	StateIn   = "in"
+	StatePost = "post"
+)
+
+// Scheduler is implemented by sources that can list a day's games before they
+// finish, for the app's "Today" view.
+type Scheduler interface {
+	// GamesOn returns the games of the source's mapped teams that start on
+	// the given America/Los_Angeles date (only its Y/M/D are used), in any
+	// state. Postponed and canceled games are left out. A game between two
+	// mapped teams appears once per team.
+	GamesOn(ctx context.Context, date time.Time) ([]ScheduledGame, error)
+}
+
 // Registry holds all registered sources
 type Registry struct {
 	mu      sync.RWMutex

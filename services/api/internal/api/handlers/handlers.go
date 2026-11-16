@@ -93,6 +93,8 @@ func eventToResponse(e db.Event) EventResponse {
 		AffiliateTagline: affiliateTagline,
 		IsActive:         e.IsActive == 1,
 		SpriteID:         nullStringPtr(e.SpriteID),
+		InVenue:          e.InVenue == 1,
+		Venue:            nullStringPtr(e.Venue),
 	}
 }
 
@@ -330,6 +332,8 @@ func (h *Handler) ListSubscriptions(w http.ResponseWriter, r *http.Request) {
 				RegionCode:       regionCode,
 				IsActive:         row.IsActive == 1,
 				SpriteID:         nullStringPtr(row.SpriteID),
+				InVenue:          row.InVenue == 1,
+				Venue:            nullStringPtr(row.Venue),
 			},
 		}
 	}
@@ -493,6 +497,8 @@ func (h *Handler) ListActiveDeals(w http.ResponseWriter, r *http.Request) {
 				AffiliateTagline: affiliateTagline,
 				IsActive:         row.IsActive == 1,
 				SpriteID:         nullStringPtr(row.SpriteID),
+				InVenue:          row.InVenue == 1,
+				Venue:            nullStringPtr(row.Venue),
 			},
 			IsDismissed:   row.IsDismissed == 1,
 			DismissalType: dismissalType,

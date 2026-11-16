@@ -44,7 +44,10 @@ func TestOnlyLAEventsActive(t *testing.T) {
 
 	// Only deals that are in season, not in-venue-only, and whose metric a
 	// source emits (see TestSeededActiveDealsCanFire in internal/triggers).
-	want := []string{"event-nfl-lar-carlsjr", "event-nhl-ana-mcdonalds"}
+	want := []string{
+		"event-nba-lac-chickfila", "event-nba-lal-jitb", "event-ncaa-ucla-fatsals", "event-ncaa-ucla-fatsals-hoops", "event-nfl-lach-firehouse",
+		"event-nfl-lar-carlsjr", "event-nhl-ana-chickfila", "event-nhl-ana-mcdonalds", "event-nhl-lak-mcdonalds",
+	}
 	if !reflect.DeepEqual(active, want) {
 		t.Fatalf("active events\n got %v\nwant %v", active, want)
 	}
