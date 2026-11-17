@@ -21,8 +21,20 @@ export function isNearBlack(hex: string): boolean {
   return contrastOnBlack(hex) < 1.4;
 }
 
-/** Field and stripe colors for a tile: swap only when the primary is near black and the secondary is not. */
-export function tilePair(primary: string, secondary: string): { field: string; stripe: string } {
-  if (isNearBlack(primary) && !isNearBlack(secondary)) return { field: secondary, stripe: primary };
-  return { field: primary, stripe: secondary };
+/**
+ * Field and stripe colors for a tile: swap only when the primary is near black and the secondary is
+ * not. The stripe sits on the black name strip, so a near-black stripe (Kings, Ducks, LAFC, Angel
+ * City) uses the team's accent from the API instead, when it has one.
+ */
+export function tilePair(
+  primary: string,
+  secondary: string,
+  accent?: string | null
+): { field: string; stripe: string } {
+  const pair =
+    isNearBlack(primary) && !isNearBlack(secondary)
+      ? { field: secondary, stripe: primary }
+      : { field: primary, stripe: secondary };
+  if (isNearBlack(pair.stripe) && accent && !isNearBlack(accent)) pair.stripe = accent;
+  return pair;
 }

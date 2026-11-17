@@ -250,11 +250,15 @@ border and a blinking gold ✓ in a black badge that blinks as a whole, backgrou
 a solid "1/2"). One font size for every tile name; long names wrap to two centered lines in a fixed
 box.
 
-Team colors are allowed only on team tiles, to tell teams apart. They are never the app's brand or
-chrome, they are always NES-snapped, and they are served by the API (`team.colors`), never
-hardcoded, so `audit-colors.sh` has nothing to allow. Open question for the owner: this sits against
-legal guardrail 4 and palette rule 7 ("no team color schemes", "team identity is never encoded by
-color"); see the note under [Legal guardrails](#legal-guardrails).
+Team colors are allowed only where they name a team: tiles, the team stripe under the top bar, and
+the YOU WON rays. They are never the app's brand or chrome. They are each team's **official** colors
+(owner decision 2026-11-17, replacing NES-snapped stand-ins that made every gold the same yellow),
+served by the API (`team.colors`), never hardcoded, so `audit-colors.sh` has nothing to allow. A
+team with a black color also gets `team.colors.accent`: the tile's middle line and the top-bar
+stripe use it where black would vanish on black (Kings white, Ducks metallic gold, LAFC red, Angel
+City gold). Open question for the owner: this sits against legal guardrail 4 and palette rule 7 ("no
+team color schemes", "team identity is never encoded by color"); see the note under
+[Legal guardrails](#legal-guardrails).
 
 ### Lock-screen widget
 
@@ -382,6 +386,6 @@ Not legal advice. When in doubt, leave it out and ask the owner.
 8. Only verified deals are active. A deal we can't confirm on the sponsor's or team's own page ships
    with `is_active = 0`.
 
-Owner exception, pending legal review: team tiles show two NES-snapped colors per team from the API
+Owner exception, pending legal review: team tiles show each team's official colors from the API
 (`team.colors`). Guardrail 4 ("no team color schemes") and palette rule 7 still apply everywhere
 else, and this exception needs a legal check before release.

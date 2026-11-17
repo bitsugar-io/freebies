@@ -1465,6 +1465,7 @@ func (q *Queries) ListSprites(ctx context.Context) ([]Sprite, error) {
 const listTeams = `-- name: ListTeams :many
 SELECT t.id, t.name, t.full_name, t.league, t.sport, t.season_start, t.season_end,
        t.return_label, t.display_order, t.badge_sprite_id, t.primary_color, t.secondary_color,
+       t.accent_color,
        COALESCE(l.name, UPPER(t.league)) AS league_name,
        (SELECT COUNT(*) FROM events e WHERE e.team_id = t.id AND e.is_active = 1) AS active_deals
 FROM teams t
@@ -1485,6 +1486,7 @@ type ListTeamsRow struct {
 	BadgeSpriteID  sql.NullString `json:"badge_sprite_id"`
 	PrimaryColor   sql.NullString `json:"primary_color"`
 	SecondaryColor sql.NullString `json:"secondary_color"`
+	AccentColor    sql.NullString `json:"accent_color"`
 	LeagueName     string         `json:"league_name"`
 	ActiveDeals    int64          `json:"active_deals"`
 }
@@ -1511,6 +1513,7 @@ func (q *Queries) ListTeams(ctx context.Context) ([]ListTeamsRow, error) {
 			&i.BadgeSpriteID,
 			&i.PrimaryColor,
 			&i.SecondaryColor,
+			&i.AccentColor,
 			&i.LeagueName,
 			&i.ActiveDeals,
 		); err != nil {

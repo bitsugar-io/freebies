@@ -80,7 +80,8 @@ export interface Team {
   leagueName?: string;
   badgeSpriteId?: string;
   /** Two-tone team identity (NES hex) for team tiles only. Optional. */
-  colors?: { primary: string; secondary: string };
+  /** Official team colors; accent is the tile's middle line when a team color is black. */
+  colors?: { primary: string; secondary: string; accent?: string };
   /** Badge art from the API (same shape as event.sprite). Bundled badges are offline fallback. */
   badge?: Sprite;
   inSeason: boolean;

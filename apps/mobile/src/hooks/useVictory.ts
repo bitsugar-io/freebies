@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useAppData } from '../context/AppDataContext';
 import { colors } from './useTheme';
+import { isNearBlack } from '../utils/tileColors';
 
 export interface Victory {
   /** Short team name from the API, e.g. "Rams". */
@@ -9,9 +10,10 @@ export interface Victory {
   stripe: [string, string];
 }
 
-/** A black team color would vanish against the black bar; draw it as white instead. */
-function visible(c: string): string {
-  return c.toUpperCase() === colors.background ? colors.text : c;
+/** A black team color (Kings #111111 too) would vanish against the black bar: use the team's accent, else white. */
+function visible(c: string, accent?: string): string {
+  if (!isNearBlack(c)) return c;
+  return accent && !isNearBlack(accent) ? accent : colors.text;
 }
 
 /**
@@ -25,7 +27,7 @@ export function useVictory(): Victory | null {
     const live = [...liveWon].sort((a, b) => new Date(b.triggeredAt).getTime() - new Date(a.triggeredAt).getTime());
     for (const d of live) {
       const t = teams.find((x) => x.id === d.event.teamId);
-      if (t?.colors) return { team: t.name, stripe: [visible(t.colors.primary), visible(t.colors.secondary)] };
+      if (t?.colors) return { team: t.name, stripe: [visible(t.colors.primary, t.colors.accent), visible(t.colors.secondary, t.colors.accent)] };
     }
     return null;
   }, [liveWon, teams]);

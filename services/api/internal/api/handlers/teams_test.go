@@ -136,8 +136,13 @@ func TestListTeams(t *testing.T) {
 			if tm.ID == "LAK" && (tm.LeagueName != "NHL" || *tm.BadgeSpriteID != "sport-hockey") {
 				t.Errorf("LAK = %+v", tm)
 			}
-			if tm.ID == "LAL" && (tm.Colors == nil || tm.Colors.Primary != "#4428BC" || tm.Colors.Secondary != "#F8B800") {
+			// Official colors (046): Lakers purple and gold, no accent needed.
+			if tm.ID == "LAL" && (tm.Colors == nil || tm.Colors.Primary != "#552583" || tm.Colors.Secondary != "#FDB927" || tm.Colors.Accent != nil) {
 				t.Errorf("LAL colors = %+v", tm.Colors)
+			}
+			// A team with a black color gets an accent for the tile's middle line.
+			if tm.ID == "LAFC" && (tm.Colors == nil || tm.Colors.Secondary != "#C39E6D" || tm.Colors.Accent == nil || *tm.Colors.Accent != "#E31837") {
+				t.Errorf("LAFC colors = %+v", tm.Colors)
 			}
 			if tm.ID == "USC" && tm.LeagueName != "NCAA" {
 				t.Errorf("USC leagueName = %q", tm.LeagueName)

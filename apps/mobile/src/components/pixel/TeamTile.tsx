@@ -20,7 +20,7 @@ interface Props {
   sport: string;
   badge?: Sprite;
   /** Two-tone identity from the API (NES hex). Missing: the panel color. */
-  teamColors?: { primary: string; secondary: string };
+  teamColors?: { primary: string; secondary: string; accent?: string };
   /** Offers followed / offers available for this team. */
   followed: number;
   total: number;
@@ -65,7 +65,7 @@ export function TeamTile({
   const deals = activeDeals === 0 ? ', no deal yet' : '';
   // A near-black primary would vanish into the black screen: swap so the lighter color is the field.
   // Navy and other dark-but-visible colors keep their order.
-  const pair = teamColors ? tilePair(teamColors.primary, teamColors.secondary) : null;
+  const pair = teamColors ? tilePair(teamColors.primary, teamColors.secondary, teamColors.accent) : null;
   const primary0 = pair?.field ?? colors.surface;
   const secondary0 = pair?.stripe ?? colors.textMuted;
   const primary = inSeason ? primary0 : grayHex(primary0);
