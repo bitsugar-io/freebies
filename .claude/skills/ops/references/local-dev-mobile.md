@@ -28,9 +28,21 @@ switches to Expo Go, which is the quick path for UI work.
 - **Expo Go** must match the app's Expo SDK (`expo` in `apps/mobile/package.json`). The simulator
   offers to install the right version; on a phone, update Expo Go from the store. A mismatch shows
   "Project is incompatible with this version of Expo Go".
-- **Development build** has the real icon, splash and native modules. Build it once with EAS (the
-  `development` profile; see [release-mobile.md](release-mobile.md)), install it on the simulator,
-  then run `mise exec -- bunx expo start` without `--go`.
+- **Development build** has the real icon, splash and native modules. Build it locally with Xcode
+  (free, about 10 minutes the first time), in `apps/mobile`:
+
+  ```bash
+  CI=1 mise exec -- bunx expo prebuild --clean --platform ios
+  CI=1 mise exec -- bunx expo run:ios --device "iPhone 16e" --port 8083
+  ```
+
+  It installs "Freebies" on the simulator and serves it from its own Metro on :8083, leaving the
+  usual :8081/:8082 alone. Prebuild rewrites the `ios` and `android` scripts in `package.json` to
+  `expo run:*`; undo that with `git restore apps/mobile/package.json` (they stay `expo start`). The
+  generated `ios/` folder is gitignored. Rebuild whenever the icon, splash, app name or a native
+  module changes, and delete stale installs (`xcrun simctl uninstall booted <bundle id>`). EAS's
+  `development` profile builds the same thing in the cloud ([release-mobile.md](release-mobile.md)).
+
 - **Push notifications** need a physical device and a `preview` or `production` build.
 
 ## Before calling a UI change done
