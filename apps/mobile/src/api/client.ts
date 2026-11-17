@@ -1,5 +1,9 @@
 // API client for Freebies backend
 import * as SecureStore from 'expo-secure-store';
+import { HttpError } from './errors';
+import { observeServerDate } from '../utils/serverClock';
+
+export { HttpError } from './errors';
 
 const API_BASE_URL = __DEV__
   ? 'http://localhost:8080/api/v1'
@@ -220,8 +224,11 @@ class ApiClient {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     let response: Response;
+    const sentAt = Date.now();
     try {
       response = await fetch(url, { ...options, headers, signal: controller.signal });
+      // Correct the device clock from the server's (expiry and countdowns use it).
+      observeServerDate(response.headers?.get?.('Date'), sentAt, Date.now());
     } catch (err) {
       if (controller.signal.aborted) throw new Error('Request timed out');
       throw err;
@@ -233,7 +240,7 @@ class ApiClient {
       const error: ApiError = await response.json().catch(() => ({
         error: `HTTP ${response.status}`,
       }));
-      throw new Error(error.error || `Request failed: ${response.status}`);
+      throw new HttpError(response.status, error.error || `Request failed: ${response.status}`);
     }
 
     // Handle 204 No Content
@@ -261,6 +268,11 @@ class ApiClient {
   // Today: claimable deals from every LA team and today's games
   async getToday(): Promise<Today> {
     return this.request<Today>('/today');
+  }
+
+  /** One triggered deal by id (public; same shape as a TODAY live item). Expired ones too. */
+  async getTriggered(id: string): Promise<TodayDeal> {
+    return this.request<TodayDeal>(`/triggered/${encodeURIComponent(id)}`);
   }
 
   // Teams

@@ -6,12 +6,15 @@ import { useSubscriptions } from '../hooks/useSubscriptions';
 import { useClaimedDeals } from '../hooks/useClaimedDeals';
 import { useActiveDeals } from '../hooks/useActiveDeals';
 import { useUser } from '../hooks/useUser';
+import { useToday } from '../hooks/useToday';
+import { useNow } from '../hooks/useNow';
+import { serverNow } from '../utils/serverClock';
 import { AlertsStatus, markAlertsPrimed, shouldPrimeAlerts, usePushAlerts } from '../hooks/usePushNotifications';
-import { api, Event, ActiveDeal, ClaimedDeal, Team, UserStats } from '../api/client';
+import { api, Event, ActiveDeal, ClaimedDeal, Team, Today, UserStats } from '../api/client';
 import { navigationRef } from '../navigation/ref';
 import { useToast } from '../components/pixel/Toast';
 import { teamNameFrom } from '../utils/format';
-import { countActiveFollowed } from '../utils/dealState';
+import { followedTeamIds, liveWonDeals } from '../utils/dealState';
 import { useAppConfig } from './AppConfigContext';
 
 interface AppDataContextType {
@@ -36,8 +39,10 @@ interface AppDataContextType {
   isSubscribed: (eventId: string) => boolean;
   /** Follow or unfollow offers in one go. Instant, parallel, with a toast if any fail. */
   setSubscribed: (eventIds: string[], on: boolean) => Promise<boolean>;
-  /** Followed deals that are still active. Subscriptions to retired events never count. */
+  /** How many teams you follow (a team with several followed deals counts once). */
   followedCount: number;
+  /** The ids of the teams you follow, sorted. */
+  followedTeams: string[];
   /** Short team name from the API's team list ("Dodgers"); falls back to the event's full name. */
   teamName: (teamId: string, fallback?: string) => string;
   subsLoading: boolean;
@@ -46,6 +51,8 @@ interface AppDataContextType {
   /** Every deal the server returned: unlocked and dismissed. */
   allDeals: ActiveDeal[];
   undismissedDeals: ActiveDeal[];
+  /** Won, not claimed or silenced, not expired (liveWonDeals): the badge, stat line and WON list. */
+  liveWon: ActiveDeal[];
   dismissedDeals: ActiveDeal[];
   dismissDeal: (triggeredEventId: string, type: 'got_it' | 'stop_reminding') => Promise<void>;
   undoDismissal: (triggeredEventId: string) => Promise<void>;
@@ -57,6 +64,14 @@ interface AppDataContextType {
   dealsStale: boolean;
   dealsSavedAt: number | null;
   refetchDeals: () => Promise<void>;
+
+  // Today (GET /today), refreshed on foreground, pushes, pull to refresh and a new Pacific day
+  today: Today | null;
+  todayLoading: boolean;
+  todayError: string | null;
+  todaySavedAt: number | null;
+  /** Refetch unless fetched in the last minute (tab focus). */
+  refreshTodayIfStale: () => Promise<void>;
 
   // Alerts
   alertsStatus: AlertsStatus;
@@ -108,7 +123,21 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     refetch: refetchDeals,
   } = useActiveDeals();
 
-  const followedCount = useMemo(() => countActiveFollowed(events, isSubscribed), [events, isSubscribed]);
+  const {
+    today,
+    isLoading: todayLoading,
+    error: todayError,
+    savedAt: todaySavedAt,
+    refresh: refetchToday,
+    refreshIfStale: refreshTodayIfStale,
+  } = useToday();
+
+  // One shared "live won deals" list, re-checked each minute as deals expire.
+  const minute = useNow(60_000);
+  const liveWon = useMemo(() => liveWonDeals(undismissedDeals, minute), [undismissedDeals, minute]);
+
+  const followedTeams = useMemo(() => followedTeamIds(events, isSubscribed), [events, isSubscribed]);
+  const followedCount = followedTeams.length;
   const teamName = useCallback((teamId: string, fallback?: string) => teamNameFrom(teams, teamId, fallback), [teams]);
 
   const { claimed: claimedDeals, refetch: refetchClaimed } = useClaimedDeals();
@@ -151,7 +180,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setAlertsPausedUntil(user?.alertsPausedUntil ?? null);
   }, [user?.alertsPausedUntil, userId]);
-  const alertsPaused = !!alertsPausedUntil && new Date(alertsPausedUntil).getTime() > Date.now();
+  const alertsPaused = !!alertsPausedUntil && new Date(alertsPausedUntil).getTime() > serverNow();
   const pauseAlerts = useCallback(
     async (until: string | null): Promise<boolean> => {
       if (!userId) return false;
@@ -171,13 +200,21 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   );
 
   const refreshAll = useCallback(async () => {
-    await Promise.all([refetchEvents(), refetchDeals(), refetchStats(), refetchTeams(), refetchClaimed()]);
-  }, [refetchEvents, refetchDeals, refetchStats, refetchTeams, refetchClaimed]);
+    await Promise.all([
+      refetchEvents(),
+      refetchDeals(),
+      refetchSubs(),
+      refetchStats(),
+      refetchTeams(),
+      refetchClaimed(),
+      refetchToday(),
+    ]);
+  }, [refetchEvents, refetchDeals, refetchSubs, refetchStats, refetchTeams, refetchClaimed, refetchToday]);
 
   const retry = useCallback(async () => {
     if (userError || !user) await refreshUser();
-    await Promise.all([refreshAll(), refetchSubs()]);
-  }, [userError, user, refreshUser, refreshAll, refetchSubs]);
+    await refreshAll();
+  }, [userError, user, refreshUser, refreshAll]);
 
   const setSubscribed = useCallback(
     async (eventIds: string[], on: boolean): Promise<boolean> => {
@@ -230,10 +267,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     isSubscribed,
     setSubscribed,
     followedCount,
+    followedTeams,
     teamName,
     subsLoading,
     allDeals: activeDeals,
     undismissedDeals,
+    liveWon,
     dismissedDeals,
     dismissDeal,
     undoDismissal,
@@ -243,6 +282,11 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     dealsStale,
     dealsSavedAt,
     refetchDeals,
+    today,
+    todayLoading,
+    todayError,
+    todaySavedAt,
+    refreshTodayIfStale,
     alertsStatus,
     expoPushToken,
     enableAlerts,

@@ -8,24 +8,27 @@ Condensed from `docs/ui.md` and `docs/pivot/nes-style-research.md` (sections 1.3
 Every value comes from the NES master palette. App code references tokens from
 `src/hooks/useTheme.tsx`, never raw hex values.
 
-| Token          | Hex     | Role                         | Contrast limits                   |
-| -------------- | ------- | ---------------------------- | --------------------------------- |
-| bg.night       | #000000 | App background               | —                                 |
-| bg.panel       | #004058 | Boxes, cards                 | —                                 |
-| bg.panelAlt    | #0000BC | Header/HUD bar, selected     | —                                 |
-| text.primary   | #FCFCFC | Text, pixel borders          | OK on every background            |
-| text.secondary | #BCBCBC | Secondary text               | OK on night and panel             |
-| text.muted     | #7C7C7C | Hints, disabled              | **On night only**; fails on panel |
-| accent         | #F8B800 | Actions, ▶ cursor, scores    | Black text on it, never white     |
-| accent.light   | #F8D878 | Shine                        | —                                 |
-| success        | #58D854 | Deal won                     | —                                 |
-| success.deep   | #007800 | Fills under white text, turf | —                                 |
-| alert          | #F83800 | Live dot, errors             | Icons or large text only on panel |
-| alert.deep     | #A81000 | Fills under white text       | —                                 |
-| info           | #3CBCFC | Times, links, upcoming       | —                                 |
-| timer          | #FCA044 | Countdowns, expiring soon    | —                                 |
-| ice            | #A4E4FC | Small labels, ice            | —                                 |
-| skin           | #F0D0B0 | Sprites only                 | —                                 |
+| Token          | Hex     | Role                                   | Contrast limits                   |
+| -------------- | ------- | -------------------------------------- | --------------------------------- |
+| bg.night       | #000000 | App background                         | —                                 |
+| bg.panel       | #101010 | Boxes, cards (graphite)                | —                                 |
+| bg.panelAlt    | #2A2A2A | Selected, card header strips           | —                                 |
+| line.divider   | #3A3A3A | Row dividers                           | —                                 |
+| line.border    | #A5ACAF | Pixel borders (silver)                 | —                                 |
+| accent.shadow  | #8A6410 | Drop under gold buttons                | —                                 |
+| text.primary   | #FCFCFC | Text, pixel borders                    | OK on every background            |
+| text.secondary | #BCBCBC | Secondary text                         | OK on night and panel             |
+| text.muted     | #7C7C7C | Hints, disabled                        | 4.6:1 on panel, 4.8:1 on night    |
+| accent         | #F8B800 | Actions, ▶ cursor, scores              | Black text on it, never white     |
+| accent.light   | #F8D878 | Shine                                  | —                                 |
+| success        | #58D854 | Deal won                               | —                                 |
+| success.deep   | #007800 | Fills under white text, turf           | —                                 |
+| alert          | #F83800 | Live dot, errors                       | Icons or large text only on panel |
+| alert.deep     | #A81000 | Fills under white text                 | —                                 |
+| info           | #D8B8F8 | Lilac: times, upcoming, section labels | —                                 |
+| timer          | #FCA044 | Countdowns, expiring soon              | —                                 |
+| ice            | #A4E4FC | Small labels, ice                      | —                                 |
+| skin           | #F0D0B0 | Sprites only                           | —                                 |
 
 - No color carries meaning on its own; pair it with text or an icon.
 - Team identity is never shown by color, with one owner-approved exception: team tiles show the

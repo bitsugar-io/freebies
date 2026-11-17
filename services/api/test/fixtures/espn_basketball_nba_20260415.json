@@ -1,0 +1,58 @@
+{
+  "events": [
+    {
+      "id": "401866756",
+      "date": "2026-04-16T02:00Z",
+      "name": "Golden State Warriors at LA Clippers",
+      "season": {
+        "year": 2026,
+        "type": 5,
+        "slug": "play-in-season"
+      },
+      "competitions": [
+        {
+          "neutralSite": false,
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          },
+          "status": {
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "121",
+              "winner": false,
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers",
+                "shortDisplayName": "Clippers",
+                "abbreviation": "LAC"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "126",
+              "winner": true,
+              "team": {
+                "id": "9",
+                "displayName": "Golden State Warriors",
+                "shortDisplayName": "Warriors",
+                "abbreviation": "GS"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

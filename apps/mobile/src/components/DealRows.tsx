@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ActiveDeal, Event } from '../api/client';
 import { colors } from '../hooks/useTheme';
 import { useNow } from '../hooks/useNow';
+import { serverNow } from '../utils/serverClock';
 import { Blink } from '../hooks/useBlink';
 import { ExpiryBar, formatTimeLeft, isUrgent, spokenTimeLeft, timeLeftMs } from './pixel/DealBar';
 import { PixelBox } from './pixel/PixelBox';
@@ -80,7 +81,7 @@ export function venueLine(event: Event): string {
 }
 
 function isNew(triggeredAt: string) {
-  return Date.now() - new Date(triggeredAt).getTime() < DAY_MS;
+  return serverNow() - new Date(triggeredAt).getTime() < DAY_MS;
 }
 
 /** A won deal (locked until its code unlocks, if the API says so). The whole box is the one action: open the claim screen. */
@@ -203,6 +204,6 @@ const styles = StyleSheet.create({
     minHeight: 56,
     paddingVertical: 8,
     borderBottomWidth: 2,
-    borderBottomColor: colors.surface,
+    borderBottomColor: colors.divider,
   },
 });

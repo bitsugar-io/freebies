@@ -12,7 +12,7 @@ var _ sources.Scheduler = (*Source)(nil)
 
 // GamesOn returns the mapped teams' games on date (the NHL files a game under
 // its local date, which for an LA team is the Pacific date), in any state.
-// Postponed, canceled and suspended games are left out. It shares the
+// Postponed, canceled, suspended, preseason and All-Star games are left out. It shares the
 // per-date cache with GetGameByDate.
 func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.ScheduledGame, error) {
 	day := date.Format("2006-01-02")
@@ -32,6 +32,9 @@ func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.Schedul
 			continue
 		}
 		if g.GameScheduleState != "" && g.GameScheduleState != "OK" {
+			continue
+		}
+		if !counts(g) {
 			continue
 		}
 		state, ok := scheduleState(g.GameState)

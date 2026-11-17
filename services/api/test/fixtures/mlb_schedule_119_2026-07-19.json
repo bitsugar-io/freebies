@@ -1,0 +1,65 @@
+{
+ "dates": [
+  {
+   "date": "2026-07-19",
+   "games": [
+    {
+     "gamePk": 823523,
+     "gameType": "R",
+     "gameDate": "2026-07-19T16:35:00Z",
+     "officialDate": "2026-07-19",
+     "doubleHeader": "S",
+     "gameNumber": 1,
+     "status": {
+      "abstractGameState": "Final",
+      "detailedState": "Final"
+     },
+     "teams": {
+      "away": {
+       "team": {
+        "id": 119,
+        "name": "Los Angeles Dodgers"
+       },
+       "score": 8
+      },
+      "home": {
+       "team": {
+        "id": 147,
+        "name": "New York Yankees"
+       },
+       "score": 2
+      }
+     }
+    },
+    {
+     "gamePk": 823521,
+     "gameType": "R",
+     "gameDate": "2026-07-19T23:20:00Z",
+     "officialDate": "2026-07-19",
+     "doubleHeader": "S",
+     "gameNumber": 2,
+     "status": {
+      "abstractGameState": "Final",
+      "detailedState": "Final"
+     },
+     "teams": {
+      "away": {
+       "team": {
+        "id": 119,
+        "name": "Los Angeles Dodgers"
+       },
+       "score": 1
+      },
+      "home": {
+       "team": {
+        "id": 147,
+        "name": "New York Yankees"
+       },
+       "score": 2
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

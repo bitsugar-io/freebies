@@ -33,8 +33,11 @@ type CheckTriggersResult struct {
 
 // SendRemindersResult contains the summary of a send-reminders run.
 type SendRemindersResult struct {
-	Sent          int64 `json:"sent"`
-	Failed        int64 `json:"failed"`
+	Sent   int64 `json:"sent"`
+	Failed int64 `json:"failed"`
+	// Unknown counts pushes Expo may or may not have delivered; they are not
+	// sent again (see deliver).
+	Unknown       int64 `json:"unknown"`
 	ExpiringDeals int   `json:"expiringDeals"`
 }
 
@@ -121,10 +124,6 @@ func (s *Service) CheckTriggers(ctx context.Context, date time.Time) (*CheckTrig
 				"game", result.Stats.GameID,
 			)
 
-			if result.TriggeredEventID != "" {
-				sent := s.notifySubscribers(ctx, result)
-				notified += sent
-			}
 		} else {
 			s.logger.Info("not triggered",
 				"event_id", result.EventID,
@@ -136,6 +135,11 @@ func (s *Service) CheckTriggers(ctx context.Context, date time.Time) (*CheckTrig
 			)
 		}
 	}
+
+	// Send every "you won" push still owed: this run's new deals, and earlier
+	// ones whose push failed (Expo down at 7am) or never went out (the process
+	// died between recording the deal and sending). Only live deals qualify.
+	notified += s.sendOwedTriggerPushes(ctx)
 
 	res := &CheckTriggersResult{
 		Triggered:   triggered,
@@ -194,14 +198,17 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 
 	s.logger.Info("checking for active deals", "count", len(activeDeals))
 
-	var totalSent, totalFailed int64
+	var totalSent, totalFailed, totalUnknown int64
 	now := s.clock() // one instant for the whole pass
 	dayStart := time.Date(now.In(pacific).Year(), now.In(pacific).Month(), now.In(pacific).Day(),
 		0, 0, 0, 0, pacific).UTC().Format("2006-01-02 15:04:05")
 
 	for _, deal := range activeDeals {
-		// A delayed deal's code is not usable yet; nothing to remind about.
-		if deal.AvailableAt.Valid && deal.AvailableAt.Time.After(now) {
+		// A delayed deal's code is not usable yet; nothing to remind about,
+		// except on the day it unlocks: a deal that starts later today (even
+		// after the last reminder run) gets its reminder worded "starts at 6pm".
+		if deal.AvailableAt.Valid && deal.AvailableAt.Time.After(now) &&
+			pacificDay(deal.AvailableAt.Time) != pacificDay(now) {
 			continue
 		}
 		if !reminderDue(deal.TriggeredAt, deal.AvailableAt, deal.ExpiresAt, now) {
@@ -231,6 +238,8 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 			Condition: deal.TriggerCondition,
 			ExpiresAt: deal.ExpiresAt.Time,
 			HasExpiry: deal.ExpiresAt.Valid,
+
+			AvailableAt: deal.AvailableAt.Time,
 		}, now)
 		data := map[string]interface{}{
 			"triggeredEventId": deal.ID,
@@ -263,8 +272,6 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 			continue
 		}
 
-		messages = notify.DeduplicateMessages(messages)
-
 		userByToken := make(map[string]string, len(users))
 		for _, u := range users {
 			if u.PushToken.Valid {
@@ -272,58 +279,93 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 			}
 		}
 
-		batchResult := s.notifier.SendBatchConcurrent(ctx, s.logger, messages, notify.DefaultWorkers)
-		s.recordNotifications(ctx, messages, KindReminder, deal.ID, userByToken, batchResult)
+		batchResult := s.deliver(ctx, messages, KindReminder, deal.ID, userByToken)
 		totalSent += batchResult.Sent
 		totalFailed += batchResult.Failed
+		totalUnknown += batchResult.Unknown
 	}
 
 	res := &SendRemindersResult{
 		Sent:          totalSent,
 		Failed:        totalFailed,
+		Unknown:       totalUnknown,
 		ExpiringDeals: len(activeDeals),
 	}
-	s.logger.Info("send-reminders complete", "sent", totalSent, "failed", totalFailed, "active_deals", len(activeDeals))
+	s.logger.Info("send-reminders complete", "sent", totalSent, "failed", totalFailed,
+		"unknown", totalUnknown, "active_deals", len(activeDeals))
 	return res, nil
 }
 
-func (s *Service) notifySubscribers(ctx context.Context, result triggers.CheckResult) int {
-	now := s.clock()
-	subscribers, err := s.queries.ListEventSubscribers(ctx, result.EventID)
+// triggerPushDeal is a deal as the "you won" push needs it.
+type triggerPushDeal = db.ListTriggerPushDealsRow
+
+// sendOwedTriggerPushes sends the "you won" push for every live deal to the
+// followers who have not had it yet (ListUsersOwedTriggerPush) and returns
+// how many went out. Each check-triggers run calls it, so a push that failed
+// at 7am goes out at 9am, and so on until the deal expires.
+func (s *Service) sendOwedTriggerPushes(ctx context.Context) int {
+	deals, err := s.queries.ListTriggerPushDeals(ctx, sqlTimeUTC(s.clock()))
 	if err != nil {
-		s.logger.Error("failed to list subscribers", "event_id", result.EventID, "error", err)
+		s.logger.Error("failed to list deals owed a trigger push", "error", err)
 		return 0
+	}
+	sent := 0
+	for _, deal := range deals {
+		sent += int(s.pushTrigger(ctx, deal).Sent)
+	}
+	return sent
+}
+
+// NotifyTriggered sends the "you won" push for one recorded deal, exactly as
+// check-triggers would: same copy and deep link, paused users skipped, one
+// notifications row per push, nobody pushed twice. `deals trigger --notify`
+// uses it.
+func (s *Service) NotifyTriggered(ctx context.Context, triggeredEventID string) (*notify.BatchResult, error) {
+	deal, err := s.queries.GetTriggerPushDeal(ctx, triggeredEventID)
+	if err != nil {
+		return nil, fmt.Errorf("loading deal %s: %w", triggeredEventID, err)
+	}
+	return s.pushTrigger(ctx, triggerPushDeal(deal)), nil
+}
+
+// pushTrigger sends one deal's "you won" push to the followers still owed it.
+func (s *Service) pushTrigger(ctx context.Context, deal triggerPushDeal) *notify.BatchResult {
+	now := s.clock()
+	users, err := s.queries.ListUsersOwedTriggerPush(ctx, deal.ID)
+	if err != nil {
+		s.logger.Error("failed to list users owed a trigger push", "triggered_event_id", deal.ID, "error", err)
+		return &notify.BatchResult{}
 	}
 
 	title, body := unlockedMessage(dealCopy{
-		Partner:   result.Event.PartnerName,
-		Offer:     result.Event.OfferName,
-		Condition: result.Event.TriggerCondition,
-		ExpiresAt: result.ExpiresAt,
-		HasExpiry: !result.ExpiresAt.IsZero(),
+		Partner:   deal.PartnerName,
+		Offer:     deal.OfferName,
+		Condition: deal.TriggerCondition,
+		ExpiresAt: deal.ExpiresAt.Time,
+		HasExpiry: deal.ExpiresAt.Valid,
 
-		AvailableAt: result.AvailableAt,
+		AvailableAt: deal.AvailableAt.Time,
 	}, now)
 	data := map[string]interface{}{
-		"triggeredEventId": result.TriggeredEventID,
-		"eventId":          result.EventID,
-		"url":              dealDeepLink(result.TriggeredEventID),
+		"triggeredEventId": deal.ID,
+		"eventId":          deal.EventID,
+		"url":              dealDeepLink(deal.ID),
 	}
-	if !result.AvailableAt.IsZero() {
-		data["availableAt"] = result.AvailableAt.UTC().Format(time.RFC3339)
+	if deal.AvailableAt.Valid {
+		data["availableAt"] = deal.AvailableAt.Time.UTC().Format(time.RFC3339)
 	}
 
 	var messages []notify.ExpoPushMessage
-	for _, sub := range subscribers {
-		if !sub.PushToken.Valid || sub.PushToken.String == "" {
+	userByToken := make(map[string]string, len(users))
+	for _, u := range users {
+		// Paused users get no push now; a later run sends it if they resume
+		// while the deal is still live.
+		if alertsPaused(u.AlertsPausedUntil, now) {
 			continue
 		}
-		// The triggered event is already recorded; paused users just get no push.
-		if alertsPaused(sub.AlertsPausedUntil, now) {
-			continue
-		}
+		userByToken[u.PushToken.String] = u.ID
 		messages = append(messages, notify.ExpoPushMessage{
-			To:       sub.PushToken.String,
+			To:       u.PushToken.String,
 			Title:    title,
 			Body:     body,
 			Data:     data,
@@ -331,77 +373,96 @@ func (s *Service) notifySubscribers(ctx context.Context, result triggers.CheckRe
 			Priority: "high",
 		})
 	}
-
-	if len(messages) == 0 {
-		return 0
-	}
-
-	messages = notify.DeduplicateMessages(messages)
-
-	userByToken := make(map[string]string, len(subscribers))
-	for _, sub := range subscribers {
-		if sub.PushToken.Valid {
-			userByToken[sub.PushToken.String] = sub.UserID
-		}
-	}
-
-	batchResult := s.notifier.SendBatchConcurrent(ctx, s.logger, messages, notify.DefaultWorkers)
-	s.recordNotifications(ctx, messages, KindTrigger, result.TriggeredEventID, userByToken, batchResult)
-
-	if batchResult.Sent > 0 {
+	res := s.deliver(ctx, messages, KindTrigger, deal.ID, userByToken)
+	if res.Sent > 0 || res.Failed > 0 || res.Unknown > 0 {
 		s.logger.Info("notified subscribers",
-			"event_id", result.EventID,
-			"sent", batchResult.Sent,
-			"failed", batchResult.Failed,
+			"event_id", deal.EventID,
+			"triggered_event_id", deal.ID,
+			"sent", res.Sent,
+			"failed", res.Failed,
+			"unknown", res.Unknown,
 		)
 	}
-
-	return int(batchResult.Sent)
+	return res
 }
 
-// recordNotifications writes one row to `notifications` per attempted push,
-// with status reflecting whether the send succeeded. Status assignment is
-// positional: the first batchResult.Sent messages are marked "sent" and the
-// remainder "failed". SendBatchConcurrent only surfaces aggregate counts, so
-// per-row attribution may be wrong on a partial-batch failure — the aggregate
-// counts of "sent" vs "failed" rows are accurate, the per-user mapping is
-// approximate. Good enough for telemetry; precise per-ticket attribution
-// would require a notifier API change.
-func (s *Service) recordNotifications(
+// sqlTimeUTC formats t the way SQLite's datetime() compares it.
+func sqlTimeUTC(t time.Time) string { return t.UTC().Format("2006-01-02 15:04:05") }
+
+// deliver sends messages and records one notifications row per user with
+// that user's own outcome, taken from their own Expo ticket.
+//
+// Each row is written as 'pending' before the send and updated after it, so
+// the record never under-counts what may have reached a phone:
+//
+//   - sent: Expo returned an ok ticket.
+//   - failed: Expo rejected it or never got it. The next run retries it.
+//   - unknown: Expo may have it (the response was lost, or a 5xx). Not retried.
+//   - pending: the process died mid-send. Not retried.
+//
+// The rule is to prefer an occasional missed push over a duplicate one: only
+// 'failed' is ever retried. A user whose row cannot be written is not sent
+// to. A DeviceNotRegistered ticket clears that push token for good.
+func (s *Service) deliver(
 	ctx context.Context,
 	messages []notify.ExpoPushMessage,
 	kind string,
 	triggeredEventID string,
 	userByToken map[string]string,
-	batchResult *notify.BatchResult,
-) {
-	if triggeredEventID == "" {
-		return
-	}
-	sentRemaining := batchResult.Sent
+) *notify.BatchResult {
+	messages = notify.DeduplicateMessages(messages)
+	rowIDs := make([]string, 0, len(messages))
+	toSend := make([]notify.ExpoPushMessage, 0, len(messages))
 	for _, msg := range messages {
 		userID, ok := userByToken[msg.To]
 		if !ok {
 			continue
 		}
-		status := "failed"
-		if sentRemaining > 0 {
-			status = "sent"
-			sentRemaining--
-		}
+		id := uuid.New().String()
 		if _, err := s.queries.CreateNotification(ctx, db.CreateNotificationParams{
-			ID:               uuid.New().String(),
+			ID:               id,
 			UserID:           userID,
 			TriggeredEventID: triggeredEventID,
-			Status:           status,
+			Status:           "pending",
 			Kind:             kind,
 			SentAt:           s.clock().UTC(),
 		}); err != nil {
-			s.logger.Warn("failed to record notification",
-				"user_id", userID,
-				"triggered_event_id", triggeredEventID,
-				"error", err,
-			)
+			s.logger.Warn("failed to record notification; not sending it",
+				"user_id", userID, "triggered_event_id", triggeredEventID, "error", err)
+			continue
+		}
+		rowIDs = append(rowIDs, id)
+		toSend = append(toSend, msg)
+	}
+	if len(toSend) == 0 {
+		return &notify.BatchResult{}
+	}
+
+	res := s.notifier.SendBatchConcurrent(ctx, s.logger, toSend, notify.DefaultWorkers)
+	for i, r := range res.Results {
+		if err := s.queries.UpdateNotificationStatus(ctx, db.UpdateNotificationStatusParams{
+			Status: string(r.Delivery),
+			ID:     rowIDs[i],
+		}); err != nil {
+			s.logger.Warn("failed to record notification status",
+				"user_id", userByToken[r.To], "triggered_event_id", triggeredEventID,
+				"status", r.Delivery, "error", err)
+		}
+		if r.ErrorCode == notify.ErrDeviceNotRegistered {
+			// The app is gone from that device; stop sending to the token.
+			// The empty id excludes no one, so every user holding it loses it.
+			if err := s.queries.ClearPushToken(ctx, db.ClearPushTokenParams{
+				PushToken: sql.NullString{String: r.To, Valid: true},
+				ID:        "",
+			}); err != nil {
+				s.logger.Warn("failed to clear dead push token", "user_id", userByToken[r.To], "error", err)
+			} else {
+				s.logger.Info("cleared dead push token", "user_id", userByToken[r.To])
+			}
 		}
 	}
+	for _, err := range res.Errors {
+		s.logger.Warn("push batch error", "kind", kind, "triggered_event_id", triggeredEventID, "error", err)
+	}
+	return res
 }

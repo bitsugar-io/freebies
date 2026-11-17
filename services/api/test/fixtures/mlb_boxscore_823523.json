@@ -1,0 +1,70 @@
+{
+ "teams": {
+  "away": {
+   "team": {
+    "id": 119,
+    "name": "Los Angeles Dodgers"
+   },
+   "teamStats": {
+    "pitching": {
+     "strikeOuts": 7,
+     "hits": 4,
+     "runs": 2,
+     "homeRuns": 1,
+     "baseOnBalls": 0
+    },
+    "batting": {
+     "runs": 8,
+     "hits": 10,
+     "homeRuns": 0,
+     "rbi": 8,
+     "stolenBases": 0
+    }
+   },
+   "info": [
+    {
+     "title": "FIELDING",
+     "fieldList": [
+      {
+       "label": "DP",
+       "value": "(Freeman, F-Betts-Freeman, F)."
+      }
+     ]
+    }
+   ]
+  },
+  "home": {
+   "team": {
+    "id": 147,
+    "name": "New York Yankees"
+   },
+   "teamStats": {
+    "pitching": {
+     "strikeOuts": 13,
+     "hits": 10,
+     "runs": 8,
+     "homeRuns": 0,
+     "baseOnBalls": 7
+    },
+    "batting": {
+     "runs": 2,
+     "hits": 4,
+     "homeRuns": 1,
+     "rbi": 2,
+     "stolenBases": 0
+    }
+   },
+   "info": [
+    {
+     "title": "FIELDING",
+     "fieldList": [
+      {
+       "label": "Pickoffs",
+       "value": "Sánchez, A (Call at 3rd base)."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

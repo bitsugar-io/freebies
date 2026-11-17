@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,13 +8,11 @@ import { Screen } from '../components/Screen';
 import { ServerBlocks } from '../components/ServerBlocks';
 import { ErrorPanel, StaleBanner } from '../components/StatusPanels';
 import { UnlockedDealRow } from '../components/DealRows';
-import { AppLogo } from '../components/pixel/AppLogo';
+import { useVictory } from '../hooks/useVictory';
 import { SkeletonBox } from '../components/pixel/Skeleton';
 import { PixelBox } from '../components/pixel/PixelBox';
 import { PixelButton } from '../components/pixel/PixelButton';
-import { timeLeftMs } from '../components/pixel/DealBar';
 import { Text } from '../components/pixel/Text';
-import { useNow } from '../hooks/useNow';
 import type { RootStackParamList, TabParamList } from '../navigation/types';
 
 type Nav = BottomTabNavigationProp<TabParamList, 'Won'> & NativeStackNavigationProp<RootStackParamList>;
@@ -25,14 +23,11 @@ type Nav = BottomTabNavigationProp<TabParamList, 'Won'> & NativeStackNavigationP
  */
 export function WonScreen() {
   const nav = useNavigation<Nav>();
-  const { undismissedDeals, eventsLoading, dealsLoading, dealsError, dealsSavedAt, userError, refreshAll, retry } =
-    useAppData();
-  const now = useNow(60_000);
-
-  const won = useMemo(
-    () => undismissedDeals.filter((d) => (timeLeftMs(d.expiresAt, now) ?? 1) > 0),
-    [undismissedDeals, now]
-  );
+  const {
+    undismissedDeals, liveWon: won, eventsLoading, dealsLoading, dealsError, dealsSavedAt, userError, refreshAll, retry,
+    followedTeams, teamName,
+  } = useAppData();
+  const victory = useVictory();
 
   const today = new Date()
     .toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
@@ -41,7 +36,7 @@ export function WonScreen() {
   const loading = (eventsLoading || dealsLoading) && !failedEmpty;
 
   return (
-    <Screen title="Freebies" status={today} left={<AppLogo scale={1} />} onRefresh={refreshAll}>
+    <Screen title="Freebies" status={victory ? `${victory.team} won!` : today} onRefresh={refreshAll}>
       <ServerBlocks keys={['tonight', 'won']} />
       {dealsError && dealsSavedAt ? <StaleBanner savedAt={dealsSavedAt} onRetry={retry} /> : null}
       {failedEmpty ? <ErrorPanel message={userError ?? dealsError} onRetry={retry} /> : null}
@@ -66,12 +61,29 @@ export function WonScreen() {
           <Text variant="displayL" color="accent" align="center" accessibilityRole="header">
             Nothing won yet
           </Text>
-          <Text variant="body" color="textSecondary" align="center">
-            When your teams pull it off, your free food shows up here.
-          </Text>
-          <PixelButton label="Pick teams" onPress={() => nav.navigate('Teams')} />
+          {followedTeams.length > 0 ? (
+            <>
+              <Text variant="body" color="textSecondary" align="center">
+                {`Following ${listNames(followedTeams.map((id) => teamName(id)))}. When they pull it off, your free food shows up here.`}
+              </Text>
+              <PixelButton label="See today's games" onPress={() => nav.navigate('Today')} />
+            </>
+          ) : (
+            <>
+              <Text variant="body" color="textSecondary" align="center">
+                When your teams pull it off, your free food shows up here.
+              </Text>
+              <PixelButton label="Pick teams" onPress={() => nav.navigate('Teams')} />
+            </>
+          )}
         </PixelBox>
       ) : null}
     </Screen>
   );
+}
+
+/** "Ducks", "Ducks and Kings", "Ducks, Kings and Rams". */
+function listNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
 }

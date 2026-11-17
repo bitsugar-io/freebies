@@ -6,8 +6,6 @@ import (
 	"testing"
 	"time"
 
-	mlbsdk "github.com/retr0h/mlb-sdk/pkg/mlb"
-
 	"github.com/retr0h/freebie/services/api/internal/sources"
 )
 
@@ -28,7 +26,7 @@ func TestSource_GamesOn(t *testing.T) {
 	]}]}`
 	srv := fakeMLB{scheduleStatus: http.StatusOK, scheduleBody: schedule}.server()
 	t.Cleanup(srv.Close)
-	src := NewSourceWithClient(mlbsdk.New(mlbsdk.WithBaseURL(srv.URL)))
+	src := NewSourceWithClient(srv.URL, srv.Client())
 
 	got, err := src.GamesOn(context.Background(), time.Date(2026, 5, 8, 0, 0, 0, 0, time.UTC))
 	if err != nil {
@@ -51,7 +49,7 @@ func TestSource_GamesOn(t *testing.T) {
 
 	srv500 := fakeMLB{scheduleStatus: http.StatusInternalServerError}.server()
 	t.Cleanup(srv500.Close)
-	if _, err := NewSourceWithClient(mlbsdk.New(mlbsdk.WithBaseURL(srv500.URL))).GamesOn(
+	if _, err := NewSourceWithClient(srv500.URL, srv500.Client()).GamesOn(
 		context.Background(), time.Date(2026, 5, 8, 0, 0, 0, 0, time.UTC)); err == nil {
 		t.Fatal("expected an error from a failing schedule")
 	}

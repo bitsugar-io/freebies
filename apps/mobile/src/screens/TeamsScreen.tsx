@@ -354,7 +354,7 @@ export function SportTeamsScreen() {
       </View>
 
       {withEvents.length > 0 ? (
-        <Text variant="displayM" color="textMuted" accessibilityRole="header" style={{ marginTop: 24, marginBottom: 8 }}>
+        <Text variant="displayM" color="info" accessibilityRole="header" style={{ marginTop: 24, marginBottom: 8 }}>
           Deals by team
         </Text>
       ) : null}
@@ -407,7 +407,7 @@ export function SportTeamsScreen() {
 }
 
 const styles = StyleSheet.create({
-  sportRow: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: 2, borderBottomColor: colors.surface, paddingVertical: 8 },
+  sportRow: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: 2, borderBottomColor: colors.divider, paddingVertical: 8 },
   cursor: { width: 20, alignItems: 'flex-start' },
   gridRow: { flexDirection: 'row', gap: 8 },
   section: { marginTop: 8, marginBottom: 8 },
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     borderBottomWidth: 2,
-    borderBottomColor: colors.surface,
+    borderBottomColor: colors.divider,
     paddingVertical: 8,
   },
   offer: { flexDirection: 'row', alignItems: 'center', minHeight: 56, paddingLeft: 12 },

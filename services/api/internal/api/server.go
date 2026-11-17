@@ -75,6 +75,7 @@ func (s *Server) setupRoutes() {
 			r.Get("/leagues", h.ListLeagues)
 			r.Get("/teams", h.ListTeams)
 			r.Get("/today", h.GetToday)
+			r.Get("/triggered/{id}", h.GetTriggered) // one triggered deal (push taps, TODAY rows)
 			r.Get("/events", h.ListEvents)
 			r.Get("/events/{id}", h.GetEvent)
 			r.Get("/sprites", h.ListSprites)

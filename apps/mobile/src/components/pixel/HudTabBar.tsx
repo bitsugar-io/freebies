@@ -26,12 +26,13 @@ const TAB_ROOTS: Record<string, string> = { Teams: 'Sports' };
 export function HudTabBar({ state, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
   const wipe = useScreenWipe();
-  const { undismissedDeals, followedCount, alertsPaused } = useAppData();
-  const won = undismissedDeals.length;
+  const { liveWon, followedCount, alertsPaused } = useAppData();
+  // Same list as the WON screen (liveWonDeals): expired and dismissed wins never count.
+  const won = liveWon.length;
 
   const statLabel = [
     `${won} won`,
-    `following ${followedCount}`,
+    `following ${followedCount} ${followedCount === 1 ? 'team' : 'teams'}`,
     alertsPaused ? 'alerts paused' : null,
   ]
     .filter(Boolean)
@@ -112,7 +113,7 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  bar: { backgroundColor: colors.background, borderTopWidth: 3, borderTopColor: colors.border },
+  bar: { backgroundColor: colors.background, borderTopWidth: 3, borderTopColor: colors.info },
   stats: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingTop: 8, paddingBottom: 2 },
   sep: { width: 2, height: 12, marginHorizontal: 4, backgroundColor: colors.textMuted },
   // Equal columns, so the tabs sit evenly.

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import {
-  countActiveFollowed,
+  followedTeamIds,
   countdownTarget,
   countdownTone,
   dealPhase,
@@ -76,15 +76,24 @@ describe('countdown', () => {
   });
 });
 
-describe('follow count', () => {
+describe('followed teams', () => {
   const events = [
-    { id: 'a', isActive: true },
-    { id: 'b', isActive: false },
-    { id: 'c', isActive: true },
+    { id: 'ana-mcd', teamId: 'ANA', isActive: true },
+    { id: 'ana-cfa', teamId: 'ANA', isActive: true },
+    { id: 'lak-mcd', teamId: 'LAK', isActive: true },
+    { id: 'lar-old', teamId: 'LAR', isActive: false },
   ];
-  test('counts only subscriptions to active events', () => {
-    const subs = new Set(['a', 'b', 'gone']);
-    expect(countActiveFollowed(events, (id) => subs.has(id))).toBe(1);
+  test('a team with two followed deals counts once', () => {
+    const subs = new Set(['ana-mcd', 'ana-cfa']);
+    expect(followedTeamIds(events, (id) => subs.has(id))).toEqual(['ANA']);
+  });
+  test('teams, not deals: Ducks (2 deals) + Kings (1) is 2', () => {
+    const subs = new Set(['ana-mcd', 'ana-cfa', 'lak-mcd']);
+    expect(followedTeamIds(events, (id) => subs.has(id))).toEqual(['ANA', 'LAK']);
+  });
+  test('retired deals and unknown ids never count', () => {
+    const subs = new Set(['lar-old', 'gone']);
+    expect(followedTeamIds(events, (id) => subs.has(id))).toEqual([]);
   });
 });
 

@@ -61,10 +61,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           style={[styles.wrap, { bottom: insets.bottom + TAB_BAR_CLEARANCE }]}
           accessibilityLiveRegion="polite"
         >
-          <PixelBox variant="dialog" padding={8}>
+          <PixelBox variant="notice" padding={8}>
             <View style={styles.row}>
               <View style={{ flex: 1 }}>
-                <Text variant="caption">{toast.message}</Text>
+                <Text variant="bodyStrong" color="onAccent" style={{ fontSize: 15, lineHeight: 20 }}>
+                  {toast.message}
+                </Text>
               </View>
               {toast.actionLabel ? (
                 <Pressable
@@ -77,7 +79,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                   hitSlop={8}
                   style={styles.action}
                 >
-                  <Text variant="displayM" color="accent">
+                  <Text variant="displayM" color="onAccent" style={{ textDecorationLine: 'underline' }}>
                     {toast.actionLabel}
                   </Text>
                 </Pressable>

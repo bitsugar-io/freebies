@@ -14,27 +14,33 @@ NES tokens below, and the font choice in [Type](#type) overrides both docs.
 
 ## Palette
 
-Sixteen tokens, all from the NES master palette (Lospec 55-color set). No other colors exist in the
-app. Code references tokens, never hex values.
+Tokens from the NES master palette (Lospec 55-color set), plus the "Gold Standard" neutrals (owner
+decision, 2026-11-15): graphite panels, Dodger-silver borders and a dark-gold button drop, so the
+app sits next to the team-color icon without a clashing blue. Team colors come from the API and
+appear only on team tiles, the top-bar stripe and the YOU WON rays. Code references tokens, never
+hex values.
 
-| Token                 | NES | Hex       | Role                                                   |
-| --------------------- | --- | --------- | ------------------------------------------------------ |
-| `bg.night`            | $0F | `#000000` | App background, splash, sprite outline                 |
-| `bg.panel`            | $0C | `#004058` | PixelBox and card fill                                 |
-| `bg.panelAlt`         | $02 | `#0000BC` | Header bar, HUD strip, selected row                    |
-| `text.primary`        | $30 | `#FCFCFC` | Text, borders                                          |
-| `text.secondary`      | $10 | `#BCBCBC` | Secondary text                                         |
-| `text.muted`          | $00 | `#7C7C7C` | Disabled, hints. On `bg.night` only                    |
-| `accent.primary`      | $28 | `#F8B800` | Primary action, ▶ cursor, selected cell, key words     |
-| `accent.primaryLight` | $38 | `#F8D878` | Highlights, sprite shine                               |
-| `state.success`       | $2A | `#58D854` | Deal unlocked, wins                                    |
-| `state.successDeep`   | $09 | `#007800` | Success fills under white text, turf                   |
-| `state.alert`         | $16 | `#F83800` | Live dot, errors, offline icon                         |
-| `state.alertDeep`     | $06 | `#A81000` | Alert fills under white text                           |
-| `state.info`          | $21 | `#3CBCFC` | Times, links, "upcoming"                               |
-| `state.timer`         | $27 | `#FCA044` | Countdowns, "in progress", expiring under 6 hours      |
-| `ice.light`           | $31 | `#A4E4FC` | Cool highlights, ice and sky surfaces                  |
-| `skin.neutral`        | $36 | `#F0D0B0` | Sprite skin only. $27 and $17 are alternate skin tones |
+| Token                 | NES | Hex       | Role                                                    |
+| --------------------- | --- | --------- | ------------------------------------------------------- |
+| `bg.night`            | $0F | `#000000` | App background, splash, sprite outline                  |
+| `bg.panel`            | —   | `#101010` | PixelBox and card fill (graphite)                       |
+| `bg.panelAlt`         | —   | `#2A2A2A` | Selected row, card header strips, skeleton tone         |
+| `line.divider`        | —   | `#3A3A3A` | Hairline dividers between rows                          |
+| `line.border`         | —   | `#A5ACAF` | Pixel borders (Dodger silver)                           |
+| `accent.shadow`       | —   | `#8A6410` | The hard drop under gold buttons                        |
+| `text.primary`        | $30 | `#FCFCFC` | Text                                                    |
+| `text.secondary`      | $10 | `#BCBCBC` | Secondary text                                          |
+| `text.muted`          | $00 | `#7C7C7C` | Disabled, hints. On `bg.night` only                     |
+| `accent.primary`      | $28 | `#F8B800` | Primary action, ▶ cursor, selected cell, key words      |
+| `accent.primaryLight` | $38 | `#F8D878` | Highlights, sprite shine                                |
+| `state.success`       | $2A | `#58D854` | Deal unlocked, wins                                     |
+| `state.successDeep`   | $09 | `#007800` | Success fills under white text, turf                    |
+| `state.alert`         | $16 | `#F83800` | Live dot, errors, offline icon                          |
+| `state.alertDeep`     | $06 | `#A81000` | Alert fills under white text                            |
+| `state.info`          | $3C | `#D8B8F8` | Dusk lilac: times, "upcoming", section labels, tab rule |
+| `state.timer`         | $27 | `#FCA044` | Countdowns, "in progress", expiring under 6 hours       |
+| `ice.light`           | $31 | `#A4E4FC` | Cool highlights, ice and sky surfaces                   |
+| `skin.neutral`        | $36 | `#F0D0B0` | Sprite skin only. $27 and $17 are alternate skin tones  |
 
 ### Contrast
 
@@ -172,7 +178,7 @@ Rules:
 | `DealBar`        | 12-cell bar                            | Mode `expiry` drains with time left, `state.success` until 6 hours, then `state.timer`. Mode `progress` fills toward a numeric trigger (5 of 7 strikeouts). Role `progressbar` with a text value                                                                 |
 | `TeamSelectGrid` | Team picker                            | 4 columns, one cell per team: team name in text, league or season caption, a generic sport sprite. No logos, no team colors. States: off, followed, partial ("1/2"), off-season (grey, still selectable). Role `checkbox` with `checked: true / false / 'mixed'` |
 | Cut-in           | Full-screen moment when a deal unlocks | Banner in `display` ("DUCKS WIN!", "GOAL!"), then the food sprite rises 8 art px over 8 frames ("item get"). At most 2 seconds, then the deal detail. Tap skips. Decorative; the DialogBox carries the meaning                                                   |
-| `PixelToast`     | Transient message                      | `deep` strip above the tab bar, 3 seconds, announced politely to screen readers                                                                                                                                                                                  |
+| `PixelToast`     | Transient message                      | Solid lilac box, white border, black text, above the tab bar, 4 seconds, announced politely to screen readers                                                                                                                                                    |
 | `PixelSkeleton`  | Loading placeholder                    | Box outlines at final size with a 2×2 `bg.panel` / `bg.night` checker. No full-screen spinners                                                                                                                                                                   |
 
 Art and team/league data come from the API; bundled art is offline fallback only. A new deal, team,
@@ -186,9 +192,9 @@ Four tabs in a custom HUD tab bar (React Navigation `tabBar` prop): **WON**, **T
 deals riding on each; it comes from `GET /today`. The bar is black with a 3pt white top border, a
 stat line (`WON n`, `FOLLOWING n`, separated by thin pixel bars, and a blinking `PAUSED` when alerts
 are paused), then the tabs in Press Start 2P. The active tab is accent with a blinking ▶. The won
-count is a blinking badge on WON. `FOLLOWING n` counts only followed deals that are still active.
-Targets are at least 44pt, tabs have role `tab` with `selected` state, and the bar sits above the
-bottom safe-area inset.
+count is a blinking badge on WON. `FOLLOWING n` counts teams: a team counts once if you follow any
+of its active deals. Targets are at least 44pt, tabs have role `tab` with `selected` state, and the
+bar sits above the bottom safe-area inset.
 
 - **WON** (home) shows only deals the user has won and can still claim. Nothing grey, no not-yet-won
   deals. Empty state: "NOTHING WON YET" and a PICK TEAMS button.
@@ -202,9 +208,13 @@ bottom safe-area inset.
   About), BACK. While paused the first row reads RESUME ALERTS; BACK only closes the menu. It is a
   transparent modal route with no animation.
 - Old `/tonight` and `/deals` links open WON.
-- First launch only, a title screen shows "FREEBIES" with "LA SPORTS DEALS" under it, the logo, a
-  blinking "TAP TO START" and "WHEN LA WINS, YOU WIN". Tap, or 4 seconds, continues (no timer while
-  a screen reader is on). Under Reduce Motion it still shows, solid.
+- There is no title screen (owner decision, 2026-11-15). The app opens on TODAY once you follow a
+  team, and on WON before that; links and push taps open their own screen.
+- The top bar is black with the title in gold. Under it is a 4pt gold rule, or, while a win is live,
+  a two-band stripe in that team's two API colors (a black team color draws as white), and the line
+  under the title on WON and TODAY says "RAMS WON!". The most recent live win drives it.
+- YOU WON (the deal screen) puts the sprite on a hard-edged victory-ray burst in the deal's own team
+  colors, whoever else won; grey once the deal has expired.
 
 ### Logo art
 
@@ -261,7 +271,8 @@ color"); see the note under [Legal guardrails](#legal-guardrails).
   stepped, a single interval for the whole app, solid under Reduce Motion. Rules: blink only
   selection cursors (▶), tags (`NEW!` on deals unlocked in the last 24 hours, `LIVE` on a game in
   progress; `AT THE GAME` is a fact and never blinks), status words (`ENDS SOON`, `PAUSED`,
-  `TAP TO START`), the unlocked count badge, the followed ✓, and the countdown colons. Never blink
+  `TAP TO START`), the unlocked count badge and the countdown colons. The followed ✓ is solid: it is
+  a state, and blinking some checks but not others (the budget) read as "not followed". Never blink
   body text. Never flash content faster than 1 Hz. Never more than 3 blinking things on screen at
   once: each blinker has a priority and only the top 3 on the focused screen blink, the rest stay
   solid (priorities are listed in `useBlink.tsx`). Loading skeleton tones and the ▼ bob run on the

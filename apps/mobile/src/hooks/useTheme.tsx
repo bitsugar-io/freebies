@@ -4,27 +4,33 @@ import { useWindowDimensions } from 'react-native';
 
 export const colors = {
   background: '#000000',
-  /** Cards, text boxes. */
-  surface: '#004058',
-  /** Header bars, selected cells. */
-  surfaceSecondary: '#0000BC',
+  /** Cards, text boxes (graphite). */
+  surface: '#101010',
+  /** Selected cells, card header strips, skeleton tone. */
+  surfaceSecondary: '#2A2A2A',
+  /** Hairline dividers between rows and under section titles. */
+  divider: '#3A3A3A',
   text: '#FCFCFC',
   textSecondary: '#BCBCBC',
-  /** Disabled and hint text. Only on background, never on surface (2.7:1 there). */
+  /** Disabled and hint text (4.6:1 on surface, 4.8:1 on background). */
   textMuted: '#7C7C7C',
-  border: '#FCFCFC',
+  /** Pixel borders (Dodger silver). */
+  border: '#A5ACAF',
   primary: '#F8B800',
   /** Text and icons on the accent fill. */
   onAccent: '#000000',
   accent: '#F8B800',
   accentLight: '#F8D878',
+  /** The hard drop under gold buttons. */
+  accentShadow: '#8A6410',
   success: '#58D854',
   successDeep: '#007800',
   successBackground: '#007800',
   /** Countdowns, expiring soon. */
   warning: '#FCA044',
   warningBackground: '#000000',
-  info: '#3CBCFC',
+  /** Dusk lilac: the information layer (times, upcoming, section labels); gold stays the action color. */
+  info: '#D8B8F8',
   infoBackground: '#000000',
   /** Errors, live dot. Large text and icons only on surface (3.0:1). */
   danger: '#F83800',

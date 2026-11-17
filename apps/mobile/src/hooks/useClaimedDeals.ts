@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api, ClaimedDeal } from '../api/client';
 import { useUser } from './useUser';
+import { parseUserCache } from '../utils/cache';
 
 const CACHE_KEY = 'freebie_claimed_deals_cache';
 
@@ -27,11 +28,10 @@ export function useClaimedDeals() {
     }
     try {
       if (!initialLoadDone.current) {
+        // Parsed on its own: a corrupt cache never blocks the fetch below.
         const raw = await AsyncStorage.getItem(CACHE_KEY).catch(() => null);
-        if (raw) {
-          const cache = JSON.parse(raw) as ClaimedCache;
-          if (cache.userId === userId) setClaimed(cache.claimed);
-        }
+        const cache = parseUserCache<ClaimedCache>(raw, userId, (v) => Array.isArray(v.claimed));
+        if (cache) setClaimed(cache.claimed);
         setIsLoading(false);
       }
       const list = await api.listClaimed(userId);

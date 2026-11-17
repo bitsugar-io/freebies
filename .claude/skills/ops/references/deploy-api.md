@@ -46,15 +46,18 @@ CronJobs (scheduler) → HTTP POST http://freebie-api:8080/internal/worker/* (be
 
 ### Schedules
 
-Set in `charts/scheduler/values.yaml`, in UTC. The comments there give Pacific times during daylight
-saving time:
+Set in `charts/scheduler/values.yaml` as Pacific wall-clock times (`timeZone: America/Los_Angeles`
+on the CronJobs), so they stay put when daylight saving time starts or ends:
 
-| Job              | Cron (UTC)        | Pacific (PDT)  | Calls                                                     |
-| ---------------- | ----------------- | -------------- | --------------------------------------------------------- |
-| `check-triggers` | `0 14,16 * * *`   | 7am, 9am retry | `POST /internal/worker/check-triggers` (dedupes per game) |
-| `send-reminders` | `0 18,22,0 * * *` | 11am, 3pm, 5pm | `POST /internal/worker/send-reminders`                    |
+| Job              | Cron (Pacific)     | Runs           | Calls                                                     |
+| ---------------- | ------------------ | -------------- | --------------------------------------------------------- |
+| `check-triggers` | `0 7,9 * * *`      | 7am, 9am retry | `POST /internal/worker/check-triggers` (dedupes per game) |
+| `send-reminders` | `0 11,15,17 * * *` | 11am, 3pm, 5pm | `POST /internal/worker/send-reminders`                    |
 
-Cron runs in UTC, so every Pacific time shifts an hour earlier in winter (PST).
+7am lands before breakfast-only deadlines (McGriddles until 10:30) and after last night's late
+finals. At-the-game deals (`game_night`) are never pushed; deals with a later start
+(`available_from_local`) show as locked until then. Changing a schedule is a chart change: deploy it
+with the Helm upgrade (step 2b), not `deploy.sh`.
 
 ### Secrets
 

@@ -17,7 +17,10 @@ type GameStats struct {
 	Opponent string
 	HomeGame bool
 	Won      bool
-	Metrics  map[string]int // "strikeouts" -> 8, "runs" -> 5, "points" -> 112
+	// Postseason is true for a playoff game, when the feed says so (ESPN
+	// season type 3, NHL gameType 3). Unknown counts as regular season.
+	Postseason bool
+	Metrics    map[string]int // "strikeouts" -> 8, "runs" -> 5, "points" -> 112
 }
 
 // Source fetches game data for a specific league
@@ -39,6 +42,23 @@ type Source interface {
 	GetGameByDate(ctx context.Context, teamID string, date time.Time) (*GameStats, error)
 }
 
+// MultiGameSource is implemented by sources that can return every finished
+// game a team played on one date: an MLB doubleheader, or NCAA football and
+// basketball on the same day. The checker evaluates a deal against each of
+// them; GetGameByDate stays the first game for other callers.
+type MultiGameSource interface {
+	// GetGamesByDate returns the team's finished, counting games on date
+	// (only its Y/M/D are used), earliest first; empty when there are none.
+	GetGamesByDate(ctx context.Context, teamID string, date time.Time) ([]*GameStats, error)
+}
+
+// SeasonAware is implemented by sources whose feed says whether a game is a
+// playoff game (GameStats.Postseason). A rule with season "regular" needs one;
+// `deals audit` fails an active deal that has it on any other source.
+type SeasonAware interface {
+	KnowsPostseason() bool
+}
+
 // TeamLister is implemented by sources that know their team codes, so `deals
 // audit` can catch an event whose team_id the source would reject at run time.
 type TeamLister interface {
@@ -55,6 +75,11 @@ type ScheduledGame struct {
 	StartsAt time.Time
 	// Home is true only for a real home game (not a neutral site).
 	Home bool
+	// Sport names the feed the game came from ("football", "basketball")
+	// when a league has more than one (NCAA); empty otherwise. A deal whose
+	// metric names a sport ("football_home_points") rides only on that
+	// sport's games.
+	Sport string
 	// State is "pre" (not started), "in" (live) or "post" (over).
 	State string
 }

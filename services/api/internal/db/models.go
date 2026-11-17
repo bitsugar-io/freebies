@@ -48,6 +48,12 @@ type FeatureFlag struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type KeptDeal struct {
+	UserID           string    `json:"user_id"`
+	TriggeredEventID string    `json:"triggered_event_id"`
+	CreatedAt        time.Time `json:"created_at"`
+}
+
 type League struct {
 	ID           string    `json:"id"`
 	Name         string    `json:"name"`

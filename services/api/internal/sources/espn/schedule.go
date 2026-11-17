@@ -2,6 +2,8 @@ package espn
 
 import (
 	"context"
+	"errors"
+	"log/slog"
 	"sort"
 	"time"
 
@@ -12,7 +14,9 @@ var _ sources.Scheduler = (*Source)(nil)
 
 // GamesOn returns the mapped teams' games that start on the given Pacific
 // date, from every feed (NCAA reads football and basketball), in any state.
-// Postponed and canceled games are left out. Results are sorted by start.
+// Postponed, canceled, preseason and All-Star games are left out. A feed that
+// fails is logged and skipped; the error is returned only when every feed
+// failed. Results are sorted by start.
 func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.ScheduledGame, error) {
 	byESPN := make(map[string]string, len(s.cfg.Teams))
 	for code, id := range s.cfg.Teams {
@@ -20,14 +24,28 @@ func (s *Source) GamesOn(ctx context.Context, date time.Time) ([]sources.Schedul
 	}
 
 	var out []sources.ScheduledGame
+	var errs []error
 	for _, fc := range s.cfg.Feeds {
 		events, err := s.client.Games(ctx, fc.Feed, date)
 		if err != nil {
-			return nil, err
+			errs = append(errs, err)
+			continue
 		}
 		for i := range events {
-			out = append(out, scheduledGames(&events[i], byESPN)...)
+			for _, g := range scheduledGames(&events[i], byESPN) {
+				if len(s.cfg.Feeds) > 1 {
+					g.Sport = fc.Name
+				}
+				out = append(out, g)
+			}
 		}
+	}
+	if len(errs) == len(s.cfg.Feeds) {
+		return nil, errors.Join(errs...)
+	}
+	for _, err := range errs {
+		slog.Warn("ESPN feed failed; listing the other feeds' games",
+			"league", s.cfg.League, "date", date.Format("2006-01-02"), "error", err)
 	}
 	sort.SliceStable(out, func(a, b int) bool { return out[a].StartsAt.Before(out[b].StartsAt) })
 	return out, nil
@@ -40,6 +58,9 @@ func scheduledGames(e *Event, byESPN map[string]string) []sources.ScheduledGame 
 	}
 	comp := &e.Competitions[0]
 	if len(comp.Competitors) != 2 || skippedStatus(comp.Status.Type.Name) {
+		return nil
+	}
+	if counts, _ := seasonPhase(e); !counts {
 		return nil
 	}
 	state := comp.Status.Type.State

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { colors, PX } from '../../hooks/useTheme';
 
-export type BoxVariant = 'panel' | 'dialog' | 'selected' | 'partial' | 'off' | 'alert';
+export type BoxVariant = 'panel' | 'dialog' | 'selected' | 'partial' | 'off' | 'alert' | 'notice';
 
 const VARIANTS: Record<BoxVariant, { fill: string; border: string }> = {
   panel: { fill: colors.surface, border: colors.border },
@@ -11,6 +11,8 @@ const VARIANTS: Record<BoxVariant, { fill: string; border: string }> = {
   partial: { fill: colors.surface, border: colors.accent },
   off: { fill: colors.background, border: colors.textMuted },
   alert: { fill: colors.background, border: colors.danger },
+  /** Toasts: a solid lilac box with a white border, so it stands out on the black screen. */
+  notice: { fill: colors.info, border: colors.text },
 };
 
 interface Props extends ViewProps {

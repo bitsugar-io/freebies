@@ -10,6 +10,7 @@ import { Text } from '../components/pixel/Text';
 import { useToast } from '../components/pixel/Toast';
 import { colors } from '../hooks/useTheme';
 import { next8amPacific, pauseUntilLabel } from '../utils/format';
+import { serverNow } from '../utils/serverClock';
 import type { RootStackParamList } from '../navigation/types';
 
 const FOREVER = '9999-12-31T00:00:00Z';
@@ -86,12 +87,12 @@ export function PauseScreen() {
               label="1 hour"
               selected
               blinkPriority={0}
-              onPress={() => pauseFor(new Date(Date.now() + 3_600_000), 'for 1 hour')}
+              onPress={() => pauseFor(new Date(serverNow() + 3_600_000), 'for 1 hour')}
             />
             <MenuRow
               label="Until tomorrow"
               onPress={() => {
-                const t = next8amPacific();
+                const t = next8amPacific(new Date(serverNow()));
                 pauseFor(t, `until ${pauseUntilLabel(t.toISOString())}`);
               }}
               accessibilityHint="Until 8am Pacific time"

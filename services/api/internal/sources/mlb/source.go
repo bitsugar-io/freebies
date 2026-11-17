@@ -6,6 +6,7 @@ import (
 	"maps"
 	"net/http"
 	"slices"
+	"sort"
 	"time"
 
 	mlbsdk "github.com/retr0h/mlb-sdk/pkg/mlb"
@@ -14,12 +15,16 @@ import (
 	"github.com/retr0h/freebie/services/api/internal/sources"
 )
 
-// Source implements sources.Source for MLB using the public mlb-sdk client.
-// All API parsing (schedule, boxscore, the FIELDING/DP free-text quirk)
-// lives in mlb-sdk; this file does only the freebies-specific mapping
-// from box-score fields into the flat metrics map.
+var _ sources.MultiGameSource = (*Source)(nil)
+
+// Source implements sources.Source for MLB. Box scores (and the FIELDING/DP
+// free-text quirk) are parsed by mlb-sdk; the schedule is read directly
+// (statsapi.go) because the SDK drops gameType. This file does the
+// freebies-specific mapping from box-score fields into the flat metrics map.
 type Source struct {
-	client *mlbsdk.Client
+	client  *mlbsdk.Client
+	baseURL string
+	http    *http.Client
 }
 
 // NewSource creates a new MLB source backed by mlb-sdk pointed at the
@@ -36,17 +41,25 @@ func NewSource() *Source {
 			RetryStatuses: []int{http.StatusNotAcceptable},
 		}},
 	}
-	return &Source{client: mlbsdk.New(mlbsdk.WithHTTPClient(httpClient))}
+	return NewSourceWithClient(mlbsdk.DefaultBaseURL, httpClient)
 }
 
-// NewSourceWithClient wraps an already-configured mlb-sdk client. Used by
-// tests to point at an httptest fake.
-func NewSourceWithClient(c *mlbsdk.Client) *Source {
-	return &Source{client: c}
+// NewSourceWithClient builds a source against the Stats API at baseURL using
+// hc for every request. Tests point it at an httptest fake.
+func NewSourceWithClient(baseURL string, hc *http.Client) *Source {
+	return &Source{
+		client:  mlbsdk.New(mlbsdk.WithBaseURL(baseURL), mlbsdk.WithHTTPClient(hc)),
+		baseURL: baseURL,
+		http:    hc,
+	}
 }
 
 // League returns "mlb".
 func (s *Source) League() string { return "mlb" }
+
+// KnowsPostseason: the statsapi schedule carries gameType (F, D, L, W, C, P
+// are postseason rounds).
+func (s *Source) KnowsPostseason() bool { return true }
 
 // Metrics lists the metrics the MLB source emits.
 func (s *Source) Metrics() []string {
@@ -74,38 +87,69 @@ func (s *Source) GetYesterdaysGame(
 	return s.GetGameByDate(ctx, teamID, yesterday)
 }
 
-// GetGameByDate fetches a team's game for a specific date and returns the
-// flat metrics map the trigger layer expects. Returns (nil, nil) when no
-// completed game exists on that date.
+// GetGameByDate returns the team's first completed game on date (MLB's
+// official date), or (nil, nil) when it has none. GetGamesByDate returns every
+// game (a doubleheader has two).
 func (s *Source) GetGameByDate(
 	ctx context.Context,
 	teamID string,
 	date time.Time,
 ) (*sources.GameStats, error) {
+	games, err := s.GetGamesByDate(ctx, teamID, date)
+	if err != nil || len(games) == 0 {
+		return nil, err
+	}
+	return games[0], nil
+}
+
+// GetGamesByDate returns every completed game the team played on date,
+// earliest first, with the flat metrics map the trigger layer expects. Games
+// that were postponed, canceled or suspended (MLB marks them Final), spring
+// training and exhibitions are left out.
+func (s *Source) GetGamesByDate(
+	ctx context.Context,
+	teamID string,
+	date time.Time,
+) ([]*sources.GameStats, error) {
 	mlbTeamID, ok := TeamIDs[teamID]
 	if !ok {
 		return nil, fmt.Errorf("unknown team ID: %s", teamID)
 	}
 
-	games, err := s.client.Schedule(ctx, mlbsdk.ScheduleQuery{
-		Team: mlbTeamID,
-		On:   date,
-	})
+	games, err := s.schedule(ctx, mlbTeamID.Int(), date)
 	if err != nil {
 		return nil, fmt.Errorf("fetching schedule: %w", err)
 	}
 
-	var game *mlbsdk.Game
-	for i := range games {
-		if games[i].Status == mlbsdk.StatusFinal {
-			game = &games[i]
-			break
+	var played []scheduleGame
+	for _, g := range games {
+		if g.Status.AbstractGameState != string(mlbsdk.StatusFinal) ||
+			skippedStatus(g.Status.DetailedState) || !g.counts() {
+			continue
 		}
+		played = append(played, g)
 	}
-	if game == nil {
-		return nil, nil
-	}
+	sort.SliceStable(played, func(a, b int) bool { return played[a].GameDate.Before(played[b].GameDate) })
 
+	out := make([]*sources.GameStats, 0, len(played))
+	for i := range played {
+		st, err := s.gameStats(ctx, &played[i], mlbTeamID, teamID, date)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, st)
+	}
+	return out, nil
+}
+
+// gameStats reads game's box score from mlbTeamID's side.
+func (s *Source) gameStats(
+	ctx context.Context,
+	game *scheduleGame,
+	mlbTeamID mlbsdk.TeamID,
+	teamID string,
+	date time.Time,
+) (*sources.GameStats, error) {
 	box, err := s.client.Boxscore(ctx, game.GamePk)
 	if err != nil {
 		return nil, fmt.Errorf("fetching boxscore: %w", err)
@@ -116,26 +160,28 @@ func (s *Source) GetGameByDate(
 		return nil, fmt.Errorf("team %s not present in boxscore for game %d", teamID, game.GamePk)
 	}
 
-	isHome := game.Home.ID == mlbTeamID
+	home, away := game.Teams.Home, game.Teams.Away
+	isHome := mlbsdk.TeamID(home.Team.ID) == mlbTeamID
 	var opponent string
 	var won bool
 	if isHome {
-		opponent = game.Away.Name
-		won = game.Home.Score > game.Away.Score
+		opponent = away.Team.Name
+		won = home.Score > away.Score
 	} else {
-		opponent = game.Home.Name
-		won = game.Away.Score > game.Home.Score
+		opponent = home.Team.Name
+		won = away.Score > home.Score
 	}
 
 	doublePlays := team.DoublePlaysTurned()
 
 	stats := &sources.GameStats{
-		GameID:   fmt.Sprintf("mlb-%d", game.GamePk),
-		GameDate: date,
-		TeamID:   teamID,
-		Opponent: opponent,
-		HomeGame: isHome,
-		Won:      won,
+		GameID:     fmt.Sprintf("mlb-%d", game.GamePk),
+		GameDate:   date,
+		TeamID:     teamID,
+		Opponent:   opponent,
+		HomeGame:   isHome,
+		Won:        won,
+		Postseason: game.postseason(),
 		Metrics: map[string]int{
 			"strikeouts":      team.Pitching.Strikeouts,
 			"pitching_hits":   team.Pitching.Hits,

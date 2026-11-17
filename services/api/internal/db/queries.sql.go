@@ -490,6 +490,40 @@ func (q *Queries) GetSubscription(ctx context.Context, arg GetSubscriptionParams
 	return i, err
 }
 
+const getTriggerPushDeal = `-- name: GetTriggerPushDeal :one
+SELECT te.id, te.event_id, te.available_at, te.expires_at,
+    e.partner_name, e.offer_name, e.trigger_condition
+FROM triggered_events te
+JOIN events e ON te.event_id = e.id
+WHERE te.id = ?
+`
+
+type GetTriggerPushDealRow struct {
+	ID               string       `json:"id"`
+	EventID          string       `json:"event_id"`
+	AvailableAt      sql.NullTime `json:"available_at"`
+	ExpiresAt        sql.NullTime `json:"expires_at"`
+	PartnerName      string       `json:"partner_name"`
+	OfferName        string       `json:"offer_name"`
+	TriggerCondition string       `json:"trigger_condition"`
+}
+
+// One deal in the shape ListTriggerPushDeals returns.
+func (q *Queries) GetTriggerPushDeal(ctx context.Context, id string) (GetTriggerPushDealRow, error) {
+	row := q.db.QueryRowContext(ctx, getTriggerPushDeal, id)
+	var i GetTriggerPushDealRow
+	err := row.Scan(
+		&i.ID,
+		&i.EventID,
+		&i.AvailableAt,
+		&i.ExpiresAt,
+		&i.PartnerName,
+		&i.OfferName,
+		&i.TriggerCondition,
+	)
+	return i, err
+}
+
 const getTriggeredEvent = `-- name: GetTriggeredEvent :one
 SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM triggered_events te
@@ -652,6 +686,28 @@ func (q *Queries) GetUserByToken(ctx context.Context, token sql.NullString) (Use
 	return i, err
 }
 
+const keepWonDeals = `-- name: KeepWonDeals :exec
+INSERT OR IGNORE INTO kept_deals (user_id, triggered_event_id)
+SELECT s.user_id, te.id
+FROM subscriptions s
+JOIN triggered_events te ON te.event_id = s.event_id
+WHERE s.user_id = ?1
+  AND s.event_id = ?2
+  AND datetime(te.expires_at) > datetime('now')
+`
+
+type KeepWonDealsParams struct {
+	UserID  string `json:"user_id"`
+	EventID string `json:"event_id"`
+}
+
+// Before an unfollow deletes the subscription: keep the event's live deals the
+// user can see now, so they stay in WON (see ListActiveTriggeredEventsForUser).
+func (q *Queries) KeepWonDeals(ctx context.Context, arg KeepWonDealsParams) error {
+	_, err := q.db.ExecContext(ctx, keepWonDeals, arg.UserID, arg.EventID)
+	return err
+}
+
 const listActiveEvents = `-- name: ListActiveEvents :many
 SELECT id, offer_id, team_id, team_name, league, team_color, icon, partner_name, offer_name, offer_description, trigger_condition, trigger_rule, region_code, offer_url, affiliate_url, affiliate_tagline, is_active, created_at, updated_at, sprite_id, in_venue, venue FROM events WHERE is_active = 1 ORDER BY created_at DESC
 `
@@ -801,16 +857,16 @@ SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payloa
     d.type as dismissal_type
 FROM triggered_events te
 JOIN events e ON te.event_id = e.id
-JOIN subscriptions s ON s.event_id = e.id AND s.user_id = ?
-LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = ?
+LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = ?1
 WHERE datetime(te.expires_at) > datetime('now')
+  AND (
+    d.id IS NOT NULL
+    OR EXISTS (SELECT 1 FROM subscriptions s WHERE s.event_id = te.event_id AND s.user_id = ?1)
+    OR EXISTS (SELECT 1 FROM notifications n WHERE n.triggered_event_id = te.id AND n.user_id = ?1)
+    OR EXISTS (SELECT 1 FROM kept_deals k WHERE k.triggered_event_id = te.id AND k.user_id = ?1)
+  )
 ORDER BY te.expires_at ASC
 `
-
-type ListActiveTriggeredEventsForUserParams struct {
-	UserID   string `json:"user_id"`
-	UserID_2 string `json:"user_id_2"`
-}
 
 type ListActiveTriggeredEventsForUserRow struct {
 	ID               string         `json:"id"`
@@ -846,8 +902,16 @@ type ListActiveTriggeredEventsForUserRow struct {
 	DismissalType    sql.NullString `json:"dismissal_type"`
 }
 
-func (q *Queries) ListActiveTriggeredEventsForUser(ctx context.Context, arg ListActiveTriggeredEventsForUserParams) ([]ListActiveTriggeredEventsForUserRow, error) {
-	rows, err := q.db.QueryContext(ctx, listActiveTriggeredEventsForUser, arg.UserID, arg.UserID_2)
+// A user's unexpired won deals. A deal is the user's when any of these holds:
+//  1. they follow its event now (subscriptions);
+//  2. they were pushed about it (a notifications row, any kind or status);
+//  3. it was live in their list when they unfollowed (kept_deals, written by
+//     KeepWonDeals just before the subscription is deleted);
+//  4. they claimed or silenced it (dismissals).
+//
+// So unfollowing a team never takes away a deal already won.
+func (q *Queries) ListActiveTriggeredEventsForUser(ctx context.Context, userID string) ([]ListActiveTriggeredEventsForUserRow, error) {
+	rows, err := q.db.QueryContext(ctx, listActiveTriggeredEventsForUser, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -1463,6 +1527,62 @@ func (q *Queries) ListTeams(ctx context.Context) ([]ListTeamsRow, error) {
 	return items, nil
 }
 
+const listTriggerPushDeals = `-- name: ListTriggerPushDeals :many
+SELECT te.id, te.event_id, te.available_at, te.expires_at,
+    e.partner_name, e.offer_name, e.trigger_condition
+FROM triggered_events te
+JOIN events e ON te.event_id = e.id
+WHERE datetime(te.expires_at) > datetime(?1)
+  AND (te.payload IS NULL
+    OR (json_valid(te.payload) AND json_extract(te.payload, '$.notify') = 1))
+ORDER BY te.triggered_at ASC
+`
+
+type ListTriggerPushDealsRow struct {
+	ID               string       `json:"id"`
+	EventID          string       `json:"event_id"`
+	AvailableAt      sql.NullTime `json:"available_at"`
+	ExpiresAt        sql.NullTime `json:"expires_at"`
+	PartnerName      string       `json:"partner_name"`
+	OfferName        string       `json:"offer_name"`
+	TriggerCondition string       `json:"trigger_condition"`
+}
+
+// Live deals whose "you won" push the worker still owes followers: unexpired
+// at :now, and recorded by the checker (no payload) or by
+// `deals trigger --notify` (payload "notify": true). Test deals from
+// `deals create` and `deals trigger --notify=false` are never pushed.
+func (q *Queries) ListTriggerPushDeals(ctx context.Context, now interface{}) ([]ListTriggerPushDealsRow, error) {
+	rows, err := q.db.QueryContext(ctx, listTriggerPushDeals, now)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListTriggerPushDealsRow{}
+	for rows.Next() {
+		var i ListTriggerPushDealsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.EventID,
+			&i.AvailableAt,
+			&i.ExpiresAt,
+			&i.PartnerName,
+			&i.OfferName,
+			&i.TriggerCondition,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listTriggeredEvents = `-- name: ListTriggeredEvents :many
 SELECT te.id, te.event_id, te.game_id, te.triggered_at, te.expires_at, te.payload, te.available_at, e.id, e.offer_id, e.team_id, e.team_name, e.league, e.team_color, e.icon, e.partner_name, e.offer_name, e.offer_description, e.trigger_condition, e.trigger_rule, e.region_code, e.offer_url, e.affiliate_url, e.affiliate_tagline, e.is_active, e.created_at, e.updated_at, e.sprite_id, e.in_venue, e.venue
 FROM triggered_events te
@@ -1653,7 +1773,9 @@ LEFT JOIN notifications n ON n.user_id = u.id AND n.triggered_event_id = te.id
 WHERE te.id = ?
   AND u.push_token IS NOT NULL
   AND u.push_token != ''
-  AND (d.id IS NULL OR d.type != 'stop_reminding')
+  -- Anyone who dismissed it, by claiming it (got_it) or silencing it
+  -- (stop_reminding), gets no more reminders for it.
+  AND d.id IS NULL
 `
 
 type ListUsersForReminderRow struct {
@@ -1691,11 +1813,66 @@ func (q *Queries) ListUsersForReminder(ctx context.Context, id string) ([]ListUs
 	return items, nil
 }
 
+const listUsersOwedTriggerPush = `-- name: ListUsersOwedTriggerPush :many
+SELECT u.id, u.push_token, u.alerts_paused_until
+FROM subscriptions s
+JOIN users u ON u.id = s.user_id
+JOIN triggered_events te ON te.event_id = s.event_id
+LEFT JOIN dismissals d ON d.triggered_event_id = te.id AND d.user_id = u.id
+WHERE te.id = ?1
+  AND u.push_token IS NOT NULL
+  AND u.push_token != ''
+  AND d.id IS NULL
+  AND datetime(s.created_at) <= datetime(te.triggered_at)
+  AND NOT EXISTS (
+    SELECT 1 FROM notifications n
+    WHERE n.triggered_event_id = te.id
+      AND n.user_id = u.id
+      AND n.kind = 'trigger'
+      AND n.status IN ('sent', 'pending', 'unknown')
+  )
+`
+
+type ListUsersOwedTriggerPushRow struct {
+	ID                string         `json:"id"`
+	PushToken         sql.NullString `json:"push_token"`
+	AlertsPausedUntil sql.NullTime   `json:"alerts_paused_until"`
+}
+
+// Followers of a deal's event who should get its "you won" push and have not:
+// they followed before it triggered (a later follower sees it in the app but
+// is not told they won), have a push token, have not claimed or silenced it,
+// and have no trigger notification that is 'sent', 'pending' (written just
+// before a send) or 'unknown' (Expo may have it). So a user gets the push at
+// most once per deal, and a failed send is retried by the next run.
+func (q *Queries) ListUsersOwedTriggerPush(ctx context.Context, triggeredEventID string) ([]ListUsersOwedTriggerPushRow, error) {
+	rows, err := q.db.QueryContext(ctx, listUsersOwedTriggerPush, triggeredEventID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListUsersOwedTriggerPushRow{}
+	for rows.Next() {
+		var i ListUsersOwedTriggerPushRow
+		if err := rows.Scan(&i.ID, &i.PushToken, &i.AlertsPausedUntil); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listUsersRemindedSince = `-- name: ListUsersRemindedSince :many
 SELECT DISTINCT user_id FROM notifications
 WHERE triggered_event_id = ?1
   AND kind = 'reminder'
-  AND status = 'sent'
+  AND status IN ('sent', 'pending', 'unknown')
   AND datetime(sent_at) >= datetime(?2)
 `
 
@@ -1705,7 +1882,9 @@ type ListUsersRemindedSinceParams struct {
 }
 
 // Users who already got a reminder for this deal at or after :since (a UTC
-// "YYYY-MM-DD HH:MM:SS" string). Failed sends do not count, so they retry.
+// "YYYY-MM-DD HH:MM:SS" string). 'pending' (written just before the send) and
+// 'unknown' (Expo may have it) count as sent, so a push is never doubled;
+// only 'failed' sends retry.
 func (q *Queries) ListUsersRemindedSince(ctx context.Context, arg ListUsersRemindedSinceParams) ([]string, error) {
 	rows, err := q.db.QueryContext(ctx, listUsersRemindedSince, arg.TriggeredEventID, arg.Since)
 	if err != nil {
@@ -1763,6 +1942,32 @@ func (q *Queries) ListUsersWithPushTokens(ctx context.Context) ([]User, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateDismissalType = `-- name: UpdateDismissalType :one
+UPDATE dismissals SET type = ?, dismissed_at = CURRENT_TIMESTAMP
+WHERE user_id = ? AND triggered_event_id = ?
+RETURNING id, user_id, triggered_event_id, dismissed_at, type
+`
+
+type UpdateDismissalTypeParams struct {
+	Type             string `json:"type"`
+	UserID           string `json:"user_id"`
+	TriggeredEventID string `json:"triggered_event_id"`
+}
+
+// Upgrades a silenced deal (stop_reminding) to claimed (got_it).
+func (q *Queries) UpdateDismissalType(ctx context.Context, arg UpdateDismissalTypeParams) (Dismissal, error) {
+	row := q.db.QueryRowContext(ctx, updateDismissalType, arg.Type, arg.UserID, arg.TriggeredEventID)
+	var i Dismissal
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.TriggeredEventID,
+		&i.DismissedAt,
+		&i.Type,
+	)
+	return i, err
 }
 
 const updateEvent = `-- name: UpdateEvent :exec

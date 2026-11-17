@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api, Team } from '../api/client';
+import { parseCache } from '../utils/cache';
 
 const CACHE_KEY = 'freebie_teams_cache';
 
@@ -23,14 +24,13 @@ export function useTeams() {
   const fetchTeams = useCallback(async () => {
     try {
       if (!loaded.current) {
+        // Parsed on its own: a corrupt cache never blocks the fetch below.
         const raw = await AsyncStorage.getItem(CACHE_KEY).catch(() => null);
-        if (raw) {
-          const cache = JSON.parse(raw) as TeamsCache;
-          if (Array.isArray(cache.teams) && cache.teams.length > 0) {
-            setTeams(cache.teams);
-            setIsStale(true);
-            setIsLoading(false);
-          }
+        const cache = parseCache<TeamsCache>(raw, (v) => Array.isArray(v.teams) && v.teams.length > 0);
+        if (cache) {
+          setTeams(cache.teams);
+          setIsStale(true);
+          setIsLoading(false);
         }
       }
       const data = await api.listTeams();

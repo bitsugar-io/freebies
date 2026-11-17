@@ -35,6 +35,31 @@ type Rule struct {
 	// expires_at_local still applies on the last day when UnlockAfterDays is 0;
 	// it is ignored when the deal unlocks later.
 	ValidDays int `json:"valid_days,omitempty"`
+	// AvailableFromLocal delays the start to a Pacific clock time ("HH:MM") on
+	// the deal's first usable day, for terms like "valid 10am-11:59pm" or "not
+	// during breakfast". Empty: usable as soon as it triggers (or unlocks).
+	AvailableFromLocal string `json:"available_from_local,omitempty"`
+	// Season limits the deal to part of the season. "regular" ignores playoff
+	// games ("during the 2026-2027 regular season"). Empty: any game.
+	Season string `json:"season,omitempty"`
+}
+
+// Redemption windows a rule may name (see windowFor).
+const (
+	SameDay                = "same_day"
+	NextDay                = "next_day"
+	Week                   = "week"
+	NextBusinessDay        = "next_business_day"
+	ThroughNextBusinessDay = "through_next_business_day"
+)
+
+// KnownWindow reports whether w is a redemption window windowFor understands.
+func KnownWindow(w string) bool {
+	switch w {
+	case SameDay, NextDay, Week, NextBusinessDay, ThroughNextBusinessDay, GameNight:
+		return true
+	}
+	return false
 }
 
 // GameNight is the redemption window of an at-the-game deal claimed in the
@@ -94,9 +119,14 @@ type CheckResult struct {
 	Expired          bool      // the rule fired but its window had already closed; nothing recorded
 	AvailableAt      time.Time // when the deal unlocks; zero when usable immediately
 	Rule             *Rule
-	Stats            *sources.GameStats
-	Event            *db.Event
-	Error            error
+	// Stats is the game the deal fired on, or the day's first game when it
+	// did not fire.
+	Stats *sources.GameStats
+	// Games is every finished game the team played on the date (two in a
+	// doubleheader), in order.
+	Games []*sources.GameStats
+	Event *db.Event
+	Error error
 }
 
 // CheckAll checks all active events for trigger conditions (yesterday's games)
@@ -189,23 +219,48 @@ func (c *Checker) checkEventForDate(ctx context.Context, event db.Event, date ti
 		return result
 	}
 
-	// Fetch game stats for the specified date
-	stats, err := source.GetGameByDate(ctx, event.TeamID, date)
+	// Every finished game the team played that day: a doubleheader, or NCAA
+	// football and basketball, has more than one.
+	games, err := gamesByDate(ctx, source, event.TeamID, date)
 	if err != nil {
 		result.Error = fmt.Errorf("fetching game stats: %w", err)
 		return result
 	}
-
-	if stats == nil {
+	if len(games) == 0 {
 		// No game on this date
 		return result
 	}
-	result.Stats = stats
+	result.Games = games
+	result.Stats = games[0]
 
-	// Evaluate the rule
-	result.Triggered = evaluateRule(rule, stats)
+	// The deal fires on the first game that meets the rule. A
+	// regular-season-only deal never fires on a playoff game.
+	for _, stats := range games {
+		if !c.seasonAllows(rule, stats) {
+			c.logger.Info("playoff game; deal is regular season only", "event_id", event.ID, "game", stats.GameID)
+			continue
+		}
+		if evaluateRule(rule, stats) {
+			result.Stats = stats
+			result.Triggered = true
+			break
+		}
+	}
 
 	return result
+}
+
+// gamesByDate returns every finished game teamID played on date: all of them
+// from a sources.MultiGameSource, else the one GetGameByDate finds.
+func gamesByDate(ctx context.Context, src sources.Source, teamID string, date time.Time) ([]*sources.GameStats, error) {
+	if m, ok := src.(sources.MultiGameSource); ok {
+		return m.GetGamesByDate(ctx, teamID, date)
+	}
+	stats, err := src.GetGameByDate(ctx, teamID, date)
+	if err != nil || stats == nil {
+		return nil, err
+	}
+	return []*sources.GameStats{stats}, nil
 }
 
 // createTriggeredEvent records the deal for result and fills in its id and
@@ -218,17 +273,26 @@ func (c *Checker) createTriggeredEvent(
 	result *CheckResult,
 	gameDate time.Time,
 ) error {
-	// Check if we already created a triggered event for this game
-	existing, err := c.queries.GetTriggeredEventByGameID(ctx, db.GetTriggeredEventByGameIDParams{
-		EventID: event.ID,
-		GameID:  sql.NullString{String: result.Stats.GameID, Valid: true},
-	})
-	if err != nil && err != sql.ErrNoRows {
-		return fmt.Errorf("checking existing triggered event: %w", err)
+	// A deal fires at most once per date (sponsors give one a day), so if any
+	// of the day's games already triggered it, a rerun adds nothing, even when
+	// a different game is now the first to meet the rule.
+	dayGames := result.Games
+	if len(dayGames) == 0 {
+		dayGames = []*sources.GameStats{result.Stats}
 	}
-	if existing.ID != "" {
-		c.logger.Info("triggered event already exists", "event_id", event.ID, "game", result.Stats.GameID)
-		return nil // Already exists, don't notify again
+	for _, g := range dayGames {
+		existing, err := c.queries.GetTriggeredEventByGameID(ctx, db.GetTriggeredEventByGameIDParams{
+			EventID: event.ID,
+			GameID:  sql.NullString{String: g.GameID, Valid: true},
+		})
+		if err != nil && err != sql.ErrNoRows {
+			return fmt.Errorf("checking existing triggered event: %w", err)
+		}
+		if existing.ID != "" {
+			c.logger.Info("triggered event already exists for this date",
+				"event_id", event.ID, "game", g.GameID)
+			return nil // Already exists, don't notify again
+		}
 	}
 
 	availableAt, expiresAt := windowFor(gameDate, *result.Rule, c.loc)
@@ -259,7 +323,7 @@ func (c *Checker) createTriggeredEvent(
 
 	// Create the triggered event
 	triggeredID := fmt.Sprintf("triggered-%s-%s", event.ID, result.Stats.GameID)
-	_, err = c.queries.CreateTriggeredEvent(ctx, db.CreateTriggeredEventParams{
+	_, err := c.queries.CreateTriggeredEvent(ctx, db.CreateTriggeredEventParams{
 		ID:          triggeredID,
 		EventID:     event.ID,
 		GameID:      sql.NullString{String: result.Stats.GameID, Valid: true},
@@ -294,7 +358,34 @@ func Window(gameDate time.Time, r Rule) (availableAt, expiresAt time.Time) {
 // Day 1 is the day after the game, when the morning check normally runs:
 // same_day lasts through day 1, next_day through day 2, week through day 7,
 // valid_days N through day N. game_night ends on the game date itself.
+// next_business_day is that weekday only (locked until then);
+// through_next_business_day is usable now and ends with it.
+// available_from_local then moves the start to a clock time on the first
+// usable day.
 func windowFor(gameDate time.Time, r Rule, loc *time.Location) (availableAt, expiresAt time.Time) {
+	availableAt, expiresAt = baseWindow(gameDate, r, loc)
+	if r.RedemptionWindow == GameNight || r.AvailableFromLocal == "" {
+		return availableAt, expiresAt
+	}
+	// "Valid from 10am": the deal starts at that clock time on its first usable day.
+	t, err := time.Parse("15:04", r.AvailableFromLocal)
+	if err != nil {
+		return availableAt, expiresAt
+	}
+	first := availableAt
+	if first.IsZero() {
+		first = time.Date(gameDate.Year(), gameDate.Month(), gameDate.Day()+1, 0, 0, 0, 0, loc)
+	}
+	first = first.In(loc)
+	from := time.Date(first.Year(), first.Month(), first.Day(), t.Hour(), t.Minute(), 0, 0, loc).UTC()
+	if from.After(availableAt) && from.Before(expiresAt) {
+		availableAt = from
+	}
+	return availableAt, expiresAt
+}
+
+// baseWindow is windowFor before any available_from_local start time.
+func baseWindow(gameDate time.Time, r Rule, loc *time.Location) (availableAt, expiresAt time.Time) {
 	// day(n) is midnight Pacific n days after the game date.
 	day := func(n int) time.Time {
 		return time.Date(gameDate.Year(), gameDate.Month(), gameDate.Day()+n, 0, 0, 0, 0, loc)
@@ -319,17 +410,25 @@ func windowFor(gameDate time.Time, r Rule, loc *time.Location) (availableAt, exp
 	case r.ValidDays > 0:
 		return time.Time{}, lastMoment(day(r.ValidDays), r.ExpiresAtLocal)
 	case r.RedemptionWindow == "next_business_day":
-		// "Valid the next business day after the game": the first weekday
-		// after the game date, whole day (or until expires_at_local). It is a
+		// "Valid the next business day after the game": the first business day
+		// (not a weekend or US federal holiday) after the game date, whole day (or until expires_at_local). It is a
 		// delayed unlock only when that weekday is later than day 1.
 		n := 1
-		for wd := day(n).Weekday(); wd == time.Saturday || wd == time.Sunday; wd = day(n).Weekday() {
+		for !IsBusinessDay(day(n)) { // skips weekends and US federal holidays
 			n++
 		}
 		if n > 1 {
 			availableAt = day(n).UTC()
 		}
 		return availableAt, lastMoment(day(n), r.ExpiresAtLocal)
+	case r.RedemptionWindow == ThroughNextBusinessDay:
+		// "Valid through the following business day": usable now, until the end
+		// of the first weekday after the game date (Sat game: through Monday).
+		n := 1
+		for !IsBusinessDay(day(n)) { // skips weekends and US federal holidays
+			n++
+		}
+		return time.Time{}, lastMoment(day(n), r.ExpiresAtLocal)
 	case r.RedemptionWindow == GameNight:
 		return time.Time{}, lastMoment(day(0), r.ExpiresAtLocal)
 	case r.RedemptionWindow == "same_day":
@@ -339,6 +438,12 @@ func windowFor(gameDate time.Time, r Rule, loc *time.Location) (availableAt, exp
 	default: // "next_day" and anything unknown
 		return time.Time{}, lastMoment(day(2), r.ExpiresAtLocal)
 	}
+}
+
+// seasonAllows reports whether the rule's season limit admits this game:
+// "regular" excludes playoff games; no limit admits every game.
+func (c *Checker) seasonAllows(r Rule, stats *sources.GameStats) bool {
+	return !(r.Season == "regular" && stats.Postseason)
 }
 
 // evaluateRule checks if the game stats satisfy the rule

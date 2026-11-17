@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../../hooks/useTheme';
+import { useVictory } from '../../hooks/useVictory';
 import { navigationRef } from '../../navigation/ref';
 import { PixelIcon } from './PixelIcon';
 import { Text } from './Text';
@@ -12,7 +13,7 @@ interface Props {
   status?: string;
   /** Show a 44pt close button on the right instead of status. */
   onClose?: () => void;
-  /** Left slot, e.g. the palm logo. */
+  /** Left slot. */
   left?: React.ReactNode;
   /** Skip the top safe-area padding (modals that already sit below the status bar). */
   noInset?: boolean;
@@ -20,10 +21,16 @@ interface Props {
   noMenu?: boolean;
 }
 
-/** Blue header bar with the screen title in accent. Doubles as the screen's heading landmark. */
+/**
+ * Black header bar with the screen title in gold. Under it, a 4pt gold rule, or while a win is live,
+ * a two-band stripe in that team's colors (from the API), like a jersey band. Doubles as the
+ * screen's heading landmark.
+ */
 export function HudBar({ title, status, onClose, left, noInset, noMenu }: Props) {
   const insets = useSafeAreaInsets();
+  const victory = useVictory();
   return (
+    <View>
     <View style={[styles.bar, { paddingTop: (noInset ? 0 : insets.top) + 8 }]}>
       {left}
       <View style={{ flex: 1 }}>
@@ -31,7 +38,7 @@ export function HudBar({ title, status, onClose, left, noInset, noMenu }: Props)
           {title}
         </Text>
         {status ? (
-          <Text variant="displayM" color="ice" style={{ marginTop: 2 }}>
+          <Text variant="displayM" color="textSecondary" style={{ marginTop: 2 }}>
             {status}
           </Text>
         ) : null}
@@ -65,6 +72,15 @@ export function HudBar({ title, status, onClose, left, noInset, noMenu }: Props)
         </Pressable>
       ) : null}
     </View>
+    {victory ? (
+      <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <View style={[styles.band, { backgroundColor: victory.stripe[0] }]} />
+        <View style={[styles.band, { backgroundColor: victory.stripe[1] }]} />
+      </View>
+    ) : (
+      <View style={[styles.band, { backgroundColor: colors.accent }]} />
+    )}
+    </View>
   );
 }
 
@@ -73,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: colors.surfaceSecondary,
+    backgroundColor: colors.background,
     paddingHorizontal: 16,
     paddingBottom: 8,
     minHeight: 56,
@@ -90,4 +106,5 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   close: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  band: { height: 4 },
 });

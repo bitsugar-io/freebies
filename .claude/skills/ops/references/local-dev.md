@@ -114,14 +114,14 @@ new migration instead.
 
 Run from `services/api` with `mise exec -- go run . <command>`:
 
-| Command                                                                              | What it does                                                          |
-| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| `users list`                                                                         | Lists users                                                           |
-| `deals list`                                                                         | Lists active triggered deals                                          |
-| `deals create --hours 6`                                                             | Creates a test deal                                                   |
-| `deals trigger <event-id> [--notify=false] [--unlock-after-days N] [--valid-days N]` | Triggers one event now; the flags build a delayed or multi-day window |
-| `notify test` / `notify send <user-id>`                                              | Sends a test push                                                     |
-| `verify-mlb --team LAD --date 2026-09-01`                                            | Reads one game from the live MLB source, no DB                        |
+| Command                                                                                          | What it does                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `users list`                                                                                     | Lists users                                                                                                                                      |
+| `deals list`                                                                                     | Lists active triggered deals                                                                                                                     |
+| `deals create --hours 6`                                                                         | Creates a test deal                                                                                                                              |
+| `deals trigger <event-id> [--notify=false] [--hours N] [--unlock-after-days N] [--valid-days N]` | Triggers one event as if its team did it last night, with the deal's own rule window; `--hours` forces a plain window, the other flags build one |
+| `notify test` / `notify send <user-id>`                                                          | Sends a test push                                                                                                                                |
+| `verify-mlb --team LAD --date 2026-09-01`                                                        | Reads one game from the live MLB source, no DB                                                                                                   |
 
 The full list is in `services/api/docs/cli.md`.
 

@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"time"
@@ -13,6 +14,7 @@ import (
 	"github.com/retr0h/freebie/services/api/internal/db"
 	"github.com/retr0h/freebie/services/api/internal/notify"
 	"github.com/retr0h/freebie/services/api/internal/triggers"
+	"github.com/retr0h/freebie/services/api/internal/worker"
 )
 
 var dealsCmd = &cobra.Command{
@@ -35,7 +37,7 @@ var dealsListCmd = &cobra.Command{
 
 var dealsTriggerCmd = &cobra.Command{
 	Use:   "trigger [event-id]",
-	Short: "Trigger a specific event (creates deal and notifies subscribers)",
+	Short: "Trigger a specific event as if its team did it last night (creates the deal with the deal's own window and notifies subscribers)",
 	Args:  cobra.ExactArgs(1),
 	RunE:  runDealsTrigger,
 }
@@ -47,7 +49,7 @@ func init() {
 	dealsCmd.AddCommand(dealsTriggerCmd)
 
 	dealsCreateCmd.Flags().Int("hours", 24, "Hours until deal expires")
-	dealsTriggerCmd.Flags().Int("hours", 24, "Hours until deal expires")
+	dealsTriggerCmd.Flags().Int("hours", 24, "Force a plain window of this many hours from now (default: the deal's own trigger_rule window)")
 	dealsTriggerCmd.Flags().Int("unlock-after-days", 0,
 		"Delay the code: unlocks at midnight Pacific this many days after yesterday's game (rule unlock_after_days)")
 	dealsTriggerCmd.Flags().Int("valid-days", 0,
@@ -224,18 +226,38 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("event not found: %w", err)
 	}
 
-	// Create the triggered event. With --unlock-after-days / --valid-days the
-	// window comes from the same code the checker uses, as if the game were
-	// yesterday's; otherwise it is --hours from now.
+	// Create the triggered event. By default the window is the deal's own
+	// trigger_rule, computed by the same code the checker uses as if the game
+	// were last night, so a test win shows exactly what a real one would
+	// (locked codes, breakfast-only deadlines, start times). --hours forces a
+	// plain window from now; --unlock-after-days / --valid-days build one.
 	expiresAt := time.Now().UTC().Add(time.Duration(hours) * time.Hour)
 	var availableAt sql.NullTime
-	if delayed {
+	var rule *triggers.Rule
+	switch {
+	case delayed:
+		rule = &triggers.Rule{UnlockAfterDays: unlockDays, ValidDays: validDays}
+	case !cmd.Flags().Changed("hours") && event.TriggerRule.Valid:
+		var r triggers.Rule
+		if err := json.Unmarshal([]byte(event.TriggerRule.String), &r); err != nil {
+			return fmt.Errorf("event %s has an unreadable trigger_rule (use --hours): %w", event.ID, err)
+		}
+		if r.RedemptionWindow == triggers.GameNight {
+			return fmt.Errorf("event %s is an at-the-game deal claimed in the venue that night: "+
+				"a real win is never recorded or pushed. Use --hours to force a test window", event.ID)
+		}
+		rule = &r
+	}
+	if rule != nil {
 		pt, err := time.LoadLocation("America/Los_Angeles")
 		if err != nil {
 			return fmt.Errorf("loading timezone: %w", err)
 		}
-		avail, exp := triggers.Window(time.Now().In(pt).AddDate(0, 0, -1),
-			triggers.Rule{UnlockAfterDays: unlockDays, ValidDays: validDays})
+		avail, exp := triggers.Window(time.Now().In(pt).AddDate(0, 0, -1), *rule)
+		if !exp.After(time.Now()) {
+			return fmt.Errorf("event %s's window for a game last night has already closed (%s); use --hours for a test window",
+				event.ID, exp.In(pt).Format("Mon 3:04pm MST"))
+		}
 		expiresAt = exp
 		if !avail.IsZero() {
 			availableAt = sql.NullTime{Time: avail, Valid: true}
@@ -248,7 +270,10 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 		GameID:      sql.NullString{String: fmt.Sprintf("game-%d", time.Now().Unix()), Valid: true},
 		ExpiresAt:   sql.NullTime{Time: expiresAt, Valid: true},
 		AvailableAt: availableAt,
-		Payload:     sql.NullString{String: `{"source": "cli-trigger"}`, Valid: true},
+		// "notify" tells check-triggers whether it owes this deal's followers
+		// a "you won" push (ListTriggerPushDeals): with --notify=false it never
+		// pushes; with --notify a push that fails now is retried by its runs.
+		Payload: sql.NullString{String: fmt.Sprintf(`{"source": "cli-trigger", "notify": %t}`, shouldNotify), Valid: true},
 	})
 	if err != nil {
 		return fmt.Errorf("creating triggered event: %w", err)
@@ -265,62 +290,14 @@ func runDealsTrigger(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	// Get subscribers and notify them
-	subscribers, err := queries.ListEventSubscribers(ctx, event.ID)
+	// Push through the worker, exactly as check-triggers does: the same copy
+	// and deep link, paused users skipped, a notifications row per push, and
+	// nobody pushed twice for the deal.
+	svc := worker.NewService(queries, nil, notify.NewExpoNotifier(), logger)
+	res, err := svc.NotifyTriggered(ctx, triggered.ID)
 	if err != nil {
-		return fmt.Errorf("listing subscribers: %w", err)
+		return fmt.Errorf("notifying subscribers: %w", err)
 	}
-
-	if len(subscribers) == 0 {
-		logger.Info("no subscribers for this event")
-		return nil
-	}
-
-	notifier := notify.NewExpoNotifier()
-	sent := 0
-	failed := 0
-
-	title := fmt.Sprintf("🎉 %s!", event.OfferName)
-	expiresText := fmt.Sprintf("Expires in %d hours", hours)
-	if delayed {
-		pt, _ := time.LoadLocation("America/Los_Angeles")
-		expiresText = "Expires " + expiresAt.In(pt).Format("Mon Jan 2 3:04pm")
-		if availableAt.Valid {
-			expiresText = "Code unlocks " + availableAt.Time.In(pt).Format("Mon Jan 2") + ". " + expiresText
-		}
-	}
-	body := fmt.Sprintf("%s just triggered! %s. %s", event.TriggerCondition, event.OfferDescription, expiresText)
-
-	for _, sub := range subscribers {
-		if !sub.PushToken.Valid || sub.PushToken.String == "" {
-			continue
-		}
-
-		token := sub.PushToken.String
-		if !notify.IsValidExpoToken(token) {
-			continue
-		}
-
-		ticket, err := notifier.Send(cmd.Context(), token, title, body, map[string]interface{}{
-			"type":             "freebie",
-			"eventId":          event.ID,
-			"triggeredEventId": triggered.ID,
-			"expiresAt":        expiresAt.Format(time.RFC3339),
-		})
-		if err != nil {
-			logger.Error("failed to send", "user", sub.UserID, "error", err)
-			failed++
-			continue
-		}
-
-		if ticket.Status == "ok" {
-			logger.Info("notified subscriber", "user", sub.UserID)
-			sent++
-		} else {
-			failed++
-		}
-	}
-
-	logger.Info("notifications sent", "sent", sent, "failed", failed)
+	logger.Info("notifications sent", "sent", res.Sent, "failed", res.Failed, "unknown", res.Unknown)
 	return nil
 }

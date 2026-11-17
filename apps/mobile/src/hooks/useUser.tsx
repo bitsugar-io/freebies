@@ -9,6 +9,8 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Application from 'expo-application';
 import { api, User } from '../api/client';
+import { shouldDiscardStoredUser } from '../api/errors';
+import { parseCache } from '../utils/cache';
 
 const USER_KEY = 'freebie_user';
 
@@ -56,19 +58,28 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // Load auth token from secure storage first
       await api.loadAuthToken();
 
-      // Check for existing user in storage
-      const stored = await AsyncStorage.getItem(USER_KEY);
-      if (stored) {
-        const savedUser = JSON.parse(stored) as User;
-        // Verify user still exists on server (requires auth token)
+      // The stored user is used right away, before the server check, so saved deals and follows
+      // (cached per user id) show offline and at launch.
+      const savedUser = parseCache<User>(await AsyncStorage.getItem(USER_KEY).catch(() => null), (v) => typeof v.id === 'string');
+      if (savedUser) {
+        setUser(savedUser);
+        setIsLoading(false);
         try {
           const serverUser = await api.getUser(savedUser.id);
           setUser(serverUser);
+          AsyncStorage.setItem(USER_KEY, JSON.stringify(serverUser)).catch(() => {});
           return;
-        } catch {
-          // User doesn't exist on server or token invalid, create new one
+        } catch (err) {
+          // Offline, a timeout or a server error: keep the stored user. Only a server that says the
+          // user is gone (404) or the token is bad (401/403) starts a new one.
+          if (!shouldDiscardStoredUser(err)) {
+            console.warn('Could not verify the stored user; keeping it:', err);
+            return;
+          }
           await AsyncStorage.removeItem(USER_KEY);
           await api.clearAuthToken();
+          setUser(null);
+          setIsLoading(true);
         }
       }
 

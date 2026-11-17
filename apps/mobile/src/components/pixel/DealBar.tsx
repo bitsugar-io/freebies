@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../../hooks/useTheme';
 import { useNow } from '../../hooks/useNow';
+import { serverNow } from '../../utils/serverClock';
 
 interface BarProps {
   /** 0..1 */
@@ -37,7 +38,7 @@ export function DealBar({ value, cells = 12, tone = 'success', accessibilityLabe
 
 const MS_HOUR = 3_600_000;
 
-export function timeLeftMs(expiresAt: string | undefined, now = Date.now()): number | null {
+export function timeLeftMs(expiresAt: string | undefined, now = serverNow()): number | null {
   if (!expiresAt) return null;
   return new Date(expiresAt).getTime() - now;
 }

@@ -58,13 +58,19 @@ func formatDeadline(expires, now time.Time) string {
 	}
 }
 
-// formatUnlock renders when a delayed code unlocks: "tomorrow" or "Tue".
+// formatUnlock renders when a delayed code unlocks, as a phrase after
+// "Code": "starts at 10am" later the same Pacific day, "unlocks tomorrow",
+// or "unlocks Tue" on a later day.
 func formatUnlock(at, now time.Time) string {
 	a, n := at.In(pacific), now.In(pacific)
-	if a.Format("2006-01-02") == n.AddDate(0, 0, 1).Format("2006-01-02") {
-		return "tomorrow"
+	switch a.Format("2006-01-02") {
+	case n.Format("2006-01-02"):
+		return "starts at " + formatClock(a)
+	case n.AddDate(0, 0, 1).Format("2006-01-02"):
+		return "unlocks tomorrow"
+	default:
+		return "unlocks " + a.Format("Mon")
 	}
-	return a.Format("Mon")
 }
 
 // formatRemaining renders time left as "3h", "45m" or "2d".
@@ -92,7 +98,7 @@ func unlockedMessage(c dealCopy, now time.Time) (title, body string) {
 	}
 	body = fmt.Sprintf("Claim at %s", c.Partner)
 	if !c.AvailableAt.IsZero() && c.AvailableAt.After(now) {
-		body = fmt.Sprintf("Code unlocks %s. Claim at %s", formatUnlock(c.AvailableAt, now), c.Partner)
+		body = fmt.Sprintf("Code %s. Claim at %s", formatUnlock(c.AvailableAt, now), c.Partner)
 	}
 	if c.HasExpiry {
 		body += " by " + formatDeadline(c.ExpiresAt, now)
@@ -102,6 +108,25 @@ func unlockedMessage(c dealCopy, now time.Time) (title, body string) {
 
 // reminderMessage words the push sent as a deal nears its deadline.
 func reminderMessage(c dealCopy, now time.Time) (title, body string) {
+	// The unlock day, before the start time (a deal that starts after the last
+	// reminder run is reminded early): say when it starts.
+	if !c.AvailableAt.IsZero() && pacificDay(c.AvailableAt) == pacificDay(now) && c.AvailableAt.After(now) {
+		title = fmt.Sprintf("Your %s code starts at %s", c.Offer, formatClock(c.AvailableAt))
+		body = fmt.Sprintf("Claim at %s", c.Partner)
+		if c.HasExpiry {
+			body += " by " + formatDeadline(c.ExpiresAt, now)
+		}
+		return title, body + "."
+	}
+	// The day a delayed code unlocks, that is the news: "it works now".
+	if !c.AvailableAt.IsZero() && pacificDay(c.AvailableAt) == pacificDay(now) && !c.AvailableAt.After(now) {
+		title = fmt.Sprintf("Your %s code works now", c.Offer)
+		body = fmt.Sprintf("Claim at %s", c.Partner)
+		if c.HasExpiry {
+			body += " by " + formatDeadline(c.ExpiresAt, now)
+		}
+		return title, body + "."
+	}
 	title = fmt.Sprintf("Your %s", c.Offer)
 	if c.HasExpiry {
 		title += " expires in " + formatRemaining(c.ExpiresAt.Sub(now))

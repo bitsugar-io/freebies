@@ -33,7 +33,7 @@ export function PixelButton({
     >
       {({ pressed }) => (
         <View style={{ paddingRight: PX, paddingBottom: PX }}>
-          {/* The drop: a deep-blue offset the button covers while pressed. */}
+          {/* The drop: a dark-gold offset the button covers while pressed. */}
           <View
             style={{
               position: 'absolute',
@@ -41,7 +41,7 @@ export function PixelButton({
               top: PX,
               right: 0,
               bottom: 0,
-              backgroundColor: colors.surfaceSecondary,
+              backgroundColor: colors.accentShadow,
             }}
           />
           <View style={{ transform: pressed ? [{ translateX: PX }, { translateY: PX }] : [] }}>

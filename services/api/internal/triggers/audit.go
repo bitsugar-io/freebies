@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"slices"
+	"time"
 
 	"github.com/retr0h/freebie/services/api/internal/db"
 	"github.com/retr0h/freebie/services/api/internal/sources"
@@ -88,6 +89,22 @@ func auditEvent(e db.Event) (AuditStatus, string, string) {
 	if rule.UnlockAfterDays < 0 || rule.ValidDays < 0 {
 		return AuditBadRule, rule.Metric, "unlock_after_days and valid_days cannot be negative"
 	}
+	// An empty window means next_day; a misspelled one used to fall back to
+	// next_day silently and now fails.
+	if rule.RedemptionWindow != "" && !KnownWindow(rule.RedemptionWindow) {
+		return AuditBadRule, rule.Metric, fmt.Sprintf("redemption_window %q is not one of same_day, next_day, week, next_business_day, through_next_business_day, game_night (empty means next_day)", rule.RedemptionWindow)
+	}
+	for name, v := range map[string]string{"expires_at_local": rule.ExpiresAtLocal, "available_from_local": rule.AvailableFromLocal} {
+		if v == "" {
+			continue
+		}
+		if _, err := time.Parse("15:04", v); err != nil {
+			return AuditBadRule, rule.Metric, fmt.Sprintf("%s %q is not a 24h HH:MM time", name, v)
+		}
+	}
+	if rule.Season != "" && rule.Season != "regular" {
+		return AuditBadRule, rule.Metric, fmt.Sprintf("season %q is not \"regular\" (or empty for any game)", rule.Season)
+	}
 	src, err := sources.Get(e.League)
 	if err != nil {
 		return AuditNoSource, rule.Metric, fmt.Sprintf("no source registered for league %q", e.League)
@@ -96,6 +113,12 @@ func auditEvent(e db.Event) (AuditStatus, string, string) {
 		return AuditUnknownMetric, rule.Metric,
 			fmt.Sprintf("the %s source does not emit metric %q (it emits %v)",
 				e.League, rule.Metric, src.Metrics())
+	}
+	if rule.Season == "regular" {
+		if sa, ok := src.(sources.SeasonAware); !ok || !sa.KnowsPostseason() {
+			return AuditBadRule, rule.Metric, fmt.Sprintf(
+				"season \"regular\" needs a source that can tell playoff games apart; the %s source cannot yet", e.League)
+		}
 	}
 	if tl, ok := src.(sources.TeamLister); ok && !slices.Contains(tl.Teams(), e.TeamID) {
 		return AuditUnknownTeam, rule.Metric,

@@ -1,0 +1,106 @@
+{
+ "games": [
+  {
+   "id": 2026010030,
+   "gameType": 1,
+   "gameDate": "2026-09-22",
+   "startTimeUTC": "2026-09-23T02:00:00Z",
+   "gameState": "FINAL",
+   "gameScheduleState": "OK",
+   "awayTeam": {
+    "abbrev": "UTA",
+    "name": {
+     "default": "Mammoth"
+    },
+    "score": 6
+   },
+   "homeTeam": {
+    "abbrev": "LAK",
+    "name": {
+     "default": "Kings"
+    },
+    "score": 3
+   },
+   "gameOutcome": {
+    "lastPeriodType": "REG"
+   },
+   "periodDescriptor": {
+    "periodType": "REG"
+   },
+   "goals": [
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "UTA",
+     "timeInPeriod": "08:49"
+    },
+    {
+     "period": 1,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "UTA",
+     "timeInPeriod": "18:43"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "LAK",
+     "timeInPeriod": "02:42"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "UTA",
+     "timeInPeriod": "03:51"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "UTA",
+     "timeInPeriod": "12:22"
+    },
+    {
+     "period": 2,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "LAK",
+     "timeInPeriod": "16:23"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "LAK",
+     "timeInPeriod": "01:48"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "UTA",
+     "timeInPeriod": "03:14"
+    },
+    {
+     "period": 3,
+     "periodDescriptor": {
+      "periodType": "REG"
+     },
+     "teamAbbrev": "UTA",
+     "timeInPeriod": "19:10"
+    }
+   ]
+  }
+ ]
+}

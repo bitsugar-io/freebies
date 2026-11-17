@@ -8,7 +8,7 @@ export type TeamsStackParamList = {
 };
 
 export type TabParamList = {
-  /** Home: deals to claim, on the line, and coming up. */
+  /** Deals you won and can still claim. The first tab until you follow a team. */
   Won: undefined;
   /** Deals anyone can claim now and today's LA games with deals on the line. */
   Today: undefined;

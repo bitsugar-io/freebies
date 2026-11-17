@@ -410,6 +410,13 @@ func (h *Handler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	userID := chi.URLParam(r, "userId")
 	eventID := chi.URLParam(r, "eventId")
 
+	// A deal already won stays the user's after the unfollow (kept_deals).
+	if err := h.queries.KeepWonDeals(r.Context(), db.KeepWonDealsParams{UserID: userID, EventID: eventID}); err != nil {
+		h.logger.Error("failed to keep won deals", "error", err)
+		respondError(w, http.StatusInternalServerError, "failed to delete subscription")
+		return
+	}
+
 	err := h.queries.DeleteSubscription(r.Context(), db.DeleteSubscriptionParams{
 		UserID:  userID,
 		EventID: eventID,
@@ -423,14 +430,12 @@ func (h *Handler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-// ListActiveDeals returns all active triggered events for a user's subscriptions
+// ListActiveDeals returns the user's unexpired won deals: followed now, pushed about, kept on
+// unfollow, or dismissed (see ListActiveTriggeredEventsForUser in db/queries.sql).
 func (h *Handler) ListActiveDeals(w http.ResponseWriter, r *http.Request) {
 	userID := chi.URLParam(r, "userId")
 
-	rows, err := h.queries.ListActiveTriggeredEventsForUser(r.Context(), db.ListActiveTriggeredEventsForUserParams{
-		UserID:   userID,
-		UserID_2: userID,
-	})
+	rows, err := h.queries.ListActiveTriggeredEventsForUser(r.Context(), userID)
 	if err != nil {
 		h.logger.Error("failed to list active deals", "error", err)
 		respondError(w, http.StatusInternalServerError, "failed to list active deals")
@@ -584,13 +589,32 @@ func (h *Handler) CreateDismissal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if already dismissed
-	_, err := h.queries.GetDismissal(r.Context(), db.GetDismissalParams{
+	// Idempotent: a retry (say, after the phone timed out on a request the server got) returns the
+	// row that exists. Silenced -> claimed upgrades it; claimed is never downgraded to silenced.
+	existing, err := h.queries.GetDismissal(r.Context(), db.GetDismissalParams{
 		UserID:           userID,
 		TriggeredEventID: req.TriggeredEventID,
 	})
-	if err == nil {
-		respondError(w, http.StatusConflict, "already dismissed")
+	switch {
+	case err == nil && existing.Type == "stop_reminding" && req.Type == "got_it":
+		updated, err := h.queries.UpdateDismissalType(r.Context(), db.UpdateDismissalTypeParams{
+			Type:             req.Type,
+			UserID:           userID,
+			TriggeredEventID: req.TriggeredEventID,
+		})
+		if err != nil {
+			h.logger.Error("failed to update dismissal", "error", err)
+			respondError(w, http.StatusInternalServerError, "failed to update dismissal")
+			return
+		}
+		respondJSON(w, http.StatusOK, dismissalToResponse(updated))
+		return
+	case err == nil:
+		respondJSON(w, http.StatusOK, dismissalToResponse(existing))
+		return
+	case err != sql.ErrNoRows:
+		h.logger.Error("failed to get dismissal", "error", err)
+		respondError(w, http.StatusInternalServerError, "failed to create dismissal")
 		return
 	}
 
@@ -606,13 +630,17 @@ func (h *Handler) CreateDismissal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondJSON(w, http.StatusCreated, DismissalResponse{
-		ID:               dismissal.ID,
-		UserID:           dismissal.UserID,
-		TriggeredEventID: dismissal.TriggeredEventID,
-		Type:             dismissal.Type,
-		DismissedAt:      dismissal.DismissedAt.Format("2006-01-02T15:04:05Z07:00"),
-	})
+	respondJSON(w, http.StatusCreated, dismissalToResponse(dismissal))
+}
+
+func dismissalToResponse(d db.Dismissal) DismissalResponse {
+	return DismissalResponse{
+		ID:               d.ID,
+		UserID:           d.UserID,
+		TriggeredEventID: d.TriggeredEventID,
+		Type:             d.Type,
+		DismissedAt:      d.DismissedAt.UTC().Format("2006-01-02T15:04:05Z07:00"),
+	}
 }
 
 // DeleteDismissal removes a dismissal (undo)

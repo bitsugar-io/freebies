@@ -113,7 +113,7 @@ func (c *Client) scoreboard(ctx context.Context, f Feed, day string) ([]Event, e
 		q[k] = v
 	}
 	q.Set("dates", day)
-	body, err := c.get(ctx, f.Path+"/scoreboard", q)
+	body, err := c.get(ctx, f.Path+"/scoreboard", q, checkScoreboard)
 	if err != nil {
 		return nil, fmt.Errorf("fetching ESPN %s scoreboard for %s: %w", f.Path, day, err)
 	}
@@ -122,6 +122,23 @@ func (c *Client) scoreboard(ctx context.Context, f Feed, day string) ([]Event, e
 		return nil, fmt.Errorf("decoding ESPN %s scoreboard for %s: %w", f.Path, day, err)
 	}
 	return sr.Events, nil
+}
+
+// checkScoreboard rejects a 200 that is not a scoreboard: ESPN answers some
+// bad requests with 200 and {"code":400,"message":...}, and an empty object
+// would otherwise read as a day with no games. A real empty day still has
+// "events": []. It runs before caching, so a bad body is never cached.
+func checkScoreboard(body []byte) error {
+	var probe struct {
+		Events json.RawMessage `json:"events"`
+	}
+	if err := json.Unmarshal(body, &probe); err != nil {
+		return fmt.Errorf("decoding scoreboard: %w", err)
+	}
+	if len(probe.Events) == 0 || probe.Events[0] != '[' {
+		return fmt.Errorf("scoreboard has no events list: %.200s", body)
+	}
+	return nil
 }
 
 // TeamStat reads one box-score team statistic (e.g. "interceptions") for
@@ -151,7 +168,7 @@ func (c *Client) TeamStat(ctx context.Context, path, eventID, teamID, name strin
 
 // summary returns the game summary for event id.
 func (c *Client) summary(ctx context.Context, path, id string) (*summaryResponse, error) {
-	body, err := c.get(ctx, path+"/summary", url.Values{"event": {id}})
+	body, err := c.get(ctx, path+"/summary", url.Values{"event": {id}}, nil)
 	if err != nil {
 		return nil, fmt.Errorf("fetching ESPN %s summary %s: %w", path, id, err)
 	}
@@ -164,11 +181,20 @@ func (c *Client) summary(ctx context.Context, path, id string) (*summaryResponse
 
 // get fetches path?query, caching the body so one check run over many events
 // does not refetch the same page. Concurrent callers of one URL share a single
-// request (and its retries); different URLs do not wait on each other.
-func (c *Client) get(ctx context.Context, path string, q url.Values) ([]byte, error) {
+// request (and its retries); different URLs do not wait on each other. check,
+// if set, validates the body before it is cached; a body it rejects is an
+// error and is not cached.
+func (c *Client) get(ctx context.Context, path string, q url.Values, check func([]byte) error) ([]byte, error) {
 	u := c.baseURL + "/" + path + "?" + q.Encode()
 	return c.cache.Get(ctx, u, func(ctx context.Context) ([]byte, error) {
-		return c.fetch(ctx, u)
+		body, err := c.fetch(ctx, u)
+		if err == nil && check != nil {
+			err = check(body)
+		}
+		if err != nil {
+			return nil, err
+		}
+		return body, nil
 	})
 }
 
