@@ -56,11 +56,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setError(null);
 
       // Load auth token from secure storage first
-      await api.loadAuthToken();
+      const token = await api.loadAuthToken();
 
       // The stored user is used right away, before the server check, so saved deals and follows
       // (cached per user id) show offline and at launch.
-      const savedUser = parseCache<User>(await AsyncStorage.getItem(USER_KEY).catch(() => null), (v) => typeof v.id === 'string');
+      let savedUser = parseCache<User>(await AsyncStorage.getItem(USER_KEY).catch(() => null), (v) => typeof v.id === 'string');
+      if (savedUser && !token) {
+        // A user without its token can't make a single request (the keychain was reset or the app
+        // was re-signed): start a new user instead of sending requests that will all fail.
+        await AsyncStorage.removeItem(USER_KEY).catch(() => {});
+        savedUser = null;
+      }
       if (savedUser) {
         setUser(savedUser);
         setIsLoading(false);

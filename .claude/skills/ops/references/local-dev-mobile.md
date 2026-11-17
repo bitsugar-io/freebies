@@ -38,8 +38,10 @@ switches to Expo Go, which is the quick path for UI work.
 
   It installs "Freebies" on the simulator and serves it from its own Metro on :8083, leaving the
   usual :8081/:8082 alone. Prebuild rewrites the `ios` and `android` scripts in `package.json` to
-  `expo run:*`; undo that with `git restore apps/mobile/package.json` (they stay `expo start`). The
-  generated `ios/` folder is gitignored. Rebuild whenever the icon, splash, app name or a native
+  `expo run:*`; set those two back to `expo start --ios` / `expo start --android` by hand. Don't
+  `git restore package.json`: that also drops any dependency you just added, so a new native module
+  silently isn't linked (check `ExpoModulesProvider.swift` under `ios/Pods/Target Support Files`).
+  The generated `ios/` folder is gitignored. Rebuild whenever the icon, splash, app name or a native
   module changes, and delete stale installs (`xcrun simctl uninstall booted <bundle id>`). EAS's
   `development` profile builds the same thing in the cloud ([release-mobile.md](release-mobile.md)).
 

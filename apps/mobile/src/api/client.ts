@@ -204,6 +204,11 @@ class ApiClient {
     return this.authToken;
   }
 
+  /** The API root, e.g. https://freebie-api.bitsugar.io/api/v1 (shared with the widget). */
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
   private async request<T>(
     path: string,
     options: RequestInit = {},

@@ -16,6 +16,7 @@ import { useToast } from '../components/pixel/Toast';
 import { teamNameFrom } from '../utils/format';
 import { followedTeamIds, liveWonDeals } from '../utils/dealState';
 import { useAppConfig } from './AppConfigContext';
+import { refreshWidget, shareWithWidget } from '../widget/sync';
 
 interface AppDataContextType {
   // User
@@ -138,6 +139,15 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
 
   const followedTeams = useMemo(() => followedTeamIds(events, isSubscribed), [events, isSubscribed]);
   const followedCount = followedTeams.length;
+
+  // Lock-screen widget: give it the user once, then redraw when its lines could change.
+  useEffect(() => {
+    if (user?.id) shareWithWidget(api.getBaseUrl(), user.id, api.getAuthToken());
+  }, [user?.id]);
+  const widgetKey = `${followedTeams.join(',')}|${liveWon.map((d) => d.id).join(',')}`;
+  useEffect(() => {
+    refreshWidget();
+  }, [widgetKey]);
   const teamName = useCallback((teamId: string, fallback?: string) => teamNameFrom(teams, teamId, fallback), [teams]);
 
   const { claimed: claimedDeals, refetch: refetchClaimed } = useClaimedDeals();

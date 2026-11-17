@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Lock-screen widget: your newest win, or today's game with a deal on it
+
 ### Changed
 
 - Upgrade to Expo SDK 58 and React Native 0.88

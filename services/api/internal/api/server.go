@@ -101,6 +101,7 @@ func (s *Server) setupRoutes() {
 				// Active Deals
 				r.Get("/users/{userId}/active-deals", h.ListActiveDeals)
 				r.Get("/users/{userId}/claimed", h.ListClaimedDeals)
+				r.Get("/users/{userId}/widget", h.GetWidget) // lock-screen widget lines
 
 				// Dismissals
 				r.Post("/users/{userId}/dismissals", h.CreateDismissal)
