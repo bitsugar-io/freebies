@@ -66,11 +66,15 @@ it (a late run or a backfill after 10:30am for the breakfast deal). The run logs
 | `valid_days: N` (no unlock)             | Immediately                                                                  | 23:59:59 on day N, or `expires_at_local`                                                                              |
 | `unlock_after_days: U`, `valid_days: N` | Midnight Pacific, U days after the game date                                 | 23:59:59 on the Nth day counting the unlock day as the first (`valid_days` defaults to 1; `expires_at_local` ignored) |
 
-Example: the Rams and Carl's Jr. code "unlocks 2 days after the game, expires 1 week after unlock"
-is `"unlock_after_days": 2, "valid_days": 7`. For a Sunday Nov 15 game it unlocks Tue Nov 17 and
-ends Mon Nov 23 at 11:59pm. The push says "Code unlocks Tue. Claim at Carl's Jr. by Mon Nov 23
-11:59pm." and the app reads `availableAt` from the active and claimed deal JSON to show "Code
-unlocks Tue".
+Example: a code that "unlocks 2 days after the game, expires 1 week after unlock" is
+`"unlock_after_days": 2, "valid_days": 7`. For a Sunday Nov 15 game it unlocks Tue Nov 17 and ends
+Mon Nov 23 at 11:59pm. The push says "Code unlocks Tue. Claim by Mon Nov 23 11:59pm." and the app
+reads `availableAt` from the active and claimed deal JSON to show "Code unlocks Tue".
+
+Read "unlock" carefully. "Code available for unlock for 2 days following the game" (the Rams and
+Carl's Jr.) is a deadline, not a delay: the fan adds the code within 2 days, so it is `next_day`.
+What happens after they add it ("expires in app one week from unlock") belongs in the description,
+not the rule.
 
 ### Reminders
 
@@ -108,8 +112,8 @@ what is owed for every live deal, so a push that failed at 7am (Expo down, or th
 recording the deal) goes out at 9am or on a later run before the deal expires. Paused users are
 skipped and get it on a later run if they resume while it is live. A user never gets two trigger
 pushes for one deal. Deals made by `deals create` or `deals trigger --notify=false` are never
-pushed, reminders included; `deals trigger` (with `--notify`, the default) sends through the same code as
-`check-triggers`.
+pushed, reminders included; `deals trigger` (with `--notify`, the default) sends through the same
+code as `check-triggers`.
 
 To make a delayed deal locally,
 `go run . deals trigger <event-id> --unlock-after-days 3 --valid-days 7 --notify=false` builds the
@@ -247,6 +251,7 @@ migration comment:
 | "from 10am", "not during breakfast"                                | `available_from_local`                    |
 | "within 3 days", "valid 3 consecutive days"                        | `valid_days: 3`                           |
 | "code unlocks 2 days after the game", "expires 1 week from unlock" | `unlock_after_days: 2`, `valid_days: 7`   |
+| "available for unlock for 2 days following the game"               | `next_day` (a deadline to add the code)   |
 | "the next business day"                                            | `next_business_day`                       |
 | "through the following business day"                               | `through_next_business_day`               |
 | "claim at the arena that night"                                    | `game_night`, plus `in_venue` and `venue` |
