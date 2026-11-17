@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/retr0h/freebie/services/api/internal/sources"
 	"github.com/retr0h/freebie/services/api/internal/sources/espn"
 	"github.com/retr0h/freebie/services/api/internal/sources/espn/espntest"
 	"github.com/retr0h/freebie/services/api/internal/sources/nba"
@@ -180,9 +181,19 @@ func TestNCAAFeedFailureIsIsolated(t *testing.T) {
 	srv := failing(t, "college-football")
 	src := ncaa.NewSourceWithClient(srv.URL, srv.Client())
 	games, err := src.GetGamesByDate(context.Background(), "USC", day(t, "2026-11-02"))
-	require.NoError(t, err)
+	// The basketball game comes back, flagged as an incomplete day so a
+	// football deal reports an error instead of "no game".
+	var partial *sources.PartialError
+	require.ErrorAs(t, err, &partial)
+	assert.Contains(t, err.Error(), "college-football")
 	require.Len(t, games, 1)
 	assert.Contains(t, games[0].GameID, "basketball")
+
+	// GetGameByDate still answers with the game it could read.
+	first, err := src.GetGameByDate(context.Background(), "USC", day(t, "2026-11-02"))
+	require.NoError(t, err)
+	require.NotNil(t, first)
+	assert.Contains(t, first.GameID, "basketball")
 
 	sched, err := src.GamesOn(context.Background(), day(t, "2026-11-02"))
 	require.NoError(t, err)
@@ -192,7 +203,7 @@ func TestNCAAFeedFailureIsIsolated(t *testing.T) {
 	srv = failing(t, "mens-college-basketball")
 	src = ncaa.NewSourceWithClient(srv.URL, srv.Client())
 	games, err = src.GetGamesByDate(context.Background(), "USC", day(t, "2026-10-31"))
-	require.NoError(t, err)
+	require.ErrorAs(t, err, &partial)
 	require.Len(t, games, 1)
 	assert.Contains(t, games[0].GameID, "football")
 
