@@ -178,3 +178,29 @@ func TestReminderDue(t *testing.T) {
 		}
 	}
 }
+
+// Test deals (`deals create`, `deals trigger --notify=false`) are never
+// pushed: no "you won" push and no reminder either. A `deals trigger
+// --notify` deal is reminded like a real one.
+func TestReminderSkipsTestDeals(t *testing.T) {
+	e := newReminderEnv(t)
+	payloads := map[string]string{
+		"te-create": `{"source": "cli-test"}`,
+		"te-quiet":  `{"source": "cli-trigger", "notify": false}`,
+		"te-notify": `{"source": "cli-trigger", "notify": true}`,
+	}
+	for id, payload := range payloads {
+		e.deal(t, id, 0, -1, 0)
+		if _, err := e.db.Exec(`UPDATE triggered_events SET payload = ? WHERE id = ?`, payload, id); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if got := e.run(t, 0, 11); got != 1 {
+		t.Errorf("reminders sent = %d, want 1 (only the --notify deal)", got)
+	}
+	var id string
+	if err := e.db.QueryRow(`SELECT group_concat(triggered_event_id) FROM notifications WHERE kind = 'reminder'`).
+		Scan(&id); err != nil || id != "te-notify" {
+		t.Errorf("reminded deals = %q (%v), want te-notify", id, err)
+	}
+}

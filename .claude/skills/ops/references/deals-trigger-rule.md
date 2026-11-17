@@ -108,7 +108,7 @@ what is owed for every live deal, so a push that failed at 7am (Expo down, or th
 recording the deal) goes out at 9am or on a later run before the deal expires. Paused users are
 skipped and get it on a later run if they resume while it is live. A user never gets two trigger
 pushes for one deal. Deals made by `deals create` or `deals trigger --notify=false` are never
-pushed; `deals trigger` (with `--notify`, the default) sends through the same code as
+pushed, reminders included; `deals trigger` (with `--notify`, the default) sends through the same code as
 `check-triggers`.
 
 To make a delayed deal locally,

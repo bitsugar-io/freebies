@@ -3,6 +3,7 @@ package worker
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"time"
@@ -166,6 +167,20 @@ func alertsPaused(until sql.NullTime, now time.Time) bool {
 	return until.Valid && until.Time.After(now)
 }
 
+// pushable reports whether a deal's followers may be pushed about it, by the
+// same rule as ListTriggerPushDeals: recorded by the checker (no payload) or by
+// `deals trigger --notify` (payload "notify": true). Test deals from
+// `deals create` and `deals trigger --notify=false` are never pushed.
+func pushable(payload sql.NullString) bool {
+	if !payload.Valid {
+		return true
+	}
+	var p struct {
+		Notify bool `json:"notify"`
+	}
+	return json.Unmarshal([]byte(payload.String), &p) == nil && p.Notify
+}
+
 // pacificDay is the Pacific calendar day of t as "2006-01-02".
 func pacificDay(t time.Time) string { return t.In(pacific).Format("2006-01-02") }
 
@@ -204,6 +219,10 @@ func (s *Service) SendReminders(ctx context.Context) (*SendRemindersResult, erro
 		0, 0, 0, 0, pacific).UTC().Format("2006-01-02 15:04:05")
 
 	for _, deal := range activeDeals {
+		// Test deals are never pushed, reminders included.
+		if !pushable(deal.Payload) {
+			continue
+		}
 		// A delayed deal's code is not usable yet; nothing to remind about,
 		// except on the day it unlocks: a deal that starts later today (even
 		// after the last reminder run) gets its reminder worded "starts at 6pm".
