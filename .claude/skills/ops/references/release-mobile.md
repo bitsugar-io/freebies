@@ -9,8 +9,12 @@ this file covers the mechanics. If the two conflict, APP-STORE.md wins.
 1. Run `scripts/release-preflight.sh`. It checks `app.json`, `eas.json`, the icon and the typecheck.
 2. Set the version and update `apps/mobile/CHANGELOG.md` ("Versioning" below).
 3. Get the owner's go-ahead: builds use EAS credits, and submits reach Apple.
-4. Build with the `preview` profile, install from TestFlight, and test on a phone, push included.
-5. Build `production`, submit, and fill in App Store Connect from APP-STORE.md.
+4. Deploy the API first if the app needs server changes: TestFlight and store builds call
+   production.
+5. Build `production` and submit it; the upload lands in TestFlight. Test on a phone, push included.
+   Only `production` builds can go to TestFlight; `preview` is internal distribution (an install
+   link for registered devices), not TestFlight.
+6. When it's good, fill in App Store Connect from APP-STORE.md and submit for review.
 
 Narrate each step to the owner as it runs (EAS builds take 10–20 minutes): say which profile is
 building and why, relay the build URL EAS prints, and report the build number and the TestFlight or

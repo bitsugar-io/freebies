@@ -133,6 +133,13 @@ helm upgrade --install freebie-cloudflare charts/cloudflare/ \
 Every upgrade must pass the secrets again; Helm doesn't keep `--set` values from the last release
 unless you add `--reuse-values`.
 
+To keep the secrets already in the cluster without typing them, use `--reset-then-reuse-values`: new
+chart defaults apply, and the last release's values are reused. Values someone set by hand in an
+earlier release (`helm get values <release> -n freebies` lists them) still win over new chart
+defaults, so a changed default (a schedule, say) must be passed again with `-f values.yaml`; commas
+break `--set`. Check the result: `kubectl get cronjobs -n freebies` shows each schedule and time
+zone.
+
 A first install runs all three, API first.
 
 ### 3. Check it
