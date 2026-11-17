@@ -6,14 +6,32 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-11-16
+
+Freebies is now Freebies: LA Sports Deals, for every LA team.
+
 ### Added
 
+- Deals for the Lakers, Clippers, Kings, Ducks, Rams, Chargers and UCLA, with more LA teams as their
+  seasons start
+- TODAY: deals anyone can claim right now and today's LA games with the deals riding on them
+- AT THE GAME tag for deals you claim at the venue
+- A team-color stripe and "RAMS WON!" when your team wins, and team-color rays on the deal screen
+- Locked codes that unlock later, with a countdown; pause alerts from the menu; a trophy case of
+  claimed deals
 - Lock-screen widget: your newest win, or today's game with a deal on it
 
 ### Changed
 
+- New 8-bit look and the Trophy Burger icon
+- Opens on TEAMS until you follow a team, then on TODAY, or on WON when you have a win to claim
 - Upgrade to Expo SDK 58 and React Native 0.88
 - Require iOS 16.4 or later, the minimum for Expo SDK 58
+
+### Fixed
+
+- Saved deals show without a signal, and a slow connection no longer drops your follows
+- Deals you already won stay yours if you unfollow the team
 
 ## [1.1.1] - 2026-04-05
 

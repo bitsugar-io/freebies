@@ -41,6 +41,15 @@ export function launchCorrection(s: {
   return s.correct === s.initial ? null : s.correct;
 }
 
+/**
+ * True once the launch tab can be trusted: everything loaded and the deals list is fresh from the
+ * server, or its fetch failed (offline: the saved list is the best there is). Saved deals alone are
+ * not enough: yesterday's list has no win from last night, and opening on TODAY then would hide it.
+ */
+export function launchDataSettled(s: { loading: boolean; dealsStale: boolean; dealsFailed: boolean }): boolean {
+  return !s.loading && (!s.dealsStale || s.dealsFailed);
+}
+
 /** Minimal navigation state shape (React Navigation's, without the import). */
 interface NavState {
   index?: number;

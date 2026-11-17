@@ -49,8 +49,23 @@ type Source interface {
 type MultiGameSource interface {
 	// GetGamesByDate returns the team's finished, counting games on date
 	// (only its Y/M/D are used), earliest first; empty when there are none.
+	// When some of a source's feeds fail and others don't, it returns the
+	// games it did read together with a *PartialError.
 	GetGamesByDate(ctx context.Context, teamID string, date time.Time) ([]*GameStats, error)
 }
+
+// PartialError is returned by GetGamesByDate, alongside the games it did
+// read, when some but not all of a source's feeds failed (NCAA football read
+// fine, basketball did not). The games are real, but the day is incomplete:
+// a deal none of them meets may have a game in the failed feed, so it is an
+// error for that deal, never "no game".
+type PartialError struct {
+	Err error
+}
+
+func (e *PartialError) Error() string { return "some feeds failed: " + e.Err.Error() }
+
+func (e *PartialError) Unwrap() error { return e.Err }
 
 // SeasonAware is implemented by sources whose feed says whether a game is a
 // playoff game (GameStats.Postseason). A rule with season "regular" needs one;

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -222,16 +223,18 @@ func (c *Checker) checkEventForDate(ctx context.Context, event db.Event, date ti
 	// Every finished game the team played that day: a doubleheader, or NCAA
 	// football and basketball, has more than one.
 	games, err := gamesByDate(ctx, source, event.TeamID, date)
-	if err != nil {
+	// Some feeds failed (NCAA basketball down, football fine): judge the deal
+	// on the games that were read, but if none of them fires it, the missing
+	// feed may hold the game that would have, so that is an error, not "no game".
+	var partial *sources.PartialError
+	if err != nil && !errors.As(err, &partial) {
 		result.Error = fmt.Errorf("fetching game stats: %w", err)
 		return result
 	}
-	if len(games) == 0 {
-		// No game on this date
-		return result
+	if len(games) > 0 {
+		result.Games = games
+		result.Stats = games[0]
 	}
-	result.Games = games
-	result.Stats = games[0]
 
 	// The deal fires on the first game that meets the rule. A
 	// regular-season-only deal never fires on a playoff game.
@@ -245,6 +248,9 @@ func (c *Checker) checkEventForDate(ctx context.Context, event db.Event, date ti
 			result.Triggered = true
 			break
 		}
+	}
+	if partial != nil && !result.Triggered {
+		result.Error = fmt.Errorf("fetching game stats: %w", partial)
 	}
 
 	return result
