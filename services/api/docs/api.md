@@ -29,6 +29,8 @@ Base URLs:
 ## Active Deals
 
 - `GET /users/:id/active-deals` - List active deals
+- `GET /users/:id/widget` - Lock-screen widget lines: the newest live win, else today's game
+  for a followed team, with `refreshAt` for the next change
 
 ## Dismissals
 

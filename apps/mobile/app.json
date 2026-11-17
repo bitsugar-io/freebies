@@ -17,6 +17,12 @@
           "remote-notification"
         ],
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "appleTeamId": "MVL7QTYHC4",
+      "entitlements": {
+        "com.apple.security.application-groups": [
+          "group.io.bitsugar.freebies"
+        ]
       }
     },
     "android": {
@@ -54,7 +60,8 @@
           "backgroundColor": "#000000"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "@bacons/apple-targets"
     ],
     "extra": {
       "eas": {

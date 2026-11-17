@@ -19,6 +19,7 @@ Freebies is now Freebies: LA Sports Deals, for every LA team.
 - A team-color stripe and "RAMS WON!" when your team wins, and team-color rays on the deal screen
 - Locked codes that unlock later, with a countdown; pause alerts from the menu; a trophy case of
   claimed deals
+- Lock-screen widget: your newest win, or today's game with a deal on it
 
 ### Changed
 

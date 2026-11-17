@@ -256,6 +256,21 @@ hardcoded, so `audit-colors.sh` has nothing to allow. Open question for the owne
 legal guardrail 4 and palette rule 7 ("no team color schemes", "team identity is never encoded by
 color"); see the note under [Legal guardrails](#legal-guardrails).
 
+### Lock-screen widget
+
+One widget, three lock-screen sizes: inline (above the clock), rectangular and circular. iOS draws
+lock-screen widgets in a single system tint, so there are no team colors, sprites or Press Start 2P;
+the 8-bit look stays in the app. The API words every line (`GET /users/{id}/widget`); the widget
+(`apps/mobile/targets/widget`) only lays them out.
+
+- **A live win:** the newest one. "RAMS WON!" (plus "+2" when more are live), the offer, then the
+  partner and the deadline ("code works Wed", "ends 11:59pm", "5 days left"). Tap opens that deal.
+- **No win, a followed team plays today with a deal:** "LAKERS 7PM" (or "LIVE"), the opponent, and
+  the deal riding on it. Tap opens TODAY.
+- **Nothing:** "NO WINS YET", or "Follow your LA teams" before any follow. Tap opens TODAY or TEAMS.
+- No Live Activity. The widget refreshes itself from the API (about every 15 to 30 minutes, sooner
+  when a code unlocks or a game starts), so a win shows without opening the app.
+
 ## Motion
 
 - Frame unit is 1/60 s. Motion is stepped holds of 2, 4, 8 or 16 frames. No easing curves, no
