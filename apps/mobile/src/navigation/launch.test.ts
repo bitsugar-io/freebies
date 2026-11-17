@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { getStateFromPath } from '@react-navigation/core';
 import { LINK_CONFIG } from './linkConfig';
-import { launchCorrection, launchTab, navSnapshot, urlFromPushData } from './launch';
+import { launchCorrection, launchDataSettled, launchTab, navSnapshot, urlFromPushData } from './launch';
 
 const NOW = Date.parse('2026-11-16T15:00:00Z');
 const later = '2026-11-17T07:59:59Z';
@@ -104,5 +104,20 @@ describe('navSnapshot (did the user move since launch?)', () => {
       navSnapshot({ routes: [{ name: 'Tabs', state: tabs(2, { index: 1, routes: [{ name: 'Sports' }, { name: 'Sport' }] }) }] })
     ).not.toBe(start);
     expect(navSnapshot({ routes: [{ name: 'Tabs', state: tabs(2) }, { name: 'Deal' }] })).not.toBe(start);
+  });
+});
+
+describe('launchDataSettled', () => {
+  test('saved deals only (fresh list still coming): not settled, so a new win can still move to WON', () => {
+    expect(launchDataSettled({ loading: false, dealsStale: true, dealsFailed: false })).toBe(false);
+  });
+  test('fresh deals from the server: settled', () => {
+    expect(launchDataSettled({ loading: false, dealsStale: false, dealsFailed: false })).toBe(true);
+  });
+  test('offline (fetch failed): the saved list is final', () => {
+    expect(launchDataSettled({ loading: false, dealsStale: true, dealsFailed: true })).toBe(true);
+  });
+  test('still loading: not settled', () => {
+    expect(launchDataSettled({ loading: true, dealsStale: false, dealsFailed: false })).toBe(false);
   });
 });

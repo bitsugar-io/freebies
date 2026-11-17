@@ -101,17 +101,23 @@ func (s *Source) GetGameByDate(
 	date time.Time,
 ) (*sources.GameStats, error) {
 	games, err := s.GetGamesByDate(ctx, teamID, date)
-	if err != nil || len(games) == 0 {
+	var partial *sources.PartialError
+	if err != nil && (!errors.As(err, &partial) || len(games) == 0) {
 		return nil, err
+	}
+	if len(games) == 0 {
+		return nil, nil
 	}
 	return games[0], nil
 }
 
 // GetGamesByDate returns every finished game the team started on the given
 // Pacific date, earliest first, from every feed (NCAA reads football and
-// basketball, and both can have a game the same day). A feed that fails is
-// logged and skipped so it cannot hide another feed's game; the error is
-// returned only when every feed failed.
+// basketball, and both can have a game the same day). A feed that fails does
+// not hide another feed's game: the games that were read come back with a
+// *sources.PartialError naming the failed feeds, so a deal that rides on the
+// failed sport sees an error rather than "no game". When every feed failed
+// the error is returned alone.
 func (s *Source) GetGamesByDate(
 	ctx context.Context,
 	teamID string,
@@ -164,6 +170,9 @@ func (s *Source) GetGamesByDate(
 	out := make([]*sources.GameStats, len(all))
 	for i, f := range all {
 		out[i] = f.stats
+	}
+	if len(errs) > 0 {
+		return out, &sources.PartialError{Err: errors.Join(errs...)}
 	}
 	return out, nil
 }

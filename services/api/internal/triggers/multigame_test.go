@@ -200,3 +200,48 @@ func TestCheckerNoGamesAndErrors(t *testing.T) {
 		t.Errorf("triggered_events = %v, want none", got)
 	}
 }
+
+// One feed failed (NCAA basketball down, football read): the games that were
+// read still fire the deal, but when none of them meets the rule the day is
+// incomplete, so the result is an error, never a quiet "no game" that would
+// hide a missed deal.
+func TestCheckerPartialFeedFailure(t *testing.T) {
+	partial := &sources.PartialError{Err: errors.New("basketball feed: status 500")}
+
+	// No game read, one feed down: an error, not "no game".
+	c, database := multiChecker(t, runsRule)
+	multi.set(partial)
+	results, _, err := c.CheckAllForDate(context.Background(), gameDay)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(results) != 1 || results[0].Error == nil || results[0].Triggered {
+		t.Errorf("results = %+v, want an error and no trigger", results)
+	}
+
+	// A game was read but misses the rule: still an error.
+	multi.set(partial, game("g1", 2, false))
+	results, _, err = c.CheckAllForDate(context.Background(), gameDay)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(results) != 1 || results[0].Error == nil || results[0].Triggered {
+		t.Errorf("results = %+v, want an error and no trigger", results)
+	}
+	if got := triggeredGames(t, database); len(got) != 0 {
+		t.Errorf("triggered_events = %v, want none", got)
+	}
+
+	// A game that was read meets the rule: the deal fires, no error.
+	multi.set(partial, game("g1", 8, false))
+	results, _, err = c.CheckAllForDate(context.Background(), gameDay)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(results) != 1 || !results[0].Triggered || results[0].Error != nil {
+		t.Errorf("results = %+v, want one clean trigger", results)
+	}
+	if got := triggeredGames(t, database); len(got) != 1 || got[0] != "g1" {
+		t.Errorf("triggered_events = %v, want [g1]", got)
+	}
+}

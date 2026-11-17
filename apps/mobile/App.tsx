@@ -23,7 +23,7 @@ import { ToastProvider } from './src/components/pixel/Toast';
 import { UserProvider } from './src/hooks/useUser';
 import { colors, fonts } from './src/hooks/useTheme';
 import { urlFromNotification } from './src/hooks/usePushNotifications';
-import { launchCorrection, launchTab, navSnapshot } from './src/navigation/launch';
+import { launchCorrection, launchDataSettled, launchTab, navSnapshot } from './src/navigation/launch';
 import { serverNow } from './src/utils/serverClock';
 import { AppDataProvider, useAppData } from './src/context/AppDataContext';
 import { AppConfigProvider, useAppConfig } from './src/context/AppConfigContext';
@@ -96,8 +96,14 @@ const navTheme = {
 };
 
 function Tabs() {
-  const { followedCount, liveWon, userLoading, dealsLoading, subsLoading, eventsLoading } = useAppData();
-  const dataReady = !userLoading && !dealsLoading && !subsLoading && !eventsLoading;
+  const { followedCount, liveWon, userLoading, dealsLoading, subsLoading, eventsLoading, dealsStale, dealsError } =
+    useAppData();
+  // Saved deals show at once, but the launch tab waits for the fresh list (see launchDataSettled).
+  const dataReady = launchDataSettled({
+    loading: userLoading || dealsLoading || subsLoading || eventsLoading,
+    dealsStale,
+    dealsFailed: dealsError !== null,
+  });
   // Where the app opens, decided once at launch: see launchTab.
   const [launch] = useState(() => ({
     tab: launchTab(followedCount, liveWon, serverNow()),

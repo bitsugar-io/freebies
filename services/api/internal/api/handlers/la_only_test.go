@@ -44,8 +44,9 @@ func TestOnlyLAEventsActive(t *testing.T) {
 
 	// Only deals that are in season, not in-venue-only, and whose metric a
 	// source emits (see TestSeededActiveDealsCanFire in internal/triggers).
+	// LAFC / Ono runs for the 2026 MLS Cup Playoffs (043).
 	want := []string{
-		"event-nba-lac-chickfila", "event-nba-lal-jitb", "event-ncaa-ucla-fatsals", "event-ncaa-ucla-fatsals-hoops", "event-nfl-lach-firehouse",
+		"event-mls-lafc-ono", "event-nba-lac-chickfila", "event-nba-lal-jitb", "event-ncaa-ucla-fatsals", "event-ncaa-ucla-fatsals-hoops", "event-nfl-lach-firehouse",
 		"event-nfl-lar-carlsjr", "event-nhl-ana-chickfila", "event-nhl-ana-mcdonalds", "event-nhl-lak-mcdonalds",
 	}
 	if !reflect.DeepEqual(active, want) {
