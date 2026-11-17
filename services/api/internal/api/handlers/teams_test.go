@@ -93,8 +93,9 @@ func TestListTeams(t *testing.T) {
 			t.Fatalf("code %d, %d teams", code, len(teams))
 		}
 		wantIn := map[string]bool{"LAL": true, "LAC": true, "LAR": true, "LACH": true, "LAK": true,
-			"ANA": true, "LAFC": true, "LAG": true, "ACFC": true, "USC": true, "UCLA": true}
-		wantLabel := map[string]string{"LAD": "MAR", "LAA": "MAR", "LAS": "MAY"}
+			"ANA": true, "LAFC": true, "ACFC": true, "USC": true, "UCLA": true}
+		// The Galaxy missed the 2026 playoffs (045): out of season, back in February.
+		wantLabel := map[string]string{"LAD": "MAR", "LAA": "MAR", "LAS": "MAY", "LAG": "FEB"}
 		seenOff := false
 		for _, tm := range teams {
 			if tm.InSeason != wantIn[tm.ID] {
