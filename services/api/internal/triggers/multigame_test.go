@@ -245,3 +245,26 @@ func TestCheckerPartialFeedFailure(t *testing.T) {
 		t.Errorf("triggered_events = %v, want [g1]", got)
 	}
 }
+
+// An at-the-game deal (in_venue) is for fans who were there: when it fires it
+// is never recorded, so it is never pushed or listed as a win, whatever its
+// redemption window (UCLA's Fat Sal's fries run through the next business day).
+func TestInVenueDealIsNeverRecorded(t *testing.T) {
+	c, database := multiChecker(t,
+		`{"metric":"runs","operator":">=","value":6,"redemption_window":"through_next_business_day"}`)
+	if _, err := database.Exec(`UPDATE events SET in_venue = 1 WHERE id = 'event-multi'`); err != nil {
+		t.Fatal(err)
+	}
+	multi.set(nil, game("g1", 8, false))
+
+	results, _, err := c.CheckAllForDate(context.Background(), gameDay)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(results) != 1 || !results[0].Triggered || !results[0].Expired {
+		t.Fatalf("results = %+v, want triggered but not recorded", results)
+	}
+	if got := triggeredGames(t, database); len(got) != 0 {
+		t.Errorf("triggered_events = %v, want none for an at-the-game deal", got)
+	}
+}

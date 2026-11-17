@@ -303,11 +303,13 @@ func (c *Checker) createTriggeredEvent(
 
 	availableAt, expiresAt := windowFor(gameDate, *result.Rule, c.loc)
 	result.AvailableAt, result.ExpiresAt = availableAt, expiresAt
-	if result.Rule.RedemptionWindow == GameNight {
-		// Claimed at the venue that night; the morning check is always too
-		// late, so it is never recorded or pushed. The app lists it on game days.
+	if result.Rule.RedemptionWindow == GameNight || event.InVenue == 1 {
+		// An at-the-game deal (in_venue, or claimed in the venue that night)
+		// is only for fans who were there, and they already know. It is never
+		// recorded, so never pushed or listed as a win (LIVE NOW, WON, the
+		// widget); TODAY lists it before the game. Owner decision 2026-11-17.
 		result.Expired = true
-		c.logger.Info("at-the-game deal triggered; claimed at the venue, no alert",
+		c.logger.Info("at-the-game deal triggered; for fans at the game, no alert",
 			"event_id", event.ID, "game", result.Stats.GameID)
 		return nil
 	}
