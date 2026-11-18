@@ -95,8 +95,9 @@ func TestListTeams(t *testing.T) {
 		wantIn := map[string]bool{"LAL": true, "LAC": true, "LAR": true, "LACH": true, "LAK": true,
 			"ANA": true, "LAFC": true, "USC": true, "UCLA": true}
 		// The Galaxy missed the 2026 playoffs (045) and Angel City lost their
-		// quarterfinal on Nov 7 (047): both out of season, back in February.
-		wantLabel := map[string]string{"LAD": "MAR", "LAA": "MAR", "LAS": "MAY", "LAG": "FEB", "ACFC": "FEB 11"}
+		// quarterfinal on Nov 7 (047): both out of season, back in February. One
+		// label style for every team (048): the month only.
+		wantLabel := map[string]string{"LAD": "MAR", "LAA": "MAR", "LAS": "MAY", "LAG": "FEB", "ACFC": "FEB"}
 		seenOff := false
 		for _, tm := range teams {
 			if tm.InSeason != wantIn[tm.ID] {
@@ -151,10 +152,10 @@ func TestListTeams(t *testing.T) {
 		}
 	})
 
-	t.Run("angel city override label off-season", func(t *testing.T) {
+	t.Run("every off-season team shows just its return month", func(t *testing.T) {
 		_, teams := get("?at=2026-12-25")
 		for _, tm := range teams {
-			if tm.ID == "ACFC" && (tm.InSeason || tm.ReturnLabel == nil || *tm.ReturnLabel != "FEB 11") {
+			if tm.ID == "ACFC" && (tm.InSeason || tm.ReturnLabel == nil || *tm.ReturnLabel != "FEB") {
 				t.Errorf("ACFC = %+v", tm)
 			}
 		}
