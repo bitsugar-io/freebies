@@ -26,7 +26,11 @@ interface TeamLike {
 /** Mirrors WinBoardAttributes.ContentState in Swift (modules/win-board and targets/widget). */
 export interface WinBoardState {
   title: string;
+  /** System font, white: the offer, or "Next: <offer>" when there are several. */
   offer: string;
+  /** System font, grey: the restaurant. */
+  sub: string;
+  /** Pixel font, lilac, one short line: "ENDS 11:59PM PT". */
   detail: string;
   count: number;
   stripe: string[];
@@ -55,10 +59,9 @@ export function winBoardState(live: readonly WinLike[], teams: readonly TeamLike
   const single = wins.length === 1;
   return {
     title: single ? `${name} WON!` : `${wins.length} WINS!`,
-    offer: single ? first.event.offerName : '',
-    detail: single
-      ? [first.event.partnerName.toUpperCase(), ends].filter(Boolean).join(' · ')
-      : [`NEXT: ${next.event.offerName.toUpperCase()}`, ends].filter(Boolean).join(' · '),
+    offer: single ? first.event.offerName : `Next: ${next.event.offerName}`,
+    sub: single ? first.event.partnerName : next.event.partnerName,
+    detail: ends,
     count: wins.length,
     stripe: single ? pairOf(first) : [...new Set(wins.map((w) => pairOf(w)[0]))].slice(0, 8),
     wins: wins.slice(0, 4).map((w) => {
