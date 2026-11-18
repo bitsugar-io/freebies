@@ -300,8 +300,9 @@ top (each winning team's primary color), the deals' own sprites, Press Start 2P.
   says who.
 - **The countdown:** "1D 06H" over a day; under a day a live H:MM:SS that iOS ticks on the lock
   screen by itself; red under an hour; "STARTS 10AM" (two lines, lilac) for a deal not usable yet.
-- **Dynamic Island:** compact shows the gold trophy and the soonest countdown; expanded shows that
-  meal, the title, the count and its countdown.
+- **Dynamic Island:** compact shows the headline in the gold pixel font ("4 WINS!", or "WON!" for
+  one win) and the soonest countdown; expanded shows that meal, the title, the count and its
+  countdown.
 - The app starts or updates it whenever it has fresh live wins and ends it when none are left; iOS
   marks it stale at the soonest deadline. A server push-to-start, so it appears at 7am without
   opening the app, needs an APNs key and is not built yet.

@@ -205,7 +205,13 @@ struct WinBoardLiveActivity: Widget {
           if let m = s.meals.first { MealClock(meal: m, size: 14) }
         }
       } compactLeading: {
-        PixelArt(rows: Pixels.trophy, pixel: 1.6).foregroundStyle(gold)
+        // The card's headline in its gold pixel font: "4 WINS!", or "WON!" for one (a team name
+        // doesn't fit this narrow side of the island).
+        Text(s.count > 1 ? "\(s.count) WINS!" : "WON!")
+          .font(pixelFont(9))
+          .foregroundStyle(gold)
+          .lineLimit(1)
+          .minimumScaleFactor(0.7)
       } compactTrailing: {
         if let m = s.meals.first { MealClock(meal: m, size: 9).frame(maxWidth: 64) }
       } minimal: {
