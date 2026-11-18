@@ -116,6 +116,7 @@ type Team struct {
 	BadgeSpriteID  sql.NullString `json:"badge_sprite_id"`
 	PrimaryColor   sql.NullString `json:"primary_color"`
 	SecondaryColor sql.NullString `json:"secondary_color"`
+	AccentColor    sql.NullString `json:"accent_color"`
 }
 
 type TriggeredEvent struct {

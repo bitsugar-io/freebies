@@ -100,6 +100,11 @@ mobile-install:
 mobile-serve:
     bunx expo start --go
 
+# Start Expo for the development build (real icon, widget) in the iOS simulator.
+[working-directory('apps/mobile')]
+mobile-dev:
+    bunx expo start --dev-client --ios
+
 # Start Expo and open the iOS simulator.
 [working-directory('apps/mobile')]
 mobile-ios:

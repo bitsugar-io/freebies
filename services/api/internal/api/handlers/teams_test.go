@@ -93,8 +93,11 @@ func TestListTeams(t *testing.T) {
 			t.Fatalf("code %d, %d teams", code, len(teams))
 		}
 		wantIn := map[string]bool{"LAL": true, "LAC": true, "LAR": true, "LACH": true, "LAK": true,
-			"ANA": true, "LAFC": true, "LAG": true, "ACFC": true, "USC": true, "UCLA": true}
-		wantLabel := map[string]string{"LAD": "MAR", "LAA": "MAR", "LAS": "MAY"}
+			"ANA": true, "LAFC": true, "USC": true, "UCLA": true}
+		// The Galaxy missed the 2026 playoffs (045) and Angel City lost their
+		// quarterfinal on Nov 7 (047): both out of season, back in February. One
+		// label style for every team (048): the month only.
+		wantLabel := map[string]string{"LAD": "MAR", "LAA": "MAR", "LAS": "MAY", "LAG": "FEB", "ACFC": "FEB"}
 		seenOff := false
 		for _, tm := range teams {
 			if tm.InSeason != wantIn[tm.ID] {
@@ -135,8 +138,13 @@ func TestListTeams(t *testing.T) {
 			if tm.ID == "LAK" && (tm.LeagueName != "NHL" || *tm.BadgeSpriteID != "sport-hockey") {
 				t.Errorf("LAK = %+v", tm)
 			}
-			if tm.ID == "LAL" && (tm.Colors == nil || tm.Colors.Primary != "#4428BC" || tm.Colors.Secondary != "#F8B800") {
+			// Official colors (046): Lakers purple and gold, no accent needed.
+			if tm.ID == "LAL" && (tm.Colors == nil || tm.Colors.Primary != "#552583" || tm.Colors.Secondary != "#FDB927" || tm.Colors.Accent != nil) {
 				t.Errorf("LAL colors = %+v", tm.Colors)
+			}
+			// A team with a black color gets an accent for the tile's middle line.
+			if tm.ID == "LAFC" && (tm.Colors == nil || tm.Colors.Secondary != "#C39E6D" || tm.Colors.Accent == nil || *tm.Colors.Accent != "#E31837") {
+				t.Errorf("LAFC colors = %+v", tm.Colors)
 			}
 			if tm.ID == "USC" && tm.LeagueName != "NCAA" {
 				t.Errorf("USC leagueName = %q", tm.LeagueName)
@@ -144,10 +152,10 @@ func TestListTeams(t *testing.T) {
 		}
 	})
 
-	t.Run("angel city override label off-season", func(t *testing.T) {
+	t.Run("every off-season team shows just its return month", func(t *testing.T) {
 		_, teams := get("?at=2026-12-25")
 		for _, tm := range teams {
-			if tm.ID == "ACFC" && (tm.InSeason || tm.ReturnLabel == nil || *tm.ReturnLabel != "FEB 11") {
+			if tm.ID == "ACFC" && (tm.InSeason || tm.ReturnLabel == nil || *tm.ReturnLabel != "FEB") {
 				t.Errorf("ACFC = %+v", tm)
 			}
 		}

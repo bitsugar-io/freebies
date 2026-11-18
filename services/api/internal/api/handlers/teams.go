@@ -37,10 +37,13 @@ type TeamResponse struct {
 	Colors *TeamColors `json:"colors,omitempty"`
 }
 
-// TeamColors are the two-tone "#RRGGBB" tile colors.
+// TeamColors are the team's official "#RRGGBB" colors (tiles, the team stripe,
+// YOU WON rays). Accent, when set, is the tile's middle line for a team with a
+// black color, which would vanish on the black name strip.
 type TeamColors struct {
-	Primary   string `json:"primary"`
-	Secondary string `json:"secondary"`
+	Primary   string  `json:"primary"`
+	Secondary string  `json:"secondary"`
+	Accent    *string `json:"accent,omitempty"`
 }
 
 // InSeason reports whether the MM-DD of day falls within [start, end]
@@ -112,7 +115,8 @@ func (h *Handler) ListTeams(w http.ResponseWriter, r *http.Request) {
 			LeagueName:  t.LeagueName,
 		}
 		if t.PrimaryColor.Valid && t.SecondaryColor.Valid {
-			response[i].Colors = &TeamColors{Primary: t.PrimaryColor.String, Secondary: t.SecondaryColor.String}
+			response[i].Colors = &TeamColors{Primary: t.PrimaryColor.String, Secondary: t.SecondaryColor.String,
+				Accent: nullStringPtr(t.AccentColor)}
 		}
 		if t.BadgeSpriteID.Valid {
 			id := t.BadgeSpriteID.String

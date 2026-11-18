@@ -287,7 +287,7 @@ func (h *Handler) todayGames(ctx context.Context, day time.Time, date string, ev
 	out := []TodayGameResponse{}
 	for i, league := range leagues {
 		for _, g := range results[i] {
-			evs := dealsForSport(deals[teamKey{league, g.TeamID}], g.Sport)
+			evs := dealsForVenue(dealsForSport(deals[teamKey{league, g.TeamID}], g.Sport), g.Home)
 			if len(evs) == 0 {
 				continue
 			}
@@ -338,6 +338,29 @@ func dealsForSport(evs []db.Event, sport string) []db.Event {
 			}
 		}
 		if named == "" || named == sport {
+			out = append(out, e)
+		}
+	}
+	return out
+}
+
+// dealsForVenue keeps the deals a game can fire. On a road game that drops
+// deals that only count at home: a metric naming home ("home_win",
+// "home_goals_scored", "football_home_points") or an at-the-game deal, which is
+// claimed in the home arena. Without it TODAY and the widget showed the Ducks'
+// McGriddles on a night the Ducks played in St. Louis.
+func dealsForVenue(evs []db.Event, home bool) []db.Event {
+	if home {
+		return evs
+	}
+	out := evs[:0:0]
+	for _, e := range evs {
+		var r struct {
+			Metric string `json:"metric"`
+		}
+		_ = json.Unmarshal([]byte(e.TriggerRule.String), &r)
+		homeOnly := strings.HasPrefix(r.Metric, "home_") || strings.Contains(r.Metric, "_home_")
+		if !homeOnly && e.InVenue != 1 {
 			out = append(out, e)
 		}
 	}

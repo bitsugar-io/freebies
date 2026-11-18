@@ -17,4 +17,13 @@ describe('tile colors', () => {
   test('keeps both colors when both are black', () => {
     expect(tilePair('#000000', '#000000')).toEqual({ field: '#000000', stripe: '#000000' });
   });
+  test('a black stripe uses the accent so the middle line shows (Kings, Ducks, LAFC, Angel City)', () => {
+    expect(tilePair('#111111', '#A2AAAD', '#FFFFFF')).toEqual({ field: '#A2AAAD', stripe: '#FFFFFF' });
+    expect(tilePair('#FC4C02', '#000000', '#B9975B')).toEqual({ field: '#FC4C02', stripe: '#B9975B' });
+    expect(tilePair('#000000', '#C39E6D', '#E31837')).toEqual({ field: '#C39E6D', stripe: '#E31837' });
+  });
+  test('no accent: the stripe stays as it was; a visible stripe ignores the accent', () => {
+    expect(tilePair('#000000', '#C39E6D')).toEqual({ field: '#C39E6D', stripe: '#000000' });
+    expect(tilePair('#552583', '#FDB927', '#FFFFFF')).toEqual({ field: '#552583', stripe: '#FDB927' });
+  });
 });

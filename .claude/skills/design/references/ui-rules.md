@@ -32,7 +32,8 @@ Every value comes from the NES master palette. App code references tokens from
 
 - No color carries meaning on its own; pair it with text or an icon.
 - Team identity is never shown by color, with one owner-approved exception: team tiles show the
-  API's NES-snapped `team.colors` (never hardcoded, never app chrome). See `docs/ui.md`.
+  API's official `team.colors` (plus `accent` for black teams) (never hardcoded, never app chrome).
+  See `docs/ui.md`.
 
 ## Type
 
