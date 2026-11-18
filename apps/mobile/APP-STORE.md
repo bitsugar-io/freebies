@@ -44,8 +44,10 @@ Freebies is now all LA.
 NEW
 • Every LA team: Dodgers, Angels, Lakers, Clippers, Sparks, Rams, Chargers, Kings, Ducks, LAFC, Galaxy, Angel City FC, USC and UCLA
 • A new 8-bit look, with pixel food for every deal
-• Three tabs: Won for deals you've unlocked, Teams to pick who you follow, and You for your trophy case and settings
-• Follow a whole team in one tap
+• Four tabs: Won for the deals you've unlocked, Today for deals anyone can grab now and tonight's games, Teams to pick who you follow, and You for your trophy case
+• The Win Board on your lock screen and Dynamic Island: every win's food and a live countdown
+• A lock-screen widget
+• At-the-game deals, for fans in the stands
 • Pushes now say what happened and where to claim
 
 CHANGED
@@ -58,16 +60,17 @@ Thanks for playing.
 ### Promotional Text (170 characters max, no review needed)
 
 ```text
-Pick your LA teams. When they hit the mark, a free or cheap meal unlocks and we ping you with where to claim it. Ducks home wins mean $2 McGriddles.
+Pick your LA teams. When they hit the mark, a free or cheap meal unlocks and we ping you with where to claim it. A Lakers win means 2 free tacos.
 ```
 
-148 characters. This is the only listing field you can change without sending the app back to
+145 characters. This is the only listing field you can change without sending the app back to
 review, so swap the last sentence for whatever deal is hot that week.
 
 Before naming a deal here, check two things: it is active in the app, and it is still running on the
-team's or restaurant's own page. The Ducks deal above was verified on 2026-11-15
-(`034_deal_verification.sql`) and the NHL season is on, so it can trigger now. Don't feature a deal
-whose season is over (for example a Dodgers deal in winter); it is active but can't unlock.
+team's or restaurant's own page. The Ducks deal was verified on 2026-11-15
+(`034_deal_verification.sql`) and the NHL season is on, so it can trigger now. The Lakers deal above
+was active in the app on 2026-11-17, with the NBA season on. Don't feature a deal whose season is
+over (for example a Dodgers deal in winter); it is active but can't unlock.
 
 ### Description (4000 characters max)
 
@@ -77,8 +80,12 @@ When LA wins, you win.
 Freebies watches LA's teams for you. When something happens on the field that unlocks a food deal, you get a push with the reward, where to claim it and when it ends.
 
 Some of the deals Freebies tracks:
+• Lakers win: 2 free tacos at Jack in the Box
 • Ducks win at home: $2 McGriddles at McDonald's the next morning
-• Rams intercept a pass: a free Famous Star with Cheese at Carl's Jr.
+• Rams intercept a pass: a free Famous Star at Carl's Jr.
+• Kings score in the last minute of the 2nd period: a free McFlurry at McDonald's
+• Chargers make a 40+ yard field goal: a free medium sub at Firehouse Subs
+• At the game: Ducks score 5 at home and fans in the arena get a free Chick-fil-A sandwich
 
 Deals change every season. The app only shows deals we've checked against the restaurant's or team's own page.
 
@@ -91,7 +98,9 @@ HOW IT WORKS
 WHAT YOU GET
 • Every LA team in one place: Dodgers, Angels, Lakers, Clippers, Sparks, Rams, Chargers, Kings, Ducks, LAFC, Galaxy, Angel City FC, USC and UCLA
 • Pushes only for the deals you follow, plus one reminder before a deal ends
-• An inventory of what you've unlocked, what you're watching and what you've claimed
+• Today: deals anyone can grab right now, and tonight's LA games with a deal on the line
+• The Win Board on your lock screen and Dynamic Island: every win's food with a live countdown
+• A trophy case of what you've unlocked and claimed
 • A countdown bar on every unlocked deal so you know how long you have
 • Pixel art all the way through: a retro 8-bit look with original food sprites
 • No account, no email, no location. The app uses an anonymous device ID
@@ -101,10 +110,12 @@ Not every team has a deal running at any given time. Teams without one show up s
 Freebies: LA Sports Deals is not affiliated with, endorsed by or sponsored by any team, league, school or restaurant. Team and restaurant names are used only to describe the deals they offer. Deals are set by each restaurant and can change or end without notice. Check the restaurant's terms before you order.
 ```
 
-Before each submission, list only deals that are active in the app (`034_deal_verification.sql` has
-the current list). As of 2026-11-15 that is the Ducks and Rams deals. The Dodgers, Angels and LAFC
-deals return when their seasons start; add their bullets back then. The Kings and El Pollo Loco deal
-is left out until it is verified for 2026-27.
+Before each submission, list only deals that are active in the app and in season (the API's
+`GET /api/v1/events` lists the active ones). As of 2026-11-17 the six bullets above are active, with
+the NBA, NFL and NHL seasons on. Also active but left out: the LAFC lunch (the MLS season may be
+over by review), UCLA's two Fat Sal's deals and the Clippers' Chick-fil-A deal (at the game). The
+Dodgers and Angels deals return in spring; add their bullets back then. Swap the Chargers and Rams
+bullets out after the NFL season.
 
 The disclaimer wording (last paragraph) was approved by the owner on 2026-11-15. Use the same text
 on the in-app About screen.
@@ -177,11 +188,12 @@ No login is required. The app creates an anonymous account from a random device 
 
 To test:
 1. Open the app and tap through the title screen.
-2. Open the Teams tab, pick a sport, and follow a few teams (the Ducks have a deal running now).
-3. Open the Won tab to see unlocked deals and what's on the line in upcoming games.
-4. Tap any deal to see its trigger and claim steps.
+2. Open the Teams tab, pick a sport, and follow a few teams (the Lakers and Ducks have deals running now).
+3. Open the Won tab to see the deals your teams have unlocked (the Lakers deal unlocks after any Lakers win).
+4. Open the Today tab to see deals anyone can claim now and tonight's games with a deal on the line.
+5. Tap any deal to see its trigger and claim steps.
 
-Push notifications need a physical device.
+While a followed team has a live win, the Win Board Live Activity shows it on the lock screen and in the Dynamic Island. Push notifications need a physical device.
 ```
 
 **Attachment:** none needed.
@@ -268,16 +280,18 @@ Capture on a 6.9" iPhone (1320×2868). App Store Connect scales them for smaller
 verified LA deals on screen. No team logos, and no "NES" or "Nintendo" anywhere, including captions.
 See [`assets/screenshots/README.md`](assets/screenshots/README.md) for capture steps.
 
-Captions are set in Press Start 2P on `bg.night`, at most 6 words, sentence case.
+Captions are set in Press Start 2P on `bg.night`, at most 6 words, sentence case. The shot list
+changed on 2026-11-17 for what 2.0 shipped: TODAY and the Win Board replace the trophy case and the
+push.
 
-| #   | Filename              | Screen                                              | Caption                       |
-| --- | --------------------- | --------------------------------------------------- | ----------------------------- |
-| 1   | `01-unlocked.png`     | Deal unlocked: "DUCKS WIN!" cut-in into the sprite  | When LA wins, you win         |
-| 2   | `02-won.png`          | Won tab: what's on the line in a live game, HUD bar | See what's on the line        |
-| 3   | `03-teams.png`        | Team select grid with 4 teams picked                | Pick your LA teams            |
-| 4   | `04-trophies.png`     | You tab trophy case with sprites and claimed deals  | Every deal you've unlocked    |
-| 5   | `05-claim.png`        | Deal detail: dialog box, claim steps, ▶ menu        | Claim it before time runs out |
-| 6   | `06-notification.png` | Lock screen push "Ducks won. $2 McGriddles..."      | Know the moment it unlocks    |
+| #   | Filename          | Screen                                                  | Caption                       |
+| --- | ----------------- | ------------------------------------------------------- | ----------------------------- |
+| 1   | `01-unlocked.png` | Victory cut-in: "LAKERS WON!" over team-color rays      | When LA wins, you win         |
+| 2   | `02-won.png`      | Won tab: unlocked deals with sprites and countdown bars | Your free food, counting down |
+| 3   | `03-today.png`    | Today tab: live deals and tonight's games with a deal   | See what's on the line        |
+| 4   | `04-teams.png`    | A sport's team list with teams followed                 | Pick your LA teams            |
+| 5   | `05-claim.png`    | Deal detail: dialog box, claim steps, ▶ menu            | Claim it before time runs out |
+| 6   | `06-winboard.png` | Lock screen with the Win Board                          | Your wins on the lock screen  |
 
 The first two carry the pitch, since most people only see those.
 
@@ -287,7 +301,7 @@ The first two carry the pitch, since most people only see those.
 
 - [ ] Every deal named in the description and screenshots is active and verified in the app
 - [ ] Privacy policy updated for the Freebies: LA Sports Deals name and merged to `main`
-- [ ] App icon is the 8-bit sunset palm, 1024×1024, no text, no team marks
+- [ ] App icon is the Trophy Burger over LA rays, 1024×1024, no text, no team marks
 - [ ] Display name in `app.json` is "Freebies"
 - [ ] Six screenshots captured from the 8-bit build
 - [ ] In-app About screen shows the not-affiliated disclaimer and the Press Start 2P OFL license
@@ -296,13 +310,10 @@ The first two carry the pitch, since most people only see those.
 ### EAS build commands
 
 ```bash
-# Build for TestFlight (internal testing)
-eas build --platform ios --profile preview
+# Build and upload to TestFlight (the same build goes to the App Store)
+eas build --platform ios --profile production --auto-submit
 
-# Build for App Store submission
-eas build --platform ios --profile production
-
-# Submit to App Store
+# Upload an existing build
 eas submit --platform ios --profile production
 ```
 
@@ -315,7 +326,8 @@ eas submit --platform ios --profile production
 
 ## TestFlight first
 
-1. Build with the preview profile: `eas build --platform ios --profile preview`
-2. Submit to TestFlight: `eas submit --platform ios`
-3. In App Store Connect, add internal testers
-4. Test on a device, including a real push, before submitting for review
+Only `production` builds can go to TestFlight; `preview` is internal distribution.
+
+1. Build and submit in one step: `eas build -p ios --profile production --auto-submit`
+2. In App Store Connect, add internal testers
+3. Test on a device, including a real push and the Win Board, before submitting for review
