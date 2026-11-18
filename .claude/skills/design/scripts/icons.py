@@ -7,6 +7,7 @@ Usage:
   python3 -I icons.py assets <apps/mobile/assets dir>   # writes all icon files
   python3 -I icons.py preview <out.png>                 # 32x preview of the icon only
   python3 -I icons.py logoart <logoArt.ts>              # the in-app logo bitmap (same art)
+  python3 -I icons.py launch <apps/mobile/assets dir>   # launch screen still + spinning rays layer
 """
 import math
 import struct
@@ -176,12 +177,80 @@ def write_logoart(path, grid):
     print(f"wrote {path}")
 
 
+# Launch screen (owner's pick 2026-11-17, "Spinning Rays"): the icon's rays fill the screen in 4pt
+# blocks and turn behind the framed icon. iOS shows LAUNCH_* as a still (aspect fill); the app then
+# turns LAUNCH_RAYS_SIDE behind LAUNCH_ICON (LaunchRays.tsx), drawn to the same points so the first
+# frame matches the still. Sizes are @3x pixels: 1320x2868 is a 440x956pt screen.
+LAUNCH_W, LAUNCH_H, LAUNCH_BLOCK = 1320, 2868, 12
+LAUNCH_RAYS_SIDE = 3168      # 1056pt: covers the screen's diagonal while turning
+LAUNCH_ICON, LAUNCH_RING = 672, 12   # 224pt icon (21x), 4pt white ring, then 4pt black ring
+
+
+def ray_rows(w, h):
+    """RGB rows of the rays in LAUNCH_BLOCK cells, centered on the image center."""
+    cx, cy, b = w / 2, h / 2, LAUNCH_BLOCK
+    cols = [bytes(hex_rgb(c)) for c in RAYS]
+    out = []
+    first = -int(cy // b) - 1
+    for j in range(first, int((h - cy) // b) + 1):
+        y0, y1 = max(0, int(cy + j * b)), min(h, int(cy + (j + 1) * b))
+        if y1 <= y0:
+            continue
+        row = bytearray()
+        for X in range(w):
+            i = (X - cx) // b
+            a = math.atan2(j + 0.5, i + 0.5) % (2 * math.pi)
+            row += cols[int(a / (2 * math.pi) * RAY_COUNT) % len(RAYS)]
+        out += [bytes(row)] * (y1 - y0)
+    return out
+
+
+def framed_icon():
+    """RGB rows of the icon with its white and black rings."""
+    side = LAUNCH_ICON + 4 * LAUNCH_RING
+    s = scene()
+    k, wh = bytes(hex_rgb(K)), bytes(hex_rgb(W))
+    rows = []
+    for Y in range(side):
+        row = bytearray()
+        for X in range(side):
+            d = min(X, Y, side - 1 - X, side - 1 - Y)
+            if d < LAUNCH_RING:
+                row += k
+            elif d < 2 * LAUNCH_RING:
+                row += wh
+            else:
+                ix, iy = X - 2 * LAUNCH_RING, Y - 2 * LAUNCH_RING
+                row += bytes(hex_rgb(s[iy * N // LAUNCH_ICON][ix * N // LAUNCH_ICON]))
+        rows.append(bytes(row))
+    return rows
+
+
+def write_rgb(path, rows):
+    write_png(path, [bytes(b for i in range(0, len(r), 3) for b in r[i:i + 3] + b"\xff") for r in rows], rgb=True)
+
+
+def write_launch(out):
+    icon = framed_icon()
+    still = [bytearray(r) for r in ray_rows(LAUNCH_W, LAUNCH_H)]
+    side = len(icon)
+    x0, y0 = (LAUNCH_W - side) // 2, (LAUNCH_H - side) // 2
+    for j, r in enumerate(icon):
+        still[y0 + j][x0 * 3:(x0 + side) * 3] = r
+    write_rgb(f"{out}/launch.png", still)
+    write_rgb(f"{out}/launch-rays.png", ray_rows(LAUNCH_RAYS_SIDE, LAUNCH_RAYS_SIDE))
+    write_rgb(f"{out}/launch-icon.png", icon)
+
+
 def main():
-    if len(sys.argv) != 3 or sys.argv[1] not in ("assets", "preview", "logoart"):
+    if len(sys.argv) != 3 or sys.argv[1] not in ("assets", "preview", "logoart", "launch"):
         raise SystemExit(__doc__)
     s = scene()
     if sys.argv[1] == "logoart":
         write_logoart(sys.argv[2], s)
+        return
+    if sys.argv[1] == "launch":
+        write_launch(sys.argv[2])
         return
     if sys.argv[1] == "preview":
         write_png(sys.argv[2], render(s, 32 * 16))

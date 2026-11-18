@@ -58,7 +58,12 @@
           "image": "./assets/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000000"
+          "backgroundColor": "#000000",
+          "ios": {
+            "image": "./assets/launch.png",
+            "resizeMode": "cover",
+            "enableFullScreenImage_legacy": true
+          }
         }
       ],
       "expo-font",

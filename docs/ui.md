@@ -312,6 +312,12 @@ top (each winning team's primary color), the deals' own sprites, Press Start 2P.
 - Frame unit is 1/60 s. Motion is stepped holds of 2, 4, 8 or 16 frames. No easing curves, no
   springs, no tweened transforms, no parallax.
 - Buttons, cursor moves and toggles are instant (0 frames).
+- **Launch** (owner's pick 2026-11-17, "Spinning Rays"): iOS shows `assets/launch.png` as the still
+  launch screen, the icon's LA rays filling the screen in 4pt blocks behind the framed icon. When
+  the app is ready, `LaunchRays.tsx` takes over with the same picture and turns the rays 2° every 4
+  frames for 1.5s, then the app shows. A tap skips it; under Reduce Motion the app shows straight
+  away. A win's cut-in waits until it ends. The art comes from `icons.py launch`; never edit the
+  PNGs by hand.
 - Cut-ins last at most 2 seconds (120 frames) and auto-advance.
 - **Victory cut-in** (`VictoryCutIn.tsx`, timing in `utils/cutin.ts`): the first time the app has
   fresh data with a win not yet celebrated (remembered on the device). One win: a team-color flash,
