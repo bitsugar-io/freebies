@@ -283,8 +283,25 @@ layouts in `views.swift`) only lays them out.
   the opponent, and the deal riding on it. Tap opens TODAY.
 - **Inline:** iOS sets its font; it shows the pixel trophy and one line ("8 wins · next
   McGriddles").
-- No Live Activity yet. The widget refreshes itself from the API (about every 15 to 30 minutes,
-  sooner when a code unlocks or a game starts), so a win shows without opening the app.
+- The widget refreshes itself from the API (about every 15 to 30 minutes, sooner when a code unlocks
+  or a game starts), so a win shows without opening the app.
+
+### Win Board (Live Activity)
+
+One full-color Live Activity for every live win, never one per win (`targets/widget/winboard.swift`;
+the app drives it through `modules/win-board`, content from `src/widget/winBoardState.ts`). It may
+use color, so it carries the app's look: a black panel, the team stripe on top (each winning team's
+primary color), Press Start 2P, and the deals' own sprites.
+
+- **One win:** the sprite, "RAMS WON!" in gold, the offer, then the partner and deadline in lilac.
+  Tap opens the deal.
+- **Several wins:** "4 WINS!" and a gold trophy, up to 4 sprites on two-color team ticks ("+N" after
+  that), and the next deadline. Tap opens WON.
+- **Dynamic Island:** compact shows the gold trophy and "×4"; minimal shows the trophy; expanded
+  shows the newest sprite, the title, the count and the deadline.
+- The app starts or updates it whenever it has fresh live wins and ends it when none are left
+  (claimed or expired); iOS marks it stale at the next deadline. A server push-to-start, so it
+  appears at 7am without opening the app, needs an APNs key and is not built yet.
 
 ## Motion
 

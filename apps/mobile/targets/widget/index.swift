@@ -131,5 +131,6 @@ struct FreebiesWidget: Widget {
 struct FreebiesWidgets: WidgetBundle {
   var body: some Widget {
     FreebiesWidget()
+    WinBoardLiveActivity()
   }
 }

@@ -17,6 +17,8 @@ import { teamNameFrom } from '../utils/format';
 import { followedTeamIds, liveWonDeals } from '../utils/dealState';
 import { useAppConfig } from './AppConfigContext';
 import { refreshWidget, shareWithWidget } from '../widget/sync';
+import { syncWinBoard } from '../widget/winBoard';
+import { winBoardState } from '../widget/winBoardState';
 
 interface AppDataContextType {
   // User
@@ -148,6 +150,14 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     refreshWidget();
   }, [widgetKey]);
+  // The Win Board Live Activity: one card for the live wins, ended when there are none. Fresh deals
+  // only, so yesterday's saved list never starts or ends it.
+  const boardKey = `${liveWon.map((d) => `${d.id}:${d.expiresAt}`).join(',')}|${teams.length}`;
+  useEffect(() => {
+    if (dealsLoading || dealsStale) return;
+    syncWinBoard(winBoardState(liveWon, teams));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boardKey, dealsLoading, dealsStale]);
   const teamName = useCallback((teamId: string, fallback?: string) => teamNameFrom(teams, teamId, fallback), [teams]);
 
   const { claimed: claimedDeals, refetch: refetchClaimed } = useClaimedDeals();
