@@ -55,6 +55,7 @@ export type TextVariant =
   | 'displayXl'
   | 'displayL'
   | 'displayM'
+  | 'displayS'
   | 'body'
   | 'bodyStrong'
   | 'caption';
@@ -72,6 +73,8 @@ export const type: Record<TextVariant, TypeStyle> = {
   displayXl: { display: true, fontSize: 24, lineHeight: 34, maxScale: 1.2 },
   displayL: { display: true, fontSize: 16, lineHeight: 24, maxScale: 1.2 },
   displayM: { display: true, fontSize: 12, lineHeight: 20, maxScale: 1.3 },
+  /** Tab labels under their icons. */
+  displayS: { display: true, fontSize: 8, lineHeight: 12, maxScale: 1.4 },
   body: { display: false, fontSize: 17, lineHeight: 24, maxScale: 2 },
   bodyStrong: { display: false, fontSize: 17, lineHeight: 24, maxScale: 2 },
   caption: { display: false, fontSize: 13, lineHeight: 18, maxScale: 2 },

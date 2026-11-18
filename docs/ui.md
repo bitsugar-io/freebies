@@ -189,11 +189,14 @@ or sprite list.
 
 Four tabs in a custom HUD tab bar (React Navigation `tabBar` prop): **WON**, **TODAY**, **TEAMS**,
 **YOU**. TODAY lists deals anyone can claim right now (any LA team) and today's LA games with the
-deals riding on each; it comes from `GET /today`. The bar is black with a 3pt white top border, a
-stat line (`WON n`, `FOLLOWING n`, separated by thin pixel bars, and a blinking `PAUSED` when alerts
-are paused), then the tabs in Press Start 2P. The active tab is accent with a blinking ▶. The won
-count is a blinking badge on WON. `FOLLOWING n` counts teams: a team counts once if you follow any
-of its active deals. Targets are at least 44pt, tabs have role `tab` with `selected` state, and the
+deals riding on each; it comes from `GET /today`. The bar is black with a 3pt lilac top rule and
+four tabs, each a single-color pixel icon (trophy, calendar, jersey, player) over a small Press
+Start 2P label (`displayS`). The active tab's icon and label are accent gold; the others are muted.
+The won count is a solid gold badge on the trophy and never blinks. Nothing in the bar blinks except
+`ALERTS PAUSED`, a line above the tabs shown only while alerts are paused. The following count lives
+on the team screens (`n FOLLOWING`), not in the bar; it counts teams, once each if you follow any of
+their active deals. Owner pick 2026-11-17 (tab bar idea 4). Targets are at least 44pt, tabs have
+role `tab` with `selected` state, and the badge is in the accessibility label ("Won, 2 won"). The
 bar sits above the bottom safe-area inset.
 
 - **WON** (home) shows only deals the user has won and can still claim. Nothing grey, no not-yet-won
@@ -335,14 +338,14 @@ come, get their own cut-in word and use the `gift` sprite until they have art.
 
 One idea, one word:
 
-| Idea                              | Word          | Where                                                                                         |
-| --------------------------------- | ------------- | --------------------------------------------------------------------------------------------- |
-| Teams or deals you subscribed to  | `FOLLOWING`   | Stat line `FOLLOWING n`, team screens `n FOLLOWING` or `1/2 FOLLOWING`, YOU "Following Ducks" |
-| Deals you won and can still claim | `WON`         | Tab, stat line `WON n`, "back in Won"                                                         |
-| Deals you tapped GOT IT on        | `CLAIMED`     | Trophy case, "DEALS CLAIMED"                                                                  |
-| A won deal whose code works later | `LOCKED`      | Row: `CODE UNLOCKS TUE` (Pacific day name, or `NOV 24` past 6 days)                           |
-| Only fans at the venue can claim  | `AT THE GAME` | Black-on-ice tag on rows and the deal screen, plus "Only for fans at Intuit Dome" in words    |
-| A game in progress                | `LIVE`        | White on deep red tag in TODAY, blinking                                                      |
+| Idea                              | Word          | Where                                                                                      |
+| --------------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
+| Teams or deals you subscribed to  | `FOLLOWING`   | Team screens `n FOLLOWING` or `1/2 FOLLOWING`, YOU "Following Ducks"                       |
+| Deals you won and can still claim | `WON`         | Tab and its badge, "back in Won"                                                           |
+| Deals you tapped GOT IT on        | `CLAIMED`     | Trophy case, "DEALS CLAIMED"                                                               |
+| A won deal whose code works later | `LOCKED`      | Row: `CODE UNLOCKS TUE` (Pacific day name, or `NOV 24` past 6 days)                        |
+| Only fans at the venue can claim  | `AT THE GAME` | Black-on-ice tag on rows and the deal screen, plus "Only for fans at Intuit Dome" in words |
+| A game in progress                | `LIVE`        | White on deep red tag in TODAY, blinking                                                   |
 
 Never "Watching", "Picked", "Unlocked" (as a place) or "Claim n". "Unlock" only describes a code
 becoming usable.

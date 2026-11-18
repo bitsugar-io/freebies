@@ -260,6 +260,44 @@ export const ICONS = {
     ".XXXXXXXXX.",
     "XXXXXXXXXXX"
   ],
+  trophy: [
+    "XXXXXXXXXXX",
+    "X.XXXXXXX.X",
+    "X.XXXXXXX.X",
+    ".XXXXXXXXX.",
+    "..XXXXXXX..",
+    "...XXXXX...",
+    "....XXX....",
+    ".....X.....",
+    ".....X.....",
+    "...XXXXX...",
+    "..XXXXXXX.."
+  ],
+  calendar: [
+    ".X.......X.",
+    "XXXXXXXXXXX",
+    "XXXXXXXXXXX",
+    "X.........X",
+    "X.X.X.X.X.X",
+    "X.........X",
+    "X.X.X.XXX.X",
+    "X.....XXX.X",
+    "X.........X",
+    "XXXXXXXXXXX"
+  ],
+  jersey: [
+    "..XX...XX..",
+    "XXXX...XXXX",
+    "XXXXX.XXXXX",
+    "XXXXXXXXXXX",
+    ".XXXXXXXXX.",
+    "..XXXXXXX..",
+    "..XXXXXXX..",
+    "..XXXXXXX..",
+    "..XXXXXXX..",
+    "..XXXXXXX..",
+    "..XXXXXXX.."
+  ],
   cursor: [
     "X....",
     "XX...",
