@@ -78,7 +78,7 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
                 <PixelIcon name={TAB_ICONS[route.name] ?? 'more'} scale={2} color={focused ? 'accent' : 'textMuted'} />
                 {badge ? (
                   <View style={styles.badge}>
-                    <Text variant="displayS" color="onAccent">
+                    <Text variant="displayM" color="onAccent">
                       {String(badge)}
                     </Text>
                   </View>
@@ -100,7 +100,19 @@ const styles = StyleSheet.create({
   paused: { alignItems: 'center', paddingTop: 6 },
   // Equal columns, so the tabs sit evenly.
   tabs: { flexDirection: 'row', paddingHorizontal: 4 },
-  tab: { flex: 1, minHeight: 56, alignItems: 'center', justifyContent: 'center', gap: 6, paddingTop: 8, paddingBottom: 4 },
+  tab: { flex: 1, minHeight: 64, alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 16, paddingBottom: 4 },
   iconBox: { width: 22, height: 22 },
-  badge: { position: 'absolute', top: -7, right: -14, backgroundColor: colors.accent, paddingHorizontal: 3, minWidth: 14, alignItems: 'center' },
+  // A blocky sticker: gold box, black outline so it stands off the trophy, 12pt digit.
+  badge: {
+    position: 'absolute',
+    top: -9,
+    right: -20,
+    backgroundColor: colors.accent,
+    borderWidth: 2,
+    borderColor: colors.background,
+    paddingHorizontal: 4,
+    paddingTop: 2,
+    minWidth: 22,
+    alignItems: 'center',
+  },
 });
