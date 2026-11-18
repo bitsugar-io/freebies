@@ -284,14 +284,19 @@ Captions are set in Press Start 2P on `bg.night`, at most 6 words, sentence case
 changed on 2026-11-17 for what 2.0 shipped: TODAY and the Win Board replace the trophy case and the
 push.
 
-| #   | Filename          | Screen                                                  | Caption                       |
-| --- | ----------------- | ------------------------------------------------------- | ----------------------------- |
-| 1   | `01-unlocked.png` | Victory cut-in: "LAKERS WON!" over team-color rays      | When LA wins, you win         |
-| 2   | `02-won.png`      | Won tab: unlocked deals with sprites and countdown bars | Your free food, counting down |
-| 3   | `03-today.png`    | Today tab: live deals and tonight's games with a deal   | See what's on the line        |
-| 4   | `04-teams.png`    | A sport's team list with teams followed                 | Pick your LA teams            |
-| 5   | `05-claim.png`    | Deal detail: dialog box, claim steps, ▶ menu            | Claim it before time runs out |
-| 6   | `06-winboard.png` | Lock screen with the Win Board                          | Your wins on the lock screen  |
+| #   | Filename          | Screen                                                          | Caption                       |
+| --- | ----------------- | --------------------------------------------------------------- | ----------------------------- |
+| 1   | `01-unlocked.png` | Victory cut-in: "5 WINS!" with the five meals on the shelf      | When LA wins, you win         |
+| 2   | `02-won.png`      | Won tab: unlocked deals with sprites and countdown bars         | Your free food, counting down |
+| 3   | `03-today.png`    | Today tab: LIVE NOW, deals anyone can claim                     | Free food anyone can grab     |
+| 4   | `04-teams.png`    | Football's teams, Rams and Chargers followed                    | Pick your LA teams            |
+| 5   | `05-claim.png`    | Lakers tacos deal: countdown, claim steps with the code, ▶ menu | Claim it before time runs out |
+| 6   | `06-winboard.png` | Lock screen with the Win Board: 5 wins, three clocks, +2 MORE   | Your wins on the lock screen  |
+
+Captured 2026-11-17 from a development build against the local API with real, active deals (the dev
+tools button hidden), then framed at 1320×2868 with the caption above: the caption in Press Start 2P
+gold with a red shadow, the LA ray colors as a stripe, the screenshot at 83% below. The first five
+have a 9:41 status bar; the lock screen shows the real date.
 
 The first two carry the pitch, since most people only see those.
 
@@ -303,7 +308,7 @@ The first two carry the pitch, since most people only see those.
 - [ ] Privacy policy updated for the Freebies: LA Sports Deals name and merged to `main`
 - [ ] App icon is the Trophy Burger over LA rays, 1024×1024, no text, no team marks
 - [ ] Display name in `app.json` is "Freebies"
-- [ ] Six screenshots captured from the 8-bit build
+- [x] Six screenshots captured from the 8-bit build (2026-11-17)
 - [ ] In-app About screen shows the not-affiliated disclaimer and the Press Start 2P OFL license
 - [ ] Version 2.0.0 in `app.json`, build number bumped
 
