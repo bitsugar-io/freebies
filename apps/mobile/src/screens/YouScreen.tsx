@@ -16,6 +16,7 @@ import { WatchRow } from '../components/DealRows';
 import type { RootStackParamList, TabParamList } from '../navigation/types';
 import { LICENSES } from '../licenses';
 import { pauseUntilLabel, shortDatePacific } from '../utils/format';
+import { useScreenWipe } from '../components/pixel/ScreenWipe';
 
 /** Claimed deals shown before SHOW ALL. */
 const TROPHY_PREVIEW = 10;
@@ -27,6 +28,7 @@ const DISCLAIMER =
 export function YouScreen() {
   const { user, events, isSubscribed, alertsStatus, enableAlerts, expoPushToken, refreshAll, stats, teams: apiTeams, claimedDeals, allDeals, alertsPaused, alertsPausedUntil, teamName } = useAppData();
   const nav = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const wipe = useScreenWipe();
   const [showAllClaimed, setShowAllClaimed] = useState(false);
   const shownClaimed = showAllClaimed ? claimedDeals : claimedDeals.slice(0, TROPHY_PREVIEW);
   // Only claims whose window is still open can open the deal screen (to move one back).
@@ -102,7 +104,7 @@ export function YouScreen() {
                 key={c.id}
                 event={c.event}
                 detail={`${teamName(c.event.teamId, c.event.teamName)} · CLAIMED ${shortDatePacific(c.claimedAt)}`}
-                onPress={activeIds.has(c.id) ? () => nav.navigate('Deal', { id: c.id }) : undefined}
+                onPress={activeIds.has(c.id) ? () => wipe(() => nav.navigate('Deal', { id: c.id })) : undefined}
               />
             ))}
             {claimedDeals.length > TROPHY_PREVIEW ? (

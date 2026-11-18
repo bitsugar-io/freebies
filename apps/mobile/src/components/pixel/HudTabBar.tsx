@@ -84,7 +84,7 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
                   </View>
                 ) : null}
               </View>
-              <Text variant="displayS" color={focused ? 'accent' : 'textMuted'}>
+              <Text variant="displayM" color={focused ? 'accent' : 'textMuted'}>
                 {name}
               </Text>
             </Pressable>

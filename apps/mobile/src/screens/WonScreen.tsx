@@ -14,6 +14,7 @@ import { PixelBox } from '../components/pixel/PixelBox';
 import { PixelButton } from '../components/pixel/PixelButton';
 import { Text } from '../components/pixel/Text';
 import type { RootStackParamList, TabParamList } from '../navigation/types';
+import { useScreenWipe } from '../components/pixel/ScreenWipe';
 
 type Nav = BottomTabNavigationProp<TabParamList, 'Won'> & NativeStackNavigationProp<RootStackParamList>;
 
@@ -23,6 +24,7 @@ type Nav = BottomTabNavigationProp<TabParamList, 'Won'> & NativeStackNavigationP
  */
 export function WonScreen() {
   const nav = useNavigation<Nav>();
+  const wipe = useScreenWipe();
   const {
     undismissedDeals, liveWon: won, eventsLoading, dealsLoading, dealsError, dealsSavedAt, userError, refreshAll, retry,
     followedTeams, teamName,
@@ -51,7 +53,7 @@ export function WonScreen() {
       {!loading && !failedEmpty && won.length > 0 ? (
         <View style={{ gap: 12 }}>
           {won.map((deal) => (
-            <UnlockedDealRow key={deal.id} deal={deal} onPress={() => nav.navigate('Deal', { id: deal.id })} />
+            <UnlockedDealRow key={deal.id} deal={deal} onPress={() => wipe(() => nav.navigate('Deal', { id: deal.id }))} />
           ))}
         </View>
       ) : null}
@@ -66,14 +68,14 @@ export function WonScreen() {
               <Text variant="body" color="textSecondary" align="center">
                 {`Following ${listNames(followedTeams.map((id) => teamName(id)))}. When they pull it off, your free food shows up here.`}
               </Text>
-              <PixelButton label="See today's games" onPress={() => nav.navigate('Today')} />
+              <PixelButton label="See today's games" onPress={() => wipe(() => nav.navigate('Today'))} />
             </>
           ) : (
             <>
               <Text variant="body" color="textSecondary" align="center">
                 When your teams pull it off, your free food shows up here.
               </Text>
-              <PixelButton label="Pick teams" onPress={() => nav.navigate('Teams')} />
+              <PixelButton label="Pick teams" onPress={() => wipe(() => nav.navigate('Teams'))} />
             </>
           )}
         </PixelBox>

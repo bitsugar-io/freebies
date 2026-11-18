@@ -191,8 +191,9 @@ function Gate() {
         screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}
       >
         <Stack.Screen name="Tabs" component={Tabs} />
-        <Stack.Screen name="Deal" component={DealScreen} options={{ presentation: 'modal' }} />
-        <Stack.Screen name="Alerts" component={AlertsScreen} options={{ presentation: 'modal' }} />
+        {/* No iOS slides anywhere (docs/ui.md Motion): deals and alerts open as a hard cut, like PAUSE. */}
+        <Stack.Screen name="Deal" component={DealScreen} options={{ presentation: 'fullScreenModal', animation: 'none' }} />
+        <Stack.Screen name="Alerts" component={AlertsScreen} options={{ presentation: 'fullScreenModal', animation: 'none' }} />
         <Stack.Screen
           name="Pause"
           component={PauseScreen}

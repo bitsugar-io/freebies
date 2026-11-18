@@ -10,7 +10,7 @@ export interface Victory {
   stripe: [string, string];
 }
 
-/** A black team color (Kings #111111 too) would vanish against the black bar: use the team's accent, else white. */
+/** A black or near-black team color (the Kings' too) would vanish against the black bar: use the team's accent, else white. */
 function visible(c: string, accent?: string): string {
   if (!isNearBlack(c)) return c;
   return accent && !isNearBlack(accent) ? accent : colors.text;

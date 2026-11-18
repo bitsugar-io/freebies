@@ -286,9 +286,12 @@ the 8-bit look stays in the app. The API words every line (`GET /users/{id}/widg
 - Cut-ins last at most 2 seconds (120 frames) and auto-advance.
 - Blinks run at 1 Hz or 2 Hz. Nothing flashes more than 3 times per second, and nothing simulates
   sprite flicker.
-- Screen transitions are hard cuts or an 8-band wipe over 8–16 frames. Native stack transitions are
-  fine for pushes. Switching tabs plays a stepped black wipe (8 steps, about 240ms); it is off under
-  Reduce Motion.
+- Every screen change plays the same stepped black wipe (8 steps, about 240ms): switching tabs,
+  opening a deal or a sport, BACK, and closing a deal or alerts. No iOS slides anywhere: stacks and
+  modals use `animation: 'none'` and the wipe covers the cut (owner decision 2026-11-17, "it should
+  all be consistent"). The PAUSE menu pops up with a hard cut, like a game pause. Push taps and
+  links land without a wipe. Swipe-back still works on sport pages. The wipe is off under Reduce
+  Motion.
 - **Blinking** runs on ONE shared clock (`useBlink()` and `<Blink>` in `hooks/useBlink.tsx`): 1 Hz,
   stepped, a single interval for the whole app, solid under Reduce Motion. Rules: blink only
   selection cursors (▶), tags (`NEW!` on deals unlocked in the last 24 hours, `LIVE` on a game in
