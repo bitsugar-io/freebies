@@ -28,7 +28,7 @@ NES = {
     "17": "#E45C10", "27": "#FCA044", "07": "#881400", "06": "#A81000",
     "16": "#F83800", "26": "#F87858", "28": "#F8B800", "38": "#F8D878",
     "18": "#AC7C00", "1A": "#00A800", "36": "#F0D0B0", "21": "#3CBCFC",
-    "31": "#A4E4FC",
+    "31": "#A4E4FC", "11": "#0078F8", "12": "#0058F8",
 }
 
 SPRITES = {
@@ -272,6 +272,48 @@ SPRITES = {
         "..........KKKK..",
     ]),
     # Fallback: redrawn from 024 onto NES palette entries.
+    # Soft serve in a cup with mix-ins and a spoon (Kings / McDonald's McFlurry; generic, no cup print).
+    "soft-serve": ("Soft serve", {"K": "0F", "w": "30", "l": "10", "c": "07", "b": "11", "B": "12"}, 1, [
+        "..........KK....",
+        ".........KlK....",
+        "....KKKKKlKK....",
+        "...KwwcwwlwwK...",
+        "..KwwwwcwlcwwK..",
+        "..KwcwwwwwwcwK..",
+        "..KKKKKKKKKKKK..",
+        "...KwwwwwwwwK...",
+        "...KbbbbbbbbK...",
+        "...KBBBBBBBBK...",
+        "....KbbbbbbK....",
+        "....KwwwwwwK....",
+        "....KlwwwwlK....",
+        ".....KlwwlK.....",
+        ".....KKKKKK.....",
+    ]),
+    # A sub sandwich: roll, lettuce, tomato and meat, cheese (Chargers / Firehouse Subs).
+    "sub": ("Sub", {"K": "0F", "h": "38", "b": "27", "g": "1A", "r": "16", "m": "07", "y": "28"}, 4, [
+        "...KKKKKKKKKK...",
+        "..KhhbbbbbbbbK..",
+        ".KhbbbbbbbbbbbK.",
+        "KggggggggggggggK",
+        "KrrmrrmrrmrrmrrK",
+        "KyyyyyyyyyyyyyyK",
+        ".KbbbbbbbbbbbbK.",
+        "..KKKKKKKKKKKK..",
+    ]),
+    # A stack of pancakes with butter and syrup (Galaxy / NORMS hotcakes).
+    "pancakes": ("Pancakes", {"K": "0F", "y": "38", "h": "30", "b": "27", "d": "17", "s": "18"}, 3, [
+        "......KKKK......",
+        ".....KhyyyK.....",
+        "..KKKKKKKKKKKK..",
+        ".KbbbbbbbbbbbbK.",
+        "KdsddddsddddsdK.",
+        ".KbbbbbbbbbbbbK.",
+        "KddddddddddddddK",
+        ".KbbbbbbbbbbbbK.",
+        "KddddddddddddddK",
+        ".KKKKKKKKKKKKKK.",
+    ]),
     "gift": ("Gift", {"K": "0F", "x": "21", "X": "31", "y": "16", "Y": "26"}, 1, [
         "...KK.....KK....",
         "..KyYK...KYyK...",
@@ -310,6 +352,10 @@ EVENT_SPRITES = {
     "event-nhl-ana-chickfila": "chicken-sandwich",
     "event-nba-lac-chickfila": "chicken-sandwich",
     "event-mls-lafc-chickfila": "chicken-sandwich",
+    # 2026-11-17: every LA deal gets its own sprite (no gift fallback).
+    "event-nhl-lak-mcdonalds": "soft-serve",
+    "event-nfl-lach-firehouse": "sub",
+    "event-mls-lag-norms": "pancakes",
 }
 
 W = H = 16

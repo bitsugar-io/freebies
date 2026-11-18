@@ -9,7 +9,8 @@ import (
 )
 
 // TestOnlyLAEventsActive guards the LA-only pivot: after all migrations every
-// active event is in Los Angeles or Orange County and has a sprite.
+// active event is in Los Angeles or Orange County and has its own sprite (the
+// gift box is only a placeholder while one is drawn; see the design skill).
 func TestOnlyLAEventsActive(t *testing.T) {
 	database, err := db.Open(":memory:")
 	if err != nil {
@@ -35,8 +36,8 @@ func TestOnlyLAEventsActive(t *testing.T) {
 		if region != "us-ca-la" && region != "us-ca-oc" {
 			t.Errorf("active event %s is outside LA: region %q", id, region)
 		}
-		if sprite == "" {
-			t.Errorf("active event %s has no sprite", id)
+		if sprite == "" || sprite == "gift" {
+			t.Errorf("active event %s has no sprite of its own (sprite_id %q)", id, sprite)
 		}
 		active = append(active, id)
 	}

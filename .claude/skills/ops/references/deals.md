@@ -5,11 +5,14 @@ The `trigger_rule` JSON is in [deals-trigger-rule.md](deals-trigger-rule.md).
 
 ## Steps
 
-1. Find the deal on the sponsor's or team's own page. If you can't, it ships with `is_active = 0`.
+1. Research the deal ([Finding deals](#finding-deals)), then confirm it on the sponsor's or team's
+   own page. If you can't, it ships with `is_active = 0`.
 2. Create the migration with `scripts/new-migration.sh <slug>` and fill in every `TODO`.
 3. Write `trigger_rule` from a metric the league's source emits
    ([deals-trigger-rule.md](deals-trigger-rule.md)).
-4. Pick a sprite with the `design` skill; `gift` is the fallback.
+4. Give it its own sprite with the `design` skill: reuse one that fits, or draw a new one and ship
+   it with `ship.sh` (a migration, so it reaches the app without a release). Every LA deal has its
+   own sprite; `gift` is only a placeholder while a new sprite is being drawn, never what ships.
 5. Word the offer and condition by the Copy voice section of `docs/ui.md`.
 6. Add the event to `TestOnlyLAEventsActive`, run `scripts/check.sh api`, restart the API and check
    `GET /api/v1/events/<id>`.
@@ -35,6 +38,22 @@ An at-the-game deal (only fans at the venue can claim it) sets `in_venue = 1` an
 example `Intuit Dome`); the app tags it AT THE GAME and names the venue. If it is claimed in the
 venue that night, use the `game_night` window; if the ticket is the proof and you redeem later (UCLA
 Fat Sal's), use a normal window and it alerts like any other deal.
+
+## Finding deals
+
+Research every source below, every time, and say which ones you checked. Leads from any of them
+still need the sponsor's or team's page before a deal goes active.
+
+| Source             | How                                                                                                                                                                                                                                                 | What it's good for                                                                                                                            |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Google             | In the owner's Chrome (the `claude-in-chrome` tools): "free food when <team> win 2026", "<team> promo code", "<chain> <team> deal"                                                                                                                  | Current-season news, sponsor pages, Instagram and Facebook deal posts                                                                         |
+| Reddit             | In the owner's Chrome, through Google: `site:reddit.com/r/FoodLosAngeles <team>`, `site:reddit.com <team> free food` (Reddit itself is blocked to the browser tools and to scripts; Google shows each thread's text)                                | Fans confirming a deal fired, codes, changed terms. Subs: r/FoodLosAngeles, r/ChickFilAforSoCal, the team subs, r/LosAngeles, r/AskLosAngeles |
+| Meal Steals        | `https://mealsteals.co/deals/` and its team guides (`/deals/dodgers/`, `/deals/rams/`); the dated archive `/deals/YYYY-MM-DD/` lists what fired each day; its public feed `getOffers?city=Los%20Angeles` (the one its page loads) has the live list | The closest competitor: what's running now and what fired on past dates                                                                       |
+| Other trackers     | lahomewin.com, didmyteamearnmefreebies.com (NHL), dealsonmeals.app                                                                                                                                                                                  | Cross-checks and teams Meal Steals skips                                                                                                      |
+| Sponsors and teams | The restaurant's promo page and the team's promotions page                                                                                                                                                                                          | The only source that makes a deal active                                                                                                      |
+
+Then check each lead's terms against [deals-trigger-rule.md](deals-trigger-rule.md) ("available for
+unlock for 2 days" is a deadline, not a delay), and draw its sprite (step 4).
 
 ## Verifying a deal
 
@@ -195,7 +214,7 @@ cd services/api && mise exec -- go run . deals trigger event-mlb-lad-habit --hou
 - [ ] Verified on the sponsor's or team's page, URL in the comment and in `offer_url`
 - [ ] `region_code` is `us-ca-la` or `us-ca-oc`
 - [ ] `trigger_rule` uses a metric the source emits, or a NOTE says it can't trigger yet
-- [ ] Sprite set, or `gift`
+- [ ] Its own sprite, shipped by migration (`ship.sh`); not `gift`
 - [ ] Copy follows `docs/ui.md`
 - [ ] Down undoes Up
 - [ ] `TestOnlyLAEventsActive` updated and the tests pass

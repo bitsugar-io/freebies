@@ -30,7 +30,10 @@ sits upper left, and the density matches its neighbors. Iterate until all hold.
 ## 3. Map deals
 
 Add `"event-id": "sprite-id"` pairs to `EVENT_SPRITES` in `sprites.py`. A new event can also set
-`sprite_id` in the migration that creates it. Deals with no sprite show `gift`.
+`sprite_id` in the migration that creates it. Every LA deal gets its own sprite: reuse one that fits
+the food, or draw a new one. `gift` only covers a deal while its sprite is being drawn; it is never
+what ships. Sprites live in the `sprites` table and ship by migration (step 4), so new art reaches
+the app, the cut-in, the widget and the Win Board without a release.
 
 ## 4. Ship
 
