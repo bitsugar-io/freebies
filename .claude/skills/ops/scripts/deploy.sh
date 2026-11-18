@@ -55,8 +55,20 @@ if ! mise exec -- kubectl rollout status deployment/freebie-api -n "$ns" --timeo
   echo "      see references/deploy-api-troubleshooting.md; roll back per references/deploy-api.md" >&2
   exit 1
 fi
-new_pod="$(mise exec -- kubectl get pods -n "$ns" -l app.kubernetes.io/name=freebie-api \
-  --field-selector=status.phase=Running -o jsonpath='{.items[-1:].metadata.name}')"
+# The newest running pod that isn't the old one. Right after the rollout the old pod can still be
+# listed as Running while it shuts down, so never take it, and wait briefly for the new one.
+new_pod=""
+for _ in $(seq 1 30); do
+  new_pod="$(mise exec -- kubectl get pods -n "$ns" -l app.kubernetes.io/name=freebie-api \
+    --field-selector=status.phase=Running --sort-by=.metadata.creationTimestamp \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep -v "^${old_pod:-NONE}$" | tail -1)"
+  [ -n "$new_pod" ] && break
+  sleep 2
+done
+if [ -z "$new_pod" ]; then
+  echo "      couldn't find the new pod (only ${old_pod:-the old one} is running)" >&2
+  exit 1
+fi
 say "new pod $new_pod is ready"
 
 step "Checking the new API" "Migrations it ran on startup, then the public health check."
