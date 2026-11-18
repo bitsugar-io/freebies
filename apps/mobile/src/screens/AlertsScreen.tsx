@@ -7,6 +7,7 @@ import { DialogBox } from '../components/pixel/DialogBox';
 import { MenuRow, PixelMenu } from '../components/pixel/PixelMenu';
 import { PixelIcon } from '../components/pixel/PixelIcon';
 import { colors } from '../hooks/useTheme';
+import { useScreenWipe } from '../components/pixel/ScreenWipe';
 
 /**
  * Explainer shown after the first follow and before the system notification prompt. The system
@@ -14,9 +15,10 @@ import { colors } from '../hooks/useTheme';
  */
 export function AlertsScreen() {
   const nav = useNavigation();
+  const wipe = useScreenWipe();
   const insets = useSafeAreaInsets();
   const { enableAlerts } = useAppData();
-  const close = () => nav.goBack();
+  const close = () => wipe(() => nav.goBack());
 
   return (
     <View style={styles.scrim}>

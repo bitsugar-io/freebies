@@ -6,22 +6,21 @@ import { useAppData } from '../../context/AppDataContext';
 import { colors } from '../../hooks/useTheme';
 import { Blink } from '../../hooks/useBlink';
 import { PixelIcon } from './PixelIcon';
+import type { IconName } from './art';
 import { useScreenWipe } from './ScreenWipe';
 import { Text } from './Text';
 
 const LABELS: Record<string, string> = { Won: 'Won', Today: 'Today', Teams: 'Teams', You: 'You' };
-
-/** A thin pixel bar between stat-line items. */
-function Sep() {
-  return <View style={styles.sep} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />;
-}
+const TAB_ICONS: Record<string, IconName> = { Won: 'trophy', Today: 'calendar', Teams: 'jersey', You: 'you' };
 
 /** First screen of each tab's nested stack; the tab bar always returns there. */
 const TAB_ROOTS: Record<string, string> = { Teams: 'Sports' };
 
 /**
- * The game HUD tab bar: black, 3pt white top border, a stat line, then three text tabs. The active
- * tab is accent with a blinking ▶. Blinkers here: PAUSED, the ▶ and the won count.
+ * The game HUD tab bar: black, a 3pt lilac top rule, then four tabs, each a pixel icon over a small
+ * Press Start 2P label (owner pick 2026-11-17, idea 4). The active tab's icon and label are gold. The
+ * win count is a solid gold badge on the trophy; nothing here blinks except PAUSED, which shows only
+ * while alerts are paused.
  */
 export function HudTabBar({ state, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
@@ -30,31 +29,17 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
   // Same list as the WON screen (liveWonDeals): expired and dismissed wins never count.
   const won = liveWon.length;
 
-  const statLabel = [
-    `${won} won`,
-    `following ${followedCount} ${followedCount === 1 ? 'team' : 'teams'}`,
-    alertsPaused ? 'alerts paused' : null,
-  ]
-    .filter(Boolean)
-    .join(', ');
-
   return (
     <View style={[styles.bar, { paddingBottom: insets.bottom }]}>
-      <View style={styles.stats} accessible accessibilityLabel={statLabel}>
-        <Text variant="displayM" color="textSecondary">{`WON ${won}`}</Text>
-        <Sep />
-        <Text variant="displayM" color="textSecondary">{`FOLLOWING ${followedCount}`}</Text>
-        {alertsPaused ? (
-          <>
-            <Sep />
+      {alertsPaused ? (
+        <View style={styles.paused} accessible accessibilityLabel={`Alerts paused. Following ${followedCount} teams.`}>
           <Blink priority={1}>
-            <Text variant="displayM" color="warning">
-              PAUSED
+            <Text variant="displayS" color="warning">
+              ALERTS PAUSED
             </Text>
           </Blink>
-          </>
-        ) : null}
-      </View>
+        </View>
+      ) : null}
       <View style={styles.tabs} accessibilityRole="tablist">
         {state.routes.map((route, index) => {
           const focused = state.index === index;
@@ -89,23 +74,19 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
               accessibilityState={{ selected: focused }}
               style={styles.tab}
             >
-              <View style={styles.cursor} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                {focused ? (
-                  <Blink priority={2}>
-                    <PixelIcon name="cursor" scale={2} color="accent" />
-                  </Blink>
+              <View style={styles.iconBox} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <PixelIcon name={TAB_ICONS[route.name] ?? 'more'} scale={2} color={focused ? 'accent' : 'textMuted'} />
+                {badge ? (
+                  <View style={styles.badge}>
+                    <Text variant="displayM" color="onAccent">
+                      {String(badge)}
+                    </Text>
+                  </View>
                 ) : null}
               </View>
-              <Text variant="displayM" color={focused ? 'accent' : 'textSecondary'}>
+              <Text variant="displayM" color={focused ? 'accent' : 'textMuted'}>
                 {name}
               </Text>
-              {badge ? (
-                <Blink priority={3} style={styles.badge}>
-                  <Text variant="displayM" color="onAccent">
-                    {String(badge)}
-                  </Text>
-                </Blink>
-              ) : null}
             </Pressable>
           );
         })}
@@ -116,11 +97,22 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
 
 const styles = StyleSheet.create({
   bar: { backgroundColor: colors.background, borderTopWidth: 3, borderTopColor: colors.info },
-  stats: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingTop: 8, paddingBottom: 2 },
-  sep: { width: 2, height: 12, marginHorizontal: 4, backgroundColor: colors.textMuted },
+  paused: { alignItems: 'center', paddingTop: 6 },
   // Equal columns, so the tabs sit evenly.
   tabs: { flexDirection: 'row', paddingHorizontal: 4 },
-  tab: { flex: 1, minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
-  cursor: { width: 12, alignItems: 'flex-start' },
-  badge: { marginLeft: 6, backgroundColor: colors.accent, paddingHorizontal: 4, minWidth: 20, alignItems: 'center' },
+  tab: { flex: 1, minHeight: 64, alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 16, paddingBottom: 4 },
+  iconBox: { width: 22, height: 22 },
+  // A blocky sticker: gold box, black outline so it stands off the trophy, 12pt digit.
+  badge: {
+    position: 'absolute',
+    top: -9,
+    right: -20,
+    backgroundColor: colors.accent,
+    borderWidth: 2,
+    borderColor: colors.background,
+    paddingHorizontal: 4,
+    paddingTop: 2,
+    minWidth: 22,
+    alignItems: 'center',
+  },
 });

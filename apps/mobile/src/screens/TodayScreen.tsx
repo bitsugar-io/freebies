@@ -16,6 +16,7 @@ import { useNow } from '../hooks/useNow';
 import { useAppData } from '../context/AppDataContext';
 import { useVictory } from '../hooks/useVictory';
 import type { RootStackParamList } from '../navigation/types';
+import { useScreenWipe } from '../components/pixel/ScreenWipe';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -26,6 +27,7 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
  */
 export function TodayScreen() {
   const nav = useNavigation<Nav>();
+  const wipe = useScreenWipe();
   const {
     today,
     todayLoading: isLoading,
@@ -53,7 +55,7 @@ export function TodayScreen() {
     .replace(',', '');
   const failedEmpty = !!error && !today;
   /** A game's deal: the "if X, you get Y" preview, by event id. */
-  const open = (eventId: string) => nav.navigate('Deal', { id: eventId });
+  const open = (eventId: string) => wipe(() => nav.navigate('Deal', { id: eventId }));
 
   return (
     <Screen title="Today" status={victory ? `${victory.team} won!` : status} onRefresh={refresh}>
@@ -76,7 +78,7 @@ export function TodayScreen() {
             Anyone can claim these, whoever you follow.
           </Text>
           {live.map((deal) => (
-            <UnlockedDealRow key={deal.id} deal={deal} onPress={() => nav.navigate('Deal', { id: deal.id })} />
+            <UnlockedDealRow key={deal.id} deal={deal} onPress={() => wipe(() => nav.navigate('Deal', { id: deal.id }))} />
           ))}
         </View>
       ) : null}

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -22,6 +22,7 @@ import { colors, useLargeText } from '../hooks/useTheme';
 import { haptics } from '../utils/haptics';
 import { ifCondition, sportLabel } from '../utils/format';
 import type { RootStackParamList, TeamsStackParamList } from '../navigation/types';
+import { useScreenWipe } from '../components/pixel/ScreenWipe';
 
 /** A team's offers, keyed by the event's teamId (which is the API team id). */
 interface TeamEvents {
@@ -201,6 +202,7 @@ function SportRow({ group, followedTeams, selected, onPress }: { group: SportGro
 /** Teams, screen 1: SELECT SPORT. */
 export function SportsScreen() {
   const nav = useNavigation<NativeStackNavigationProp<TeamsStackParamList>>();
+  const wipe = useScreenWipe();
   const b = useBoard();
   const groups = useMemo(() => groupBySport(b.board), [b.board]);
   const pickedTeams = b.board.filter((t) => b.followedOf(b.eventsOf(t.id)) > 0).length;
@@ -232,7 +234,7 @@ export function SportsScreen() {
                 group={g}
                 selected={i === 0}
                 followedTeams={g.teams.filter((t) => b.followedOf(b.eventsOf(t.id)) > 0).length}
-                onPress={() => nav.navigate('Sport', { sport: g.sport })}
+                onPress={() => wipe(() => nav.navigate('Sport', { sport: g.sport }))}
               />
             ))}
           </View>
@@ -248,14 +250,8 @@ export function SportsScreen() {
  */
 export function SportTeamsScreen() {
   const nav = useNavigation<NativeStackNavigationProp<TeamsStackParamList & RootStackParamList>>();
+  const wipe = useScreenWipe();
   const { sport } = useRoute<RouteProp<TeamsStackParamList, 'Sport'>>().params;
-  // Tapping the TEAMS tab from here goes back to SELECT SPORT behind the tab wipe: a hard cut, not
-  // the native slide-back, which showed SELECT SPORT, slid, then showed it again (docs/ui.md Motion).
-  useEffect(() => {
-    const tabs = nav.getParent();
-    if (!tabs) return;
-    return tabs.addListener('tabPress' as never, () => nav.setOptions({ animation: 'none' }));
-  }, [nav]);
   const showToast = useToast();
   const b = useBoard();
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -297,7 +293,7 @@ export function SportTeamsScreen() {
   return (
     <Screen title={label} status={list.length > 0 ? `${list.filter((t) => b.followedOf(b.eventsOf(t.id)) > 0).length}/${list.length} FOLLOWING` : undefined} onRefresh={b.refreshAll}>
       <PixelMenu>
-        <MenuRow label="Back" onPress={() => nav.goBack()} accessibilityLabel="Back to select sport" leading="back" />
+        <MenuRow label="Back" onPress={() => wipe(() => nav.goBack())} accessibilityLabel="Back to select sport" leading="back" />
       </PixelMenu>
       {b.teamsError ? <BoardNote fallback={b.usingFallback} onRetry={b.refetchTeams} /> : null}
       {loading ? (
@@ -320,7 +316,7 @@ export function SportTeamsScreen() {
           <Text variant="body" color="textSecondary">
             We don't track that sport yet.
           </Text>
-          <PixelButton label="Back" onPress={() => nav.goBack()} />
+          <PixelButton label="Back" onPress={() => wipe(() => nav.goBack())} />
         </PixelBox>
       ) : (
       <>
@@ -400,7 +396,7 @@ export function SportTeamsScreen() {
                       haptics.selection();
                       b.setSubscribed([e.id], !b.isSubscribed(e.id));
                     }}
-                    onOpen={() => nav.navigate('Deal', { id: e.id })}
+                    onOpen={() => wipe(() => nav.navigate('Deal', { id: e.id }))}
                   />
                 ))
               : null}

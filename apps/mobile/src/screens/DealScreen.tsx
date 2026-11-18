@@ -31,6 +31,7 @@ import { haptics } from '../utils/haptics';
 import { dealScreenPhase, resolveDeal } from '../utils/dealResolve';
 import { once, singleFlight } from '../utils/sequence';
 import type { RootStackParamList } from '../navigation/types';
+import { useScreenWipe } from '../components/pixel/ScreenWipe';
 
 const SEEN_KEY = 'freebie_cutin_seen';
 const RISE_FRAMES = 4;
@@ -90,6 +91,7 @@ export function DealScreen() {
 
 function DealContent({ id }: { id: string }) {
   const nav = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const wipe = useScreenWipe();
   const insets = useSafeAreaInsets();
   const showToast = useToast();
   const reduced = useReducedMotion();
@@ -226,7 +228,10 @@ function DealContent({ id }: { id: string }) {
 
   const [confirmStop, setConfirmStop] = useState(false);
   // Close once, however many taps or completions land.
-  const close = useMemo(() => once(() => (nav.canGoBack() ? nav.goBack() : nav.navigate('Tabs'))), [nav]);
+  const close = useMemo(
+    () => once(() => wipe(() => (nav.canGoBack() ? nav.goBack() : nav.navigate('Tabs')))),
+    [nav, wipe],
+  );
   const failed = () => showToast("Couldn't save that. Try again.");
 
   // One action in flight at a time: a double tap on GOT IT, or a slide plus a tap, sends one request.
