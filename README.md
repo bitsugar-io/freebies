@@ -24,10 +24,10 @@ the moment a deal unlocks, with where to claim it and when it ends.
 
 <table align="center">
   <tr>
-    <td align="center" width="25%"><a href="asset/screenshots/won.png"><img src="asset/screenshots/won.png" width="180" alt="Two deals won after Lakers and Rams wins, under a Lakers team-color stripe"></a></td>
-    <td align="center" width="25%"><a href="asset/screenshots/deal.png"><img src="asset/screenshots/deal.png" width="180" alt="A won deal over Rams-color victory rays, with a countdown and how to claim it"></a></td>
-    <td align="center" width="25%"><a href="asset/screenshots/today.png"><img src="asset/screenshots/today.png" width="180" alt="Today: deals anyone can claim now and today's LA games"></a></td>
-    <td align="center" width="25%"><a href="asset/screenshots/teams.png"><img src="asset/screenshots/teams.png" width="180" alt="Basketball teams to follow, in their team colors"></a></td>
+    <td align="center" width="25%"><a href="asset/screenshots/won.png"><img src="asset/screenshots/won.png" height="400" alt="Two deals won after Lakers and Rams wins, under a Lakers team-color stripe"></a></td>
+    <td align="center" width="25%"><a href="asset/screenshots/deal.png"><img src="asset/screenshots/deal.png" height="400" alt="A won deal over Rams-color victory rays, with a countdown and how to claim it"></a></td>
+    <td align="center" width="25%"><a href="asset/screenshots/today.png"><img src="asset/screenshots/today.png" height="400" alt="Today: deals anyone can claim now and today's LA games"></a></td>
+    <td align="center" width="25%"><a href="asset/screenshots/teams.png"><img src="asset/screenshots/teams.png" height="400" alt="Basketball teams to follow, in their team colors"></a></td>
   </tr>
   <tr>
     <td align="center"><sub>Won</sub></td>
