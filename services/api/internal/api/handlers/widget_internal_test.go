@@ -27,10 +27,17 @@ func TestWidgetNewestWinAndCount(t *testing.T) {
 			TriggeredAt: pt(t, "2026-11-16 23:00"), ExpiresAt: pt(t, "2026-11-17 08:00")}, // expired
 	}
 	got := widgetFor(now, wins, nil, true, shortNames)
-	if got.State != "won" || got.Title != "RAMS WON! +1" || got.Line1 != "Free Famous Star" ||
-		got.Line2 != "Carl's Jr. · code works Wed" || got.Inline != "Rams won · Free Famous Star" ||
-		got.Short != "RAMS" || got.URL != "freebie://deal/te-rams" {
+	// Two live wins (the third expired): the count leads, the next deadline is the
+	// Ducks' (today), and the tap opens the WON list.
+	if got.State != "won" || got.Title != "2 WINS!" || got.Count != 2 || got.Short != "×2" ||
+		got.Line1 != "Rams won last" || got.Line2 != "ends 11:59pm · $2 McGriddles" ||
+		got.Inline != "2 wins · next $2 McGriddles" || got.URL != "freebie://won" {
 		t.Errorf("got %+v", got)
+	}
+	one := widgetFor(now, wins[1:2], nil, true, shortNames)
+	if one.Title != "RAMS WON!" || one.Count != 1 || one.Line1 != "Free Famous Star" ||
+		one.Line2 != "Carl's Jr. · code works Wed" || one.Short != "RAMS" || one.URL != "freebie://deal/te-rams" {
+		t.Errorf("one win: %+v", one)
 	}
 	// The next change is 9:30 (the 30-minute cap), before midnight's unlock.
 	if got.RefreshAt != now.Add(widgetMaxWait).UTC().Format(time.RFC3339) {

@@ -1,34 +1,17 @@
 import SwiftUI
+import UIKit
 import WidgetKit
 
 // Freebies lock-screen widget. The API words every line (GET /users/{id}/widget), so copy changes
-// ship without an app release; this file only lays them out. The app shares the API base, user id
-// and token through the App Group (src/widget/sync.ts).
+// ship without an app release; views.swift lays them out in the 8-bit style. The app shares the API
+// base, user id and token through the App Group (src/widget/sync.ts).
 
 private let appGroup = "group.io.bitsugar.freebies"
 private let cacheKey = "widgetLines"
 
-struct WidgetLines: Codable {
-  var state: String
-  var title: String
-  var line1: String
-  var line2: String
-  var inline: String
-  var short: String
-  var url: String
-  var refreshAt: String?
-
-  static let signedOut = WidgetLines(
-    state: "none", title: "FREEBIES", line1: "Open Freebies", line2: "to follow your LA teams",
-    inline: "Freebies · open the app", short: "LA", url: "freebie://teams", refreshAt: nil)
-  static let sample = WidgetLines(
-    state: "won", title: "RAMS WON!", line1: "Free Famous Star", line2: "Carl's Jr. · 5 days left",
-    inline: "Rams won · Free Famous Star", short: "RAMS", url: "freebie://won", refreshAt: nil)
-}
-
 struct LinesEntry: TimelineEntry {
   let date: Date
-  let lines: WidgetLines
+  let lines: Lines
 }
 
 struct Provider: TimelineProvider {
@@ -57,12 +40,12 @@ struct Provider: TimelineProvider {
     }
   }
 
-  private func cached() -> WidgetLines? {
+  private func cached() -> Lines? {
     guard let data = defaults?.data(forKey: cacheKey) else { return nil }
-    return try? JSONDecoder().decode(WidgetLines.self, from: data)
+    return try? JSONDecoder().decode(Lines.self, from: data)
   }
 
-  private func fetch(_ done: @escaping (WidgetLines?) -> Void) {
+  private func fetch(_ done: @escaping (Lines?) -> Void) {
     guard let d = defaults, let base = d.string(forKey: "apiBase"), let user = d.string(forKey: "userId"),
       let token = d.string(forKey: "token"),
       let url = URL(string: "\(base)/users/\(user)/widget")
@@ -71,9 +54,25 @@ struct Provider: TimelineProvider {
     req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     URLSession.shared.dataTask(with: req) { data, resp, _ in
       guard let data, (resp as? HTTPURLResponse)?.statusCode == 200 else { return done(nil) }
-      done(try? JSONDecoder().decode(WidgetLines.self, from: data))
+      done(try? JSONDecoder().decode(Lines.self, from: data))
     }.resume()
   }
+}
+
+/// The pixel trophy as a template image, for the inline widget (it only takes text and an image).
+private func trophyImage() -> UIImage {
+  let rows = Pixels.trophy
+  let px: CGFloat = 1
+  let size = CGSize(width: CGFloat(rows[0].count) * px, height: CGFloat(rows.count) * px)
+  let img = UIGraphicsImageRenderer(size: size).image { ctx in
+    UIColor.white.setFill()
+    for (y, row) in rows.enumerated() {
+      for (x, ch) in row.enumerated() where ch == "X" {
+        ctx.fill(CGRect(x: CGFloat(x) * px, y: CGFloat(y) * px, width: px, height: px))
+      }
+    }
+  }
+  return img.withRenderingMode(.alwaysTemplate)
 }
 
 struct FreebiesWidgetView: View {
@@ -87,36 +86,21 @@ struct FreebiesWidgetView: View {
   }
 
   @ViewBuilder private var content: some View {
-    let l = entry.lines
     switch family {
     case .accessoryInline:
-      Label(l.inline, systemImage: l.state == "won" ? "trophy.fill" : "sportscourt.fill")
+      // iOS sets the inline widget's font; only the text and one image are ours.
+      if entry.lines.state == "won" {
+        Label { Text(entry.lines.inline) } icon: { Image(uiImage: trophyImage()) }
+      } else {
+        Text(entry.lines.inline)
+      }
     case .accessoryCircular:
       ZStack {
         AccessoryWidgetBackground()
-        VStack(spacing: 1) {
-          Image(systemName: l.state == "won" ? "trophy.fill" : "sportscourt.fill")
-            .font(.system(size: 16, weight: .bold))
-            .widgetAccentable()
-          Text(l.short)
-            .font(.system(size: 10, weight: .heavy, design: .rounded))
-            .lineLimit(1)
-            .minimumScaleFactor(0.6)
-        }
-        .padding(4)
+        CircularView(lines: entry.lines).widgetAccentable()
       }
-    default:  // accessoryRectangular
-      VStack(alignment: .leading, spacing: 0) {
-        HStack(spacing: 4) {
-          Image(systemName: l.state == "won" ? "trophy.fill" : "sportscourt.fill")
-          Text(l.title).lineLimit(1).minimumScaleFactor(0.7)
-        }
-        .font(.system(size: 15, weight: .heavy, design: .rounded))
-        .widgetAccentable()
-        Text(l.line1).font(.system(size: 13, weight: .semibold)).lineLimit(1)
-        Text(l.line2).font(.system(size: 12)).lineLimit(1).opacity(0.8)
-      }
-      .frame(maxWidth: .infinity, alignment: .leading)
+    default:
+      RectangularView(lines: entry.lines)
     }
   }
 }
@@ -138,7 +122,7 @@ struct FreebiesWidget: Widget {
       FreebiesWidgetView(entry: entry)
     }
     .configurationDisplayName("Freebies")
-    .description("Your newest win, or today's game with a deal on it.")
+    .description("Your wins, or today's game with a deal on it.")
     .supportedFamilies([.accessoryRectangular, .accessoryInline, .accessoryCircular])
   }
 }
