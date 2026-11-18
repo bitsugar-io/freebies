@@ -5,14 +5,18 @@ import { clockTime } from '../utils/format';
 import { DialogBox } from './pixel/DialogBox';
 import { PixelBox } from './pixel/PixelBox';
 import { PixelButton } from './pixel/PixelButton';
-import { PixelIcon } from './pixel/PixelIcon';
 import { Text } from './pixel/Text';
+import PixelSprite from './PixelSprite';
+import { NO_SIGNAL } from './pixel/art';
 
 /** Full error with nothing to fall back on: plain words, retry, and details for support. */
 export function ErrorPanel({ message, onRetry }: { message?: string | null; onRetry: () => void }) {
   const [details, setDetails] = useState(false);
   return (
     <View style={styles.gap}>
+      <View style={styles.sprite}>
+        <PixelSprite sprite={NO_SIGNAL} scale={5} />
+      </View>
       <DialogBox variant="alert" accessibilityLabel="Couldn't reach Freebies: LA Sports Deals. Check your connection and try again.">
         Couldn't reach Freebies: LA Sports Deals. Check your connection and try again.
       </DialogBox>
@@ -39,7 +43,7 @@ export function StaleBanner({ savedAt, onRetry }: { savedAt: number | null; onRe
   return (
     <PixelBox variant="alert" padding={4} style={styles.banner}>
       <View style={styles.bannerRow}>
-        <PixelIcon name="warn" scale={2} color="danger" />
+        <PixelSprite sprite={NO_SIGNAL} scale={2} />
         <View style={{ flex: 1 }}>
           <Text variant="caption">{`Couldn't refresh.${when}`}</Text>
         </View>
@@ -92,6 +96,7 @@ const styles = StyleSheet.create({
   link: { minHeight: 44, justifyContent: 'center', alignItems: 'center' },
   banner: { marginBottom: 12 },
   bannerRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingLeft: 4 },
+  sprite: { alignItems: 'center', paddingTop: 8 },
   retry: { minHeight: 44, minWidth: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
   empty: { alignItems: 'center', gap: 16, paddingVertical: 32, paddingHorizontal: 8 },
 });

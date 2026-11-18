@@ -350,3 +350,33 @@ export const PLATE: Bitmap = {
   ],
   palette: { K: '#000000', w: '#FCFCFC' },
 };
+
+/**
+ * "No signal": an 8-bit TV full of static, for when the API can't be reached. Bundled (not from the
+ * API) because it shows exactly when the API is down; the offline fallback the server-driven rule
+ * allows (docs/architecture.md).
+ */
+export const NO_SIGNAL: Bitmap & { name: string } = {
+  name: 'No signal',
+  width: 16,
+  height: 16,
+  pixels: [
+    "................",
+    "....a......a....",
+    ".....a....a.....",
+    "......a..a......",
+    ".......aa.......",
+    ".gggggggggggggg.",
+    "gKKKKKKKKKgggggg",
+    "gKwlKwlwKKggoggg",
+    "gKlKwwlKwKgggggg",
+    "gKwwlKwlwKggoggg",
+    "gKKlwlwwlKgggggg",
+    "gKwlwKlwKKggoggg",
+    "gKKKKKKKKKgggggg",
+    ".gggggggggggggg.",
+    "..gg........gg..",
+    "................"
+  ],
+  palette: { K: '#000000', a: '#BCBCBC', g: '#7C7C7C', w: '#FCFCFC', l: '#BCBCBC', o: '#F8B800' },
+};
