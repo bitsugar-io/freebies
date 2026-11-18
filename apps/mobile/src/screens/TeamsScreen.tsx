@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -249,6 +249,13 @@ export function SportsScreen() {
 export function SportTeamsScreen() {
   const nav = useNavigation<NativeStackNavigationProp<TeamsStackParamList & RootStackParamList>>();
   const { sport } = useRoute<RouteProp<TeamsStackParamList, 'Sport'>>().params;
+  // Tapping the TEAMS tab from here goes back to SELECT SPORT behind the tab wipe: a hard cut, not
+  // the native slide-back, which showed SELECT SPORT, slid, then showed it again (docs/ui.md Motion).
+  useEffect(() => {
+    const tabs = nav.getParent();
+    if (!tabs) return;
+    return tabs.addListener('tabPress' as never, () => nav.setOptions({ animation: 'none' }));
+  }, [nav]);
   const showToast = useToast();
   const b = useBoard();
   const [expanded, setExpanded] = useState<string | null>(null);

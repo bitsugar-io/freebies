@@ -72,7 +72,9 @@ export function HudTabBar({ state, navigation }: BottomTabBarProps) {
                 root ? { screen: root } : undefined,
               );
             if (focused) {
-              if (root) go();
+              // Already on this tab: back to its first screen, behind the same wipe as switching tabs.
+              const depth = (route.state as { index?: number } | undefined)?.index ?? 0;
+              if (root && depth > 0) wipe(go);
               return;
             }
             wipe(go);
