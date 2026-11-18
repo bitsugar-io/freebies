@@ -30,6 +30,9 @@ type WidgetResponse struct {
 	Inline string `json:"inline"`
 	// Short fits the small circle: "RAMS", "7PM".
 	Short string `json:"short"`
+	// Count is the number of live, unclaimed wins; the widget draws one pixel
+	// trophy per win (5, then "+N") and "×N" in the circle.
+	Count int `json:"count"`
 	// URL opens the app where the widget points: the deal, TODAY or TEAMS.
 	URL string `json:"url"`
 	// RefreshAt (RFC 3339) is when the lines next change: a code unlocks, a
@@ -142,22 +145,42 @@ func widgetFor(now time.Time, wins []widgetWin, games []TodayGameResponse, follo
 		slices.SortStableFunc(live, func(a, b widgetWin) int { return b.TriggeredAt.Compare(a.TriggeredAt) })
 		win := live[0]
 		team := name(win.TeamID)
-		title := strings.ToUpper(team) + " WON!"
-		if n := len(live) - 1; n > 0 {
-			title += fmt.Sprintf(" +%d", n)
-		}
 		for _, l := range live {
 			due(l.AvailableAt)
 			due(l.ExpiresAt)
 		}
+		if len(live) == 1 {
+			return WidgetResponse{
+				State:     "won",
+				Title:     strings.ToUpper(team) + " WON!",
+				Line1:     win.OfferName,
+				Line2:     win.PartnerName + " · " + winStatus(now, win),
+				Inline:    team + " won · " + win.OfferName,
+				Short:     strings.ToUpper(team),
+				Count:     1,
+				URL:       "freebie://deal/" + win.ID,
+				RefreshAt: refresh.UTC().Format(time.RFC3339),
+			}
+		}
+		// Several wins: the count leads and the last line is the next deadline
+		// (deadline first, so truncation trims the food name, not the time),
+		// the one thing to act on first. Tap opens the WON list.
+		next := live[0]
+		for _, l := range live[1:] {
+			if l.ExpiresAt.Before(next.ExpiresAt) {
+				next = l
+			}
+		}
+		n := len(live)
 		return WidgetResponse{
 			State:     "won",
-			Title:     title,
-			Line1:     win.OfferName,
-			Line2:     win.PartnerName + " · " + winStatus(now, win),
-			Inline:    team + " won · " + win.OfferName,
-			Short:     strings.ToUpper(team),
-			URL:       "freebie://deal/" + win.ID,
+			Title:     fmt.Sprintf("%d WINS!", n),
+			Line1:     team + " won last",
+			Line2:     winStatus(now, next) + " · " + next.OfferName,
+			Inline:    fmt.Sprintf("%d wins · next %s", n, next.OfferName),
+			Short:     fmt.Sprintf("×%d", n),
+			Count:     n,
+			URL:       "freebie://won",
 			RefreshAt: refresh.UTC().Format(time.RFC3339),
 		}
 	}
