@@ -24,34 +24,36 @@ the moment a deal unlocks, with where to claim it and when it ends.
 
 <table align="center">
   <tr>
-    <td align="center" width="50%"><a href="asset/screenshots/won.png"><img src="asset/screenshots/won.png" width="100%" alt="The won screen after an LA team unlocks a deal"></a></td>
-    <td align="center" width="50%"><a href="asset/screenshots/select-sport.png"><img src="asset/screenshots/select-sport.png" width="100%" alt="Choosing a sport from an 8-bit menu"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/won.png"><img src="asset/screenshots/won.png" width="100%" alt="Two deals won after Lakers and Rams wins, under a Lakers team-color stripe"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/deal.png"><img src="asset/screenshots/deal.png" width="100%" alt="A won deal over Rams-color victory rays, with a countdown and how to claim it"></a></td>
   </tr>
   <tr>
     <td align="center"><sub>Won</sub></td>
-    <td align="center"><sub>Select sport</sub></td>
+    <td align="center"><sub>You won</sub></td>
   </tr>
   <tr>
-    <td align="center" width="50%"><a href="asset/screenshots/teams.png"><img src="asset/screenshots/teams.png" width="100%" alt="LA teams to follow"></a></td>
-    <td align="center" width="50%"><a href="asset/screenshots/deal.png"><img src="asset/screenshots/deal.png" width="100%" alt="An unlocked deal with where to claim it and when it ends"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/today.png"><img src="asset/screenshots/today.png" width="100%" alt="Today: deals anyone can claim now and today's LA games"></a></td>
+    <td align="center" width="50%"><a href="asset/screenshots/teams.png"><img src="asset/screenshots/teams.png" width="100%" alt="Basketball teams to follow, in their team colors"></a></td>
   </tr>
   <tr>
+    <td align="center"><sub>Today</sub></td>
     <td align="center"><sub>Teams</sub></td>
-    <td align="center"><sub>Deal unlocked</sub></td>
   </tr>
 </table>
 
 ## Features
 
-| Feature              | What it does                                                                                   |
-| -------------------- | ---------------------------------------------------------------------------------------------- |
-| LA teams only        | Follow LA and Orange County teams; every deal is tied to one of them.                          |
-| Game-triggered deals | A Ducks home win, 7+ Dodgers strikeouts or 5+ Angels runs at home unlocks food from a sponsor. |
-| Push alerts          | A notification arrives when a deal unlocks, with where to claim it and when it ends.           |
-| Verified deals       | A deal goes live only after it is checked on the sponsor's or team's own page.                 |
-| Pause alerts         | Mute pushes for a while without unfollowing your teams.                                        |
-| 8-bit look           | Pixel sprites and a retro palette, built for touch, screen readers and reduced motion.         |
-| Server-driven        | New deals, teams, seasons and sprites reach the app from the API, without an app release.      |
+| Feature              | What it does                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| LA teams only        | Follow LA and Orange County teams; every deal is tied to one of them.                         |
+| Game-triggered deals | A Lakers win, a Rams interception or a Kings goal in the last minute of the 2nd unlocks food. |
+| Push alerts          | A notification arrives when a deal unlocks, with where to claim it and when it ends.          |
+| Today                | Deals anyone can claim right now, and today's LA games with the deal riding on each.          |
+| Lock-screen widget   | Your newest win, or today's game with a deal on it, on the lock screen. It refreshes itself.  |
+| Verified deals       | A deal goes live only after it is checked on the sponsor's or team's own page.                |
+| Pause alerts         | Mute pushes for a while without unfollowing your teams.                                       |
+| 8-bit look           | Pixel sprites and a retro palette, built for touch, screen readers and reduced motion.        |
+| Server-driven        | New deals, teams, seasons and sprites reach the app from the API, without an app release.     |
 
 Freebies: LA Sports Deals is not affiliated with, endorsed by or sponsored by any team, league,
 school or restaurant.

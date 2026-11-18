@@ -38,31 +38,13 @@ export function DealBar({ value, cells = 12, tone = 'success', accessibilityLabe
 
 const MS_HOUR = 3_600_000;
 
+import { formatTimeLeft, spokenTimeLeft } from '../../utils/timeLeft';
+
+export { formatTimeLeft, spokenTimeLeft };
+
 export function timeLeftMs(expiresAt: string | undefined, now = serverNow()): number | null {
   if (!expiresAt) return null;
   return new Date(expiresAt).getTime() - now;
-}
-
-/** "3h 28m left", "12m left", "2 days left". */
-export function formatTimeLeft(ms: number): string {
-  if (ms <= 0) return 'Expired';
-  const hours = Math.floor(ms / MS_HOUR);
-  const minutes = Math.floor((ms % MS_HOUR) / 60_000);
-  if (hours >= 48) return `${Math.floor(hours / 24)} days left`;
-  if (hours > 0) return `${hours}h ${minutes}m left`;
-  return `${Math.max(1, minutes)}m left`;
-}
-
-/** Spoken form: "3 hours 28 minutes left". */
-export function spokenTimeLeft(ms: number): string {
-  if (ms <= 0) return 'Expired';
-  const hours = Math.floor(ms / MS_HOUR);
-  const minutes = Math.floor((ms % MS_HOUR) / 60_000);
-  const parts: string[] = [];
-  if (hours >= 48) return `${Math.floor(hours / 24)} days left`;
-  if (hours > 0) parts.push(`${hours} ${hours === 1 ? 'hour' : 'hours'}`);
-  parts.push(`${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`);
-  return `${parts.join(' ')} left`;
 }
 
 export function isUrgent(ms: number | null, hours = 6): boolean {

@@ -24,3 +24,18 @@ describe('deadlineLabel', () => {
     expect(deadlineLabel('2026-11-23T07:59:59Z', MON_3PM)).toBe('Sun Nov 22, 11:59pm PT');
   });
 });
+
+import { formatTimeLeft, spokenTimeLeft } from './timeLeft';
+
+describe('formatTimeLeft', () => {
+  const H = 3_600_000;
+  test('between one and two days reads as a day and hours, not 31h', () => {
+    expect(formatTimeLeft(31 * H + 47 * 60_000)).toBe('1 day 7h left');
+    expect(spokenTimeLeft(31 * H)).toBe('1 day 7 hours left');
+  });
+  test('other ranges are unchanged', () => {
+    expect(formatTimeLeft(7 * H + 47 * 60_000)).toBe('7h 47m left');
+    expect(formatTimeLeft(50 * H)).toBe('2 days left');
+    expect(formatTimeLeft(5 * 60_000)).toBe('5m left');
+  });
+});
