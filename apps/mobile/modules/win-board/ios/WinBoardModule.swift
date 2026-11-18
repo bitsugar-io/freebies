@@ -5,6 +5,9 @@ import Foundation
 /// Starts, updates and ends the Win Board Live Activity from JS (src/widget/winBoard.ts). One card
 /// at a time: a new state updates the running card instead of starting another.
 public class WinBoardModule: Module {
+  /// Whether this app launch has synced the card yet (see the first-sync rule in `sync`).
+  static var syncedThisLaunch = false
+
   public func definition() -> ModuleDefinition {
     Name("WinBoard")
 
@@ -30,6 +33,16 @@ public class WinBoardModule: Module {
       }
       let stale = staleAt > 0 ? Date(timeIntervalSince1970: staleAt / 1000) : nil
       let content = ActivityContent(state: state, staleDate: stale)
+      // The first sync after a launch replaces any running card instead of updating it: a card
+      // started by an older build may hold data in an older shape, which the widget can't draw.
+      if !WinBoardModule.syncedThisLaunch {
+        WinBoardModule.syncedThisLaunch = true
+        for activity in running {
+          await activity.end(nil, dismissalPolicy: .immediate)
+        }
+        _ = try? Activity.request(attributes: WinBoardAttributes(), content: content, pushType: nil)
+        return
+      }
       if let current = running.first {
         await current.update(content)
         // Only one card: end any extras left from an older build.
