@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
@@ -19,6 +19,8 @@ import { MaintenanceScreen } from './src/screens/MaintenanceScreen';
 import { HudTabBar } from './src/components/pixel/HudTabBar';
 import { ScreenWipeProvider } from './src/components/pixel/ScreenWipe';
 import { VictoryCutInHost } from './src/components/pixel/VictoryCutIn';
+import { LaunchRays } from './src/components/pixel/LaunchRays';
+import { useReducedMotion } from './src/hooks/useReducedMotion';
 import { PauseScreen } from './src/screens/PauseScreen';
 import { ToastProvider } from './src/components/pixel/Toast';
 import { UserProvider } from './src/hooks/useUser';
@@ -179,34 +181,55 @@ function Gate() {
   }, []);
 
   const ready = timedOut || ((fontsLoaded || !!fontError) && !userLoading && !dealsLoading && !subsLoading && !eventsLoading);
+  // Once ready, the launch rays take over from the native still (docs/ui.md Motion); the still is
+  // hidden when their art has drawn. Under Reduce Motion the app shows straight away.
+  const reduced = useReducedMotion();
+  const [launchDone, setLaunchDone] = useState(false);
+  const hideSplash = useCallback(() => {
+    SplashScreen.hideAsync().catch(() => {});
+  }, []);
+  const finishLaunch = useCallback(() => setLaunchDone(true), []);
+  const launching = ready && !reduced && !launchDone;
   useEffect(() => {
-    if (ready) SplashScreen.hideAsync().catch(() => {});
-  }, [ready]);
+    if (ready && !launching) hideSplash();
+  }, [ready, launching, hideSplash]);
 
   if (!ready) return null;
-  if (config.features.maintenance_mode === true) return <MaintenanceScreen />;
+  const rays = launching ? <LaunchRays onReady={hideSplash} onDone={finishLaunch} /> : null;
+  if (config.features.maintenance_mode === true) {
+    return (
+      <>
+        <MaintenanceScreen />
+        {rays}
+      </>
+    );
+  }
 
   return (
-    <NavigationContainer ref={navigationRef} linking={linking} theme={navTheme}>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}
-      >
-        <Stack.Screen name="Tabs" component={Tabs} />
-        {/* No iOS slides anywhere (docs/ui.md Motion): deals and alerts open as a hard cut, like PAUSE. */}
-        <Stack.Screen name="Deal" component={DealScreen} options={{ presentation: 'fullScreenModal', animation: 'none' }} />
-        <Stack.Screen name="Alerts" component={AlertsScreen} options={{ presentation: 'fullScreenModal', animation: 'none' }} />
-        <Stack.Screen
-          name="Pause"
-          component={PauseScreen}
-          options={{
-            presentation: 'transparentModal',
-            animation: 'none',
-            contentStyle: { backgroundColor: colors.background },
-          }}
-        />
-      </Stack.Navigator>
-      <VictoryCutInHost />
-    </NavigationContainer>
+    <>
+      <NavigationContainer ref={navigationRef} linking={linking} theme={navTheme}>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}
+        >
+          <Stack.Screen name="Tabs" component={Tabs} />
+          {/* No iOS slides anywhere (docs/ui.md Motion): deals and alerts open as a hard cut, like PAUSE. */}
+          <Stack.Screen name="Deal" component={DealScreen} options={{ presentation: 'fullScreenModal', animation: 'none' }} />
+          <Stack.Screen name="Alerts" component={AlertsScreen} options={{ presentation: 'fullScreenModal', animation: 'none' }} />
+          <Stack.Screen
+            name="Pause"
+            component={PauseScreen}
+            options={{
+              presentation: 'transparentModal',
+              animation: 'none',
+              contentStyle: { backgroundColor: colors.background },
+            }}
+          />
+        </Stack.Navigator>
+        {/* After the launch rays, so a win's cut-in isn't hidden under them. */}
+        {launching ? null : <VictoryCutInHost />}
+      </NavigationContainer>
+      {rays}
+    </>
   );
 }
 
