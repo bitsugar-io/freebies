@@ -12,9 +12,12 @@
   "event-mlb-sd-jitb": "burger",
   "event-mlb-sd-mcdonalds": "fries",
   "event-mls-lafc-chickfila": "chicken-sandwich",
+  "event-mls-lag-norms": "pancakes",
   "event-nba-lac-chickfila": "chicken-sandwich",
+  "event-nfl-lach-firehouse": "sub",
   "event-nfl-lar-carlsjr": "burger",
   "event-nhl-ana-chickfila": "chicken-sandwich",
+  "event-nhl-lak-mcdonalds": "soft-serve",
   "event-test-smoke": "pizza"
  },
  "sprites": {
@@ -267,6 +270,35 @@
     "................"
    ]
   },
+  "pancakes": {
+   "name": "Pancakes",
+   "palette": {
+    "K": "#000000",
+    "b": "#FCA044",
+    "d": "#E45C10",
+    "h": "#FCFCFC",
+    "s": "#AC7C00",
+    "y": "#F8D878"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "......KKKK......",
+    ".....KhyyyK.....",
+    "..KKKKKKKKKKKK..",
+    ".KbbbbbbbbbbbbK.",
+    "KdsddddsddddsdK.",
+    ".KbbbbbbbbbbbbK.",
+    "KddddddddddddddK",
+    ".KbbbbbbbbbbbbK.",
+    "KddddddddddddddK",
+    ".KKKKKKKKKKKKKK.",
+    "................",
+    "................",
+    "................"
+   ]
+  },
   "pizza": {
    "name": "Pizza slice",
    "palette": {
@@ -321,6 +353,35 @@
     "................",
     "................",
     "................"
+   ]
+  },
+  "soft-serve": {
+   "name": "Soft serve",
+   "palette": {
+    "B": "#0058F8",
+    "K": "#000000",
+    "b": "#0078F8",
+    "c": "#881400",
+    "l": "#BCBCBC",
+    "w": "#FCFCFC"
+   },
+   "pixels": [
+    "................",
+    "..........KK....",
+    ".........KlK....",
+    "....KKKKKlKK....",
+    "...KwwcwwlwwK...",
+    "..KwwwwcwlcwwK..",
+    "..KwcwwwwwwcwK..",
+    "..KKKKKKKKKKKK..",
+    "...KwwwwwwwwK...",
+    "...KbbbbbbbbK...",
+    "...KBBBBBBBBK...",
+    "....KbbbbbbK....",
+    "....KwwwwwwK....",
+    "....KlwwwwlK....",
+    ".....KlwwlK.....",
+    ".....KKKKKK....."
    ]
   },
   "sport-baseball": {
@@ -483,6 +544,36 @@
     "KooooooooooooooK",
     ".KllllllllllllK.",
     "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+    "................"
+   ]
+  },
+  "sub": {
+   "name": "Sub",
+   "palette": {
+    "K": "#000000",
+    "b": "#FCA044",
+    "g": "#00A800",
+    "h": "#F8D878",
+    "m": "#881400",
+    "r": "#F83800",
+    "y": "#F8B800"
+   },
+   "pixels": [
+    "................",
+    "................",
+    "................",
+    "................",
+    "...KKKKKKKKKK...",
+    "..KhhbbbbbbbbK..",
+    ".KhbbbbbbbbbbbK.",
+    "KggggggggggggggK",
+    "KrrmrrmrrmrrmrrK",
+    "KyyyyyyyyyyyyyyK",
+    ".KbbbbbbbbbbbbK.",
+    "..KKKKKKKKKKKK..",
+    "................",
     "................",
     "................",
     "................"
