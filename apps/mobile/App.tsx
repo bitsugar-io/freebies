@@ -18,6 +18,7 @@ import { AlertsScreen } from './src/screens/AlertsScreen';
 import { MaintenanceScreen } from './src/screens/MaintenanceScreen';
 import { HudTabBar } from './src/components/pixel/HudTabBar';
 import { ScreenWipeProvider } from './src/components/pixel/ScreenWipe';
+import { VictoryCutInHost } from './src/components/pixel/VictoryCutIn';
 import { PauseScreen } from './src/screens/PauseScreen';
 import { ToastProvider } from './src/components/pixel/Toast';
 import { UserProvider } from './src/hooks/useUser';
@@ -204,6 +205,7 @@ function Gate() {
           }}
         />
       </Stack.Navigator>
+      <VictoryCutInHost />
     </NavigationContainer>
   );
 }
