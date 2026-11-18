@@ -289,19 +289,23 @@ layouts in `views.swift`) only lays them out.
 ### Win Board (Live Activity)
 
 One full-color Live Activity for every live win, never one per win (`targets/widget/winboard.swift`;
-the app drives it through `modules/win-board`, content from `src/widget/winBoardState.ts`). It may
-use color, so it carries the app's look: a black panel, the team stripe on top (each winning team's
-primary color), Press Start 2P, and the deals' own sprites.
+the app drives it through `modules/win-board`, content from `src/widget/winBoardState.ts`). Owner's
+pick (2026-11-17): **no words, just the food and its countdown.** A black panel, the team stripe on
+top (each winning team's primary color), the deals' own sprites, Press Start 2P.
 
-- **One win:** the sprite, "RAMS WON!" in gold, the offer, then the partner and deadline in lilac.
-  Tap opens the deal.
-- **Several wins:** "4 WINS!" and a gold trophy, up to 4 sprites on two-color team ticks ("+N" after
-  that), and the next deadline. Tap opens WON.
-- **Dynamic Island:** compact shows the gold trophy and "×4"; minimal shows the trophy; expanded
-  shows the newest sprite, the title, the count and the deadline.
-- The app starts or updates it whenever it has fresh live wins and ends it when none are left
-  (claimed or expired); iOS marks it stale at the next deadline. A server push-to-start, so it
-  appears at 7am without opening the app, needs an APNs key and is not built yet.
+- **One win:** the meal, "LAKERS WON!" in gold, and a big countdown. Tap opens the deal.
+- **Several wins:** "3 WINS!" and a gold trophy, then the **3 that end soonest**, each centered in
+  its column with its own countdown underneath, then "+N MORE" in lilac. Each meal opens its own
+  deal; the rest of the card opens WON. No names and no team ticks: the sprite says what, the stripe
+  says who.
+- **The countdown:** "1D 06H" over a day; under a day a live H:MM:SS that iOS ticks on the lock
+  screen by itself; red under an hour; "STARTS 10AM" (two lines, lilac) for a deal not usable yet.
+- **Dynamic Island:** compact shows the gold trophy and the soonest countdown; expanded shows that
+  meal, the title, the count and its countdown.
+- The app starts or updates it whenever it has fresh live wins and ends it when none are left; iOS
+  marks it stale at the soonest deadline. A server push-to-start, so it appears at 7am without
+  opening the app, needs an APNs key and is not built yet.
+- Every deal needs its own sprite (the `gift` box is only a placeholder).
 
 ## Motion
 
