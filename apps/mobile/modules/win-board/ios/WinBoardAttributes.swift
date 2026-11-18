@@ -12,20 +12,22 @@ public struct WinBoardAttributes: ActivityAttributes {
     public var pal: [String: String]
   }
 
-  public struct Win: Codable, Hashable {
+  /// One meal on the card. Times are seconds since the epoch; startsAt 0 means it can be used now.
+  public struct Meal: Codable, Hashable {
+    public var url: String
     public var sprite: Sprite?
-    public var primary: String
-    public var secondary: String
+    public var startsAt: Double
+    public var startsLabel: String
+    public var endsAt: Double
   }
 
   public struct ContentState: Codable, Hashable {
     public var title: String
-    public var offer: String
-    public var sub: String
-    public var detail: String
     public var count: Int
+    /// Wins not on the card ("+N MORE").
+    public var more: Int
     public var stripe: [String]
-    public var wins: [Win]
+    public var meals: [Meal]
     public var url: String
   }
 

@@ -17,20 +17,22 @@ public struct WinBoardAttributes: ActivityAttributes {
     public var pal: [String: String]
   }
 
-  public struct Win: Codable, Hashable {
+  /// One meal on the card. Times are seconds since the epoch; startsAt 0 means it can be used now.
+  public struct Meal: Codable, Hashable {
+    public var url: String
     public var sprite: Sprite?
-    public var primary: String
-    public var secondary: String
+    public var startsAt: Double
+    public var startsLabel: String
+    public var endsAt: Double
   }
 
   public struct ContentState: Codable, Hashable {
     public var title: String
-    public var offer: String
-    public var sub: String
-    public var detail: String
     public var count: Int
+    /// Wins not on the card ("+N MORE").
+    public var more: Int
     public var stripe: [String]
-    public var wins: [Win]
+    public var meals: [Meal]
     public var url: String
   }
 
@@ -86,44 +88,59 @@ struct Stripe: View {
   }
 }
 
-/// A sprite on its team's two-color tick, like the mockup's shelf.
-struct WinSlot: View {
-  let win: WinBoardAttributes.Win
+private let red = Color(hex: "#F83800")
+
+/// A meal's time left: "STARTS 10AM" before it can be used, "1D 06H" over a day, then a live
+/// H:MM:SS countdown that iOS ticks on the lock screen by itself (red under an hour).
+struct MealClock: View {
+  let meal: WinBoardAttributes.Meal
+  let size: CGFloat
+
   var body: some View {
-    VStack(spacing: 3) {
-      SpriteArt(sprite: win.sprite, pixel: 3)
-      HStack(spacing: 0) {
-        Color(hex: win.primary)
-        Color(hex: win.secondary)
+    let now = Date()
+    let end = Date(timeIntervalSince1970: meal.endsAt)
+    let left = end.timeIntervalSince(now)
+    Group {
+      if meal.startsAt > now.timeIntervalSince1970 {
+        Text("STARTS\n\(meal.startsLabel)")
+          .font(pixelFont(size * 0.8))
+          .foregroundStyle(lilac)
+          .lineSpacing(4)
+      } else if left >= 86_400 {
+        let h = Int(left) / 3600
+        Text("\(h / 24)D \(String(format: "%02d", h % 24))H")
+          .font(pixelFont(size))
+          .foregroundStyle(.white)
+      } else if left > 0 {
+        Text(timerInterval: now...end, countsDown: true)
+          .font(pixelFont(size))
+          .foregroundStyle(left < 3600 ? red : .white)
+      } else {
+        Text("ENDED").font(pixelFont(size * 0.8)).foregroundStyle(Color(white: 0.5))
       }
-      .frame(width: 36, height: 5)
+    }
+    .multilineTextAlignment(.center)
+    .monospacedDigit()
+  }
+}
+
+/// One meal with its clock, centered in its column; tapping it opens that deal.
+struct MealSlot: View {
+  let meal: WinBoardAttributes.Meal
+  var body: some View {
+    Link(destination: URL(string: meal.url) ?? URL(string: "freebie://won")!) {
+      VStack(spacing: 8) {
+        SpriteArt(sprite: meal.sprite, pixel: 3)
+        MealClock(meal: meal, size: 10)
+      }
+      .frame(maxWidth: .infinity)
     }
   }
 }
 
-/// The text block under the headline: offer (white), restaurant (grey), deadline (pixel, lilac).
-/// One job per line, so nothing wraps into the next.
-struct WinBoardLines: View {
-  let state: WinBoardAttributes.ContentState
-  var body: some View {
-    VStack(alignment: .leading, spacing: 3) {
-      if !state.offer.isEmpty {
-        Text(state.offer).font(.system(size: 15, weight: .semibold)).foregroundStyle(.white)
-          .lineLimit(1)
-      }
-      if !state.sub.isEmpty {
-        Text(state.sub).font(.system(size: 13)).foregroundStyle(Color(white: 0.7)).lineLimit(1)
-      }
-      if !state.detail.isEmpty {
-        Text(state.detail).font(pixelFont(9)).foregroundStyle(lilac).lineLimit(1)
-          .minimumScaleFactor(0.8)
-          .padding(.top, 4)
-      }
-    }
-  }
-}
-
-/// The lock-screen card: 1 win (the deal is the hero) or several (one card, sprites on ticks).
+/// The lock-screen card (owner's pick, 2026-11-17): no words, just the food and its countdown.
+/// One win: the meal, who won and a big clock. Several: the 3 that end soonest with their clocks,
+/// then "+N MORE".
 struct WinBoardLockView: View {
   let state: WinBoardAttributes.ContentState
 
@@ -131,34 +148,35 @@ struct WinBoardLockView: View {
     VStack(alignment: .leading, spacing: 0) {
       Stripe(colors: state.stripe)
       Group {
-        if state.count <= 1, let win = state.wins.first {
-          HStack(alignment: .center, spacing: 14) {
-            SpriteArt(sprite: win.sprite, pixel: 4)
-            VStack(alignment: .leading, spacing: 8) {
-              Text(state.title).font(pixelFont(13)).foregroundStyle(gold).lineLimit(1)
+        if state.count <= 1, let meal = state.meals.first {
+          HStack(spacing: 16) {
+            SpriteArt(sprite: meal.sprite, pixel: 5)
+            VStack(alignment: .leading, spacing: 16) {
+              Text(state.title).font(pixelFont(12)).foregroundStyle(gold).lineLimit(1)
                 .minimumScaleFactor(0.7)
-              WinBoardLines(state: state)
+              MealClock(meal: meal, size: 20)
             }
           }
         } else {
-          VStack(alignment: .leading, spacing: 10) {
+          VStack(alignment: .leading, spacing: 16) {
             HStack {
-              Text(state.title).font(pixelFont(13)).foregroundStyle(gold)
+              Text(state.title).font(pixelFont(12)).foregroundStyle(gold)
               Spacer()
               PixelArt(rows: Pixels.trophy, pixel: 2).foregroundStyle(gold)
             }
-            HStack(alignment: .bottom, spacing: 8) {
-              ForEach(Array(state.wins.prefix(4).enumerated()), id: \.offset) { _, w in WinSlot(win: w) }
-              if state.count > 4 {
-                Text("+\(state.count - 4)").font(pixelFont(10)).foregroundStyle(.white)
+            HStack(alignment: .top, spacing: 8) {
+              ForEach(Array(state.meals.prefix(3).enumerated()), id: \.offset) { _, m in MealSlot(meal: m) }
+              if state.more > 0 {
+                Text("+\(state.more)\nMORE")
+                  .font(pixelFont(10)).foregroundStyle(lilac)
+                  .multilineTextAlignment(.center).lineSpacing(4)
+                  .frame(maxWidth: .infinity, minHeight: 48)
               }
             }
-            WinBoardLines(state: state)
           }
         }
       }
-      .padding(.horizontal, 16)
-      .padding(.vertical, 14)
+      .padding(16)
     }
     .background(Color.black)
     .widgetURL(URL(string: state.url))
@@ -175,7 +193,7 @@ struct WinBoardLiveActivity: Widget {
       let s = context.state
       return DynamicIsland {
         DynamicIslandExpandedRegion(.leading) {
-          SpriteArt(sprite: s.wins.first?.sprite, pixel: 3)
+          SpriteArt(sprite: s.meals.first?.sprite, pixel: 3)
         }
         DynamicIslandExpandedRegion(.center) {
           Text(s.title).font(pixelFont(12)).foregroundStyle(gold).lineLimit(1)
@@ -184,12 +202,12 @@ struct WinBoardLiveActivity: Widget {
           Text("×\(s.count)").font(pixelFont(12)).foregroundStyle(.white)
         }
         DynamicIslandExpandedRegion(.bottom) {
-          WinBoardLines(state: s)
+          if let m = s.meals.first { MealClock(meal: m, size: 14) }
         }
       } compactLeading: {
         PixelArt(rows: Pixels.trophy, pixel: 1.6).foregroundStyle(gold)
       } compactTrailing: {
-        Text("×\(s.count)").font(pixelFont(10)).foregroundStyle(gold)
+        if let m = s.meals.first { MealClock(meal: m, size: 9).frame(maxWidth: 64) }
       } minimal: {
         PixelArt(rows: Pixels.trophy, pixel: 1.6).foregroundStyle(gold)
       }
