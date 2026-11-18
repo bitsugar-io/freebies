@@ -292,6 +292,12 @@ layouts in `views.swift`) only lays them out.
   springs, no tweened transforms, no parallax.
 - Buttons, cursor moves and toggles are instant (0 frames).
 - Cut-ins last at most 2 seconds (120 frames) and auto-advance.
+- **Victory cut-in** (`VictoryCutIn.tsx`, timing in `utils/cutin.ts`): the first time the app has
+  fresh data with a win not yet celebrated (remembered on the device). One win: a team-color flash,
+  team-color rays, the deal's sprite dropping in 4 steps, "RAMS WON!" typing out, then the deal.
+  Several: one "N WINS!" over dark rays with the sprites stacking on a shelf (8 at most), then WON.
+  Never one cut-in per win. A tap skips it; Reduce Motion skips it entirely; screen readers hear
+  "Rams won! Free Famous Star".
 - Blinks run at 1 Hz or 2 Hz. Nothing flashes more than 3 times per second, and nothing simulates
   sprite flicker.
 - Every screen change plays the same stepped black wipe (8 steps, about 240ms): switching tabs,
