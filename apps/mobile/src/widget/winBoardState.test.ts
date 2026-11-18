@@ -23,7 +23,8 @@ describe('winBoardState', () => {
     const s = winBoardState([win('te1', 'LAR', 'Free Famous Star', "Carl's Jr.", '2026-11-17T15:00:00Z', '2026-11-18T07:59:59Z')], teams, now)!;
     expect(s.title).toBe('RAMS WON!');
     expect(s.offer).toBe('Free Famous Star');
-    expect(s.detail).toBe("CARL'S JR. · ENDS 11:59PM PT");
+    expect(s.sub).toBe("Carl's Jr.");
+    expect(s.detail).toBe('ENDS 11:59PM PT');
     expect(s.stripe).toEqual(['#003594', '#FFA300']);
     expect(s.url).toBe('freebie://deal/te1');
     expect(s.wins[0].sprite?.px).toEqual(['ab']);
@@ -40,7 +41,9 @@ describe('winBoardState', () => {
     )!;
     expect(s.title).toBe('2 WINS!');
     expect(s.count).toBe(2);
-    expect(s.detail).toBe('NEXT: 2 FREE TACOS · ENDS 11:59PM PT');
+    expect(s.offer).toBe('Next: 2 free tacos');
+    expect(s.sub).toBe('Jack in the Box');
+    expect(s.detail).toBe('ENDS 11:59PM PT');
     expect(s.stripe).toEqual(['#552583', '#003594']); // newest first
     expect(s.url).toBe('freebie://won');
     expect(s.staleAt).toBe(Date.parse('2026-11-18T07:59:59Z'));

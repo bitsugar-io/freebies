@@ -21,6 +21,7 @@ public struct WinBoardAttributes: ActivityAttributes {
   public struct ContentState: Codable, Hashable {
     public var title: String
     public var offer: String
+    public var sub: String
     public var detail: String
     public var count: Int
     public var stripe: [String]

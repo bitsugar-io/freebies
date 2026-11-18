@@ -26,6 +26,7 @@ public struct WinBoardAttributes: ActivityAttributes {
   public struct ContentState: Codable, Hashable {
     public var title: String
     public var offer: String
+    public var sub: String
     public var detail: String
     public var count: Int
     public var stripe: [String]
@@ -100,6 +101,28 @@ struct WinSlot: View {
   }
 }
 
+/// The text block under the headline: offer (white), restaurant (grey), deadline (pixel, lilac).
+/// One job per line, so nothing wraps into the next.
+struct WinBoardLines: View {
+  let state: WinBoardAttributes.ContentState
+  var body: some View {
+    VStack(alignment: .leading, spacing: 3) {
+      if !state.offer.isEmpty {
+        Text(state.offer).font(.system(size: 15, weight: .semibold)).foregroundStyle(.white)
+          .lineLimit(1)
+      }
+      if !state.sub.isEmpty {
+        Text(state.sub).font(.system(size: 13)).foregroundStyle(Color(white: 0.7)).lineLimit(1)
+      }
+      if !state.detail.isEmpty {
+        Text(state.detail).font(pixelFont(9)).foregroundStyle(lilac).lineLimit(1)
+          .minimumScaleFactor(0.8)
+          .padding(.top, 4)
+      }
+    }
+  }
+}
+
 /// The lock-screen card: 1 win (the deal is the hero) or several (one card, sprites on ticks).
 struct WinBoardLockView: View {
   let state: WinBoardAttributes.ContentState
@@ -109,34 +132,33 @@ struct WinBoardLockView: View {
       Stripe(colors: state.stripe)
       Group {
         if state.count <= 1, let win = state.wins.first {
-          HStack(spacing: 12) {
+          HStack(alignment: .center, spacing: 14) {
             SpriteArt(sprite: win.sprite, pixel: 4)
-            VStack(alignment: .leading, spacing: 6) {
-              Text(state.title).font(pixelFont(12)).foregroundStyle(gold).lineLimit(1)
-              Text(state.offer).font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
-                .lineLimit(1)
-              Text(state.detail).font(pixelFont(8)).foregroundStyle(lilac).lineLimit(2)
+            VStack(alignment: .leading, spacing: 8) {
+              Text(state.title).font(pixelFont(13)).foregroundStyle(gold).lineLimit(1)
+                .minimumScaleFactor(0.7)
+              WinBoardLines(state: state)
             }
           }
         } else {
-          VStack(alignment: .leading, spacing: 8) {
+          VStack(alignment: .leading, spacing: 10) {
             HStack {
-              Text(state.title).font(pixelFont(12)).foregroundStyle(gold)
+              Text(state.title).font(pixelFont(13)).foregroundStyle(gold)
               Spacer()
               PixelArt(rows: Pixels.trophy, pixel: 2).foregroundStyle(gold)
             }
-            HStack(alignment: .bottom, spacing: 6) {
+            HStack(alignment: .bottom, spacing: 8) {
               ForEach(Array(state.wins.prefix(4).enumerated()), id: \.offset) { _, w in WinSlot(win: w) }
               if state.count > 4 {
                 Text("+\(state.count - 4)").font(pixelFont(10)).foregroundStyle(.white)
               }
             }
-            Text(state.detail).font(pixelFont(8)).foregroundStyle(lilac).lineLimit(2)
+            WinBoardLines(state: state)
           }
         }
       }
-      .padding(.horizontal, 14)
-      .padding(.vertical, 12)
+      .padding(.horizontal, 16)
+      .padding(.vertical, 14)
     }
     .background(Color.black)
     .widgetURL(URL(string: state.url))
@@ -162,8 +184,7 @@ struct WinBoardLiveActivity: Widget {
           Text("×\(s.count)").font(pixelFont(12)).foregroundStyle(.white)
         }
         DynamicIslandExpandedRegion(.bottom) {
-          Text(s.count <= 1 ? "\(s.offer) · \(s.detail)" : s.detail)
-            .font(pixelFont(8)).foregroundStyle(lilac).lineLimit(2)
+          WinBoardLines(state: s)
         }
       } compactLeading: {
         PixelArt(rows: Pixels.trophy, pixel: 1.6).foregroundStyle(gold)
