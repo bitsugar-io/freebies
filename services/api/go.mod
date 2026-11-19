@@ -5,7 +5,7 @@ go 1.27.3
 require (
 	github.com/aws/aws-sdk-go-v2 v1.48.0
 	github.com/aws/aws-sdk-go-v2/config v1.33.18
-	github.com/aws/aws-sdk-go-v2/service/pinpoint v1.48.11
+	github.com/aws/aws-sdk-go-v2/service/pinpoint v1.48.12
 	github.com/go-chi/chi/v5 v5.5.0
 	github.com/go-chi/cors v1.2.2
 	github.com/google/uuid v1.6.0
