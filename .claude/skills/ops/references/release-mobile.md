@@ -87,7 +87,8 @@ APP-STORE.md lists the six shots, their order and captions. To capture:
 1. Run a `development` or `preview` build on a 6.9" simulator (iPhone Pro Max, 1320×2868).
 2. Load real, verified LA deals: the API with current data, and a triggered deal for the unlocked
    and claim shots (`deals trigger`, see [local-dev.md](local-dev.md)).
-3. `xcrun simctl io booted screenshot apps/mobile/assets/screenshots/01-unlocked.png`, and so on.
+3. `xcrun simctl io booted screenshot apps/mobile/assets/screenshots/6.9-inch/01-unlocked.png`, and
+   so on; then `apps/mobile/assets/screenshots/resize.sh` makes the 6.5" and 6.3" sets.
 4. Check every shot against `docs/ui.md`: no team logos, and no "NES" or "Nintendo".
 
 ## EAS Update (over-the-air)

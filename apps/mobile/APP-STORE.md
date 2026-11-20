@@ -33,8 +33,10 @@ Open it from the left sidebar under **iOS App**. The fields below are in page or
 
 ### Previews and Screenshots
 
-Upload the six PNGs listed in [Screenshots](#screenshots) to the **6.9" Display** slot. App Store
-Connect scales them for smaller iPhones.
+Upload the six PNGs listed in [Screenshots](#screenshots), in order, one set per display slot:
+`assets/screenshots/6.9-inch/` to **6.9" Display**, `6.5-inch/` to **6.5" Display** and `6.3-inch/`
+to **6.1"/6.3" Display**. Each slot only accepts its own size ("File dimensions are invalid"
+otherwise).
 
 ### What's New in This Version
 
@@ -276,9 +278,10 @@ still match; nothing new is collected in 2.0.
 
 ## Screenshots
 
-Capture on a 6.9" iPhone (1320×2868). App Store Connect scales them for smaller devices. Use real,
-verified LA deals on screen. No team logos, and no "NES" or "Nintendo" anywhere, including captions.
-See [`assets/screenshots/README.md`](assets/screenshots/README.md) for capture steps.
+Capture on a 6.9" iPhone (1320×2868) into `assets/screenshots/6.9-inch/`, then run
+`assets/screenshots/resize.sh` for the 6.5" and 6.3" sets. Use real, verified LA deals on screen. No
+team logos, and no "NES" or "Nintendo" anywhere, including captions. See
+[`assets/screenshots/README.md`](assets/screenshots/README.md) for capture steps.
 
 Captions are set in Press Start 2P on `bg.night`, at most 6 words, sentence case. The shot list
 changed on 2026-11-17 for what 2.0 shipped: TODAY and the Win Board replace the trophy case and the
