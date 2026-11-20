@@ -1,6 +1,6 @@
 # App Store Listing and Submission Checklist
 
-Listing for version 2.0.0, the relaunch as **Freebies: LA Sports Deals**. The bundle ID stays
+Listing for version 2.0.1, the relaunch as **Freebies: LA Sports Deals**. The bundle ID stays
 `io.bitsugar.freebies`, so the existing App Store record, ratings and installs carry over.
 
 Copy rules for everything below (from [docs/ui.md](../../docs/ui.md#legal-guardrails)):
@@ -17,24 +17,27 @@ The sections follow App Store Connect page by page, in the order the fields appe
 bottom. Copy only what's inside a gray box into the field with the same name; the notes under a box
 are for us and are never pasted.
 
-1. [Version page](#1-version-page-ios-app--200): screenshots, text, build, review notes
+1. [Version page](#1-version-page-ios-app--201): screenshots, text, build, review notes
 2. [App Information](#2-app-information): name, subtitle, category, content rights, age rating
 3. [App Privacy](#3-app-privacy): privacy policy URL and data answers
 4. [Pricing and Availability](#4-pricing-and-availability)
 
 Name and subtitle can only change while a version is editable ("Prepare for Submission"). Create the
-version first with **+ Version**, using the exact version in `app.json` (**2.0.0**), and those
+version first with **+ Version**, using the exact version in `app.json` (**2.0.1**, digits only, no "v"), and those
 fields unlock. Everything except promotional text needs Apple's review, and it all goes live
-together when 2.0.0 is approved.
+together when 2.0.1 is approved.
 
-## 1. Version page (iOS App → 2.0.0)
+## 1. Version page (iOS App → 2.0.1)
 
 Open it from the left sidebar under **iOS App**. The fields below are in page order.
 
 ### Previews and Screenshots
 
-Upload the six PNGs listed in [Screenshots](#screenshots) to the **6.9" Display** slot. App Store
-Connect scales them for smaller iPhones.
+Fill **both** iPhone slots, from **View All Sizes in Media Manager**: the six PNGs in
+`assets/screenshots/6.9-inch/` go in **6.9" Display** and the six in `assets/screenshots/6.3-inch/`
+go in **6.3" Display** (iPhone with Dynamic Island, medium). A slot left over from an older version
+is not replaced by the 6.9" set: 2.0.0 shipped with the 1.x pictures still in 6.3", and every
+6.1"/6.3" phone showed them. Screenshots lock once a version is approved.
 
 ### What's New in This Version
 
@@ -152,7 +155,7 @@ https://github.com/retr0h/freebies
 ### Version
 
 ```text
-2.0.0
+2.0.1
 ```
 
 Must match `version` in `app.json` exactly, or the build won't attach.
@@ -164,7 +167,7 @@ The holder isn't recorded in this repo.
 
 ### Build
 
-Pick the 2.0.0 build after `eas submit` uploads it and Apple finishes processing (usually 10 to 30
+Pick the 2.0.1 build after `eas submit` uploads it and Apple finishes processing (usually 10 to 30
 minutes; you get an email). The build number is set by EAS (`appVersionSource: remote`).
 
 ### App Review Information
@@ -310,7 +313,7 @@ The first two carry the pitch, since most people only see those.
 - [ ] Display name in `app.json` is "Freebies"
 - [x] Six screenshots captured from the 8-bit build (2026-11-17)
 - [ ] In-app About screen shows the not-affiliated disclaimer and the Press Start 2P OFL license
-- [ ] Version 2.0.0 in `app.json`, build number bumped
+- [ ] Version 2.0.1 in `app.json`, build number bumped
 
 ### EAS build commands
 
