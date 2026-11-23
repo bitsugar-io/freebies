@@ -23,9 +23,9 @@ are for us and are never pasted.
 4. [Pricing and Availability](#4-pricing-and-availability)
 
 Name and subtitle can only change while a version is editable ("Prepare for Submission"). Create the
-version first with **+ Version**, using the exact version in `app.json` (**2.0.1**, digits only, no "v"), and those
-fields unlock. Everything except promotional text needs Apple's review, and it all goes live
-together when 2.0.1 is approved.
+version first with **+ Version**, using the exact version in `app.json` (**2.0.1**, digits only, no
+"v"), and those fields unlock. Everything except promotional text needs Apple's review, and it all
+goes live together when 2.0.1 is approved.
 
 ## 1. Version page (iOS App → 2.0.1)
 
